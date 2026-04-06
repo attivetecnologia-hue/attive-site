@@ -250,7 +250,10 @@
       border-radius: 12px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      transition: transform 0.2s;
     }
+    .screenshot-card:hover { transform: scale(1.02); }
     .screenshot-img {
       width: 100%;
       aspect-ratio: 16 / 9;
@@ -263,6 +266,42 @@
       padding: 6px;
       color: rgba(255,255,255,0.6);
       background: rgba(0,0,0,0.5);
+    }
+
+    /* Lightbox / Popup de Imagem */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+    .lightbox.active {
+      display: flex;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    }
+    .close-lightbox {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: #fff;
+      cursor: pointer;
+      background: none;
+      border: none;
+      z-index: 2001;
     }
 
     .footer {
@@ -285,7 +324,7 @@
     <div class="logo-bar">
       <img src="https://i.ibb.co/hJCHtty0/logobrancasemfundo.png" style="max-height:38px;" alt="Logo Attive">
       <div style="font-size:10px;color:rgba(255,255,255,0.4);">Relatório Técnico</div>
-      <img src="https://i.ibb.co/hdCfmVg/clube-campestre-logo.png" style="max-height:40px; max-width:140px; object-fit:contain;" alt="Logo Clube">
+      <img src="https://i.ibb.co/Q3jcTXbQ/clube-campestre.jpg" style="max-height:40px; max-width:140px; object-fit:contain; border-radius: 4px;" alt="Logo Clube">
     </div>
     <div style="flex:1; display: flex; flex-direction: column; justify-content: center;">
       <div class="tag">Visita Técnica Preventiva</div>
@@ -310,8 +349,8 @@
     <div class="grid-4" style="margin-bottom:20px;">
       <div class="stat-big stat-green"><span class="number" data-target="77">0</span><span class="label">Câmeras</span></div>
       <div class="stat-big stat-green"><span class="number" data-target="100">0</span><span class="label">Operação (%)</span></div>
-      <div class="stat-big"><span class="number" data-target="12">0</span><span class="label">Pontos</span></div>
-      <div class="stat-big"><span class="number" data-target="1">0</span><span class="label">Dias</span></div>
+      <div class="stat-big"><span class="number" data-target="5">0</span><span class="label">Gravadores</span></div>
+      <div class="stat-big"><span class="number" data-target="1">0</span><span class="label">Dia</span></div>
     </div>
     <div class="grid-2">
       <div class="card"><h3><svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Objetivo Alcançado</h3><p style="font-size:13px;">Todas as 77 câmeras inspecionadas, limpas e testadas. Sistema de gravação e transmissão funcionando normalmente.</p></div>
@@ -362,16 +401,17 @@
         <div style="display:flex;justify-content:space-between;padding:10px;"><span>DVR 5 (Lazer/Lago)</span><span style="color:#00e676;">25 DIAS</span></div>
       </div>
       <div>
-        <p style="font-size:11px; margin-bottom:8px;">📸 Capturas — 06/04/2026</p>
-        <div class="dvrs-grid">
-          <div class="screenshot-card"><img src="https://i.ibb.co/65NLFk2/DVR1.jpg" class="screenshot-img"><div class="img-caption">DVR 1 (Adm)</div></div>
-          <div class="screenshot-card"><img src="https://i.ibb.co/KjPNwvHF/DVR1-parte-2.jpg" class="screenshot-img"><div class="img-caption">Portaria</div></div>
-          <div class="screenshot-card"><img src="https://i.ibb.co/ZnP0VRh/DVR2.jpg" class="screenshot-img"><div class="img-caption">DVR 2 (Entradas)</div></div>
-          <div class="screenshot-card"><img src="https://i.ibb.co/TqcDdD2x/DVR2-parte-2.jpg" class="screenshot-img"><div class="img-caption">Estacionamento</div></div>
-          <div class="screenshot-card"><img src="https://i.ibb.co/zVjfzNc8/DVR3.jpg" class="screenshot-img"><div class="img-caption">DVR 3 (Academia)</div></div>
-          <div class="screenshot-card"><img src="https://i.ibb.co/chMTjx5b/DVR4.jpg" class="screenshot-img"><div class="img-caption">DVR 4 (Quadras)</div></div>
-          <div class="screenshot-card"><img src="https://i.ibb.co/hFgwm5WP/DVR5.jpg" class="screenshot-img"><div class="img-caption">DVR 5 (Lazer)</div></div>
-          <div class="screenshot-card"><img src="https://i.ibb.co/7tfGSpxY/DVR5-PARTE-2.jpg" class="screenshot-img"><div class="img-caption">Lago</div></div>
+        <p style="font-size:11px; margin-bottom:8px;">📸 Capturas — 06/04/2026 (Clique para ampliar)</p>
+        <div class="dvrs-grid" id="dvrs-grid">
+          <div class="screenshot-card" data-img="https://i.ibb.co/65NLFk2/DVR1.jpg"><img src="https://i.ibb.co/65NLFk2/DVR1.jpg" class="screenshot-img"><div class="img-caption">DVR 1 (Adm)</div></div>
+          <div class="screenshot-card" data-img="https://i.ibb.co/KjPNwvHF/DVR1-parte-2.jpg"><img src="https://i.ibb.co/KjPNwvHF/DVR1-parte-2.jpg" class="screenshot-img"><div class="img-caption">Portaria</div></div>
+          <div class="screenshot-card" data-img="https://i.ibb.co/ZnP0VRh/DVR2.jpg"><img src="https://i.ibb.co/ZnP0VRh/DVR2.jpg" class="screenshot-img"><div class="img-caption">DVR 2 (Entradas)</div></div>
+          <div class="screenshot-card" data-img="https://i.ibb.co/TqcDdD2x/DVR2-parte-2.jpg"><img src="https://i.ibb.co/TqcDdD2x/DVR2-parte-2.jpg" class="screenshot-img"><div class="img-caption">Estacionamento</div></div>
+          <div class="screenshot-card" data-img="https://i.ibb.co/zVjfzNc8/DVR3.jpg"><img src="https://i.ibb.co/zVjfzNc8/DVR3.jpg" class="screenshot-img"><div class="img-caption">DVR 3 (Academia)</div></div>
+          <!-- Link corrigido da imagem do DVR 4 (Quadras) -->
+          <div class="screenshot-card" data-img="https://i.ibb.co/fYHP9yvf/DVR4.jpg"><img src="https://i.ibb.co/fYHP9yvf/DVR4.jpg" class="screenshot-img"><div class="img-caption">DVR 4 (Quadras)</div></div>
+          <div class="screenshot-card" data-img="https://i.ibb.co/hFgwm5WP/DVR5.jpg"><img src="https://i.ibb.co/hFgwm5WP/DVR5.jpg" class="screenshot-img"><div class="img-caption">DVR 5 (Lazer)</div></div>
+          <div class="screenshot-card" data-img="https://i.ibb.co/7tfGSpxY/DVR5-PARTE-2.jpg"><img src="https://i.ibb.co/7tfGSpxY/DVR5-PARTE-2.jpg" class="screenshot-img"><div class="img-caption">Lago</div></div>
         </div>
       </div>
     </div>
@@ -406,6 +446,12 @@
       <div class="stat-big stat-green"><span class="number" data-target="12">0</span><span class="label">Meses de contrato</span></div></div>
     </div>
     <div class="footer"><span>Attive Tecnologia — Relatório de Visita Preventiva CFTV · Abril 2026</span><span>Confidencial</span></div>
+  </div>
+
+  <!-- Lightbox para imagens -->
+  <div id="lightbox" class="lightbox" style="display: none;">
+    <button class="close-lightbox" id="closeLightbox">✕</button>
+    <img id="lightboxImg" src="" alt="Imagem ampliada">
   </div>
 
   <!-- Navegação Superior -->
@@ -449,7 +495,7 @@
       dot.addEventListener('click', () => {
         currentIndex = i;
         updateSlides();
-        triggerNumberAnimation(); // Anima números ao mudar de slide
+        triggerNumberAnimation();
       });
       dotsContainer.appendChild(dot);
     }
@@ -470,6 +516,32 @@
     }
   });
 
+  // Navegação por deslize (Swipe)
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  document.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    if (touchEndX < touchStartX - 50) {
+      // Deslizou para a esquerda -> próximo slide
+      if (currentIndex < totalSlides - 1) {
+        currentIndex++;
+        updateSlides();
+        triggerNumberAnimation();
+      }
+    } else if (touchEndX > touchStartX + 50) {
+      // Deslizou para a direita -> slide anterior
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateSlides();
+        triggerNumberAnimation();
+      }
+    }
+  });
+
   // Animação dos números (contagem)
   function animateNumbers() {
     const numberElements = document.querySelectorAll('.number[data-target]');
@@ -477,7 +549,7 @@
       const target = parseInt(el.getAttribute('data-target'), 10);
       if (isNaN(target)) return;
       let current = 0;
-      const increment = target / 50; // Suavidade da contagem
+      const increment = target / 50;
       const updateNumber = () => {
         current += increment;
         if (current < target) {
@@ -491,7 +563,6 @@
     });
   }
 
-  // Observador para iniciar a animação quando o slide com números estiver visível
   function triggerNumberAnimation() {
     const activeSlide = document.querySelector('.slide.active');
     if (activeSlide && activeSlide.querySelector('.number[data-target]')) {
@@ -511,12 +582,43 @@
     }
   }
 
+  // Lightbox / Popup de imagens
+  function initLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const closeBtn = document.getElementById('closeLightbox');
+    const screenshotCards = document.querySelectorAll('.screenshot-card');
+
+    function openLightbox(imgSrc) {
+      lightboxImg.src = imgSrc;
+      lightbox.style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+    }
+
+    screenshotCards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const imgSrc = card.getAttribute('data-img');
+        if (imgSrc) openLightbox(imgSrc);
+      });
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    closeBtn.addEventListener('click', closeLightbox);
+  }
+
   // Inicialização
   createDots();
   generateCameraDots();
+  initLightbox();
   updateSlides();
   
-  // Pequeno delay para garantir que os elementos estejam na tela antes da primeira animação
   setTimeout(() => {
     triggerNumberAnimation();
   }, 200);
