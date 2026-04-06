@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO & Preview -->
+  <title>Hélio | Engenheiro Eletricista Projetista · CREA-PB</title>
+  <meta name="description" content="Engenheiro Eletricista Projetista com registro ativo no CREA-PB. Especialista em projetos elétricos, CFTV, alarmes, controle de acesso, cabeamento estruturado e projetos em Revit/BIM. Attive Tecnologia — Campina Grande, PB." />
+  <meta name="author" content="Hélio — Attive Tecnologia" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph (WhatsApp / Facebook) -->
+  <meta property="og:type" content="profile" />
+  <meta property="og:title" content="Hélio · Engenheiro Eletricista Projetista | CREA-PB" />
+  <meta property="og:description" content="Projetos elétricos, CFTV, alarmes, controle de acesso, cabeamento estruturado e Revit BIM. Attive Tecnologia — Campina Grande, PB." />
+  <meta property="og:url" content="" />
+  <meta property="og:image" content="" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:site_name" content="Hélio — Engenheiro Eletricista" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hélio · Engenheiro Eletricista Projetista | CREA-PB" />
+  <meta name="twitter:description" content="Projetos elétricos, CFTV, alarmes, controle de acesso, cabeamento estruturado e Revit BIM. Attive Tecnologia — Campina Grande, PB." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white:   #ffffff;
+      --off:     #F7F8FA;
+      --line:    #E2E6EC;
+      --text:    #1C2333;
+      --sub:     #4A5568;
+      --muted:   #8A96A8;
+      --blue:    #1A3E6E;
+      --blue2:   #2B5DA8;
+      --accent:  #C8A84B;
+      --radius:  4px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--off);
+      color: var(--text);
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .page {
+      max-width: 840px;
+      margin: 48px auto;
+      background: var(--white);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 24px rgba(0,0,0,.07);
+      animation: fadeUp .5s ease both;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 210px;
+      border-bottom: 3px solid var(--blue);
+    }
+    .hero-left { padding: 44px 36px 36px; }
+    .hero-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--blue);
+      line-height: 1;
+      letter-spacing: .01em;
+    }
+    .hero-title {
+      margin-top: 8px;
+      font-size: 15px;
+      color: var(--sub);
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 18px;
+    }
+    .tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--blue2);
+      background: #EBF1FB;
+      border: 1px solid #C5D6F0;
+      padding: 3px 9px;
+      border-radius: 2px;
+    }
+
+    .hero-right {
+      background: var(--blue);
+      padding: 32px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: center;
+    }
+    .info-row { display: flex; align-items: flex-start; gap: 10px; }
+    .info-row svg { flex-shrink: 0; margin-top: 1px; color: var(--accent); }
+    .info-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.4);
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    .info-value { font-size: 13px; color: #fff; line-height: 1.3; }
+
+    /* ── BODY ── */
+    .body { padding: 38px 36px 48px; display: flex; flex-direction: column; gap: 38px; }
+
+    /* ── Seção ── */
+    .sec-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .sec-icon {
+      width: 26px; height: 26px;
+      background: var(--blue);
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .sec-icon svg { color: #fff; }
+    .sec-label > span:last-of-type {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+    .sec-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    /* ── Perfil ── */
+    .perfil-text {
+      font-size: 15px;
+      color: var(--sub);
+      line-height: 1.75;
+      border-left: 3px solid var(--accent);
+      padding-left: 16px;
+      max-width: 680px;
+    }
+
+    /* ── Competências ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .skill-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px 15px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .skill-card:hover {
+      border-color: var(--blue2);
+      box-shadow: 0 2px 12px rgba(26,62,110,.07);
+    }
+    .card-head {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 11px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    .card-head svg { color: var(--blue2); flex-shrink: 0; }
+    .card-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+    .skill-card ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .skill-card ul li {
+      font-size: 13px; color: var(--sub);
+      padding-left: 12px; position: relative;
+    }
+    .skill-card ul li::before {
+      content: '';
+      position: absolute; left: 0; top: 8px;
+      width: 4px; height: 1px;
+      background: var(--accent);
+    }
+
+    /* ── Experiência ── */
+    .exp-block { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+    .exp-header {
+      background: var(--off);
+      border-bottom: 1px solid var(--line);
+      padding: 16px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .exp-role {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--blue);
+    }
+    .exp-period {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 2px 10px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+    .exp-body { padding: 18px 22px; }
+    .exp-company {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue2);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .exp-company svg { color: var(--blue2); }
+    .exp-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px 24px;
+    }
+    .exp-list li {
+      font-size: 14px; color: var(--sub);
+      padding-left: 13px; position: relative; line-height: 1.45;
+    }
+    .exp-list li::before {
+      content: '';
+      position: absolute; left: 0; top: 8px;
+      width: 5px; height: 1px;
+      background: var(--blue2);
+    }
+
+    /* ── Formação ── */
+    .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .edu-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      display: flex; gap: 14px; align-items: flex-start;
+      transition: border-color .2s;
+    }
+    .edu-card:hover { border-color: var(--blue2); }
+    .edu-icon {
+      width: 34px; height: 34px; flex-shrink: 0;
+      background: var(--blue); border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .edu-icon svg { color: #fff; }
+    .edu-year {
+      font-size: 10px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 3px;
+    }
+    .edu-degree {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px; font-weight: 600; color: var(--blue);
+      line-height: 1.3; margin-bottom: 3px;
+    }
+    .edu-school { font-size: 12px; color: var(--muted); }
+
+    /* ── Diferenciais ── */
+    .diff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .diff-card {
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--blue);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      background: var(--off);
+    }
+    .diff-head { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+    .diff-head svg { color: var(--blue); }
+    .diff-title {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase; color: var(--blue);
+    }
+    .diff-card p { font-size: 13px; color: var(--sub); line-height: 1.55; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 16px 36px;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 8px;
+      background: var(--off);
+    }
+    .footer-brand {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--blue);
+    }
+    .footer-right { font-size: 12px; color: var(--muted); }
+
+    /* ── Animação ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsivo ── */
+    @media (max-width: 680px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-name { font-size: 38px; }
+      .hero-left { padding: 30px 22px 24px; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .exp-list { grid-template-columns: 1fr; }
+      .diff-grid { grid-template-columns: 1fr; }
+      .edu-grid { grid-template-columns: 1fr; }
+      .body { padding: 28px 22px 36px; }
+      footer { padding: 14px 22px; }
+    }
+    @media (max-width: 440px) {
+      .skills-grid { grid-template-columns: 1fr; }
+      .page { margin: 0; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Currículo Profissional</p>
+      <h1 class="hero-name">Hélio Crispim</h1>
+      <p class="hero-title">Engenheiro Eletricista Projetista &amp; Responsável Técnico</p>
+      <div class="hero-tags">
+        <span class="tag">Projetos Elétricos</span>
+        <span class="tag">CFTV</span>
+        <span class="tag">Alarmes</span>
+        <span class="tag">Controle de Acesso</span>
+        <span class="tag">Cabeamento Estruturado</span>
+        <span class="tag">Revit · BIM</span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="info-row">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <div><p class="info-label">Localização</p><p class="info-value">Campina Grande, PB</p></div>
+      </div>
+      <div class="info-row">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        <div><p class="info-label">Empresa</p><p class="info-value">Attive Tecnologia</p></div>
+      </div>
+      <div class="info-row">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div><p class="info-label">Registro</p><p class="info-value">CREA-PB — Ativo</p></div>
+      </div>
+      <div class="info-row">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <div><p class="info-label">Área</p><p class="info-value">Engenharia Elétrica &amp; Sistemas Integrados</p></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="body">
+
+    <!-- PERFIL -->
+    <section>
+      <div class="sec-label">
+        <span class="sec-icon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </span>
+        <span>Perfil Profissional</span>
+      </div>
+      <p class="perfil-text">
+        Engenheiro Eletricista com registro ativo no CREA-PB e mais de 25 anos de atuação na área de eletrônica e sistemas integrados. Fundador da Attive Tecnologia, empresa especializada em soluções completas de segurança eletrônica e tecnologia. Atuo como projetista e responsável técnico em projetos elétricos, CFTV, alarmes, controle de acesso, cabeamento estruturado e projetos em Revit com metodologia BIM — oferecendo execução integrada com respaldo legal e emissão de ART.
+      </p>
+    </section>
+
+    <!-- COMPETÊNCIAS -->
+    <section>
+      <div class="sec-label">
+        <span class="sec-icon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </span>
+        <span>Competências Técnicas</span>
+      </div>
+      <div class="skills-grid">
+
+        <div class="skill-card">
+          <div class="card-head">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            <p class="card-title">Projetos Elétricos</p>
+          </div>
+          <ul>
+            <li>Instalações residenciais e comerciais</li>
+            <li>Baixa e média tensão</li>
+            <li>Responsabilidade técnica (ART)</li>
+            <li>Dimensionamento de sistemas</li>
+            <li>Laudos e conformidade ABNT</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <div class="card-head">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <p class="card-title">Cabeamento Estruturado</p>
+          </div>
+          <ul>
+            <li>Rede lógica Cat5e / Cat6</li>
+            <li>Fibra óptica</li>
+            <li>Rack e patch panel</li>
+            <li>Certificação e documentação</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <div class="card-head">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <p class="card-title">CFTV</p>
+          </div>
+          <ul>
+            <li>Sistemas analógico e IP</li>
+            <li>Câmeras bullet, dome e PTZ</li>
+            <li>NVR / DVR e armazenamento</li>
+            <li>Integração e monitoramento</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <div class="card-head">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <p class="card-title">Alarmes &amp; Controle de Acesso</p>
+          </div>
+          <ul>
+            <li>Alarme de intrusão e incêndio</li>
+            <li>Controle biométrico e RFID</li>
+            <li>Cercas elétricas e cancelas</li>
+            <li>Rastreamento veicular</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <div class="card-head">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            <p class="card-title">Revit · Metodologia BIM</p>
+          </div>
+          <ul>
+            <li>Projetos elétricos em Revit</li>
+            <li>Modelagem BIM integrada</li>
+            <li>Compatibilização de projetos</li>
+            <li>Documentação e pranchas técnicas</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <div class="card-head">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <p class="card-title">Gestão Técnica</p>
+          </div>
+          <ul>
+            <li>Emissão de ART / CREA-PB</li>
+            <li>Laudos e relatórios técnicos</li>
+            <li>Gestão de contratos e OS</li>
+            <li>Checklists e padronização</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- EXPERIÊNCIA -->
+    <section>
+      <div class="sec-label">
+        <span class="sec-icon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        </span>
+        <span>Experiência Profissional</span>
+      </div>
+      <div class="exp-block">
+        <div class="exp-header">
+          <p class="exp-role">Engenheiro Eletricista Projetista &amp; Sócio Proprietário</p>
+          <span class="exp-period">2010 – Presente</span>
+        </div>
+        <div class="exp-body">
+          <p class="exp-company">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            Attive Tecnologia — Campina Grande, PB
+          </p>
+          <ul class="exp-list">
+            <li>Elaboração e assinatura de projetos elétricos com emissão de ART junto ao CREA-PB</li>
+            <li>Projetos em Revit com metodologia BIM e compatibilização de disciplinas</li>
+            <li>Projetos de CFTV, alarme, controle de acesso e cabeamento estruturado</li>
+            <li>Responsabilidade técnica por obras e instalações corporativas e residenciais</li>
+            <li>Gestão de contratos, orçamentos e relacionamento com clientes</li>
+            <li>Padronização de processos operacionais e checklists de execução</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMAÇÃO -->
+    <section>
+      <div class="sec-label">
+        <span class="sec-icon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </span>
+        <span>Formação Acadêmica</span>
+      </div>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <div class="edu-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <div>
+            <p class="edu-year">Concluído — Junho 2025</p>
+            <p class="edu-degree">Bacharelado em Engenharia Elétrica</p>
+            <p class="edu-school">UNINASSAU — Campina Grande, PB</p>
+          </div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <p class="edu-year">Concluído — 1998</p>
+            <p class="edu-degree">Técnico em Eletrônica e Telecomunicações</p>
+            <p class="edu-school">Escola Técnica Redentorista — ETER</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIFERENCIAIS -->
+    <section>
+      <div class="sec-label">
+        <span class="sec-icon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </span>
+        <span>Diferenciais</span>
+      </div>
+      <div class="diff-grid">
+        <div class="diff-card">
+          <div class="diff-head">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <p class="diff-title">Solução Integrada</p>
+          </div>
+          <p>Elétrica, segurança, redes e BIM em um único parceiro técnico habilitado.</p>
+        </div>
+        <div class="diff-card">
+          <div class="diff-head">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <p class="diff-title">Respaldo Legal</p>
+          </div>
+          <p>ART, laudos e responsabilidade técnica conforme normas ABNT vigentes.</p>
+        </div>
+        <div class="diff-card">
+          <div class="diff-head">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <p class="diff-title">Agilidade</p>
+          </div>
+          <p>Início em até 2 dias úteis após assinatura do contrato ou ordem de serviço.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p class="footer-brand">Attive Tecnologia</p>
+    <p class="footer-right">Campina Grande, PB &nbsp;·&nbsp; CREA-PB &nbsp;·&nbsp; Engenharia Elétrica</p>
+  </footer>
+
+</div>
+</body>
+</html>
