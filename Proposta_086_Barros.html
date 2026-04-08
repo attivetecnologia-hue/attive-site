@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Proposta 086-2026 | Attive | Barros</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #08141C;
+  --bg2: #0D1E28;
+  --bg3: #061018;
+  --surface: #112233;
+  --blue: #1FA8E0;
+  --blue2: #0E6FA3;
+  --blue-dim: rgba(31, 168, 224, 0.12);
+  --white: #F0F8FF;
+  --gray: #7FA8C0;
+  --gray2: #1E3448;
+  --green: #18C97A;
+  --green-dim: rgba(24, 201, 122, 0.1);
+  --gold: #FFD966;
+  --gold-dim: rgba(255, 217, 102, 0.1);
+  --orange: #FF8C42;
+  --orange-dim: rgba(255, 140, 66, 0.1);
+  --font: 'DM Sans', sans-serif;
+  --serif: 'DM Serif Display', serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ANIMAÇÕES */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(31, 168, 224, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(31, 168, 224, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(31, 168, 224, 0.3);
+  }
+}
+
+.animate-fadeUp {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.animate-fadeLeft {
+  animation: fadeInLeft 0.8s ease forwards;
+}
+
+.animate-fadeRight {
+  animation: fadeInRight 0.8s ease forwards;
+}
+
+/* ESTRUTURA */
+.cover {
+  min-height: 100vh;
+  background: var(--bg3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 44px 32px;
+  position: relative;
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 110% 80%, rgba(31, 168, 224, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, var(--blue), transparent);
+}
+
+.cover-dots {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+  height: 200px;
+  background-image: radial-gradient(circle, rgba(31, 168, 224, 0.18) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: radial-gradient(ellipse at bottom right, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at bottom right, black 30%, transparent 70%);
+}
+
+.cover-logo {
+  z-index: 1;
+  animation: fadeInLeft 0.6s ease;
+}
+
+.cover-logo img {
+  height: 70px;
+  width: auto;
+  display: block;
+}
+
+.cover-body {
+  z-index: 1;
+  animation: fadeInUp 0.8s ease 0.2s forwards;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--blue2);
+  color: var(--blue);
+  padding: 7px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 28px;
+  background: var(--blue-dim);
+}
+
+.cover-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+
+.cover-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 12px;
+}
+
+.cover-title {
+  font-family: var(--serif);
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.cover-title em {
+  font-style: italic;
+  color: var(--blue);
+}
+
+.cover-sub {
+  font-size: 14px;
+  color: var(--gray);
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+.cover-footer {
+  z-index: 1;
+  border-top: 1px solid var(--gray2);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  animation: fadeInUp 0.6s ease 0.4s forwards;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.cover-footer-left p {
+  font-size: 12px;
+  color: var(--gray);
+  line-height: 1.9;
+}
+
+.cover-footer-left strong {
+  color: var(--white);
+  font-weight: 500;
+}
+
+.cover-scroll {
+  font-size: 11px;
+  color: var(--gray);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.cover-scroll span {
+  animation: bob 1.6s infinite;
+}
+
+@keyframes bob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.sk {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 10px;
+}
+
+.sk::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--blue);
+}
+
+.st {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.st em {
+  font-style: italic;
+  color: var(--blue);
+}
+
+.sb {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.8;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--gray2);
+  margin: 48px 0;
+}
+
+/* DIAGNÓSTICO GRID */
+.diag-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.diag-item {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 12px 12px 0;
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+}
+
+.diag-item:hover {
+  transform: translateX(5px);
+  border-left-color: var(--green);
+}
+
+.dico {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--blue-dim);
+  border: 1px solid var(--blue2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diag-item h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.diag-item p {
+  font-size: 12px;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* OBJETIVOS BOX */
+.obj-box {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 16px;
+  padding: 28px 24px;
+  margin-top: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.obj-box:hover {
+  border-color: var(--blue);
+}
+
+.obj-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), transparent);
+}
+
+.obj-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.obj-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.obj-list li::before {
+  content: '✦';
+  color: var(--blue);
+  font-size: 10px;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+/* SERVIÇO DETALHADO */
+.service-box {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+  border-left: 3px solid var(--blue);
+}
+
+.service-box h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--blue);
+}
+
+.service-list {
+  list-style: none;
+}
+
+.service-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.service-list li .check {
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+/* PROPOSTA COMERCIAL */
+.proposal-price-card {
+  background: linear-gradient(135deg, var(--blue2) 0%, #0B5070 100%);
+  border-radius: 18px;
+  padding: 32px 26px;
+  margin: 24px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.proposal-price-card::after {
+  content: '';
+  position: absolute;
+  right: -30px;
+  bottom: -30px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 30px solid rgba(255, 255, 255, 0.05);
+}
+
+.price-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  opacity: 0.8;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.price-value {
+  font-family: var(--serif);
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.price-installment {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-top: 8px;
+}
+
+.price-discount {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(24, 201, 122, 0.15);
+  border: 1px solid rgba(24, 201, 122, 0.3);
+  border-radius: 8px;
+  padding: 6px 14px;
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.price-rows {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.price-row {
+  font-size: 12px;
+  opacity: 0.75;
+  display: flex;
+  justify-content: space-between;
+}
+
+.price-row span:last-child {
+  font-weight: 600;
+  opacity: 1;
+}
+
+/* AUTH GRID */
+.auth-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.auth-item {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 12px 12px 0;
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+}
+
+.auth-item:hover {
+  transform: translateX(5px);
+}
+
+.aico {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--blue-dim);
+  border: 1px solid var(--blue2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-item h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.auth-item p {
+  font-size: 12px;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* CLIENT CARD */
+.cli-card {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 14px;
+  padding: 22px;
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.cf label {
+  font-size: 10px;
+  color: var(--gray);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cf p {
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+.cf.full {
+  grid-column: 1/-1;
+}
+
+/* CONDICOES */
+.cond-box {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 14px;
+  padding: 22px;
+  margin-top: 20px;
+}
+
+.cond-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cond-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.cond-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+.scp-box {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.scp-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-top: 1px solid var(--gray2);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.scp-row:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.scp-ico {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--blue-dim);
+  border: 1px solid var(--blue2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* OBSERVAÇÃO */
+.obs-box {
+  background: rgba(255, 140, 66, 0.08);
+  border: 1px solid var(--orange);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 24px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.obs-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--orange-dim);
+  border: 1px solid var(--orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange);
+  font-size: 14px;
+}
+
+.obs-text {
+  font-size: 12px;
+  color: var(--gray);
+  line-height: 1.5;
+}
+
+.obs-text strong {
+  color: var(--orange);
+}
+
+/* APROVAÇÃO */
+.apv-box {
+  display: none;
+  background: rgba(24, 201, 122, 0.08);
+  border: 1px solid rgba(24, 201, 122, 0.25);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  margin: 32px 0;
+  animation: fadeInUp 0.5s ease;
+}
+
+.apv-box.show {
+  display: block;
+}
+
+.apv-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--green);
+  margin: 12px 0 8px;
+}
+
+.apv-sub {
+  font-size: 13px;
+  color: var(--gray);
+}
+
+/* BOTÃO PRINCIPAL */
+.btn-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.btn-main {
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 16px 32px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 4px 24px rgba(24, 201, 122, 0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(24, 201, 122, 0.4);
+}
+
+.apv-note {
+  font-size: 12px;
+  color: var(--gray);
+  margin-top: 14px;
+}
+
+.next-box {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 16px;
+  padding: 28px 24px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.next-box .intro {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.next-box .intro strong {
+  color: var(--white);
+}
+
+/* SIG */
+.sig {
+  text-align: center;
+  margin: 32px 0 8px;
+}
+
+.sig-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--blue);
+  object-fit: cover;
+  margin-bottom: 16px;
+}
+
+.sig-line {
+  width: 160px;
+  height: 1px;
+  background: var(--gray2);
+  margin: 0 auto 14px;
+}
+
+.sig-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sig-info {
+  font-size: 12px;
+  color: var(--gray);
+  margin-top: 3px;
+}
+
+.sig-crea {
+  display: inline-block;
+  margin-top: 8px;
+  background: var(--blue-dim);
+  border: 1px solid var(--blue2);
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+.footer {
+  border-top: 1px solid var(--gray2);
+  padding: 22px 24px;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer p {
+  font-size: 11px;
+  color: var(--gray);
+}
+
+.wa-btn {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: #25D366;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 13px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.35);
+  z-index: 99;
+  transition: transform 0.15s;
+  animation: glow 2s infinite;
+}
+
+.wa-btn:hover {
+  transform: translateY(-2px);
+}
+
+.wa-icon {
+  width: 19px;
+  height: 19px;
+  fill: #fff;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .cover-title {
+    font-size: 36px;
+  }
+
+  .cli-card {
+    grid-template-columns: 1fr;
+  }
+
+  .cf.full {
+    grid-column: 1;
+  }
+
+  .obj-list {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-accent"></div>
+  <div class="cover-dots"></div>
+  <div class="cover-logo" style="z-index:1">
+    <img src="https://cdn.phototourl.com/free/2026-04-01-bd1ea34f-46fa-4af7-8452-af7677dbb7e9.png" alt="Attive Tecnologia">
+  </div>
+  <div class="cover-body">
+    <div class="cover-badge">A/C Barros</div>
+    <div class="cover-kicker">Proposta Técnica &middot; Orçamento 086-2026</div>
+    <div class="cover-title">Lançamento de<br><em>Cabos</em><br>para CFTV e Rede</div>
+    <div class="cover-sub">Projeto de infraestrutura de rede para 6 câmeras + 1 Access Point, com cabo CAT5E 100% cobre homologado Anatel.</div>
+  </div>
+  <div class="cover-footer">
+    <div class="cover-footer-left">
+      <p><strong>Hélio Crispim</strong> &middot; Eng. Eletricista</p>
+      <p>CREA-PB 12290192025PB</p>
+      <p>(83) 99678-7788</p>
+    </div>
+    <div class="cover-scroll" onclick="document.querySelector('.main').scrollIntoView({behavior:'smooth'})"><span>↓</span><small style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gray)">Rolar</small></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- DIAGNÓSTICO -->
+  <div style="padding: 52px 0 0" class="animate-fadeUp">
+    <div class="sk">Análise da Necessidade</div>
+    <div class="st">Diagnóstico da <em>Infraestrutura</em></div>
+    <div class="sb">Com base nas informações levantadas, identificamos a necessidade de uma infraestrutura de rede adequada para suportar o sistema de CFTV e conectividade local.</div>
+    <div class="diag-grid">
+      <div class="diag-item">
+        <div class="dico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div><h4>Infraestrutura de rede inexistente</h4><p>O local não possui cabeamento estruturado para suportar as câmeras e o ponto de acesso Wi-Fi.</p></div>
+      </div>
+      <div class="diag-item">
+        <div class="dico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1"/></svg></div>
+        <div><h4>Necessidade de conectividade</h4><p>É essencial garantir comunicação estável entre câmeras, Access Point e equipamentos de gravação.</p></div>
+      </div>
+      <div class="diag-item">
+        <div class="dico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div><h4>Sem estrutura profissional</h4><p>Cabos soltos ou mal instalados podem comprometer a qualidade do sinal e a segurança do sistema.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- OBJETIVOS -->
+  <div class="animate-fadeLeft">
+    <div class="sk">Objetivo do Projeto</div>
+    <div class="st">O que este serviço <em>vai fazer</em></div>
+    <div class="sb">Este projeto visa fornecer infraestrutura de rede profissional para garantir conectividade estável e segura.</div>
+    <div class="obj-box">
+      <ul class="obj-list">
+        <li>Lançamento de cabos para 6 câmeras</li>
+        <li>Lançamento de cabo para 1 Access Point</li>
+        <li>Utilização de cabo CAT5E 100% cobre homologado Anatel</li>
+        <li>Fornecimento de caixa nova com 305m de cabo</li>
+        <li>Mão de obra especializada para passagem dos cabos</li>
+        <li>Teste de conectividade após instalação</li>
+        <li>Organização e acabamento profissional</li>
+        <li>Garantia de 90 dias sobre o serviço executado</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- DETALHAMENTO DO SERVIÇO -->
+  <div class="animate-fadeRight">
+    <div class="sk">O que está incluso</div>
+    <div class="st">Detalhamento do <em>Serviço</em></div>
+    <div class="sb">O serviço contempla todo o cabeamento necessário para sua estrutura de rede.</div>
+    
+    <div class="service-box">
+      <h4>📡 Cabeamento para CFTV e Rede</h4>
+      <ul class="service-list">
+        <li><span class="check">✓</span> 6 pontos de cabo para câmeras</li>
+        <li><span class="check">✓</span> 1 ponto de cabo para Access Point</li>
+        <li><span class="check">✓</span> Fornecimento de cabo de rede (caixa nova 305m)</li>
+        <li><span class="check">✓</span> Cabo CAT5E 100% cobre - homologado Anatel</li>
+        <li><span class="check">✓</span> Mão de obra especializada para passagem dos cabos</li>
+        <li><span class="check">✓</span> Deslocamento e ferramentas</li>
+        <li><span class="check">✓</span> Teste de conectividade</li>
+        <li><span class="check">✓</span> Garantia do serviço: 90 dias</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- PROPOSTA COMERCIAL -->
+  <div class="animate-fadeUp">
+    <div class="sk">Proposta Comercial</div>
+    <div class="st">Orçamento <em>086-2026</em></div>
+    <div class="cli-card">
+      <div class="cf full"><label>Cliente</label><p>Barros</p></div>
+      <div class="cf full"><label>Serviço</label><p>Lançamento de cabos para 6 câmeras + 1 Access Point</p></div>
+      <div class="cf"><label>Data</label><p id="data-hoje"></p></div>
+      <div class="cf"><label>Validade</label><p>7 dias</p></div>
+      <div class="cf full"><label>Prazo de execução</label><p>1 dia útil</p></div>
+    </div>
+
+    <div class="proposal-price-card">
+      <div class="price-label">Investimento</div>
+      <div class="price-value">R$ 1.480<span style="font-size: 22px;">,00</span></div>
+      <div class="price-installment">em até 2x de R$ 740,00 no cartão</div>
+      <div class="price-discount">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        À vista com 5% de desconto: R$ 1.406,00
+      </div>
+      <div class="price-rows">
+        <div class="price-row"><span>Fornecimento cabo CAT5E 305m</span><span>Incluso</span></div>
+        <div class="price-row"><span>Mão de obra especializada</span><span>Incluso</span></div>
+        <div class="price-row"><span>Deslocamento e ferramentas</span><span>Incluso</span></div>
+        <div class="price-row"><span>Garantia do serviço</span><span>90 dias</span></div>
+        <div class="price-row" style="border-top: 1px solid rgba(255,255,255,0.15);padding-top:8px;margin-top:4px;opacity:1"><span style="color:#18C97A">✓ Pagamento antecipado para agendamento</span></div>
+      </div>
+    </div>
+
+    <div class="sk" style="margin-top: 24px">Condições Comerciais</div>
+    <div class="cond-box">
+      <ul class="cond-list">
+        <li><span class="cond-dot"></span><span>Pagamento <strong>antecipado para agendamento</strong> da instalação</span></li>
+        <li><span class="cond-dot"></span><span><strong>À vista com 5% de desconto:</strong> R$ 1.406,00</span></li>
+        <li><span class="cond-dot"></span><span><strong>Parcelado em 2x no cartão:</strong> R$ 740,00</span></li>
+        <li><span class="cond-dot"></span><span>Validade desta proposta: <strong>7 dias</strong> a partir da emissão</span></li>
+      </ul>
+    </div>
+
+    <div class="sk" style="margin-top: 24px">Escopo do Serviço</div>
+    <div class="scp-box">
+      <div class="scp-row"><div class="scp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong style="color:var(--white)">Incluso:</strong> fornecimento de cabo CAT5E (caixa 305m), mão de obra para passagem dos cabos, deslocamento, ferramentas e teste de conectividade.</span></div>
+      <div class="scp-row"><div class="scp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span>Serviços executados por <strong style="color:var(--white)">técnicos especializados</strong> da Attive Tecnologia, com responsabilidade técnica de Engenheiro Eletricista.</span></div>
+    </div>
+
+    <div class="obs-box">
+      <div class="obs-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="obs-text">
+        <strong>Observação importante:</strong> Não estão inclusas obras de infraestrutura, como canaletas e/ou tubulações, nem fornecimento de equipamentos (câmeras, Access Point, DVR). Caso seja necessário, será previamente orçado e executado somente mediante aprovação do cliente.
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- POR QUE ATTIVE -->
+  <div class="animate-fadeLeft">
+    <div class="sk">Por que escolher a Attive</div>
+    <div class="st">Experiência e <em>Confiabilidade</em></div>
+    <div class="sb">Somos especialistas em infraestrutura de rede e segurança eletrônica com trajetória consolidada no mercado. Cada projeto é tratado com rigor técnico e comprometimento total.</div>
+    <div class="auth-grid">
+      <div class="auth-item"><div class="aico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div><h4>Mais de 25 anos de experiência</h4><p>Centenas de projetos executados em infraestrutura de rede, CFTV e segurança eletrônica.</p></div></div>
+      <div class="auth-item"><div class="aico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></div><div><h4>Materiais certificados</h4><p>Utilizamos cabos CAT5E 100% cobre homologados Anatel, garantindo qualidade e durabilidade.</p></div></div>
+      <div class="auth-item"><div class="aico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div><div><h4>Profissionais especializados</h4><p>Equipe treinada e experiente em lançamento de cabos estruturados para sistemas de segurança.</p></div></div>
+      <div class="auth-item"><div class="aico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><h4>Suporte pós-instalação</h4><p>Nossa equipe está disponível para suporte técnico após a entrega do projeto.</p></div></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- PRÓXIMOS PASSOS -->
+  <div class="animate-fadeUp">
+    <div class="sk">Próximos Passos</div>
+    <div class="st">Vamos <em>começar?</em></div>
+    <div class="next-box" id="next-box">
+      <p class="intro">Revise o orçamento acima e, se estiver de acordo, aprove abaixo.<br><strong>Será um prazer estruturar sua rede com qualidade e segurança!</strong></p>
+      <div class="btn-wrap" id="btn-wrap">
+        <button class="btn-main" onclick="aprovar()">Aprovar Orçamento</button>
+      </div>
+      <p class="apv-note" id="apv-note">Ao aprovar, você confirma o aceite das condições acima.<br>Entraremos em contato para confirmar o agendamento da instalação.</p>
+    </div>
+    <div class="apv-box" id="apv-box">
+      <div class="apv-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="apv-title">Proposta Aprovada!</div>
+      <div class="apv-sub" id="apv-sub">Em breve a equipe da Attive entrará em contato pelo (83) 99678-7788.</div>
+    </div>
+  </div>
+
+  <div class="sig">
+    <img class="sig-avatar" src="https://cdn.phototourl.com/free/2026-04-01-5ab8b26d-2d00-46e8-aa83-234b907db1c7.png" alt="Hélio Crispim">
+    <div class="sig-line"></div>
+    <div class="sig-name">Hélio Crispim &middot; Engenheiro Eletricista</div>
+    <span class="sig-crea">CREA-PB 12290192025PB</span>
+    <div class="sig-info" style="margin-top: 10px">attivetecnologia@gmail.com &middot; (83) 99678-7788</div>
+    <div class="sig-info">@attivetecnologia</div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Attive Tecnologia &middot; Infraestrutura de Rede & Segurança Eletrônica &middot; Campina Grande &ndash; PB</p>
+</div>
+
+<button class="wa-btn" onclick="abrirWA()">
+  <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  Falar com a Attive
+</button>
+
+<script>
+  function aprovar() {
+    var when = new Date().toLocaleString('pt-BR');
+    var msg = 'Olá Hélio! Gostaria de aprovar a Proposta 086-2026.' + '%0A' +
+              'Lançamento de cabos para 6 câmeras + 1 Access Point - R$ 1.480,00' + '%0A' +
+              'Aguardo o agendamento da instalação. Obrigado!';
+    
+    sendEmail('Proposta 086-2026 APROVADA - Barros', 'Barros aprovou a proposta 086-2026. Lançamento de cabos para 6 câmeras + 1 Access Point - R$ 1.480,00. Horário: ' + when);
+    
+    setTimeout(function() { 
+      window.open('https://wa.me/5583996787788?text=' + msg, '_blank'); 
+    }, 400);
+    
+    document.getElementById('btn-wrap').style.display = 'none';
+    document.getElementById('apv-note').style.display = 'none';
+    document.getElementById('apv-sub').textContent = 'Lançamento de cabos para 6 câmeras + 1 Access Point — R$ 1.480,00. Em breve a Attive entrará em contato pelo (83) 99678-7788.';
+    
+    var box = document.getElementById('apv-box');
+    box.className = 'apv-box show';
+    box.scrollIntoView({behavior: 'smooth', block: 'center'});
+  }
+
+  function sendEmail(subj, msg) {
+    fetch('https://formsubmit.co/ajax/attivetecnologia@gmail.com', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify({_subject: subj, message: msg, _captcha: 'false'})
+    }).catch(function() {});
+  }
+
+  function abrirWA() {
+    var msg = 'Olá Hélio! Recebi a proposta 086-2026 da Attive e quero conversar sobre a instalação.';
+    window.open('https://wa.me/5583996787788?text=' + msg, '_blank');
+  }
+
+  document.getElementById('data-hoje').innerHTML = (function() {
+    var d = new Date();
+    var m = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+    return d.getDate() + ' de ' + m[d.getMonth()] + ' de ' + d.getFullYear();
+  })();
+
+  setTimeout(function() {
+    var when = new Date().toLocaleString('pt-BR');
+    sendEmail('Proposta 086-2026 foi ABERTA', 'Barros abriu a proposta 086-2026 em: ' + when);
+  }, 2000);
+</script>
+</body>
+</html>
