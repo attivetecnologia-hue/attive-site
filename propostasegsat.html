@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tabela de Serviços | Attive | SEGSAT</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #08141C;
+  --bg2: #0D1E28;
+  --bg3: #061018;
+  --surface: #112233;
+  --blue: #1FA8E0;
+  --blue2: #0E6FA3;
+  --blue-dim: rgba(31, 168, 224, 0.12);
+  --white: #F0F8FF;
+  --gray: #7FA8C0;
+  --gray2: #1E3448;
+  --green: #18C97A;
+  --green-dim: rgba(24, 201, 122, 0.1);
+  --gold: #FFD966;
+  --gold-dim: rgba(255, 217, 102, 0.1);
+  --font: 'DM Sans', sans-serif;
+  --serif: 'DM Serif Display', serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ANIMAÇÕES */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(31, 168, 224, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(31, 168, 224, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(31, 168, 224, 0.3);
+  }
+}
+
+.animate-fadeUp {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.animate-fadeLeft {
+  animation: fadeInLeft 0.8s ease forwards;
+}
+
+.animate-fadeRight {
+  animation: fadeInRight 0.8s ease forwards;
+}
+
+/* ESTRUTURA */
+.cover {
+  min-height: 100vh;
+  background: var(--bg3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 44px 32px;
+  position: relative;
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 110% 80%, rgba(31, 168, 224, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, var(--blue), transparent);
+}
+
+.cover-dots {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+  height: 200px;
+  background-image: radial-gradient(circle, rgba(31, 168, 224, 0.18) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: radial-gradient(ellipse at bottom right, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at bottom right, black 30%, transparent 70%);
+}
+
+.cover-logo {
+  z-index: 1;
+  animation: fadeInLeft 0.6s ease;
+}
+
+.cover-logo img {
+  height: 70px;
+  width: auto;
+  display: block;
+}
+
+.cover-body {
+  z-index: 1;
+  animation: fadeInUp 0.8s ease 0.2s forwards;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--blue2);
+  color: var(--blue);
+  padding: 7px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 28px;
+  background: var(--blue-dim);
+}
+
+.cover-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+
+.cover-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 12px;
+}
+
+.cover-title {
+  font-family: var(--serif);
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.cover-title em {
+  font-style: italic;
+  color: var(--blue);
+}
+
+.cover-sub {
+  font-size: 14px;
+  color: var(--gray);
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+.cover-footer {
+  z-index: 1;
+  border-top: 1px solid var(--gray2);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  animation: fadeInUp 0.6s ease 0.4s forwards;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.cover-footer-left p {
+  font-size: 12px;
+  color: var(--gray);
+  line-height: 1.9;
+}
+
+.cover-footer-left strong {
+  color: var(--white);
+  font-weight: 500;
+}
+
+.cover-scroll {
+  font-size: 11px;
+  color: var(--gray);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.cover-scroll span {
+  animation: bob 1.6s infinite;
+}
+
+@keyframes bob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.sk {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 10px;
+}
+
+.sk::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--blue);
+}
+
+.st {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.st em {
+  font-style: italic;
+  color: var(--blue);
+}
+
+.sb {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.8;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--gray2);
+  margin: 48px 0;
+}
+
+/* TABELA DE SERVIÇOS */
+.services-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  background: var(--surface);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--gray2);
+}
+
+.services-table th {
+  background: var(--blue-dim);
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue);
+  border-bottom: 1px solid var(--gray2);
+}
+
+.services-table td {
+  padding: 14px 20px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--gray2);
+  color: var(--white);
+}
+
+.services-table tr:last-child td {
+  border-bottom: none;
+}
+
+.services-table tr:hover td {
+  background: rgba(31, 168, 224, 0.05);
+}
+
+.price-cell {
+  text-align: right;
+  font-weight: 600;
+  color: var(--green);
+  font-family: var(--serif);
+  font-size: 16px;
+}
+
+/* REGRA HORA ADICIONAL */
+.rules-box {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 12px;
+  border-left: 3px solid var(--blue);
+}
+
+.rules-box p {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.rules-box strong {
+  color: var(--blue);
+}
+
+/* AUTH GRID */
+.auth-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.auth-item {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 12px 12px 0;
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+}
+
+.auth-item:hover {
+  transform: translateX(5px);
+}
+
+.aico {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--blue-dim);
+  border: 1px solid var(--blue2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-item h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.auth-item p {
+  font-size: 12px;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* DESTAQUE EMPRESA */
+.highlight-box {
+  background: linear-gradient(135deg, rgba(31, 168, 224, 0.08) 0%, rgba(31, 168, 224, 0.02) 100%);
+  border: 1px solid var(--blue2);
+  border-radius: 16px;
+  padding: 28px 24px;
+  margin: 24px 0;
+  text-align: center;
+}
+
+.highlight-box h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--blue);
+}
+
+.highlight-box p {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.7;
+}
+
+/* SIG */
+.sig {
+  text-align: center;
+  margin: 32px 0 8px;
+}
+
+.sig-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--blue);
+  object-fit: cover;
+  margin-bottom: 16px;
+}
+
+.sig-line {
+  width: 160px;
+  height: 1px;
+  background: var(--gray2);
+  margin: 0 auto 14px;
+}
+
+.sig-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sig-info {
+  font-size: 12px;
+  color: var(--gray);
+  margin-top: 3px;
+}
+
+.sig-crea {
+  display: inline-block;
+  margin-top: 8px;
+  background: var(--blue-dim);
+  border: 1px solid var(--blue2);
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+.footer {
+  border-top: 1px solid var(--gray2);
+  padding: 22px 24px;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer p {
+  font-size: 11px;
+  color: var(--gray);
+}
+
+.wa-btn {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: #25D366;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 13px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.35);
+  z-index: 99;
+  transition: transform 0.15s;
+  animation: glow 2s infinite;
+}
+
+.wa-btn:hover {
+  transform: translateY(-2px);
+}
+
+.wa-icon {
+  width: 19px;
+  height: 19px;
+  fill: #fff;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .cover-title {
+    font-size: 36px;
+  }
+
+  .services-table th,
+  .services-table td {
+    padding: 10px 12px;
+  }
+
+  .price-cell {
+    font-size: 13px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-accent"></div>
+  <div class="cover-dots"></div>
+  <div class="cover-logo" style="z-index:1">
+    <img src="https://cdn.phototourl.com/free/2026-04-01-bd1ea34f-46fa-4af7-8452-af7677dbb7e9.png" alt="Attive Tecnologia">
+  </div>
+  <div class="cover-body">
+    <div class="cover-badge">Tabela de Serviços &middot; SEGSAT</div>
+    <div class="cover-kicker">Rastreadores Veiculares</div>
+    <div class="cover-title">Serviços de<br><em>Instalação e Manutenção</em></div>
+    <div class="cover-sub">Valores para instalação, retirada e deslocamento de rastreadores veiculares.</div>
+  </div>
+  <div class="cover-footer">
+    <div class="cover-footer-left">
+      <p><strong>Hélio Crispim</strong> &middot; Eng. Eletricista</p>
+      <p>CREA-PB 12290192025PB</p>
+      <p>(83) 99678-7788</p>
+    </div>
+    <div class="cover-scroll" onclick="document.querySelector('.main').scrollIntoView({behavior:'smooth'})"><span>↓</span><small style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gray)">Rolar</small></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- TABELA DE SERVIÇOS -->
+  <div class="animate-fadeUp">
+    <div class="sk">Tabela de Valores</div>
+    <div class="st">Serviços de <em>Rastreadores</em></div>
+    <div class="sb">Confira abaixo os valores para instalação, retirada e manutenção de rastreadores veiculares.</div>
+
+    <table class="services-table">
+      <thead>
+        <tr>
+          <th>Tipo de Atendimento</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Instalação simples</td><td class="price-cell">R$ 150,00</td></tr>
+        <tr><td>Instalação com Bloqueio</td><td class="price-cell">R$ 180,00</td></tr>
+        <tr><td>Instalação RFID e CAN</td><td class="price-cell">R$ 200,00</td></tr>
+        <tr><td>Instalação RFID</td><td class="price-cell">R$ 120,00</td></tr>
+        <tr><td>Instalação I-botton</td><td class="price-cell">R$ 120,00</td></tr>
+        <tr><td>Retirada sem bloqueio</td><td class="price-cell">R$ 100,00</td></tr>
+        <tr><td>Retirada com bloqueio</td><td class="price-cell">R$ 120,00</td></tr>
+        <tr><td>Retirada RFID</td><td class="price-cell">R$ 100,00</td></tr>
+        <tr><td>Retirada I-botton</td><td class="price-cell">R$ 100,00</td></tr>
+      </tbody>
+    </table>
+
+    <div class="rules-box">
+      <p><strong>⏱️ Regra de Hora Adicional</strong></p>
+      <p>Os valores acima são para serviços executados dentro do período de <strong>1 hora</strong>.</p>
+      <p>Cada hora adicional (ou fração) será cobrada com <strong>acréscimo de 50%</strong> sobre o valor inicial do serviço.</p>
+    </div>
+
+    <div class="rules-box" style="margin-top: 16px;">
+      <p><strong>📍 Deslocamento</strong></p>
+      <p>Valor por quilômetro rodado: <strong>R$ 1,50</strong></p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- DESTAQUE EMPRESA -->
+  <div class="animate-fadeLeft">
+    <div class="highlight-box">
+      <h4>Especialistas em Rastreadores Veiculares</h4>
+      <p>A Attive Tecnologia é uma empresa especializada em rastreadores e segurança veicular, contando com uma equipe de técnicos altamente capacitados que atendem as mais diversas empresas do Brasil. Nossa experiência e comprometimento garantem serviços de excelência em todo o território nacional.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- POR QUE ATTIVE -->
+  <div class="animate-fadeRight">
+    <div class="sk">Por que escolher a Attive</div>
+    <div class="st">Experiência e <em>Confiabilidade</em></div>
+    <div class="sb">Somos referência no mercado de rastreadores e segurança veicular, com atuação em todo o Brasil.</div>
+    <div class="auth-grid">
+      <div class="auth-item">
+        <div class="aico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+        <div><h4>Mais de 25 anos de experiência</h4><p>Centenas de projetos executados em rastreadores e segurança eletrônica.</p></div>
+      </div>
+      <div class="auth-item">
+        <div class="aico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></div>
+        <div><h4>Técnicos especializados</h4><p>Equipe treinada e capacitada para atender as mais diversas demandas.</p></div>
+      </div>
+      <div class="auth-item">
+        <div class="aico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+        <div><h4>Atendimento nacional</h4><p>Atendemos as mais diversas empresas em todo o território brasileiro.</p></div>
+      </div>
+      <div class="auth-item">
+        <div class="aico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div><h4>Suporte pós-atendimento</h4><p>Nossa equipe está disponível para suporte técnico após o serviço.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sig">
+    <img class="sig-avatar" src="https://cdn.phototourl.com/free/2026-04-01-5ab8b26d-2d00-46e8-aa83-234b907db1c7.png" alt="Hélio Crispim">
+    <div class="sig-line"></div>
+    <div class="sig-name">Hélio Crispim &middot; Engenheiro Eletricista</div>
+    <span class="sig-crea">CREA-PB 12290192025PB</span>
+    <div class="sig-info" style="margin-top: 10px">attivetecnologia@gmail.com &middot; (83) 99678-7788</div>
+    <div class="sig-info">@attivetecnologia</div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Attive Tecnologia &middot; Rastreadores & Segurança Eletrônica &middot; Campina Grande &ndash; PB</p>
+</div>
+
+<button class="wa-btn" onclick="abrirWA()">
+  <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  Falar com a Attive
+</button>
+
+<script>
+  function abrirWA() {
+    var msg = 'Olá Hélio! Recebi a tabela de serviços de rastreadores da Attive.';
+    window.open('https://wa.me/5583996787788?text=' + msg, '_blank');
+  }
+
+  // Meta tags para compartilhamento
+  (function() {
+    var metaTitle = document.createElement('meta');
+    metaTitle.setAttribute('property', 'og:title');
+    metaTitle.setAttribute('content', 'Tabela de Serviços - Rastreadores | Attive | SEGSAT');
+    document.head.appendChild(metaTitle);
+    
+    var metaDesc = document.createElement('meta');
+    metaDesc.setAttribute('property', 'og:description');
+    metaDesc.setAttribute('content', 'Tabela de valores para instalação e manutenção de rastreadores veiculares. Instalação a partir de R$ 120,00. Hora adicional +50%. Deslocamento R$ 1,50/km.');
+    document.head.appendChild(metaDesc);
+    
+    var metaImage = document.createElement('meta');
+    metaImage.setAttribute('property', 'og:image');
+    metaImage.setAttribute('content', 'https://cdn.phototourl.com/free/2026-04-01-bd1ea34f-46fa-4af7-8452-af7677dbb7e9.png');
+    document.head.appendChild(metaImage);
+    
+    var metaType = document.createElement('meta');
+    metaType.setAttribute('property', 'og:type');
+    metaType.setAttribute('content', 'website');
+    document.head.appendChild(metaType);
+  })();
+</script>
+</body>
+</html>
