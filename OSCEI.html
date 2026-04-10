@@ -713,6 +713,10 @@ body {
   .materiais-grid {
     grid-template-columns: 1fr;
   }
+
+  .value-amount {
+    font-size: 36px;
+  }
 }
 </style>
 </head>
@@ -832,7 +836,7 @@ body {
 
   <hr class="divider">
 
-  <!-- VALOR E PAGAMENTO -->
+  <!-- VALOR E PAGAMENTO COM CONTAGEM REGRESSIVA -->
   <div>
     <div class="sk">Valores</div>
     <div class="st">Investimento e <em>Pagamento</em></div>
@@ -840,7 +844,9 @@ body {
 
     <div class="value-box">
       <div class="value-label">Valor do Serviço</div>
-      <div class="value-amount">R$ 368<span style="font-size: 24px;">,00</span></div>
+      <div class="value-amount">
+        <span id="valorContagem">0</span><span style="font-size: 24px;">,00</span>
+      </div>
       <div class="value-payment">Pagamento: À vista via PIX ou transferência bancária</div>
     </div>
   </div>
@@ -900,12 +906,51 @@ body {
     rootMargin: "0px 0px -50px 0px"
   };
 
+  let animationStarted = false;
+
+  // Função para animar contagem regressiva (de um valor maior para o valor final)
+  function animarContagemRegressiva(elementId, valorFinal, valorInicial = 500) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    let start = valorInicial;
+    const target = valorFinal;
+    const duration = 2000;
+    const stepTime = 16;
+    const steps = duration / stepTime;
+    const decrement = (start - target) / steps;
+    let current = start;
+    
+    function updateCount() {
+      current -= decrement;
+      if (current <= target) {
+        element.textContent = target;
+        return;
+      }
+      element.textContent = Math.floor(current);
+      requestAnimationFrame(updateCount);
+    }
+    updateCount();
+  }
+
   const observer = new IntersectionObserver(function(entries) {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
+      if (entry.isIntersecting && !animationStarted) {
         entry.target.classList.add('visible');
-      } else {
+        
+        // Se for a value-box, inicia a contagem regressiva do valor
+        if (entry.target.classList.contains('value-box')) {
+          animationStarted = true;
+          animarContagemRegressiva('valorContagem', 368, 580);
+        }
+      } else if (!entry.isIntersecting) {
         entry.target.classList.remove('visible');
+        // Reseta a flag quando sair da tela
+        if (entry.target.classList.contains('value-box')) {
+          animationStarted = false;
+          const valorElement = document.getElementById('valorContagem');
+          if (valorElement) valorElement.textContent = '0';
+        }
       }
     });
   }, observerOptions);
