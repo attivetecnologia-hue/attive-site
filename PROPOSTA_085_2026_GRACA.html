@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Proposta Comercial | Attive Tecnologia</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --bg: #08141C;
+    --bg2: #0D1E28;
+    --bg3: #061018;
+    --surface: #112233;
+    --blue: #1FA8E0;
+    --blue2: #0E6FA3;
+    --blue-dim: rgba(31, 168, 224, 0.12);
+    --white: #F0F8FF;
+    --gray: #7FA8C0;
+    --gray2: #1E3448;
+    --green: #18C97A;
+    --green-dim: rgba(24, 201, 122, 0.1);
+    --font: 'DM Sans', sans-serif;
+    --serif: 'DM Serif Display', serif;
+    --mono: 'Courier New', 'Courier', monospace;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
+  /* ========== ANIMAÇÕES ========== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  @keyframes glowPulse {
+    0% { box-shadow: 0 0 5px rgba(31, 168, 224, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(31, 168, 224, 0.6); }
+    100% { box-shadow: 0 0 5px rgba(31, 168, 224, 0.3); }
+  }
+
+  @keyframes borderGlow {
+    0% { border-color: var(--gray2); }
+    50% { border-color: var(--green); }
+    100% { border-color: var(--green); }
+  }
+
+  /* TOOLTIP */
+  .optional-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    cursor: help;
+    position: relative;
+  }
+
+  .optional-item input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--green);
+  }
+
+  .optional-item label {
+    font-size: 11px;
+    color: var(--gray);
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .optional-item label:hover {
+    color: var(--blue);
+  }
+
+  .optional-item .tooltip-text {
+    visibility: hidden;
+    width: 220px;
+    background-color: var(--blue2);
+    color: var(--white);
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    position: absolute;
+    z-index: 100;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 1.4;
+    pointer-events: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+
+  .optional-item .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--blue2) transparent transparent transparent;
+  }
+
+  .optional-item:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* OBSERVAÇÃO */
+  .service-note {
+    font-size: 10px;
+    color: var(--gray);
+    margin-top: 8px;
+    padding: 6px 10px;
+    background: var(--bg2);
+    border-radius: 8px;
+    border-left: 2px solid var(--blue);
+  }
+
+  /* HEADER */
+  .proposal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 48px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--gray2);
+    animation: fadeInUp 0.6s ease;
+  }
+
+  .logo-area img {
+    height: 140px;
+    width: auto;
+    transition: transform 0.3s ease;
+  }
+
+  .logo-area img:hover {
+    transform: scale(1.02);
+  }
+
+  .proposal-info {
+    text-align: right;
+  }
+
+  .proposal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--blue-dim);
+    border: 1px solid var(--blue2);
+    padding: 6px 16px;
+    border-radius: 40px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 12px;
+    animation: glowPulse 3s infinite;
+  }
+
+  .proposal-badge::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: inline-block;
+    animation: pulse 1.5s infinite;
+  }
+
+  .proposal-number {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 4px;
+    font-family: var(--mono);
+  }
+
+  .proposal-date {
+    font-size: 12px;
+    color: var(--gray);
+  }
+
+  /* CLIENT INFO */
+  .client-info {
+    background: var(--surface);
+    border: 1px solid var(--gray2);
+    border-radius: 20px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    animation: fadeInLeft 0.7s ease 0.1s both;
+    transition: all 0.3s ease;
+  }
+
+  .client-info:hover {
+    border-color: var(--blue);
+    transform: translateY(-3px);
+  }
+
+  .client-details h2 {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+
+  .client-details p {
+    color: var(--gray);
+    font-size: 14px;
+  }
+
+  .client-location {
+    text-align: left;
+  }
+
+  .client-location span {
+    display: block;
+    font-size: 13px;
+    color: var(--gray);
+  }
+
+  .client-location strong {
+    color: var(--blue);
+    font-size: 14px;
+  }
+
+  /* TITLES */
+  .section-title {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+
+  .section-title em {
+    color: var(--blue);
+    font-style: italic;
+  }
+
+  .section-sub {
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 24px;
+    border-left: 3px solid var(--blue);
+    padding-left: 16px;
+  }
+
+  /* GRUPOS DE SERVIÇOS */
+  .service-group {
+    margin-bottom: 48px;
+  }
+
+  .group-title {
+    font-family: var(--serif);
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .group-title em {
+    color: var(--blue);
+    font-style: italic;
+  }
+
+  .group-sub {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 24px;
+  }
+
+  /* SERVIÇOS EM GRADE - LADO A LADO ATÉ 500px */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 700px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    
+    .service-card {
+      padding: 16px;
+    }
+    
+    .service-card h3 {
+      font-size: 14px;
+    }
+    
+    .service-features li {
+      font-size: 10px;
+      margin-bottom: 6px;
+    }
+    
+    .price-full {
+      font-size: 18px;
+    }
+    
+    .price-pix {
+      font-size: 13px;
+    }
+    
+    .variant-badge {
+      font-size: 8px;
+      padding: 2px 8px;
+    }
+    
+    .service-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 12px;
+    }
+    
+    .service-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .service-checkbox {
+      padding: 3px 8px;
+      top: 12px;
+      right: 12px;
+    }
+    
+    .service-checkbox span {
+      font-size: 8px;
+    }
+    
+    .service-checkbox input {
+      width: 14px;
+      height: 14px;
+    }
+    
+    .total-value {
+      font-size: 24px;
+    }
+    
+    .total-label {
+      font-size: 16px;
+    }
+    
+    .optional-item label {
+      font-size: 9px;
+    }
+    
+    .optional-item .tooltip-text {
+      width: 180px;
+      font-size: 9px;
+    }
+  }
+
+  @media (max-width: 550px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    
+    .service-card {
+      padding: 12px;
+    }
+    
+    .service-card h3 {
+      font-size: 12px;
+    }
+    
+    .service-features li {
+      font-size: 9px;
+      gap: 5px;
+    }
+    
+    .service-features li::before {
+      font-size: 8px;
+    }
+    
+    .price-full {
+      font-size: 15px;
+    }
+    
+    .price-pix {
+      font-size: 11px;
+    }
+    
+    .variant-badge {
+      font-size: 7px;
+      margin-bottom: 10px;
+    }
+    
+    .service-icon {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .service-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    .group-title {
+      font-size: 20px;
+    }
+  }
+
+  .service-card {
+    background: var(--surface);
+    border: 1px solid var(--gray2);
+    border-radius: 20px;
+    padding: 20px;
+    transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    position: relative;
+    animation: fadeInUp 0.6s ease forwards;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .service-card:hover {
+    transform: translateY(-5px) scale(1.01);
+    border-color: var(--blue);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .service-checkbox {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--blue-dim);
+    padding: 4px 10px;
+    border-radius: 30px;
+    border: 1px solid var(--blue2);
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+
+  .service-checkbox:hover {
+    background: var(--blue2);
+    border-color: var(--blue);
+  }
+
+  .service-checkbox span {
+    font-size: 9px;
+    color: var(--blue);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .service-checkbox input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--green);
+    transition: transform 0.2s ease;
+  }
+
+  .service-checkbox input:hover {
+    transform: scale(1.1);
+  }
+
+  .service-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--blue-dim);
+    border: 1px solid var(--blue2);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .service-card:hover .service-icon {
+    border-color: var(--blue);
+    transform: rotate(5deg) scale(1.05);
+  }
+
+  .service-card h3 {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+  }
+
+  .variant-badge {
+    display: inline-block;
+    background: var(--green-dim);
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    width: fit-content;
+  }
+
+  .service-features {
+    list-style: none;
+    margin: 12px 0 16px;
+    flex: 1;
+  }
+
+  .service-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--gray);
+    margin-bottom: 8px;
+    transition: transform 0.2s ease;
+    line-height: 1.3;
+  }
+
+  .service-features li:hover {
+    transform: translateX(3px);
+    color: var(--white);
+  }
+
+  .service-features li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: bold;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+    font-size: 10px;
+  }
+
+  .service-features li:hover::before {
+    transform: scale(1.15);
+  }
+
+  .camera-locations {
+    margin: 8px 0 12px;
+    padding-left: 18px;
+  }
+
+  .camera-locations li {
+    font-size: 10px;
+    color: var(--gray);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .camera-locations li::before {
+    content: '•';
+    color: var(--blue);
+    font-size: 12px;
+  }
+
+  .optional-section {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--gray2);
+  }
+
+  .optional-title {
+    font-size: 10px;
+    color: var(--blue);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .service-price {
+    border-top: 1px solid var(--gray2);
+    padding-top: 12px;
+    margin-top: 8px;
+  }
+
+  .price-full {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.3px;
+    display: inline-block;
+  }
+
+  .installment-note {
+    font-size: 11px;
+    color: var(--gray);
+    margin: 4px 0 8px 0;
+  }
+
+  .price-pix {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--green);
+    letter-spacing: -0.3px;
+    display: inline-block;
+    background: var(--green-dim);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-top: 6px;
+    width: fit-content;
+  }
+
+  /* TOTAL DINÂMICO */
+  .total-box {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--bg2) 100%);
+    border: 1px solid var(--blue2);
+    border-radius: 20px;
+    padding: 20px 24px;
+    margin: 32px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    transition: all 0.4s ease;
+    animation: fadeInUp 0.6s ease 0.4s both;
+  }
+
+  .total-box:hover {
+    border-color: var(--green);
+    transform: scale(1.01);
+  }
+
+  .total-label {
+    font-family: var(--serif);
+    font-size: 18px;
+  }
+
+  .total-value {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.3px;
+    display: inline-block;
+    transition: all 0.2s ease;
+  }
+
+  .total-pix {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--green);
+    margin-top: 4px;
+  }
+
+  /* SEÇÃO DE PAGAMENTO */
+  .payment-section {
+    background: var(--surface);
+    border: 1px solid var(--gray2);
+    border-radius: 20px;
+    padding: 24px;
+    margin: 32px 0;
+    animation: fadeInUp 0.6s ease 0.45s both;
+  }
+
+  .payment-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .payment-title em {
+    color: var(--blue);
+    font-style: italic;
+  }
+
+  .payment-select {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 16px;
+    background: var(--bg);
+    border: 1px solid var(--blue2);
+    border-radius: 12px;
+    color: var(--white);
+    font-family: var(--mono);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .payment-select:hover {
+    border-color: var(--blue);
+  }
+
+  .payment-select option {
+    background: var(--surface);
+    color: var(--white);
+  }
+
+  .installment-info {
+    background: var(--bg2);
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 16px;
+  }
+
+  .installment-value {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  .pix-discount {
+    color: var(--green);
+    font-weight: bold;
+  }
+
+  /* DIFERENCIAIS */
+  .differentials-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 32px 0;
+  }
+
+  @media (max-width: 900px) {
+    .differentials-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 500px) {
+    .differentials-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .diff-card {
+    background: var(--surface);
+    border: 1px solid var(--gray2);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 16px 16px 0;
+    padding: 16px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeInRight 0.5s ease forwards;
+  }
+
+  .diff-card:nth-child(1) { animation-delay: 0.1s; }
+  .diff-card:nth-child(2) { animation-delay: 0.2s; }
+  .diff-card:nth-child(3) { animation-delay: 0.3s; }
+  .diff-card:nth-child(4) { animation-delay: 0.4s; }
+
+  .diff-card:hover {
+    transform: translateX(5px);
+    border-left-color: var(--green);
+  }
+
+  .diff-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .diff-card p {
+    font-size: 11px;
+    color: var(--gray);
+  }
+
+  /* PROPOSTA INFO */
+  .proposal-footer {
+    background: var(--surface);
+    border: 1px solid var(--gray2);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 32px 0;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.6s ease 0.5s both;
+  }
+
+  .proposal-footer:hover {
+    border-color: var(--blue);
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  @media (max-width: 500px) {
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .info-item h4 {
+    font-size: 11px;
+    color: var(--blue);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .info-item p {
+    font-size: 12px;
+    color: var(--gray);
+  }
+
+  /* BOTÃO DE APROVAÇÃO */
+  .approve-btn {
+    display: block;
+    width: 100%;
+    max-width: 350px;
+    margin: 20px auto;
+    background: var(--green);
+    color: var(--bg);
+    text-align: center;
+    padding: 14px 24px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-family: var(--mono);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease 0.6s both;
+  }
+
+  .approve-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .approve-btn:hover::before {
+    left: 100%;
+  }
+
+  .approve-btn:hover {
+    transform: scale(1.02);
+    background: #15b56a;
+  }
+
+  .approve-btn:disabled {
+    background: var(--gray2);
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none;
+  }
+
+  /* ASSINATURA */
+  .signature {
+    text-align: center;
+    margin: 40px 0 20px;
+    padding-top: 24px;
+    border-top: 1px solid var(--gray2);
+    animation: fadeInUp 0.6s ease 0.7s both;
+  }
+
+  .signature-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px solid var(--blue);
+    object-fit: cover;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .signature-avatar:hover {
+    transform: scale(1.05);
+    border-color: var(--green);
+  }
+
+  .signature-name {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .signature-crea {
+    display: inline-block;
+    background: var(--blue-dim);
+    border: 1px solid var(--blue2);
+    color: var(--blue);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 6px;
+    font-family: var(--mono);
+    transition: all 0.3s ease;
+  }
+
+  .signature-crea:hover {
+    background: var(--blue2);
+    color: var(--white);
+  }
+
+  .signature-info {
+    font-size: 11px;
+    color: var(--gray);
+    margin-top: 6px;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid var(--gray2);
+    margin-top: 32px;
+    font-size: 10px;
+    color: var(--gray);
+    animation: fadeInUp 0.6s ease 0.8s both;
+  }
+
+  /* WHATSAPP FLOAT */
+  .wa-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25D366;
+    border-radius: 50px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    font-family: var(--mono);
+    animation: fadeInRight 0.5s ease;
+  }
+
+  .wa-float:hover {
+    transform: scale(1.05);
+    background: #20b859;
+  }
+
+  /* SELECIONADO */
+  .service-card.selected {
+    border-color: var(--green);
+    box-shadow: 0 0 0 2px var(--green-dim);
+    animation: borderGlow 0.5s ease forwards;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- HEADER -->
+  <div class="proposal-header">
+    <div class="logo-area">
+      <img src="https://cdn.phototourl.com/free/2026-04-01-bd1ea34f-46fa-4af7-8452-af7677dbb7e9.png" alt="Attive Tecnologia">
+    </div>
+    <div class="proposal-info">
+      <div class="proposal-badge">PROPOSTA TÉCNICA</div>
+      <div class="proposal-number">Orçamento 085-2026</div>
+      <div class="proposal-date">Emissão: 13 de abril de 2026</div>
+    </div>
+  </div>
+
+  <!-- CLIENT INFO -->
+  <div class="client-info">
+    <div class="client-details">
+      <h2>A/C Graça</h2>
+      <p>Proposta de soluções integradas em segurança eletrônica</p>
+    </div>
+    <div class="client-location">
+      <span>Local da instalação</span>
+      <strong>R. Isaac Catão, 374 - Jardim Paulistano</strong>
+    </div>
+  </div>
+
+  <div class="section-title">Soluções <em>integradas</em></div>
+  <div class="section-sub">Compare as opções lado a lado e selecione uma opção de cada serviço</div>
+
+  <!-- GRUPO CFTV -->
+  <div class="service-group">
+    <div class="group-title">CFTV - <em>Sistema de Câmeras</em></div>
+    <div class="group-sub">Escolha a opção que melhor atende às suas necessidades de monitoramento</div>
+    
+    <div class="services-grid">
+      <!-- CFTV 8 Canais - 6 câmeras -->
+      <div class="service-card" data-service="cftv" data-base-price="4179" data-name="CFTV 8 Canais">
+        <div class="service-checkbox">
+          <span>Selecione</span>
+          <input type="checkbox" class="service-select cftv-select" id="cftv8" data-price="4179" data-name="CFTV 8 Canais">
+        </div>
+        <div class="service-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
+        </div>
+        <h3>CFTV 8 Canais</h3>
+        <div class="variant-badge">Recomendado - 6 câmeras</div>
+        <ul class="service-features">
+          <li>Gravador 8 canais HD</li>
+          <li>6 câmeras FullHD</li>
+          <li>15 dias de gravação</li>
+          <li>Acesso remoto via app</li>
+          <li>Visão noturna</li>
+        </ul>
+        <div class="camera-locations">
+          <li>Câmera 1 - Rua lado direito da casa</li>
+          <li>Câmera 2 - Rua lado esquerdo da casa</li>
+          <li>Câmera 3 - Entrada da garagem</li>
+          <li>Câmera 4 - Garagem interna</li>
+          <li>Câmera 5 - Quintal</li>
+          <li>Câmera 6 - Corredor lateral</li>
+        </div>
+        <div class="optional-section">
+          <div class="optional-title">Opcionais (adicione ao serviço)</div>
+          <div class="optional-item">
+            <input type="checkbox" class="optional-check-cftv" data-parent="cftv8" data-price="340" data-name="Mini Rack">
+            <label>Mini rack organizador de equipamentos <span style="color: var(--green);">(+R$ 340,00)</span></label>
+            <span class="tooltip-text">Organiza e protege os equipamentos de rede e segurança, facilitando a manutenção e ventilação adequada.</span>
+          </div>
+        </div>
+        <div class="service-price">
+          <div class="price-full">R$ 4.179,00</div>
+          <div class="installment-note">ou em até 6x sem juros</div>
+          <div class="price-pix" id="price-cftv8">PIX: R$ 3.761,10</div>
+        </div>
+      </div>
+
+      <!-- CFTV 4 Canais - 4 câmeras (sem entrada da garagem e corredor lateral) -->
+      <div class="service-card" data-service="cftv" data-base-price="3159" data-name="CFTV 4 Canais">
+        <div class="service-checkbox">
+          <span>Selecione</span>
+          <input type="checkbox" class="service-select cftv-select" id="cftv4" data-price="3159" data-name="CFTV 4 Canais">
+        </div>
+        <div class="service-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
+        </div>
+        <h3>CFTV 4 Canais</h3>
+        <div class="variant-badge">Econômico - 4 câmeras</div>
+        <ul class="service-features">
+          <li>Gravador 4 canais HD</li>
+          <li>4 câmeras FullHD</li>
+          <li>15 dias de gravação</li>
+          <li>Acesso remoto via app</li>
+          <li>Visão noturna</li>
+        </ul>
+        <div class="camera-locations">
+          <li>Câmera 1 - Rua lado direito da casa</li>
+          <li>Câmera 2 - Rua lado esquerdo da casa</li>
+          <li>Câmera 3 - Garagem interna</li>
+          <li>Câmera 4 - Quintal</li>
+        </div>
+        <div class="optional-section">
+          <div class="optional-title">Opcionais (adicione ao serviço)</div>
+          <div class="optional-item">
+            <input type="checkbox" class="optional-check-cftv" data-parent="cftv4" data-price="340" data-name="Mini Rack">
+            <label>Mini rack organizador de equipamentos <span style="color: var(--green);">(+R$ 340,00)</span></label>
+            <span class="tooltip-text">Organiza e protege os equipamentos de rede e segurança, facilitando a manutenção e ventilação adequada.</span>
+          </div>
+        </div>
+        <div class="service-price">
+          <div class="price-full">R$ 3.159,00</div>
+          <div class="installment-note">ou em até 6x sem juros</div>
+          <div class="price-pix" id="price-cftv4">PIX: R$ 2.843,10</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRUPO AUTOMATIZADOR -->
+  <div class="service-group">
+    <div class="group-title">Automatizador - <em>Motor para Portão</em></div>
+    <div class="group-sub">Escolha a opção conforme o peso e velocidade desejada</div>
+    
+    <div class="services-grid">
+      <!-- Automatizador 700kg / 4s -->
+      <div class="service-card" data-service="automatizador" data-base-price="2437" data-name="Automatizador 700kg (4s)">
+        <div class="service-checkbox">
+          <span>Selecione</span>
+          <input type="checkbox" class="service-select auto-select" id="auto700" data-price="2437" data-name="Automatizador 700kg (4s)">
+        </div>
+        <div class="service-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </div>
+        <h3>Automatizador 700kg</h3>
+        <div class="variant-badge">Abertura 4s</div>
+        <ul class="service-features">
+          <li>Motor até 700kg</li>
+          <li>Central eletrônica + 2 controles remotos</li>
+          <li>Cremalheiras</li>
+          <li>Instalação elétrica completa (tubulação + cabeamento)</li>
+          <li>Troca das roldanas dos 3 portões</li>
+          <li>Abertura: 4 segundos</li>
+        </ul>
+        <div class="optional-section">
+          <div class="optional-title">Opcionais (adicione ao serviço)</div>
+          <div class="optional-item">
+            <input type="checkbox" class="optional-check" data-parent="auto700" data-price="130" data-name="Módulo Wi-Fi">
+            <label>Módulo Wi-Fi para abertura pelo app <span style="color: var(--green);">(+R$ 130,00)</span></label>
+            <span class="tooltip-text">Controle o portão de qualquer lugar pelo celular, receba notificações e veja quem abriu o portão.</span>
+          </div>
+          <div class="optional-item">
+            <input type="checkbox" class="optional-check" data-parent="auto700" data-price="265" data-name="Quadro de Proteção">
+            <label>Quadro de proteção com Disjuntor/DPS/Aterramento <span style="color: var(--green);">(+R$ 265,00)</span></label>
+            <span class="tooltip-text">Protege o motor contra surtos elétricos e descargas atmosféricas, aumentando a vida útil do equipamento.</span>
+          </div>
+        </div>
+        <div class="service-price">
+          <div class="price-full">R$ 2.437,00</div>
+          <div class="installment-note">ou em até 6x sem juros</div>
+          <div class="price-pix" id="price-auto700">PIX: R$ 2.193,30</div>
+        </div>
+      </div>
+
+      <!-- Automatizador 600kg / 7s -->
+      <div class="service-card" data-service="automatizador" data-base-price="2027" data-name="Automatizador 600kg (7s)">
+        <div class="service-checkbox">
+          <span>Selecione</span>
+          <input type="checkbox" class="service-select auto-select" id="auto600" data-price="2027" data-name="Automatizador 600kg (7s)">
+        </div>
+        <div class="service-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </div>
+        <h3>Automatizador 600kg</h3>
+        <div class="variant-badge">Abertura 7s</div>
+        <ul class="service-features">
+          <li>Motor até 600kg</li>
+          <li>Central eletrônica + 2 controles remotos</li>
+          <li>Cremalheiras</li>
+          <li>Instalação elétrica completa (tubulação + cabeamento)</li>
+          <li>Troca das roldanas dos 3 portões</li>
+          <li>Abertura: 7 segundos</li>
+        </ul>
+        <div class="optional-section">
+          <div class="optional-title">Opcionais (adicione ao serviço)</div>
+          <div class="optional-item">
+            <input type="checkbox" class="optional-check" data-parent="auto600" data-price="130" data-name="Módulo Wi-Fi">
+            <label>Módulo Wi-Fi para abertura pelo app <span style="color: var(--green);">(+R$ 130,00)</span></label>
+            <span class="tooltip-text">Controle o portão de qualquer lugar pelo celular, receba notificações e veja quem abriu o portão.</span>
+          </div>
+          <div class="optional-item">
+            <input type="checkbox" class="optional-check" data-parent="auto600" data-price="265" data-name="Quadro de Proteção">
+            <label>Quadro de proteção com Disjuntor/DPS/Aterramento <span style="color: var(--green);">(+R$ 265,00)</span></label>
+            <span class="tooltip-text">Protege o motor contra surtos elétricos e descargas atmosféricas, aumentando a vida útil do equipamento.</span>
+          </div>
+        </div>
+        <div class="service-price">
+          <div class="price-full">R$ 2.027,00</div>
+          <div class="installment-note">ou em até 6x sem juros</div>
+          <div class="price-pix" id="price-auto600">PIX: R$ 1.824,30</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRUPO CERCA ELÉTRICA -->
+  <div class="service-group">
+    <div class="group-title">Cerca Elétrica - <em>Revisão e Manutenção</em></div>
+    <div class="group-sub">Manutenção preventiva para garantir o funcionamento do seu sistema</div>
+    
+    <div class="services-grid" style="grid-template-columns: 1fr;">
+      <div class="service-card" data-service="cerca" data-base-price="280" data-name="Revisão Cerca Elétrica">
+        <div class="service-checkbox">
+          <span>Selecione</span>
+          <input type="checkbox" class="service-select" id="cercaRev" data-price="280" data-name="Revisão Cerca Elétrica">
+        </div>
+        <div class="service-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8">
+            <path d="M13 2L3 14h8l-2 8 10-12h-8l2-8z"/>
+          </svg>
+        </div>
+        <h3>Revisão da Cerca Elétrica</h3>
+        <div class="variant-badge">Preventiva</div>
+        <ul class="service-features">
+          <li>Inspeção da central de choque</li>
+          <li>Teste da bateria reserva</li>
+          <li>Teste da sirene</li>
+          <li>Inspeção do cabo de alto isolamento</li>
+          <li>Verificação do aterramento</li>
+          <li>Fixação correta da central</li>
+          <li>Laudo técnico</li>
+        </ul>
+        <div class="service-note">
+          Caso necessário troca de bateria, sirene, cabo de alto isolamento ou instalação de haste de aterramento, o orçamento será passado previamente.
+        </div>
+        <div class="service-price">
+          <div class="price-full">R$ 280,00</div>
+          <div class="installment-note">ou em até 6x sem juros</div>
+          <div class="price-pix" id="price-cerca">PIX: R$ 252,00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOTAL DINÂMICO -->
+  <div class="total-box" id="totalBox">
+    <span class="total-label">VALOR TOTAL</span>
+    <div>
+      <div class="total-value" id="totalValue">R$ 0,00</div>
+      <div class="total-pix" id="totalPix">PIX: R$ 0,00</div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO DE PAGAMENTO -->
+  <div class="payment-section">
+    <div class="payment-title">Formas de <em>Pagamento</em></div>
+    <select id="paymentSelect" class="payment-select">
+      <option value="pix">PIX (10% OFF) - À vista com desconto</option>
+      <option value="1x">1x no Cartão - Sem juros</option>
+      <option value="2x">2x no Cartão - Sem juros</option>
+      <option value="3x">3x no Cartão - Sem juros</option>
+      <option value="4x">4x no Cartão - Sem juros</option>
+      <option value="5x">5x no Cartão - Sem juros</option>
+      <option value="6x">6x no Cartão - Sem juros</option>
+    </select>
+    <div id="installmentInfo" class="installment-info">
+      <span>Selecione uma forma de pagamento</span>
+    </div>
+  </div>
+
+  <!-- POR QUE ESCOLHER -->
+  <div class="section-title">Por que escolher a <em>Attive</em></div>
+  <div class="section-sub">Experiência e Confiabilidade</div>
+
+  <div class="differentials-grid">
+    <div class="diff-card"><h4>+25 anos</h4><p>Experiência em segurança</p></div>
+    <div class="diff-card"><h4>Projetos sob medida</h4><p>Soluções personalizadas</p></div>
+    <div class="diff-card"><h4>Equipamentos certificados</h4><p>Materiais homologados</p></div>
+    <div class="diff-card"><h4>Suporte pós-instalação</h4><p>Assistência contínua</p></div>
+  </div>
+
+  <!-- PROPOSTA INFO -->
+  <div class="proposal-footer">
+    <div class="info-grid">
+      <div class="info-item"><h4>Garantias</h4><p>Instalação: 90 dias<br>Equipamentos: 12 meses</p></div>
+      <div class="info-item"><h4>Validade</h4><p>7 dias a partir da emissão</p></div>
+    </div>
+  </div>
+
+  <!-- BOTÃO DE APROVAÇÃO -->
+  <button class="approve-btn" id="approveBtn" disabled>APROVAR PROPOSTA</button>
+
+  <!-- ASSINATURA -->
+  <div class="signature">
+    <img class="signature-avatar" src="https://cdn.phototourl.com/free/2026-04-01-5ab8b26d-2d00-46e8-aa83-234b907db1c7.png" alt="Hélio Crispim">
+    <div class="signature-name">Hélio Crispim · Engenheiro Eletricista</div>
+    <span class="signature-crea">CREA-PB 12290192025PB</span>
+    <div class="signature-info">attivetecnologia@gmail.com · (83) 99678-7788</div>
+    <div class="signature-info">@attivetecnologia</div>
+  </div>
+
+  <div class="footer">
+    <p>Attive Tecnologia · A chave para sua tranquilidade</p>
+  </div>
+
+</div>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/5583996787788" target="_blank" class="wa-float">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+  Falar com a Attive
+</a>
+
+<script>
+  (function() {
+    // Valores originais (sem desconto)
+    let serviceOriginalPrices = {
+      auto700: 2437,
+      auto600: 2027,
+      cftv8: 4179,
+      cftv4: 3159,
+      cerca: 280
+    };
+    
+    let optionalSelections = {
+      auto700: { wifi: false, quadro: false },
+      auto600: { wifi: false, quadro: false },
+      cftv8: { rack: false },
+      cftv4: { rack: false }
+    };
+
+    function updateServicePrice(serviceId, originalPrice, type) {
+      let extra = 0;
+      if (type === 'auto') {
+        if (optionalSelections[serviceId].wifi) extra += 130;
+        if (optionalSelections[serviceId].quadro) extra += 265;
+      } else if (type === 'cftv') {
+        if (optionalSelections[serviceId].rack) extra += 340;
+      }
+      const totalWithExtra = originalPrice + extra;
+      const totalWithDiscount = Math.round(totalWithExtra * 0.9);
+      
+      // Atualizar o data-price do checkbox principal (valor original + extras)
+      const checkbox = document.getElementById(serviceId);
+      if (checkbox) {
+        checkbox.setAttribute('data-price', totalWithExtra);
+      }
+      
+      // Atualizar exibição do valor PIX no card
+      const priceElement = document.getElementById(`price-${serviceId}`);
+      if (priceElement) {
+        priceElement.textContent = `PIX: R$ ${totalWithDiscount.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      }
+      
+      updateTotalFromCheckboxes();
+    }
+
+    // Configurar eventos dos opcionais do automatizador
+    document.querySelectorAll('.optional-check').forEach(opt => {
+      opt.addEventListener('change', function() {
+        const parentId = this.getAttribute('data-parent');
+        const isWifi = this.getAttribute('data-name') === 'Módulo Wi-Fi';
+        if (isWifi) {
+          optionalSelections[parentId].wifi = this.checked;
+        } else {
+          optionalSelections[parentId].quadro = this.checked;
+        }
+        const originalPrice = serviceOriginalPrices[parentId];
+        updateServicePrice(parentId, originalPrice, 'auto');
+      });
+    });
+
+    // Configurar eventos dos opcionais do CFTV
+    document.querySelectorAll('.optional-check-cftv').forEach(opt => {
+      opt.addEventListener('change', function() {
+        const parentId = this.getAttribute('data-parent');
+        optionalSelections[parentId].rack = this.checked;
+        const originalPrice = serviceOriginalPrices[parentId];
+        updateServicePrice(parentId, originalPrice, 'cftv');
+      });
+    });
+
+    function updatePaymentInfo(total) {
+      const select = document.getElementById('paymentSelect');
+      const selectedValue = select.value;
+      const infoDiv = document.getElementById('installmentInfo');
+      
+      if (selectedValue === 'pix') {
+        const pixValue = total * 0.90;
+        infoDiv.innerHTML = `
+          <span>PIX à vista com <span class="pix-discount">10% de desconto</span></span><br>
+          <span class="installment-value">Valor: R$ ${pixValue.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span><br>
+          <small>Economia de R$ ${(total * 0.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</small>
+        `;
+      } else {
+        const parcelas = parseInt(selectedValue.replace('x', ''));
+        const valorParcela = total / parcelas;
+        infoDiv.innerHTML = `
+          <span>${parcelas}x no Cartão - Sem juros</span><br>
+          <span class="installment-value">${parcelas}x de R$ ${valorParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span><br>
+          <small>Total: R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</small>
+        `;
+      }
+    }
+
+    function updateTotalFromCheckboxes() {
+      let total = 0;
+      let anySelected = false;
+      
+      // CFTV: apenas um
+      const cftv8 = document.getElementById('cftv8');
+      const cftv4 = document.getElementById('cftv4');
+      if (cftv8.checked && cftv4.checked) {
+        alert('Selecione apenas uma opção de CFTV');
+        if (cftv8.checked) cftv4.checked = false;
+        else cftv8.checked = false;
+      }
+      
+      // Automatizador: apenas um
+      const auto700 = document.getElementById('auto700');
+      const auto600 = document.getElementById('auto600');
+      if (auto700.checked && auto600.checked) {
+        alert('Selecione apenas uma opção de Automatizador');
+        if (auto700.checked) auto600.checked = false;
+        else auto700.checked = false;
+      }
+      
+      document.querySelectorAll('.service-select:checked').forEach(cb => {
+        const price = parseInt(cb.getAttribute('data-price'));
+        if (!isNaN(price)) total += price;
+        anySelected = true;
+      });
+      
+      document.querySelectorAll('.service-card').forEach(card => {
+        const checkbox = card.querySelector('.service-select');
+        if (checkbox && checkbox.checked) card.classList.add('selected');
+        else if (checkbox) card.classList.remove('selected');
+      });
+      
+      const totalElement = document.getElementById('totalValue');
+      const totalPixElement = document.getElementById('totalPix');
+      totalElement.textContent = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      totalPixElement.textContent = `PIX: R$ ${Math.round(total * 0.9).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      updatePaymentInfo(total);
+      document.getElementById('approveBtn').disabled = !anySelected;
+    }
+
+    function gerarMensagemWhatsApp() {
+      const servicosSelecionados = [];
+      document.querySelectorAll('.service-select:checked').forEach(cb => {
+        let name = cb.getAttribute('data-name');
+        // Verificar opcionais do automatizador
+        if (cb.id === 'auto700' || cb.id === 'auto600') {
+          const optWifi = document.querySelector(`.optional-check[data-parent="${cb.id}"][data-name="Módulo Wi-Fi"]`);
+          const optQuadro = document.querySelector(`.optional-check[data-parent="${cb.id}"][data-name="Quadro de Proteção"]`);
+          if (optWifi && optWifi.checked) name += " + Wi-Fi";
+          if (optQuadro && optQuadro.checked) name += " + Quadro Proteção";
+        }
+        // Verificar opcionais do CFTV
+        if (cb.id === 'cftv8' || cb.id === 'cftv4') {
+          const optRack = document.querySelector(`.optional-check-cftv[data-parent="${cb.id}"]`);
+          if (optRack && optRack.checked) name += " + Mini Rack";
+        }
+        servicosSelecionados.push(name);
+      });
+      
+      if (servicosSelecionados.length === 0) return null;
+      
+      const select = document.getElementById('paymentSelect');
+      const selectedValue = select.value;
+      let formaPagamento = '', valorFormatado = '';
+      let total = 0;
+      document.querySelectorAll('.service-select:checked').forEach(cb => {
+        total += parseInt(cb.getAttribute('data-price'));
+      });
+      
+      if (selectedValue === 'pix') {
+        const pixValue = total * 0.90;
+        formaPagamento = 'PIX (10% OFF)';
+        valorFormatado = `R$ ${pixValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      } else {
+        const parcelas = parseInt(selectedValue.replace('x', ''));
+        const valorParcela = total / parcelas;
+        formaPagamento = `${parcelas}x no Cartão - Sem juros`;
+        valorFormatado = `${parcelas}x de R$ ${valorParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} (total R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })})`;
+      }
+      
+      return encodeURIComponent(`Aprovei a proposta!\n\nServiços: ${servicosSelecionados.join(', ')}\nPagamento: ${formaPagamento}\nValor: ${valorFormatado}\n\nSolicito link para pagamento ou chave PIX para agendamento da instalação.`);
+    }
+
+    // Eventos
+    document.getElementById('approveBtn').addEventListener('click', function() {
+      const msg = gerarMensagemWhatsApp();
+      if (msg) window.open(`https://wa.me/5583996787788?text=${msg}`, '_blank');
+    });
+    
+    document.querySelectorAll('.service-select').forEach(cb => {
+      cb.addEventListener('change', updateTotalFromCheckboxes);
+    });
+    
+    document.getElementById('paymentSelect').addEventListener('change', function() {
+      let total = 0;
+      document.querySelectorAll('.service-select:checked').forEach(cb => {
+        total += parseInt(cb.getAttribute('data-price'));
+      });
+      updatePaymentInfo(total);
+    });
+    
+    updateTotalFromCheckboxes();
+  })();
+</script>
+
+</body>
+</html>
