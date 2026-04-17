@@ -14,8 +14,9 @@
         .app-container { max-width: 100%; margin: 0 auto; background: #0f172a; border-radius: 24px; overflow: hidden; border: 1px solid #1e293b; }
         .header { background: #020617; padding: 0.8rem 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid #1e293b; }
         .logo h1 { font-size: 1.3rem; font-weight: 700; background: linear-gradient(135deg, #facc15, #ff8c00); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .user-info { display: flex; align-items: center; gap: 12px; background: #1e293b; padding: 6px 16px; border-radius: 40px; font-size: 0.85rem; }
+        .user-info { display: flex; align-items: center; gap: 12px; background: #1e293b; padding: 6px 16px; border-radius: 40px; font-size: 0.85rem; flex-wrap: wrap; }
         .logout-btn { background: none; border: 1px solid #ef4444; color: #fecaca; padding: 4px 12px; border-radius: 40px; cursor: pointer; font-size: 0.8rem; }
+        .editar-btn { background: none; border: 1px solid #facc15; color: #facc15; padding: 4px 12px; border-radius: 40px; cursor: pointer; font-size: 0.7rem; margin-left: 8px; }
         .dashboard { display: flex; flex-direction: column; gap: 1rem; padding: 1rem; }
         .card { background: #111827; border-radius: 20px; padding: 1rem; border: 1px solid #1f2a44; }
         .card h3 { font-size: 1.1rem; margin-bottom: 0.8rem; border-left: 3px solid #facc15; padding-left: 10px; display: flex; align-items: center; gap: 8px; }
@@ -42,11 +43,12 @@
         .status-gps { font-size: 0.75rem; margin-top: 8px; padding: 6px 10px; border-radius: 16px; background: #1e293b; }
         .status-gps.erro { background: #7f1a1a; color: #fecaca; }
         .status-gps.ok { background: #14532d; color: #bbf7d0; }
+        .info-gps { font-size: 0.8rem; margin-top: 8px; padding: 6px; background: #0f172a; border-radius: 12px; text-align: center; }
         .aviso-bg { background: #b45309; color: #ffedd5; padding: 8px; border-radius: 12px; font-size: 0.7rem; margin-top: 8px; text-align: center; }
         .select-modo { margin: 10px 0; display: flex; gap: 10px; }
-        .select-modo button { background: #334155; padding: 6px; border: none; border-radius: 30px; flex: 1; cursor: pointer; }
+        .select-modo button { background: #334155; padding: 6px; border: none; border-radius: 30px; flex: 1; cursor: pointer; color: white; }
         .select-modo button.ativo { background: #facc15; color: #0f172a; }
-        button, .btn-passagem, .logout-btn, .panico-btn { min-height: 44px; }
+        button, .btn-passagem, .logout-btn, .panico-btn, .editar-btn { min-height: 44px; }
         footer { text-align: center; padding: 1rem; font-size: 0.7rem; color: #475569; border-top: 1px solid #1e293b; }
         @media (min-width: 768px) {
             body { padding: 20px; }
@@ -64,31 +66,34 @@
     let clientsDB = [];
     let motoqueiroDB = null;
     let watchId = null;
-    let ultimoPontoSalvo = null;      // { lat, lng, timestamp }
-    let ultimoEnvioPorAngulo = 0;      // timestamp do último envio forçado por ângulo
-    let modoRastreamento = "inteligente"; // "tempo" ou "inteligente"
+    let ultimoPontoSalvo = null;
+    let ultimoEnvioPorAngulo = 0;
+    let modoRastreamento = "inteligente";
 
     function loadDB() {
         const storedClients = localStorage.getItem("rondaClients");
-        if(storedClients) clientsDB = JSON.parse(storedClients);
-        else {
+        if(storedClients) {
+            clientsDB = JSON.parse(storedClients);
+        } else {
             clientsDB = [
                 { id: "c1", nome: "Carlos Souza", telefone: "11999999999", endereco: "Rua das Acácias, 123", senha: "123", ultimaPassagem: "23:03", chatMsgs: [{ from: "moto", text: "Ronda noturna ativa" }], muralPosts: [{ autor: "Anônimo", texto: "Tudo tranquilo", horario: "22/04 23:00" }], historicoRondas: ["22:00"] }
             ];
             localStorage.setItem("rondaClients", JSON.stringify(clientsDB));
         }
         const storedMoto = localStorage.getItem("rondaMotoqueiro");
-        if(storedMoto) motoqueiroDB = JSON.parse(storedMoto);
-        else {
+        if(storedMoto) {
+            motoqueiroDB = JSON.parse(storedMoto);
+        } else {
             motoqueiroDB = { 
                 id: "m1", nome: "Alex Moto", senha: "123", 
                 localizacao: { lat: -23.5505, lng: -46.6333, timestamp: Date.now() },
                 historicoRondasFeitas: [], alertas: [], rastreamentoAtivo: false,
-                pontosRota: []  // armazena todos os pontos salvos (para exibir no cliente)
+                pontosRota: []
             };
             localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
         }
         if (!motoqueiroDB.pontosRota) motoqueiroDB.pontosRota = [];
+        if (!motoqueiroDB.localizacao) motoqueiroDB.localizacao = { lat: -23.5505, lng: -46.6333, timestamp: Date.now() };
     }
     function saveDB() {
         localStorage.setItem("rondaClients", JSON.stringify(clientsDB));
@@ -99,7 +104,14 @@
     let clientUpdateInterval = null;
     let motoMap = null, motoMarker = null, clientMap = null, clientMarker = null, clientPolyline = null;
 
-    // Função para calcular ângulo (bearing) entre dois pontos
+    // Função auxiliar para formatar timestamp
+    function formatarDataHora(timestamp) {
+        if (!timestamp) return "Nunca";
+        const d = new Date(timestamp);
+        return d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    // Funções de rastreamento
     function calcularBearing(lat1, lng1, lat2, lng2) {
         const toRad = (deg) => deg * Math.PI / 180;
         const toDeg = (rad) => rad * 180 / Math.PI;
@@ -110,33 +122,16 @@
         return (bearing + 360) % 360;
     }
 
-    // Decisão de salvar ponto baseado no modo
     function deveSalvarPonto(novaLat, novaLng, novoTimestamp) {
         if (!ultimoPontoSalvo) return true;
-
         const diffTempo = (novoTimestamp - ultimoPontoSalvo.timestamp) / 1000;
-        
-        // Modo apenas por tempo
-        if (modoRastreamento === "tempo") {
-            return diffTempo >= 60;
-        }
-        
-        // Modo inteligente (tempo + ângulo)
+        if (modoRastreamento === "tempo") return diffTempo >= 60;
         if (diffTempo >= 60) return true;
-        
-        // Verificar mudança de direção (mínimo 10s entre verificações de ângulo)
         if (novoTimestamp - ultimoEnvioPorAngulo < 10000) return false;
-        
         const bearingAtual = calcularBearing(ultimoPontoSalvo.lat, ultimoPontoSalvo.lng, novaLat, novaLng);
-        // Precisamos de uma direção anterior? Vamos comparar com o último ponto salvo apenas.
-        // Para detectar curva, calculamos o ângulo entre o último ponto salvo e o novo.
-        // Como não temos o anterior ao último, usamos o próprio último ponto salvo como referência.
-        // Se a diferença for > 15°, salva.
-        // Na prática, isso vai gerar pontos nas curvas.
         const ultimoBearing = ultimoPontoSalvo.bearing || 0;
         let diffAngulo = Math.abs(bearingAtual - ultimoBearing);
         diffAngulo = Math.min(diffAngulo, 360 - diffAngulo);
-        
         if (diffAngulo > 15) {
             ultimoEnvioPorAngulo = novoTimestamp;
             return true;
@@ -144,26 +139,19 @@
         return false;
     }
 
-    // Iniciar rastreamento inteligente com watchPosition
     function iniciarRastreamentoMoto() {
         if (!navigator.geolocation) {
             atualizarStatusGPS("Geolocalização não suportada.", false);
             return;
         }
         if (watchId !== null) return;
-        
         atualizarStatusGPS("Iniciando GPS... (modo " + (modoRastreamento === "inteligente" ? "inteligente" : "econômico") + ")", false);
-        
         watchId = navigator.geolocation.watchPosition(
             (position) => {
                 const { latitude, longitude, accuracy, timestamp } = position.coords;
                 const agora = Date.now();
-                
-                // Decidir se salva este ponto
                 const salvar = deveSalvarPonto(latitude, longitude, agora);
-                
                 if (salvar) {
-                    // Salvar ponto no histórico do motoqueiro
                     const ponto = {
                         lat: latitude,
                         lng: longitude,
@@ -172,23 +160,13 @@
                     };
                     motoqueiroDB.pontosRota.push(ponto);
                     if (motoqueiroDB.pontosRota.length > 500) motoqueiroDB.pontosRota.shift();
-                    
-                    // Atualizar localização atual (última conhecida)
                     motoqueiroDB.localizacao = { lat: latitude, lng: longitude, timestamp: agora, accuracy };
                     motoqueiroDB.rastreamentoAtivo = true;
                     saveDB();
-                    
                     ultimoPontoSalvo = { lat: latitude, lng: longitude, timestamp: agora, bearing: ponto.bearing };
-                    
-                    const modoStr = modoRastreamento === "inteligente" ? " (tempo+ângulo)" : " (tempo)";
-                    atualizarStatusGPS(`Posição salva. Precisão: ${accuracy}m${modoStr}`, true);
-                    
-                    // Atualizar mapa do motoqueiro se visível
-                    if (currentUser && currentUser.type === 'moto' && motoMap) {
-                        atualizarMapaMoto(latitude, longitude);
-                    }
+                    atualizarStatusGPS(`Posição salva. Precisão: ${accuracy}m`, true);
+                    if (currentUser && currentUser.type === 'moto' && motoMap) atualizarMapaMoto(latitude, longitude);
                 } else {
-                    // Apenas atualiza a localização atual no banco, sem salvar no histórico de rota
                     motoqueiroDB.localizacao = { lat: latitude, lng: longitude, timestamp: agora, accuracy };
                     saveDB();
                 }
@@ -225,6 +203,12 @@
             statusDiv.innerHTML = `<i class="fas ${isOk ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i> ${mensagem}`;
             statusDiv.className = `status-gps ${isOk ? 'ok' : 'erro'}`;
         }
+        // Atualizar também o card de informações extras, se existir
+        const infoDiv = document.getElementById("infoUltimaPosicao");
+        if (infoDiv && motoqueiroDB && motoqueiroDB.localizacao) {
+            const dataHora = formatarDataHora(motoqueiroDB.localizacao.timestamp);
+            infoDiv.innerHTML = `<i class="fas fa-clock"></i> Última posição capturada: ${dataHora} | Precisão: ${motoqueiroDB.localizacao.accuracy || '?'}m | Pontos de rota: ${motoqueiroDB.pontosRota?.length || 0}`;
+        }
     }
 
     function atualizarMapaMoto(lat, lng) {
@@ -232,9 +216,15 @@
         if (!motoMarker) motoMarker = L.marker([lat, lng]).addTo(motoMap).bindPopup("Você está aqui").openPopup();
         else motoMarker.setLatLng([lat, lng]);
         motoMap.setView([lat, lng], 15);
+        // Atualizar info da última posição no card
+        const infoDiv = document.getElementById("infoUltimaPosicao");
+        if (infoDiv && motoqueiroDB && motoqueiroDB.localizacao) {
+            const dataHora = formatarDataHora(motoqueiroDB.localizacao.timestamp);
+            infoDiv.innerHTML = `<i class="fas fa-clock"></i> Última posição capturada: ${dataHora} | Precisão: ${motoqueiroDB.localizacao.accuracy || '?'}m | Pontos de rota: ${motoqueiroDB.pontosRota?.length || 0}`;
+        }
     }
 
-    // ---------- AUTENTICAÇÃO ----------
+    // ---------- TELAS DE AUTENTICAÇÃO ----------
     function renderAuthScreen() {
         const root = document.getElementById("appRoot");
         root.innerHTML = `
@@ -294,7 +284,7 @@
             const senha = document.getElementById("cliSenha").value;
             const client = clientsDB.find(c => c.telefone === tel && c.senha === senha);
             if(client) { currentUser = { type: "client", data: client }; renderDashboardCliente(client); }
-            else alert("Cliente não encontrado. Demo: 11999999999 / 123");
+            else alert("Cliente não encontrado. Use 11999999999 / 123 ou cadastre-se.");
         };
         document.getElementById("loginMotoBtn").onclick = () => {
             const nome = document.getElementById("motoNome").value.trim();
@@ -302,7 +292,7 @@
             if(motoqueiroDB && motoqueiroDB.nome === nome && motoqueiroDB.senha === senha) {
                 currentUser = { type: "moto", data: motoqueiroDB };
                 renderDashboardMoto(motoqueiroDB);
-            } else alert("Motoqueiro não encontrado. Demo: Alex Moto / 123");
+            } else alert("Motoqueiro não encontrado. Use Alex Moto / 123");
         };
         document.getElementById("showRegCliente").onclick = () => showRegister("cliente");
         document.getElementById("showRegMoto").onclick = () => showRegister("moto");
@@ -332,7 +322,7 @@
         document.getElementById("backToLoginMoto").onclick = () => showLogin("moto");
     }
 
-    // ---------- DASHBOARD CLIENTE (com rota) ----------
+    // ---------- DASHBOARD CLIENTE (com data/hora) ----------
     function renderDashboardCliente(client) {
         if(clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -342,11 +332,16 @@
             <div class="app-container">
                 <div class="header">
                     <div class="logo"><h1><i class="fas fa-motorcycle"></i> Ronda Noturna</h1></div>
-                    <div class="user-info"><i class="fas fa-user"></i> ${client.nome} <span style="font-size:12px;"><i class="fas fa-location-dot"></i> ${client.endereco}</span><button class="logout-btn" id="logoutBtn">Sair</button></div>
+                    <div class="user-info">
+                        <i class="fas fa-user"></i> ${client.nome}
+                        <span style="font-size:12px;"><i class="fas fa-location-dot"></i> <span id="enderecoCliente">${client.endereco}</span></span>
+                        <button class="editar-btn" id="editarEnderecoBtn"><i class="fas fa-edit"></i> Editar</button>
+                        <button class="logout-btn" id="logoutBtn">Sair</button>
+                    </div>
                 </div>
                 <div class="dashboard">
                     <div class="card">
-                        <h3><i class="fas fa-map-marked-alt"></i> Localização e Rota do Motoqueiro</h3>
+                        <h3><i class="fas fa-map-marked-alt"></i> Localização do Motoqueiro</h3>
                         <div id="clienteMapContainer" class="map-container"></div>
                         <div class="last-pass" id="ultimaAtualizacaoGPS">Aguardando posição...</div>
                         <button class="panico-btn" id="panicoBtn"><i class="fas fa-bell"></i> Pânico - Acionar Motoqueiro</button>
@@ -368,39 +363,49 @@
                         <div style="display:flex; gap:8px; margin-top:12px;"><input type="text" id="novoPost" placeholder="Alerta anônimo..." style="flex:1; background:#1e293b; border:none; padding:10px; border-radius:40px;"><button id="postMuralBtn"><i class="fas fa-plus"></i> Postar</button></div>
                     </div>
                 </div>
-                <footer>Ronda de hora em hora • Rota do motoqueiro atualizada a cada nova posição (60s ou curvas)</footer>
+                <footer>Posição do motoqueiro atualizada em tempo real (a cada 5 segundos)</footer>
             </div>
         `;
-        // Mapa cliente
+
         if(clientMap) clientMap.remove();
         clientMap = L.map("clienteMapContainer").setView([-23.5505, -46.6333], 13);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' }).addTo(clientMap);
         clientMarker = L.marker([-23.5505, -46.6333], { title: "Motoqueiro" }).addTo(clientMap).bindPopup("Última posição");
-        
-        function desenharRota() {
+
+        function atualizarMapaCliente() {
             loadDB();
-            const pontos = motoqueiroDB.pontosRota || [];
-            if (pontos.length >= 2) {
-                const latlngs = pontos.map(p => [p.lat, p.lng]);
-                if (clientPolyline) clientPolyline.remove();
-                clientPolyline = L.polyline(latlngs, { color: '#facc15', weight: 4, opacity: 0.7 }).addTo(clientMap);
-                // Ajustar zoom para o último ponto
-                const ultimo = pontos[pontos.length-1];
-                clientMap.setView([ultimo.lat, ultimo.lng], 14);
-            }
-            // Atualizar marcador da última posição
-            if (motoqueiroDB.localizacao && motoqueiroDB.localizacao.lat) {
-                const { lat, lng, timestamp } = motoqueiroDB.localizacao;
+            const moto = motoqueiroDB;
+            if (moto && moto.localizacao && moto.localizacao.lat) {
+                const { lat, lng, timestamp, accuracy } = moto.localizacao;
                 clientMarker.setLatLng([lat, lng]);
-                const dataStr = timestamp ? new Date(timestamp).toLocaleTimeString() : "agora";
-                document.getElementById("ultimaAtualizacaoGPS").innerHTML = `<i class="fas fa-motorcycle"></i> Última posição: ${lat.toFixed(5)}, ${lng.toFixed(5)} (${dataStr}) | Pontos de rota: ${pontos.length}`;
+                clientMap.setView([lat, lng], 14);
+                const dataHora = formatarDataHora(timestamp);
+                document.getElementById("ultimaAtualizacaoGPS").innerHTML = `<i class="fas fa-motorcycle"></i> Última posição: ${lat.toFixed(5)}, ${lng.toFixed(5)}<br><i class="fas fa-calendar-alt"></i> Capturada em: ${dataHora} | Precisão: ${accuracy || '?'}m`;
+                const pontos = moto.pontosRota || [];
+                if (pontos.length >= 2) {
+                    const latlngs = pontos.map(p => [p.lat, p.lng]);
+                    if (clientPolyline) clientPolyline.remove();
+                    clientPolyline = L.polyline(latlngs, { color: '#facc15', weight: 4, opacity: 0.7 }).addTo(clientMap);
+                }
             } else {
-                document.getElementById("ultimaAtualizacaoGPS").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Nenhuma posição recebida.";
+                document.getElementById("ultimaAtualizacaoGPS").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Nenhuma posição recebida. O motoqueiro ainda não iniciou o rastreamento.";
             }
         }
-        clientUpdateInterval = setInterval(() => { desenharRota(); }, 5000);
-        desenharRota();
+        atualizarMapaCliente();
+        clientUpdateInterval = setInterval(atualizarMapaCliente, 3000);
 
+        // Eventos
+        document.getElementById("editarEnderecoBtn").onclick = () => {
+            const novoEnd = prompt("Digite seu endereço completo:", client.endereco);
+            if (novoEnd && novoEnd.trim() !== "") {
+                client.endereco = novoEnd.trim();
+                const idx = clientsDB.findIndex(c => c.id === client.id);
+                if (idx !== -1) clientsDB[idx] = client;
+                saveDB();
+                document.getElementById("enderecoCliente").innerText = client.endereco;
+                alert("Endereço atualizado!");
+            }
+        };
         document.getElementById("logoutBtn").onclick = () => { if(clientUpdateInterval) clearInterval(clientUpdateInterval); currentUser = null; renderAuthScreen(); };
         document.getElementById("panicoBtn").onclick = () => {
             alert("Pânico acionado! O motoqueiro foi notificado.");
@@ -429,11 +434,12 @@
         };
     }
 
-    // ---------- DASHBOARD MOTOQUEIRO (com seletor de modo) ----------
+    // ---------- DASHBOARD MOTOQUEIRO (com data/hora e pontos) ----------
     function renderDashboardMoto(moto) {
         if(clientUpdateInterval) clearInterval(clientUpdateInterval);
-        const root = document.getElementById("appRoot");
+        loadDB();
         const ruas = [...new Set(clientsDB.map(c => c.endereco))];
+        const root = document.getElementById("appRoot");
         root.innerHTML = `
             <div class="app-container">
                 <div class="header">
@@ -445,12 +451,15 @@
                         <h3><i class="fas fa-satellite-dish"></i> Rastreamento Inteligente</h3>
                         <div id="motoMapContainer" class="map-container"></div>
                         <div id="gpsStatus" class="status-gps erro">Inicializando...</div>
+                        <div id="infoUltimaPosicao" class="info-gps">
+                            <i class="fas fa-clock"></i> Aguardando primeira posição...
+                        </div>
                         <div class="select-modo">
                             <button id="modoTempoBtn" class="${modoRastreamento === 'tempo' ? 'ativo' : ''}">Apenas tempo (60s)</button>
                             <button id="modoInteligenteBtn" class="${modoRastreamento === 'inteligente' ? 'ativo' : ''}">Inteligente (tempo + ângulo)</button>
                         </div>
                         <div class="aviso-bg">
-                            <i class="fas fa-info-circle"></i> Modo inteligente: salva posição a cada 60s OU quando mudar direção >15°. GPS fica ligado continuamente.
+                            <i class="fas fa-info-circle"></i> Modo inteligente: salva posição a cada 60s OU quando mudar direção >15°.
                         </div>
                         <div style="display:flex; gap:10px; margin-top:8px;">
                             <button id="pararRastreamentoBtn" style="background:#ef4444; flex:1;">Desativar GPS</button>
@@ -460,7 +469,7 @@
                     <div class="card">
                         <h3><i class="fas fa-road"></i> Registrar passagem por rua</h3>
                         <div id="listaRuas">
-                            ${ruas.map(rua => `<div class="rua-item"><span><i class="fas fa-location-dot"></i> ${rua}</span><button class="btn-passagem" data-rua="${rua}">Passei agora</button></div>`).join('')}
+                            ${ruas.length === 0 ? "<p>Nenhum cliente cadastrado ainda.</p>" : ruas.map(rua => `<div class="rua-item"><span><i class="fas fa-location-dot"></i> ${rua}</span><button class="btn-passagem" data-rua="${rua}">Passei agora</button></div>`).join('')}
                         </div>
                     </div>
                     <div class="card">
@@ -475,7 +484,7 @@
                         <div style="margin-top:10px;"><strong>Pontos salvos na rota:</strong> ${moto.pontosRota?.length || 0}</div>
                     </div>
                 </div>
-                <footer>GPS ativo em primeiro plano. Para economia, desative manualmente quando não estiver em serviço.</footer>
+                <footer>GPS ativo em primeiro plano. A data/hora da última posição é atualizada automaticamente.</footer>
             </div>
         `;
         // Mapa motoqueiro
@@ -484,10 +493,14 @@
         motoMap = L.map("motoMapContainer").setView([lat, lng], 15);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(motoMap);
         motoMarker = L.marker([lat, lng]).addTo(motoMap).bindPopup("Sua posição atual");
-        // Desenhar rota percorrida no mapa do motoqueiro
         if (moto.pontosRota && moto.pontosRota.length > 1) {
             const pontosLatLng = moto.pontosRota.map(p => [p.lat, p.lng]);
             L.polyline(pontosLatLng, { color: '#facc15', weight: 3 }).addTo(motoMap);
+        }
+        // Atualizar info da última posição
+        if (moto.localizacao && moto.localizacao.timestamp) {
+            const dataHora = formatarDataHora(moto.localizacao.timestamp);
+            document.getElementById("infoUltimaPosicao").innerHTML = `<i class="fas fa-clock"></i> Última posição capturada: ${dataHora} | Precisão: ${moto.localizacao.accuracy || '?'}m | Pontos de rota: ${moto.pontosRota?.length || 0}`;
         }
         // Controles
         document.getElementById("modoTempoBtn").onclick = () => {
@@ -529,10 +542,7 @@
                 renderDashboardMoto(moto);
             };
         });
-        // Iniciar rastreamento se não estiver ativo
-        if (!watchId && moto.rastreamentoAtivo !== false) {
-            iniciarRastreamentoMoto();
-        }
+        if (!watchId && moto.rastreamentoAtivo !== false) iniciarRastreamentoMoto();
     }
 
     loadDB();
