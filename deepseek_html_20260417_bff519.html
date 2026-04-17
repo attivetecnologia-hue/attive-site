@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0f1e; color: #eef2ff; padding: 12px; }
@@ -51,8 +54,9 @@
         .select-modo button.ativo { background: #facc15; color: #0f172a; }
         button, .btn-passagem, .logout-btn, .panico-btn, .editar-btn { min-height: 44px; }
         footer { text-align: center; padding: 1rem; font-size: 0.7rem; color: #475569; border-top: 1px solid #1e293b; }
+        /* Ícone da moto - AZUL COBALTO */
         .moto-marker { background: transparent; border: none; }
-        .moto-marker i { font-size: 28px; color: #facc15; text-shadow: 1px 1px 0 #000; }
+        .moto-marker i { font-size: 28px; color: #0047AB; text-shadow: 1px 1px 0 #000; }
         .seta-marker { background: transparent; border: none; }
         .seta-marker i { font-size: 20px; color: #ff8c00; text-shadow: 0 0 2px #000; }
         @media (min-width: 768px) {
@@ -67,7 +71,24 @@
 <div id="appRoot"></div>
 
 <script>
-    // ---------- BANCO DE DADOS ----------
+    // ========== CONFIGURAÇÃO DO FIREBASE ==========
+    // COLE SUAS CREDENCIAIS AQUI (copiadas do console.firebase.google.com)
+    const firebaseConfig = {
+        apiKey: "SUA_API_KEY",
+        authDomain: "SEU_PROJETO.firebaseapp.com",
+        databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
+        projectId: "SEU_PROJETO",
+        storageBucket: "SEU_PROJETO.appspot.com",
+        messagingSenderId: "SEU_SENDER_ID",
+        appId: "SEU_APP_ID"
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const posicaoRef = database.ref('ronda/posicaoMotoqueiro');
+
+    // ========== VARIÁVEIS GLOBAIS ==========
     let clientsDB = [];
     let motoqueiroDB = null;
     let watchId = null;
@@ -75,78 +96,84 @@
     let ultimoEnvioPorAngulo = 0;
     let modoRastreamento = "inteligente";
 
-    // Cache para reverse geocoding (evitar muitas requisições)
-    let geocodeCache = {};
-
-    function loadDB() {
-        const storedClients = localStorage.getItem("rondaClients");
-        if(storedClients) {
-            clientsDB = JSON.parse(storedClients);
-        } else {
-            clientsDB = [
-                { id: "c1", nome: "Carlos Souza", telefone: "11999999999", endereco: "Rua das Acácias, 123", senha: "123", ultimaPassagem: "23:03", chatMsgs: [{ from: "moto", text: "Ronda noturna ativa" }], muralPosts: [{ autor: "Anônimo", texto: "Tudo tranquilo", horario: "22/04 23:00" }], historicoRondas: ["22:00"] }
-            ];
-            localStorage.setItem("rondaClients", JSON.stringify(clientsDB));
-        }
-        const storedMoto = localStorage.getItem("rondaMotoqueiro");
-        if(storedMoto) {
-            motoqueiroDB = JSON.parse(storedMoto);
-        } else {
-            motoqueiroDB = { 
-                id: "m1", nome: "Alex Moto", senha: "123", 
-                localizacao: { lat: -23.5505, lng: -46.6333, timestamp: Date.now() },
-                historicoRondasFeitas: [], alertas: [], rastreamentoAtivo: false,
-                pontosRota: []
-            };
-            localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
-        }
-        if (!motoqueiroDB.pontosRota) motoqueiroDB.pontosRota = [];
-        if (!motoqueiroDB.localizacao) motoqueiroDB.localizacao = { lat: -23.5505, lng: -46.6333, timestamp: Date.now() };
-    }
-    function saveDB() {
-        localStorage.setItem("rondaClients", JSON.stringify(clientsDB));
-        localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
-    }
-
     let currentUser = null;
     let clientUpdateInterval = null;
     let motoMap = null, motoMarker = null, clientMap = null, clientMarker = null, clientPolyline = null, clientSetaMarker = null;
 
-    // Função auxiliar para formatar data/hora sem segundos
-    function formatarDataHoraResumida(timestamp) {
-        if (!timestamp) return "Nunca";
-        const d = new Date(timestamp);
-        return d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    let geocodeCache = {};
+
+    // ========== FUNÇÃO PARA CALCULAR DISTÂNCIA ENTRE DOIS PONTOS (Haversine) ==========
+    function calcularDistancia(lat1, lon1, lat2, lon2) {
+        const R = 6371000; // metros
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
     }
 
-    // Reverse geocoding via Nominatim (OpenStreetMap)
-    async function obterRuaPorCoordenadas(lat, lng) {
+    // ========== FUNÇÃO PARA OBTER ENDEREÇO COMPLETO (RUA + NÚMERO) ==========
+    async function obterEnderecoCompleto(lat, lng) {
         const chave = `${lat.toFixed(5)},${lng.toFixed(5)}`;
         if (geocodeCache[chave]) return geocodeCache[chave];
         try {
             const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`;
             const response = await fetch(url);
             const data = await response.json();
-            let rua = "Rua desconhecida";
+            let endereco = "Endereço não identificado";
             if (data.address) {
-                if (data.address.road) rua = data.address.road;
-                else if (data.address.street) rua = data.address.street;
-                else if (data.address.suburb) rua = data.address.suburb;
-                else if (data.address.city) rua = data.address.city;
-                else rua = "Localização aproximada";
+                const rua = data.address.road || data.address.street || data.address.suburb || "";
+                const numero = data.address.house_number || "";
+                if (rua && numero) {
+                    endereco = `${rua}, ${numero}`;
+                } else if (rua) {
+                    endereco = rua;
+                } else if (data.address.city) {
+                    endereco = data.address.city;
+                } else {
+                    endereco = "Localização aproximada";
+                }
             }
-            geocodeCache[chave] = rua;
-            // Limitar cache para não crescer infinito
+            geocodeCache[chave] = endereco;
             const keys = Object.keys(geocodeCache);
             if (keys.length > 200) delete geocodeCache[keys[0]];
-            return rua;
+            return endereco;
         } catch (error) {
             console.error("Erro no reverse geocoding:", error);
             return "Rua não identificada";
         }
     }
 
-    // Função para calcular ângulo (bearing) entre dois pontos
+    // ========== GEOCODING DO ENDEREÇO DO CLIENTE (para calcular proximidade) ==========
+    async function geocodificarEndereco(endereco) {
+        try {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}&limit=1`;
+            const response = await fetch(url);
+            const data = await response.json();
+            if (data && data.length > 0) {
+                return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+            }
+        } catch (error) {
+            console.error("Erro ao geocodificar endereço:", error);
+        }
+        return null;
+    }
+
+    // ========== FUNÇÕES AUXILIARES ==========
+    function formatarDataHoraResumida(timestamp) {
+        if (!timestamp) return "Nunca";
+        const d = new Date(timestamp);
+        return d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    }
+
+    function formatarDataHoraCompleta(timestamp) {
+        if (!timestamp) return "Nunca";
+        const d = new Date(timestamp);
+        return d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
     function calcularBearing(lat1, lng1, lat2, lng2) {
         const toRad = (deg) => deg * Math.PI / 180;
         const toDeg = (rad) => rad * 180 / Math.PI;
@@ -157,7 +184,6 @@
         return (bearing + 360) % 360;
     }
 
-    // Converter ângulo em direção cardeal (apenas texto)
     function anguloParaDirecao(angulo) {
         const direcoes = ['Norte', 'Nordeste', 'Leste', 'Sudeste', 'Sul', 'Sudoeste', 'Oeste', 'Noroeste'];
         const idx = Math.round(angulo / 45) % 8;
@@ -181,7 +207,6 @@
         return false;
     }
 
-    // Ícones
     function criarIconeMoto() {
         return L.divIcon({
             html: '<i class="fas fa-motorcycle"></i>',
@@ -199,7 +224,7 @@
         });
     }
 
-    // Rastreamento (igual ao anterior)
+    // ========== RASTREAMENTO DO MOTOQUEIRO (Firebase) ==========
     function iniciarRastreamentoMoto() {
         if (!navigator.geolocation) {
             atualizarStatusGPS("Geolocalização não suportada.", false);
@@ -212,25 +237,33 @@
                 const { latitude, longitude, accuracy, timestamp } = position.coords;
                 const agora = Date.now();
                 const salvar = deveSalvarPonto(latitude, longitude, agora);
+                const posicaoObj = {
+                    lat: latitude,
+                    lng: longitude,
+                    timestamp: agora,
+                    accuracy: accuracy,
+                    bearing: ultimoPontoSalvo ? calcularBearing(ultimoPontoSalvo.lat, ultimoPontoSalvo.lng, latitude, longitude) : 0
+                };
+                posicaoRef.set(posicaoObj);
                 if (salvar) {
                     const ponto = {
                         lat: latitude,
                         lng: longitude,
                         timestamp: agora,
-                        bearing: ultimoPontoSalvo ? calcularBearing(ultimoPontoSalvo.lat, ultimoPontoSalvo.lng, latitude, longitude) : 0
+                        bearing: posicaoObj.bearing
                     };
+                    if (!motoqueiroDB.pontosRota) motoqueiroDB.pontosRota = [];
                     motoqueiroDB.pontosRota.push(ponto);
                     if (motoqueiroDB.pontosRota.length > 500) motoqueiroDB.pontosRota.shift();
-                    motoqueiroDB.localizacao = { lat: latitude, lng: longitude, timestamp: agora, accuracy };
+                    motoqueiroDB.localizacao = posicaoObj;
                     motoqueiroDB.rastreamentoAtivo = true;
-                    saveDB();
                     ultimoPontoSalvo = { lat: latitude, lng: longitude, timestamp: agora, bearing: ponto.bearing };
-                    atualizarStatusGPS(`Posição salva. Precisão: ${accuracy}m`, true);
+                    atualizarStatusGPS(`Posição salva e enviada. Precisão: ${accuracy}m`, true);
                     if (currentUser && currentUser.type === 'moto' && motoMap) atualizarMapaMoto(latitude, longitude);
                 } else {
-                    motoqueiroDB.localizacao = { lat: latitude, lng: longitude, timestamp: agora, accuracy };
-                    saveDB();
+                    motoqueiroDB.localizacao = posicaoObj;
                 }
+                localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
             },
             (error) => {
                 let msg = "";
@@ -241,8 +274,7 @@
                     default: msg = "Erro desconhecido.";
                 }
                 atualizarStatusGPS(`Erro GPS: ${msg}`, false);
-                motoqueiroDB.rastreamentoAtivo = false;
-                saveDB();
+                if (motoqueiroDB) motoqueiroDB.rastreamentoAtivo = false;
             },
             { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }
         );
@@ -253,8 +285,7 @@
             navigator.geolocation.clearWatch(watchId);
             watchId = null;
         }
-        motoqueiroDB.rastreamentoAtivo = false;
-        saveDB();
+        if (motoqueiroDB) motoqueiroDB.rastreamentoAtivo = false;
         atualizarStatusGPS("Rastreamento desativado.", false);
     }
 
@@ -286,7 +317,37 @@
         }
     }
 
-    // ---------- TELAS DE AUTENTICAÇÃO (sem mudanças) ----------
+    // ========== AUTENTICAÇÃO (localStorage para clientes) ==========
+    function loadDB() {
+        const storedClients = localStorage.getItem("rondaClients");
+        if(storedClients) {
+            clientsDB = JSON.parse(storedClients);
+        } else {
+            clientsDB = [
+                { id: "c1", nome: "Manoel Elias", telefone: "11999999999", endereco: "Manoel Elias de Castro, 471", senha: "123", ultimaPassagem: "23:03", chatMsgs: [{ from: "moto", text: "Ronda noturna ativa" }], muralPosts: [{ autor: "Anônimo", texto: "Tudo tranquilo", horario: "22/04 23:00" }], historicoRondas: ["22:00"], proximidades: [] }
+            ];
+            localStorage.setItem("rondaClients", JSON.stringify(clientsDB));
+        }
+        const storedMoto = localStorage.getItem("rondaMotoqueiro");
+        if(storedMoto) {
+            motoqueiroDB = JSON.parse(storedMoto);
+        } else {
+            motoqueiroDB = { 
+                id: "m1", nome: "Alex Moto", senha: "123", 
+                localizacao: { lat: -23.5505, lng: -46.6333, timestamp: Date.now() },
+                historicoRondasFeitas: [], alertas: [], rastreamentoAtivo: false,
+                pontosRota: []
+            };
+            localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
+        }
+        if (!motoqueiroDB.pontosRota) motoqueiroDB.pontosRota = [];
+        if (!motoqueiroDB.localizacao) motoqueiroDB.localizacao = { lat: -23.5505, lng: -46.6333, timestamp: Date.now() };
+    }
+    function saveDB() {
+        localStorage.setItem("rondaClients", JSON.stringify(clientsDB));
+        localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
+    }
+
     function renderAuthScreen() {
         const root = document.getElementById("appRoot");
         root.innerHTML = `
@@ -365,7 +426,7 @@
             const senha = document.getElementById("regSenha").value;
             if(!nome || !tel || !end || !senha) return alert("Preencha todos");
             if(clientsDB.find(c => c.telefone === tel)) return alert("Telefone já existe");
-            const novo = { id: Date.now().toString(), nome, telefone: tel, endereco: end, senha, ultimaPassagem: "Nenhuma", chatMsgs: [{ from: "moto", text: "Bem-vindo!" }], muralPosts: [], historicoRondas: [] };
+            const novo = { id: Date.now().toString(), nome, telefone: tel, endereco: end, senha, ultimaPassagem: "Nenhuma", chatMsgs: [{ from: "moto", text: "Bem-vindo!" }], muralPosts: [], historicoRondas: [], proximidades: [] };
             clientsDB.push(novo);
             saveDB();
             alert("Cadastrado! Faça login.");
@@ -384,12 +445,15 @@
         document.getElementById("backToLoginMoto").onclick = () => showLogin("moto");
     }
 
-    // ---------- DASHBOARD CLIENTE (com rua, direção simplificada, sem coordenadas) ----------
+    // ========== DASHBOARD CLIENTE (com histórico de proximidade e cor verde da rota) ==========
     function renderDashboardCliente(client) {
         if(clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
         const horas = ["22h","23h","00h","01h","02h","03h","04h","05h"];
         const rondasFeitas = client.historicoRondas || [];
+        // Garantir que o cliente tenha um array de proximidades
+        if (!client.proximidades) client.proximidades = [];
+        
         root.innerHTML = `
             <div class="app-container">
                 <div class="header">
@@ -415,6 +479,13 @@
                         </div>
                     </div>
                     <div class="card">
+                        <h3><i class="fas fa-history"></i> Histórico de Proximidade</h3>
+                        <div id="historicoProximidade" style="max-height: 150px; overflow-y: auto; font-size: 0.8rem;">
+                            ${client.proximidades.length === 0 ? "<p>Nenhuma passagem próxima registrada ainda.</p>" : client.proximidades.map(p => `<div><i class="fas fa-motorcycle" style="color:#0047AB;"></i> ${p}</div>`).join('')}
+                        </div>
+                        <div style="margin-top:8px;"><strong>Total de passagens próximas:</strong> ${client.proximidades.length}</div>
+                    </div>
+                    <div class="card">
                         <h3><i class="fas fa-comment"></i> Chat com a central</h3>
                         <div class="chat-messages" id="chatMsgsArea">${client.chatMsgs.map(m => `<div class="msg ${m.from === 'client' ? 'msg-user' : ''}"><strong>${m.from === 'client' ? 'Você' : 'Motoqueiro'}:</strong> ${m.text}</div>`).join('')}</div>
                         <div class="chat-input"><input type="text" id="chatInput" placeholder="Mensagem..."/><button id="sendChat"><i class="fas fa-paper-plane"></i></button></div>
@@ -425,7 +496,7 @@
                         <div style="display:flex; gap:8px; margin-top:12px;"><input type="text" id="novoPost" placeholder="Alerta anônimo..." style="flex:1; background:#1e293b; border:none; padding:10px; border-radius:40px;"><button id="postMuralBtn"><i class="fas fa-plus"></i> Postar</button></div>
                     </div>
                 </div>
-                <footer>Posição do motoqueiro atualizada a cada 60s ou em curvas. Rua obtida por geolocalização reversa.</footer>
+                <footer>Posição do motoqueiro em tempo real. Proximidade considerada até 50 metros do seu endereço.</footer>
             </div>
         `;
 
@@ -434,68 +505,103 @@
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' }).addTo(clientMap);
         clientMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto() }).addTo(clientMap).bindPopup("Motoqueiro");
 
-        let ultimaRua = "";
-        let ultimaDirecao = "";
+        // Geocodificar endereço do cliente para calcular proximidade
+        let clienteLatLng = null;
+        geocodificarEndereco(client.endereco).then(coord => {
+            if (coord) {
+                clienteLatLng = coord;
+                // Adicionar marcador da casa do cliente no mapa (opcional)
+                L.marker([coord.lat, coord.lng], { icon: L.divIcon({ html: '<i class="fas fa-home" style="font-size:20px; color:#fff;"></i>', className: 'home-marker', iconSize: [24,24] }) }).addTo(clientMap).bindPopup("Sua residência");
+            } else {
+                console.warn("Não foi possível geocodificar o endereço do cliente.");
+            }
+        });
 
-        async function atualizarMapaCliente() {
-            loadDB();
-            const moto = motoqueiroDB;
-            if (moto && moto.localizacao && moto.localizacao.lat) {
-                const { lat, lng, timestamp } = moto.localizacao;
+        // Variável para evitar registrar a mesma passagem múltiplas vezes seguidas
+        let ultimoRegistroProximidade = 0;
+
+        posicaoRef.on('value', async (snapshot) => {
+            const posicao = snapshot.val();
+            if (posicao && posicao.lat && posicao.lng) {
+                const { lat, lng, timestamp, bearing } = posicao;
                 clientMarker.setLatLng([lat, lng]);
                 clientMap.setView([lat, lng], 14);
                 
-                // Obter nome da rua (reverse geocoding)
-                let nomeRua = "Obtendo rua...";
-                if (geocodeCache[`${lat.toFixed(5)},${lng.toFixed(5)}`]) {
-                    nomeRua = geocodeCache[`${lat.toFixed(5)},${lng.toFixed(5)}`];
-                } else {
-                    nomeRua = await obterRuaPorCoordenadas(lat, lng);
-                }
-                ultimaRua = nomeRua;
-                
-                // Calcular direção (últimos dois pontos da rota)
+                // Obter endereço completo
+                let enderecoCompleto = await obterEnderecoCompleto(lat, lng);
                 let direcao = "Desconhecida";
-                const pontos = moto.pontosRota || [];
-                if (pontos.length >= 2) {
-                    const ultimo = pontos[pontos.length - 1];
-                    const penultimo = pontos[pontos.length - 2];
-                    const angulo = calcularBearing(penultimo.lat, penultimo.lng, ultimo.lat, ultimo.lng);
-                    direcao = anguloParaDirecao(angulo);
-                    ultimaDirecao = direcao;
-                    
-                    // Desenhar rota
-                    const latlngs = pontos.map(p => [p.lat, p.lng]);
-                    if (clientPolyline) clientPolyline.remove();
-                    clientPolyline = L.polyline(latlngs, { color: '#facc15', weight: 4, opacity: 0.7 }).addTo(clientMap);
-                    
-                    // Seta na ponta
-                    if (clientSetaMarker) clientSetaMarker.remove();
-                    const setaAngulo = angulo; // para a seta apontar na direção
-                    const setaIcon = criarIconeSeta(setaAngulo);
-                    clientSetaMarker = L.marker([ultimo.lat, ultimo.lng], { icon: setaIcon }).addTo(clientMap);
-                } else {
-                    if (clientPolyline) clientPolyline.remove();
-                    if (clientSetaMarker) clientSetaMarker.remove();
-                    if (pontos.length === 1) direcao = "Aguardando movimento";
+                if (bearing !== undefined) {
+                    direcao = anguloParaDirecao(bearing);
                 }
-                
                 const dataHora = formatarDataHoraResumida(timestamp);
                 document.getElementById("ultimaAtualizacaoGPS").innerHTML = `
-                    <i class="fas fa-road"></i> <strong>Rua:</strong> ${nomeRua}<br>
+                    <i class="fas fa-road"></i> <strong>Endereço aproximado:</strong> ${enderecoCompleto}<br>
                     <i class="fas fa-compass"></i> <strong>Direção:</strong> <span class="direcao-texto">${direcao}</span><br>
                     <i class="fas fa-clock"></i> <strong>Atualizado:</strong> ${dataHora}
                 `;
+
+                // Verificar proximidade com o endereço do cliente (se já tiver as coordenadas)
+                if (clienteLatLng) {
+                    const distancia = calcularDistancia(lat, lng, clienteLatLng.lat, clienteLatLng.lng);
+                    // Se estiver a menos de 50 metros e já tiver passado pelo menos 60 segundos desde o último registro
+                    if (distancia <= 50 && (timestamp - ultimoRegistroProximidade > 60000)) {
+                        ultimoRegistroProximidade = timestamp;
+                        const dataHoraCompleta = formatarDataHoraCompleta(timestamp);
+                        client.proximidades.unshift(`Passagem próxima em ${dataHoraCompleta} (distância ${Math.round(distancia)}m)`);
+                        // Manter apenas as últimas 50 ocorrências
+                        if (client.proximidades.length > 50) client.proximidades.pop();
+                        // Atualizar localStorage
+                        const idx = clientsDB.findIndex(c => c.id === client.id);
+                        if (idx !== -1) clientsDB[idx] = client;
+                        saveDB();
+                        // Atualizar a lista na tela
+                        const historicoDiv = document.getElementById("historicoProximidade");
+                        if (historicoDiv) {
+                            historicoDiv.innerHTML = client.proximidades.map(p => `<div><i class="fas fa-motorcycle" style="color:#0047AB;"></i> ${p}</div>`).join('');
+                            document.querySelector("#historicoProximidade + div strong").nextSibling.textContent = ` ${client.proximidades.length}`;
+                        }
+                    }
+                }
             } else {
                 document.getElementById("ultimaAtualizacaoGPS").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Nenhuma posição recebida. O motoqueiro ainda não iniciou o rastreamento.";
             }
-        }
-        
-        // Atualização imediata e depois a cada 5 segundos
-        atualizarMapaCliente();
-        clientUpdateInterval = setInterval(atualizarMapaCliente, 5000);
+        });
 
-        // Eventos (sem alterações)
+        // Desenhar rota (polyline) na cor verde
+        function desenharRota(pontos) {
+            if (clientPolyline) clientPolyline.remove();
+            if (pontos.length >= 2) {
+                const latlngs = pontos.map(p => [p.lat, p.lng]);
+                clientPolyline = L.polyline(latlngs, { color: '#22c55e', weight: 4, opacity: 0.7 }).addTo(clientMap);
+                // Seta na ponta (se houver pelo menos 2 pontos)
+                if (pontos.length >= 2) {
+                    if (clientSetaMarker) clientSetaMarker.remove();
+                    const ultimo = pontos[pontos.length-1];
+                    const penultimo = pontos[pontos.length-2];
+                    const angulo = calcularBearing(penultimo.lat, penultimo.lng, ultimo.lat, ultimo.lng);
+                    const setaIcon = criarIconeSeta(angulo);
+                    clientSetaMarker = L.marker([ultimo.lat, ultimo.lng], { icon: setaIcon }).addTo(clientMap);
+                }
+            }
+        }
+
+        // Escutar atualizações da rota (pontosRota) do Firebase? Como os pontos estão apenas no localStorage do motoqueiro,
+        // para simplificar, vamos buscar os pontos periodicamente do localStorage.
+        // Mas como a posição já vem do Firebase, podemos também sincronizar os pontos via Firebase.
+        // Para este exemplo, vamos apenas desenhar a rota com base nos pontos locais do motoqueiro (que estão no localStorage).
+        // Para manter sincronia, o ideal seria também enviar pontos para o Firebase, mas isso aumentaria a complexidade.
+        // Por ora, o cliente só desenha a rota quando atualiza o mapa, usando os pontos do motoqueiro que estão no localStorage (acessado via loadDB).
+        // Vamos modificar o listener do Firebase para também atualizar a rota periodicamente.
+        const intervalRota = setInterval(() => {
+            loadDB();
+            const moto = motoqueiroDB;
+            if (moto && moto.pontosRota && moto.pontosRota.length > 1) {
+                desenharRota(moto.pontosRota);
+            }
+        }, 5000);
+        clientUpdateInterval = intervalRota;
+
+        // Eventos
         document.getElementById("editarEnderecoBtn").onclick = () => {
             const novoEnd = prompt("Digite seu endereço completo:", client.endereco);
             if (novoEnd && novoEnd.trim() !== "") {
@@ -504,7 +610,9 @@
                 if (idx !== -1) clientsDB[idx] = client;
                 saveDB();
                 document.getElementById("enderecoCliente").innerText = client.endereco;
-                alert("Endereço atualizado!");
+                alert("Endereço atualizado! A geolocalização será refeita.");
+                // Re-geocodificar
+                geocodificarEndereco(client.endereco).then(coord => { clienteLatLng = coord; });
             }
         };
         document.getElementById("logoutBtn").onclick = () => { if(clientUpdateInterval) clearInterval(clientUpdateInterval); currentUser = null; renderAuthScreen(); };
@@ -535,7 +643,7 @@
         };
     }
 
-    // ---------- DASHBOARD MOTOQUEIRO (sem alterações, só para manter) ----------
+    // ========== DASHBOARD MOTOQUEIRO (com rota na cor verde e ícone azul cobalto) ==========
     function renderDashboardMoto(moto) {
         if(clientUpdateInterval) clearInterval(clientUpdateInterval);
         loadDB();
@@ -577,7 +685,7 @@
                         <div style="margin-top:10px;"><strong>Pontos salvos na rota:</strong> ${moto.pontosRota?.length || 0}</div>
                     </div>
                 </div>
-                <footer>GPS ativo em primeiro plano. Ícone da moto mostra sua posição atual.</footer>
+                <footer>GPS ativo em primeiro plano. Sua posição é enviada para todos os clientes em tempo real.</footer>
             </div>
         `;
         if(motoMap) motoMap.remove();
@@ -587,7 +695,7 @@
         motoMarker = L.marker([lat, lng], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Sua posição");
         if (moto.pontosRota && moto.pontosRota.length > 1) {
             const pontosLatLng = moto.pontosRota.map(p => [p.lat, p.lng]);
-            L.polyline(pontosLatLng, { color: '#facc15', weight: 3 }).addTo(motoMap);
+            L.polyline(pontosLatLng, { color: '#22c55e', weight: 3 }).addTo(motoMap);
         }
         if (moto.localizacao && moto.localizacao.timestamp) {
             const dataHora = formatarDataHoraResumida(moto.localizacao.timestamp);
