@@ -17,32 +17,28 @@
         .logo h1 { font-size: 1.3rem; font-weight: 700; background: linear-gradient(135deg, #facc15, #ff8c00); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .user-info { display: flex; align-items: center; gap: 12px; background: #1e293b; padding: 6px 16px; border-radius: 40px; font-size: 0.85rem; flex-wrap: wrap; }
         .logout-btn { background: none; border: 1px solid #ef4444; color: #fecaca; padding: 4px 12px; border-radius: 40px; cursor: pointer; }
-        .editar-btn { background: none; border: 1px solid #facc15; color: #facc15; padding: 4px 12px; border-radius: 40px; cursor: pointer; font-size: 0.7rem; margin-left: 8px; }
         .dashboard { padding: 1rem; display: flex; flex-direction: column; gap: 1rem; }
         .card { background: #111827; border-radius: 20px; padding: 1rem; border: 1px solid #1f2a44; }
         .card h3 { font-size: 1.1rem; margin-bottom: 0.8rem; border-left: 3px solid #facc15; padding-left: 10px; display: flex; align-items: center; gap: 8px; }
-        .map-container { height: 280px; border-radius: 16px; overflow: hidden; background: #1e293b; }
-        .panico-btn { background: #dc2626; width: 100%; padding: 12px; border: none; border-radius: 60px; font-weight: bold; color: white; cursor: pointer; margin-top: 12px; font-size: 1rem; }
-        .status-gps, .info-hora { font-size: 0.8rem; margin-top: 8px; padding: 6px; border-radius: 16px; background: #1e293b; text-align: center; }
-        .info-hora { background: #0f172a; color: #86efac; }
+        .map-container { height: 400px; border-radius: 16px; overflow: hidden; background: #1e293b; margin-bottom: 10px; }
         .auth-screen { max-width: 400px; margin: 30px auto; background: #111827; border-radius: 28px; padding: 1.5rem; }
         .auth-screen input { width: 100%; padding: 12px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: white; }
         .auth-screen button { width: 100%; background: #facc15; border: none; padding: 12px; border-radius: 40px; font-weight: bold; margin-top: 15px; cursor: pointer; color: #0f172a; }
         .toggle-auth { text-align: center; margin-top: 15px; color: #94a3b8; cursor: pointer; font-size: 0.85rem; }
         .hidden { display: none; }
-        .moto-marker i { font-size: 28px; color: #0047AB; text-shadow: 1px 1px 0 #000; }
-        .casa-marker i { font-size: 24px; color: #facc15; text-shadow: 1px 1px 0 #000; }
-        .ultima-passagem { font-size: 0.8rem; margin-top: 8px; padding: 6px; background: #1e293b; border-radius: 16px; text-align: center; }
+        .filtros { display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; }
+        .filtros input, .filtros select { background: #1e293b; border: 1px solid #334155; padding: 8px 12px; border-radius: 40px; color: white; }
+        .btn-table { background: none; border: none; cursor: pointer; margin: 0 4px; }
         table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
         th, td { padding: 8px; text-align: left; border-bottom: 1px solid #334155; }
         th { background: #1e293b; }
-        .btn-table { background: none; border: none; cursor: pointer; margin: 0 4px; }
         footer { text-align: center; padding: 1rem; font-size: 0.7rem; color: #475569; border-top: 1px solid #1e293b; }
         @media (min-width: 768px) {
             .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
             .card-full { grid-column: span 2; }
-            .map-container { height: 280px; }
         }
+        .moto-marker i { font-size: 28px; color: #0047AB; text-shadow: 1px 1px 0 #000; }
+        .casa-marker i { font-size: 24px; color: #facc15; text-shadow: 1px 1px 0 #000; }
     </style>
 </head>
 <body>
@@ -459,21 +455,31 @@
         iniciarRastreamentoMoto();
     }
 
-    // ========== DASHBOARD ADMIN ==========
+    // ========== DASHBOARD ADMIN (com mapa e filtros) ==========
     async function renderDashboardAdmin() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
-        const [usuariosRes, rondasRes, posicoesRes] = await Promise.all([
+        // Buscar dados
+        const [usuariosRes, posicoesRes] = await Promise.all([
             supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false }),
-            supabaseClient.from('rondas').select('*, usuarios(nome, endereco)').order('timestamp', { ascending: false }).limit(50),
-            supabaseClient.from('posicoes').select('*').order('timestamp', { ascending: false }).limit(1)
+            supabaseClient.from('posicoes').select('*, usuarios(nome, papel)').order('timestamp', { ascending: false })
         ]);
-        const usuarios = usuariosRes.data || [];
-        const rondas = rondasRes.data || [];
-        const ultimaPosicao = posicoesRes.data?.[0] || null;
-        const totalClientes = usuarios.filter(u => u.papel === 'cliente').length;
-        const totalMotoqueiros = usuarios.filter(u => u.papel === 'motoqueiro').length;
-        const rondasHoje = rondas.filter(r => new Date(r.timestamp).toDateString() === new Date().toDateString()).length;
+        let usuarios = usuariosRes.data || [];
+        const posicoes = posicoesRes.data || [];
 
+        // Agrupar últimas posições por motoqueiro
+        const ultimasPosicoes = {};
+        for (const pos of posicoes) {
+            if (!ultimasPosicoes[pos.motoqueiro_id] && pos.usuarios?.papel === 'motoqueiro') {
+                ultimasPosicoes[pos.motoqueiro_id] = pos;
+            }
+        }
+
+        // Preparar dados para mapa: clientes com geocodificação e motoqueiros com última posição
+        // Vamos usar cache para não geocodificar repetidamente
+        const clientes = usuarios.filter(u => u.papel === 'cliente' && u.endereco);
+        const motoqueiros = usuarios.filter(u => u.papel === 'motoqueiro');
+
+        // Inicializar mapa e depois adicionar marcadores (assíncrono)
         const root = document.getElementById("appRoot");
         root.innerHTML = `
             <div class="app-container">
@@ -482,36 +488,29 @@
                     <div class="user-info"><i class="fas fa-user-shield"></i> ${currentUser.nome}<button class="logout-btn" id="logoutAdminBtn">Sair</button></div>
                 </div>
                 <div class="dashboard">
-                    <div class="card">
-                        <h3><i class="fas fa-users"></i> Usuários</h3>
-                        <div style="font-size: 2rem; font-weight: bold;">${usuarios.length}</div>
-                        <div>Clientes: ${totalClientes} | Motoqueiros: ${totalMotoqueiros}</div>
-                    </div>
-                    <div class="card">
-                        <h3><i class="fas fa-motorcycle"></i> Rondas (hoje)</h3>
-                        <div style="font-size: 2rem; font-weight: bold;">${rondasHoje}</div>
-                        <div>Total de rondas: ${rondas.length}</div>
-                    </div>
-                    <div class="card">
-                        <h3><i class="fas fa-map-marker-alt"></i> Última posição da moto</h3>
-                        ${ultimaPosicao ? `<div>Lat: ${ultimaPosicao.latitude.toFixed(5)}<br>Lng: ${ultimaPosicao.longitude.toFixed(5)}<br>${new Date(ultimaPosicao.timestamp).toLocaleString('pt-BR')}</div>` : '<div>Nenhuma posição ainda</div>'}
+                    <div class="card card-full">
+                        <h3><i class="fas fa-map-marked-alt"></i> Mapa de Clientes e Motoqueiros</h3>
+                        <div id="adminMapContainer" class="map-container"></div>
                     </div>
                     <div class="card card-full">
                         <h3><i class="fas fa-list"></i> Gerenciar Usuários</h3>
-                        <button id="novoUsuarioBtn" style="background: #22c55e; border: none; padding: 8px 16px; border-radius: 40px; margin-bottom: 15px; cursor: pointer;"><i class="fas fa-plus"></i> Novo Usuário</button>
+                        <div class="filtros">
+                            <input type="text" id="filtroBusca" placeholder="Buscar por nome ou e-mail" style="flex:2;">
+                            <select id="filtroPapel">
+                                <option value="todos">Todos os papéis</option>
+                                <option value="cliente">Clientes</option>
+                                <option value="motoqueiro">Motoqueiros</option>
+                                <option value="admin">Administradores</option>
+                            </select>
+                            <button id="novoUsuarioBtn" style="background: #22c55e; border: none; padding: 8px 16px; border-radius: 40px;"><i class="fas fa-plus"></i> Novo Usuário</button>
+                        </div>
                         <div style="overflow-x: auto;">
-                            <table>
-                                <thead><tr><th>Nome</th><th>Email</th><th>Papel</th><th>Endereço</th><th>Ações</th></tr></thead>
-                                <tbody id="tabelaUsuarios">
-                                    ${usuarios.map(u => `
-                                        <tr>
-                                            <td>${u.nome}</td>
-                                            <td>${u.email}</td>
-                                            <td>${u.papel}</td>
-                                            <td>${u.endereco || '-'}</td>
-                                            <td><button class="editarUsuarioBtn" data-id="${u.id}" style="background:#facc15; border:none; padding:4px 8px; border-radius:20px; margin-right:5px;"><i class="fas fa-edit"></i></button><button class="excluirUsuarioBtn" data-id="${u.id}" data-email="${u.email}" style="background:#ef4444; border:none; padding:4px 8px; border-radius:20px;"><i class="fas fa-trash"></i></button></td>
-                                        </tr>
-                                    `).join('')}
+                            <table id="tabelaUsuarios">
+                                <thead>
+                                    <tr><th>Nome</th><th>Email</th><th>Papel</th><th>Endereço</th><th>Ações</th></tr>
+                                </thead>
+                                <tbody id="tabelaUsuariosBody">
+                                    <!-- Preenchido via JS -->
                                 </tbody>
                             </table>
                         </div>
@@ -521,16 +520,7 @@
                         <div style="overflow-x: auto;">
                             <table>
                                 <thead><tr><th>Cliente</th><th>Endereço</th><th>Data/Hora</th><th>Distância (m)</th></tr></thead>
-                                <tbody>
-                                    ${rondas.map(r => `
-                                        <tr>
-                                            <td>${r.usuarios?.nome || '-'}</td>
-                                            <td>${r.usuarios?.endereco || '-'}</td>
-                                            <td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td>
-                                            <td>${r.distancia_metros || '-'}</td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
+                                <tbody id="rondasAdminBody"></tbody>
                             </table>
                         </div>
                     </div>
@@ -538,6 +528,127 @@
                 <footer>Painel Administrativo • Ronda Noturna</footer>
             </div>
         `;
+
+        // Carregar últimas rondas
+        const rondasRes = await supabaseClient
+            .from('rondas')
+            .select('*, usuarios(nome, endereco)')
+            .order('timestamp', { ascending: false })
+            .limit(50);
+        const rondas = rondasRes.data || [];
+        const rondasBody = document.getElementById("rondasAdminBody");
+        rondasBody.innerHTML = rondas.map(r => `
+            <tr>
+                <td>${r.usuarios?.nome || '-'}</td>
+                <td>${r.usuarios?.endereco || '-'}</td>
+                <td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td>
+                <td>${r.distancia_metros || '-'}</td>
+            </tr>
+        `).join('');
+
+        // Função para preencher tabela com filtros
+        function renderizarTabelaUsuarios() {
+            const busca = document.getElementById("filtroBusca").value.toLowerCase();
+            const papel = document.getElementById("filtroPapel").value;
+            let filtered = usuarios;
+            if (busca) {
+                filtered = filtered.filter(u => u.nome.toLowerCase().includes(busca) || u.email.toLowerCase().includes(busca));
+            }
+            if (papel !== 'todos') {
+                filtered = filtered.filter(u => u.papel === papel);
+            }
+            const tbody = document.getElementById("tabelaUsuariosBody");
+            tbody.innerHTML = filtered.map(u => `
+                <tr>
+                    <td>${u.nome}</td>
+                    <td>${u.email}</td>
+                    <td>${u.papel}</td>
+                    <td>${u.endereco || '-'}</td>
+                    <td>
+                        <button class="editarUsuarioBtn" data-id="${u.id}" style="background:#facc15; border:none; padding:4px 8px; border-radius:20px; margin-right:5px;"><i class="fas fa-edit"></i></button>
+                        <button class="excluirUsuarioBtn" data-id="${u.id}" data-email="${u.email}" style="background:#ef4444; border:none; padding:4px 8px; border-radius:20px;"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+            // Reatribuir eventos
+            document.querySelectorAll(".editarUsuarioBtn").forEach(btn => {
+                btn.onclick = async () => {
+                    const id = btn.getAttribute("data-id");
+                    const usuario = usuarios.find(u => u.id === id);
+                    const novoNome = prompt("Novo nome:", usuario.nome);
+                    if (!novoNome) return;
+                    const novoEndereco = prompt("Novo endereço:", usuario.endereco || "");
+                    const novoPapel = prompt("Novo papel (cliente / motoqueiro / admin):", usuario.papel);
+                    if (!novoPapel || !['cliente','motoqueiro','admin'].includes(novoPapel)) return alert("Papel inválido");
+                    await supabaseClient.from('usuarios').update({ nome: novoNome, endereco: novoEndereco || null, papel: novoPapel }).eq('id', id);
+                    // Recarregar dados e re-renderizar
+                    const { data: novosUsuarios } = await supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false });
+                    usuarios = novosUsuarios || [];
+                    renderizarTabelaUsuarios();
+                    // Atualizar mapa também (reconstruir)
+                    carregarMapaAdmin();
+                };
+            });
+            document.querySelectorAll(".excluirUsuarioBtn").forEach(btn => {
+                btn.onclick = async () => {
+                    const id = btn.getAttribute("data-id");
+                    const email = btn.getAttribute("data-email");
+                    if (!confirm(`Excluir ${email}?`)) return;
+                    await supabaseClient.from('usuarios').delete().eq('id', id);
+                    const { data: novosUsuarios } = await supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false });
+                    usuarios = novosUsuarios || [];
+                    renderizarTabelaUsuarios();
+                    carregarMapaAdmin();
+                };
+            });
+        }
+
+        // Mapa
+        let adminMap = null;
+        async function carregarMapaAdmin() {
+            if (adminMap) adminMap.remove();
+            adminMap = L.map("adminMapContainer").setView([-23.5505, -46.6333], 13);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' }).addTo(adminMap);
+            
+            // Adicionar marcadores de clientes
+            for (const cliente of clientes) {
+                const coords = await geocodificarEndereco(cliente.endereco);
+                if (coords) {
+                    const marker = L.marker([coords.lat, coords.lng], { icon: criarIconeCasa() })
+                        .addTo(adminMap)
+                        .bindPopup(`<b>${cliente.nome}</b><br>${cliente.endereco}`);
+                }
+            }
+            // Adicionar marcadores de motoqueiros (última posição)
+            for (const moto of motoqueiros) {
+                const ultimaPos = ultimasPosicoes[moto.id];
+                if (ultimaPos) {
+                    const marker = L.marker([ultimaPos.latitude, ultimaPos.longitude], { icon: criarIconeMoto() })
+                        .addTo(adminMap)
+                        .bindPopup(`<b>${moto.nome}</b><br>Última posição: ${new Date(ultimaPos.timestamp).toLocaleString('pt-BR')}`);
+                }
+            }
+            // Ajustar zoom para mostrar todos os marcadores
+            if (clientes.length > 0 || Object.keys(ultimasPosicoes).length > 0) {
+                const bounds = [];
+                for (const cliente of clientes) {
+                    const coords = await geocodificarEndereco(cliente.endereco);
+                    if (coords) bounds.push([coords.lat, coords.lng]);
+                }
+                for (const pos of Object.values(ultimasPosicoes)) {
+                    bounds.push([pos.latitude, pos.longitude]);
+                }
+                if (bounds.length) adminMap.fitBounds(bounds);
+            }
+        }
+
+        // Inicializar
+        renderizarTabelaUsuarios();
+        await carregarMapaAdmin();
+
+        // Eventos de filtro
+        document.getElementById("filtroBusca").addEventListener("input", renderizarTabelaUsuarios);
+        document.getElementById("filtroPapel").addEventListener("change", renderizarTabelaUsuarios);
 
         document.getElementById("novoUsuarioBtn").onclick = async () => {
             const nome = prompt("Nome completo:");
@@ -552,33 +663,12 @@
             const { data, error } = await supabaseClient.auth.signUp({ email, password: senha });
             if (error) return alert(error.message);
             await supabaseClient.from('usuarios').insert({ id: data.user.id, email, nome, papel, endereco: endereco || null });
-            alert("Usuário criado!");
-            renderDashboardAdmin();
+            // Recarregar dados
+            const { data: novosUsuarios } = await supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false });
+            usuarios = novosUsuarios || [];
+            renderizarTabelaUsuarios();
+            carregarMapaAdmin();
         };
-
-        document.querySelectorAll(".editarUsuarioBtn").forEach(btn => {
-            btn.onclick = async () => {
-                const id = btn.getAttribute("data-id");
-                const usuario = usuarios.find(u => u.id === id);
-                const novoNome = prompt("Novo nome:", usuario.nome);
-                if (!novoNome) return;
-                const novoEndereco = prompt("Novo endereço:", usuario.endereco || "");
-                const novoPapel = prompt("Novo papel (cliente / motoqueiro / admin):", usuario.papel);
-                if (!novoPapel || !['cliente','motoqueiro','admin'].includes(novoPapel)) return alert("Papel inválido");
-                await supabaseClient.from('usuarios').update({ nome: novoNome, endereco: novoEndereco || null, papel: novoPapel }).eq('id', id);
-                renderDashboardAdmin();
-            };
-        });
-
-        document.querySelectorAll(".excluirUsuarioBtn").forEach(btn => {
-            btn.onclick = async () => {
-                const id = btn.getAttribute("data-id");
-                const email = btn.getAttribute("data-email");
-                if (!confirm(`Excluir ${email}?`)) return;
-                await supabaseClient.from('usuarios').delete().eq('id', id);
-                renderDashboardAdmin();
-            };
-        });
 
         document.getElementById("logoutAdminBtn").onclick = () => {
             supabaseClient.auth.signOut();
