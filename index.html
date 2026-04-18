@@ -1,309 +1,502 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<title>Informativo Técnico | Attive Tecnologia</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --bg: #08141C; --bg2: #0D1E28; --bg3: #061018; --surface: #112233;
-    --blue: #1FA8E0; --blue2: #0E6FA3; --blue-dim: rgba(31,168,224,0.12);
-    --white: #F0F8FF; --gray: #7FA8C0; --gray2: #1E3448; --green: #18C97A;
-    --font: 'DM Sans', sans-serif; --serif: 'DM Serif Display', serif;
-  }
-  body { background: var(--bg); color: var(--white); font-family: var(--font); font-size: 16px; line-height: 1.5; overflow: hidden; height: 100vh; }
-  .slides-container { height: 100vh; width: 100%; overflow: hidden; position: relative; }
-  .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1); cursor: grab; touch-action: pan-y pinch-zoom; }
-  .slides-wrapper:active { cursor: grabbing; }
-  .slide { min-width: 100%; height: 100%; overflow-y: auto; padding: 28px 32px; display: flex; flex-direction: column; justify-content: space-between; }
-  .slide::-webkit-scrollbar { width: 4px; }
-  .slide::-webkit-scrollbar-track { background: var(--gray2); }
-  .slide::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 4px; }
-
-  /* Área de botões na parte inferior, empilhados verticalmente: WhatsApp em cima, navegação embaixo */
-  .bottom-bar {
-    position: fixed;
-    bottom: 24px;
-    left: 0;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    z-index: 100;
-    pointer-events: none;
-  }
-  .bottom-bar > * {
-    pointer-events: auto;
-  }
-
-  /* Botão WhatsApp centralizado acima dos botões de navegação */
-  .wa-btn {
-    background: #25D366;
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    padding: 10px 24px;
-    font-size: 14px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 20px rgba(37,211,102,0.35);
-    transition: all 0.3s ease;
-    text-decoration: none;
-  }
-  .wa-btn:hover { transform: translateY(-2px) scale(1.02); }
-  .wa-btn svg { flex-shrink: 0; }
-
-  /* Botões de navegação centralizados lado a lado */
-  .nav-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-  }
-  .nav-btn {
-    background: var(--surface);
-    border: 1px solid var(--blue2);
-    border-radius: 40px;
-    padding: 10px 24px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--blue);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .nav-btn:hover { background: var(--blue-dim); transform: translateY(-2px); }
-
-  /* Indicador de página no canto inferior esquerdo */
-  .page-indicator {
-    position: fixed;
-    bottom: 28px;
-    left: 24px;
-    background: rgba(31,168,224,0.2);
-    backdrop-filter: blur(8px);
-    padding: 6px 14px;
-    border-radius: 40px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--blue);
-    z-index: 100;
-    border: 1px solid var(--blue2);
-  }
-
-  .logo-img { height: 65px; width: auto; object-fit: contain; }
-  .author-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--blue); object-fit: cover; box-shadow: 0 0 0 6px rgba(31,168,224,0.12); }
-
-  .sk { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
-  .sk::before { content: ''; width: 24px; height: 1px; background: var(--blue); }
-  .st { font-family: var(--serif); font-size: 28px; font-weight: 400; line-height: 1.2; margin-bottom: 12px; }
-  .st em { font-style: italic; color: var(--blue); }
-  .sb { font-size: 13px; color: var(--gray); line-height: 1.4; margin-bottom: 6px; }
-  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-top: 16px; }
-  .step-card { background: var(--surface); border: 1px solid var(--gray2); border-radius: 12px; padding: 12px; transition: all 0.3s ease; }
-  .step-card:hover { transform: translateY(-2px); border-color: var(--blue2); }
-  .step-number { font-family: var(--serif); font-size: 22px; color: var(--blue); margin-bottom: 6px; line-height: 1; }
-  .step-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-  .step-card p { font-size: 11px; color: var(--gray); line-height: 1.3; }
-  .info-box { background: var(--surface); border: 1px solid var(--gray2); border-radius: 14px; padding: 14px; margin: 14px 0; }
-  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-  .info-item { display: flex; gap: 10px; align-items: flex-start; }
-  .info-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: var(--blue-dim); border: 1px solid var(--blue2); display: flex; align-items: center; justify-content: center; }
-  .info-icon svg { width: 16px; height: 16px; }
-  .info-item h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-  .info-item p { font-size: 11px; color: var(--gray); line-height: 1.3; }
-  .highlight-box { background: linear-gradient(135deg, var(--blue2) 0%, #0B5070 100%); border-radius: 18px; padding: 22px 20px; margin: 16px 0; text-align: center; }
-  .price-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; opacity: 0.9; margin-bottom: 6px; text-transform: uppercase; }
-  .price-value { font-family: var(--serif); font-size: 44px; font-weight: 400; letter-spacing: -1px; line-height: 1; }
-  .price-note { font-size: 11px; opacity: 0.9; margin-top: 6px; }
-  .cond-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
-  .cond-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; }
-  .cond-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 6px; }
-  .cta-box { background: var(--surface); border: 1px solid var(--gray2); border-radius: 14px; padding: 16px; margin-top: 12px; text-align: center; }
-  .cta-intro { font-size: 13px; color: var(--gray); line-height: 1.4; margin-bottom: 12px; }
-  .btn-wrap { display: flex; flex-direction: column; gap: 10px; max-width: 280px; margin: 0 auto; }
-  .btn-main { background: var(--green); color: #fff; border: none; border-radius: 50px; padding: 10px 20px; font-size: 13px; font-weight: 700; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; }
-  .btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(24,201,122,0.38); }
-  .btn-sec { background: transparent; color: var(--blue); border: 1px solid var(--blue2); border-radius: 50px; padding: 8px 20px; font-size: 12px; font-weight: 600; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; }
-  .btn-sec:hover { background: var(--blue-dim); }
-  .author-block { display: flex; flex-direction: column; align-items: center; padding: 16px 0 8px; }
-  .author-name { font-size: 14px; font-weight: 600; margin-top: 10px; }
-  .author-role { font-size: 11px; color: var(--gray); }
-  .author-crea { display: inline-block; margin-top: 4px; background: var(--blue-dim); border: 1px solid var(--blue2); color: var(--blue); font-size: 10px; font-weight: 700; padding: 3px 12px; border-radius: 20px; }
-  .badge-sm { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--blue2); color: var(--blue); padding: 5px 14px; border-radius: 4px; font-size: 10px; font-weight: 600; margin-bottom: 16px; background: var(--blue-dim); }
-  .badge-dot-sm { width: 5px; height: 5px; border-radius: 50%; background: var(--blue); animation: pulse 2s infinite; }
-  .consultor-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(31,168,224,0.12); border: 1px solid var(--blue2); border-radius: 6px; padding: 5px 12px; font-size: 11px; color: var(--gray); }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-  .toast-msg { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; padding: 8px 16px; border-radius: 40px; font-size: 12px; font-weight: 600; z-index: 200; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
-  .toast-msg.show { opacity: 1; }
-  .cover-content { text-align: center; }
-  .cover-header { display: flex; justify-content: center; margin-bottom: 20px; }
-  .info-centralizada { text-align: center; border-top: 1px solid var(--gray2); padding-top: 18px; margin-top: 20px; }
-
-  @media (max-width: 560px) {
-    .slide { padding: 16px 20px; }
-    .st { font-size: 22px; }
-    .steps-grid, .info-grid { grid-template-columns: 1fr; gap: 10px; }
-    .nav-btn span { display: none; }
-    .nav-btn { padding: 8px 14px; }
-    .wa-btn { padding: 8px 18px; font-size: 12px; }
-    .price-value { font-size: 36px; }
-    .logo-img { height: 45px; }
-    .author-avatar { width: 65px; height: 65px; }
-    .page-indicator { left: 16px; bottom: 20px; font-size: 11px; padding: 4px 10px; }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Ronda Noturna - Rastreamento Inteligente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0f1e; color: #eef2ff; padding: 12px; }
+        .app-container { max-width: 100%; margin: 0 auto; background: #0f172a; border-radius: 24px; overflow: hidden; border: 1px solid #1e293b; }
+        .header { background: #020617; padding: 0.8rem 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .logo h1 { font-size: 1.3rem; font-weight: 700; background: linear-gradient(135deg, #facc15, #ff8c00); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .user-info { display: flex; align-items: center; gap: 12px; background: #1e293b; padding: 6px 16px; border-radius: 40px; font-size: 0.85rem; flex-wrap: wrap; }
+        .logout-btn { background: none; border: 1px solid #ef4444; color: #fecaca; padding: 4px 12px; border-radius: 40px; cursor: pointer; }
+        .editar-btn { background: none; border: 1px solid #facc15; color: #facc15; padding: 4px 12px; border-radius: 40px; cursor: pointer; font-size: 0.7rem; margin-left: 8px; }
+        .dashboard { padding: 1rem; display: flex; flex-direction: column; gap: 1rem; }
+        .card { background: #111827; border-radius: 20px; padding: 1rem; border: 1px solid #1f2a44; }
+        .card h3 { font-size: 1.1rem; margin-bottom: 0.8rem; border-left: 3px solid #facc15; padding-left: 10px; display: flex; align-items: center; gap: 8px; }
+        .map-container { height: 280px; border-radius: 16px; overflow: hidden; background: #1e293b; }
+        .panico-btn { background: #dc2626; width: 100%; padding: 12px; border: none; border-radius: 60px; font-weight: bold; color: white; cursor: pointer; margin-top: 12px; font-size: 1rem; }
+        .status-gps, .info-hora { font-size: 0.8rem; margin-top: 8px; padding: 6px; border-radius: 16px; background: #1e293b; text-align: center; }
+        .info-hora { background: #0f172a; color: #86efac; }
+        .auth-screen { max-width: 400px; margin: 30px auto; background: #111827; border-radius: 28px; padding: 1.5rem; }
+        .auth-screen input { width: 100%; padding: 12px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: white; }
+        .auth-screen button { width: 100%; background: #facc15; border: none; padding: 12px; border-radius: 40px; font-weight: bold; margin-top: 15px; cursor: pointer; color: #0f172a; }
+        .toggle-auth { text-align: center; margin-top: 15px; color: #94a3b8; cursor: pointer; font-size: 0.85rem; }
+        .reset-btn { background: #ef4444; margin-top: 10px; }
+        .hidden { display: none; }
+        .moto-marker i { font-size: 28px; color: #0047AB; text-shadow: 1px 1px 0 #000; }
+        .casa-marker i { font-size: 24px; color: #facc15; text-shadow: 1px 1px 0 #000; }
+        .ultima-passagem { font-size: 0.8rem; margin-top: 8px; padding: 6px; background: #1e293b; border-radius: 16px; text-align: center; }
+        footer { text-align: center; padding: 1rem; font-size: 0.7rem; color: #475569; border-top: 1px solid #1e293b; }
+        @media (min-width: 768px) {
+            .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        }
+    </style>
 </head>
 <body>
-
-<div class="slides-container" id="slidesContainer">
-  <div class="slides-wrapper" id="slidesWrapper">
-    <!-- SLIDE 1 - CAPA (com Consultor Comercial Vandeclecio Silva) -->
-    <div class="slide">
-      <div class="cover-content">
-        <div class="cover-header"><img src="https://files.catbox.moe/rsm5r8.png" alt="Attive Tecnologia" class="logo-img"></div>
-        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-          <div class="consultor-tag">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Consultor Comercial: <strong>Vandeclecio Silva</strong>
-          </div>
-        </div>
-        <div class="badge-sm" style="margin: 0 auto 20px auto;">Attive Tecnologia · Engenharia & Segurança Eletrônica</div>
-        <div style="font-size:11px;font-weight:600;letter-spacing:2px;color:var(--blue);margin-bottom:10px">INFORMATIVO TÉCNICO</div>
-        <div class="st">Como funciona nosso <em>atendimento</em></div>
-        <div class="sb" style="margin-bottom:24px">Processo de orçamento e visita técnica — transparência, planejamento e excelência.</div>
-        <div class="info-centralizada">
-          <p style="font-size:12px;color:var(--gray)"><strong style="color:var(--white)">Hélio Crispim</strong> · Engenheiro Eletricista</p>
-          <p style="font-size:12px;color:var(--gray);margin-top:4px">CREA-PB 12290192025PB</p>
-          <p style="font-size:12px;color:var(--gray);margin-top:4px">(83) 99678-7788</p>
-        </div>
-      </div>
-      <div></div>
-    </div>
-    <!-- SLIDE 2 - METODOLOGIA -->
-    <div class="slide"><div><div class="sk">Metodologia</div><div class="st">Como funciona nosso <em>atendimento</em></div><div class="sb">Processo técnico estruturado em etapas para garantir qualidade.</div><div class="steps-grid"><div class="step-card"><div class="step-number">01</div><h4>Primeiro contato</h4><p>Identificamos sua necessidade e escopo.</p></div><div class="step-card"><div class="step-number">02</div><h4>Levantamento inicial</h4><p>Coletamos informações técnicas.</p></div><div class="step-card"><div class="step-number">03</div><h4>Pagamento da visita</h4><p>Via PIX, garantindo compromisso.</p></div><div class="step-card"><div class="step-number">04</div><h4>Visita técnica</h4><p>Análise aprofundada in loco.</p></div><div class="step-card"><div class="step-number">05</div><h4>Execução</h4><p>Solução com padrão e garantia.</p></div></div></div><div></div></div>
-    <!-- SLIDE 3 - POR QUE A VISITA É ESSENCIAL -->
-    <div class="slide"><div><div class="sk">Análise aprofundada</div><div class="st">Por que a <em>visita técnica</em> é essencial?</div><div class="sb">A análise in loco evita retrabalhos e garante precisão.</div><div class="info-box" style="background:var(--bg3);"><div class="info-grid"><div class="info-item"><div class="info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F08030" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div><h4>Infraestrutura</h4><p>Verificação de dutos, eletrocalhas, rede elétrica.</p></div></div><div class="info-item"><div class="info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F08030" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><h4>Cabeamento</h4><p>Avaliação de distâncias e interferências.</p></div></div><div class="info-item"><div class="info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F08030" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div><h4>Posicionamento</h4><p>Estratégico para máxima cobertura.</p></div></div><div class="info-item"><div class="info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F08030" stroke-width="1.8"><path d="M18 10a6 6 0 0 0-12 0v3a6 6 0 0 0 12 0zM6 10h12"/><path d="M12 22v-3"/></svg></div><div><h4>Análise de riscos</h4><p>Identificação de pontos críticos.</p></div></div></div></div></div><div></div></div>
-    <!-- SLIDE 4 - O QUE ESTÁ INCLUSO -->
-    <div class="slide"><div><div class="sk">Escopo da visita</div><div class="st">O que está incluso na <em>visita técnica</em></div><div class="sb">Diagnóstico completo e orientações precisas.</div><div class="info-box"><ul class="cond-list"><li><span class="cond-dot"></span><span><strong>Análise completa do local</strong> — levantamento estrutural, elétrico e de segurança.</span></li><li><span class="cond-dot"></span><span><strong>Definição da melhor solução</strong> — tecnologia adequada ao ambiente.</span></li><li><span class="cond-dot"></span><span><strong>Levantamento de materiais</strong> — especificação exata de equipamentos.</span></li><li><span class="cond-dot"></span><span><strong>Definição de pontos de instalação</strong> — posicionamento otimizado.</span></li><li><span class="cond-dot"></span><span><strong>Orientação técnica</strong> — recomendações sobre infraestrutura.</span></li><li><span class="cond-dot"></span><span><strong>Orçamento técnico detalhado</strong> — valores, prazos e garantias.</span></li></ul></div></div><div></div></div>
-    <!-- SLIDE 5 - INVESTIMENTO -->
-    <div class="slide"><div><div class="sk">Transparência total</div><div class="st">Investimento no <em>processo técnico</em></div><div class="sb">Visita profissional com custo revertido em benefício do cliente.</div><div class="highlight-box"><div class="price-label">VISITA TÉCNICA PARA ORÇAMENTO</div><div class="price-value">R$ 120,00</div><div class="price-note">✓ Valor integralmente abatido na aprovação da proposta</div><div class="price-note">Investimento que garante diagnóstico preciso e evita erros</div></div></div><div></div></div>
-    <!-- SLIDE 6 - OBJETIVO + CTA + AVATAR -->
-    <div class="slide"><div><div class="sk">Qualidade e confiança</div><div class="st">Objetivo deste <em>processo</em></div><div class="sb">Cada etapa foi desenhada para entregar soluções confiáveis e eficientes.</div><div class="info-box" style="background:var(--bg3); margin-bottom:14px"><div class="info-grid" style="grid-template-columns:1fr 1fr"><div class="info-item"><div class="info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#18C97A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div><h4>Evitar erros</h4><p>Orçamento preciso e compatível</p></div></div><div class="info-item"><div class="info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#18C97A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div><h4>Sem retrabalho</h4><p>Planejamento evita custos extras</p></div></div></div></div><div class="cta-box"><div class="cta-intro"><strong>Pronto para iniciar seu atendimento?</strong></div><div class="btn-wrap"><button class="btn-main" id="scheduleVisitBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Agendar visita para orçamento</button><button class="btn-sec" id="copyPixBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Copiar chave PIX</button></div><p style="margin-top:12px; font-size:11px; color:var(--gray)">Agendamento confirmado após PIX. Valor abatido do serviço final.</p></div><div class="author-block"><img src="https://files.catbox.moe/op6wq4.png" alt="Hélio Crispim" class="author-avatar"><div class="author-name">Hélio Crispim dos Santos Lima</div><div class="author-role">Engenheiro Eletricista · Attive Tecnologia</div><span class="author-crea">CREA-PB 12290192025PB</span></div></div><div></div></div>
-  </div>
-
-  <!-- Barra inferior: WhatsApp centralizado acima dos botões de navegação -->
-  <div class="bottom-bar">
-    <a class="wa-btn" href="https://wa.me/5583996787788?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20processo%20de%20atendimento%20t%C3%A9cnico%20da%20Attive." target="_blank" rel="noopener">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      <span>Tire suas dúvidas!</span>
-    </a>
-    <div class="nav-buttons">
-      <button class="nav-btn" id="prevBtn">◀ <span>Anterior</span></button>
-      <button class="nav-btn" id="nextBtn"><span>Próximo</span> ▶</button>
-    </div>
-  </div>
-
-  <div class="page-indicator" id="pageIndicator">1 / 6</div>
-
-<div id="toastCopy" class="toast-msg">✅ Chave PIX copiada: attivetecnologia@gmail.com</div>
+<div id="appRoot"></div>
 
 <script>
-  (function() {
-    const slidesWrapper = document.getElementById('slidesWrapper');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const indicator = document.getElementById('pageIndicator');
-    const totalSlides = document.querySelectorAll('.slide').length;
-    let currentIndex = 0;
-    
-    function goToSlide(index) {
-      if (index < 0) index = 0;
-      if (index >= totalSlides) index = totalSlides - 1;
-      if (index === currentIndex) return;
-      currentIndex = index;
-      slidesWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-      indicator.innerText = `${currentIndex + 1} / ${totalSlides}`;
-      if (prevBtn) prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
-      if (nextBtn) nextBtn.style.opacity = currentIndex === totalSlides - 1 ? '0.5' : '1';
-    }
-    
-    function nextSlide() { goToSlide(currentIndex + 1); }
-    function prevSlide() { goToSlide(currentIndex - 1); }
-    
-    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-    
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') prevSlide();
-      if (e.key === 'ArrowRight') nextSlide();
-    });
-    
-    // Swipe touch
-    let touchStartX = 0, touchEndX = 0;
-    const container = document.getElementById('slidesContainer');
-    container.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
-    container.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].clientX;
-      const diffX = touchEndX - touchStartX;
-      if (Math.abs(diffX) > 50) diffX > 0 ? prevSlide() : nextSlide();
-      touchStartX = 0; touchEndX = 0;
-    });
-    
-    // Mouse drag
-    let mouseStartX = 0, mouseEndX = 0, isMouseDown = false;
-    container.addEventListener('mousedown', (e) => {
-      mouseStartX = e.clientX;
-      isMouseDown = true;
-      slidesWrapper.style.cursor = 'grabbing';
-    });
-    window.addEventListener('mouseup', (e) => {
-      if (!isMouseDown) return;
-      mouseEndX = e.clientX;
-      const diffX = mouseEndX - mouseStartX;
-      if (Math.abs(diffX) > 50) diffX > 0 ? prevSlide() : nextSlide();
-      isMouseDown = false;
-      slidesWrapper.style.cursor = 'grab';
-      mouseStartX = 0; mouseEndX = 0;
-    });
-    container.addEventListener('dragstart', (e) => e.preventDefault());
-    
-    goToSlide(0);
-    
-    document.getElementById('scheduleVisitBtn')?.addEventListener('click', () => {
-      window.open('https://wa.me/5583996787788?text=Ol%C3%A1%2C%20li%20o%20informativo%20e%20gostaria%20de%20agendar%20a%20visita%20t%C3%A9cnica%20para%20or%C3%A7amento.%20Como%20prosseguir%20com%20o%20pagamento%20do%20PIX%3F', '_blank');
-    });
-    
-    const copyBtn = document.getElementById('copyPixBtn');
-    const toast = document.getElementById('toastCopy');
-    const pixKey = 'attivetecnologia@gmail.com';
-    if (copyBtn) {
-      copyBtn.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(pixKey);
-          toast?.classList.add('show');
-          setTimeout(() => toast?.classList.remove('show'), 2500);
-        } catch (err) {
-          const textarea = document.createElement('textarea');
-          textarea.value = pixKey;
-          textarea.style.position = 'fixed';
-          textarea.style.opacity = '0';
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textarea);
-          toast?.classList.add('show');
-          setTimeout(() => toast?.classList.remove('show'), 2500);
-        }
-      });
-    }
-  })();
-</script>
+    // ========== CONFIGURAÇÃO DO SUPABASE ==========
+    const SUPABASE_URL = "SUA_URL_DO_SUPABASE";  // Ex: https://seuprojeto.supabase.co
+    const SUPABASE_ANON_KEY = "SUA_ANON_KEY";    // Anon Public Key
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+    // ========== DADOS LOCAIS (apenas estado) ==========
+    let currentUser = null;          // { id, email, nome, papel, endereco, latCasa, lngCasa }
+    let watchId = null;
+    let ultimoEnvio = { timestamp: 0, lat: 0, lng: 0, bearing: 0 };
+    let ultimoEnvioPorAngulo = 0;
+    let clientMap = null, clientMarker = null, casaMarker = null;
+    let motoMap = null, motoMarker = null;
+    let clientUpdateInterval = null;
+    let posicaoSubscription = null;
+
+    // Cache para geocodificação reversa (endereço a partir de lat/lng)
+    let reverseCache = {};
+
+    // ========== FUNÇÕES AUXILIARES ==========
+    function calcularDistancia(lat1, lon1, lat2, lon2) {
+        const R = 6371000;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat/2)**2 + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) * Math.sin(dLon/2)**2;
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    }
+
+    function calcularBearing(lat1, lng1, lat2, lng2) {
+        const toRad = d => d * Math.PI/180;
+        const toDeg = r => r * 180/Math.PI;
+        const dLng = toRad(lng2 - lng1);
+        const y = Math.sin(dLng) * Math.cos(toRad(lat2));
+        const x = Math.cos(toRad(lat1))*Math.sin(toRad(lat2)) - Math.sin(toRad(lat1))*Math.cos(toRad(lat2))*Math.cos(dLng);
+        let bearing = toDeg(Math.atan2(y, x));
+        return (bearing + 360) % 360;
+    }
+
+    async function obterEnderecoAproximado(lat, lng) {
+        const chave = `${lat.toFixed(5)},${lng.toFixed(5)}`;
+        if (reverseCache[chave]) return reverseCache[chave];
+        try {
+            const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            let endereco = "Endereço não identificado";
+            if (data.address) {
+                const rua = data.address.road || data.address.street || data.address.suburb || "";
+                const numero = data.address.house_number || "";
+                endereco = rua && numero ? `${rua}, ${numero}` : (rua || data.address.city || "Localização aproximada");
+            }
+            reverseCache[chave] = endereco;
+            if (Object.keys(reverseCache).length > 200) delete reverseCache[Object.keys(reverseCache)[0]];
+            return endereco;
+        } catch(e) { return "Rua não identificada"; }
+    }
+
+    function criarIconeMoto() {
+        return L.divIcon({ html: '<i class="fas fa-motorcycle"></i>', iconSize: [30,30], className: 'moto-marker', popupAnchor: [0,-10] });
+    }
+    function criarIconeCasa() {
+        return L.divIcon({ html: '<i class="fas fa-home"></i>', iconSize: [24,24], className: 'casa-marker', popupAnchor: [0,-10] });
+    }
+
+    // ========== RASTREAMENTO INTELIGENTE (motoqueiro) ==========
+    async function enviarPosicao(lat, lng, precisao, timestamp) {
+        if (!currentUser || currentUser.papel !== 'motoqueiro') return;
+        const dataHoraStr = new Date(timestamp).toLocaleString('pt-BR');
+        // Inserir na tabela posicoes
+        const { error } = await supabase.from('posicoes').insert({
+            motoqueiro_id: currentUser.id,
+            latitude: lat,
+            longitude: lng,
+            precisao: precisao,
+            timestamp: new Date(timestamp).toISOString()
+        });
+        if (error) console.error("Erro ao inserir posição:", error);
+        else console.log("Posição enviada:", dataHoraStr);
+
+        // Detectar passagem automática (distância <= 50m de cada cliente)
+        const { data: clientes, error: clientesError } = await supabase
+            .from('usuarios')
+            .select('id, endereco, ultima_passagem')
+            .eq('papel', 'cliente');
+        if (!clientesError && clientes) {
+            for (let cliente of clientes) {
+                if (!cliente.endereco) continue;
+                // Geocodificar endereço do cliente (uma vez, mas aqui simplificamos)
+                let coords = await geocodificarEndereco(cliente.endereco);
+                if (coords) {
+                    const dist = calcularDistancia(lat, lng, coords.lat, coords.lng);
+                    if (dist <= 50) {
+                        const ultima = cliente.ultima_passagem ? new Date(cliente.ultima_passagem).getTime() : 0;
+                        if (timestamp - ultima > 60000) {
+                            // Atualizar ultima_passagem do cliente
+                            await supabase.from('usuarios').update({ ultima_passagem: new Date(timestamp).toISOString() }).eq('id', cliente.id);
+                            // Inserir na tabela rondas
+                            await supabase.from('rondas').insert({
+                                cliente_id: cliente.id,
+                                motoqueiro_id: currentUser.id,
+                                timestamp: new Date(timestamp).toISOString(),
+                                distancia_metros: Math.round(dist)
+                            });
+                            console.log(`Passagem registrada para cliente ${cliente.id} - ${dataHoraStr}`);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    async function geocodificarEndereco(endereco) {
+        // Usa Nominatim com cache simples
+        const cacheKey = `geo_${endereco}`;
+        if (window.geoCache && window.geoCache[cacheKey]) return window.geoCache[cacheKey];
+        try {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}&limit=1`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (data && data[0]) {
+                const coords = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+                if (!window.geoCache) window.geoCache = {};
+                window.geoCache[cacheKey] = coords;
+                return coords;
+            }
+        } catch(e) { console.error("Geocodificação falhou", e); }
+        return null;
+    }
+
+    function iniciarRastreamentoMoto() {
+        if (!navigator.geolocation) return;
+        if (watchId !== null) return;
+        const verificarEnvio = (position) => {
+            const { latitude, longitude, accuracy } = position.coords;
+            const agora = Date.now();
+            const tempoDecorrido = agora - ultimoEnvio.timestamp;
+            let variacaoAngulo = 0;
+            if (ultimoEnvio.timestamp > 0) {
+                const bearingAtual = calcularBearing(ultimoEnvio.lat, ultimoEnvio.lng, latitude, longitude);
+                let diff = Math.abs(bearingAtual - ultimoEnvio.bearing);
+                variacaoAngulo = Math.min(diff, 360 - diff);
+            }
+            let deveEnviar = false;
+            if (ultimoEnvio.timestamp === 0) deveEnviar = true;
+            else if (tempoDecorrido >= 60000) deveEnviar = true;
+            else if (variacaoAngulo >= 10 && (agora - ultimoEnvioPorAngulo) >= 10000) deveEnviar = true;
+            if (deveEnviar) {
+                enviarPosicao(latitude, longitude, accuracy, agora);
+                ultimoEnvio = {
+                    timestamp: agora,
+                    lat: latitude,
+                    lng: longitude,
+                    bearing: variacaoAngulo === 0 ? 0 : calcularBearing(ultimoEnvio.lat, ultimoEnvio.lng, latitude, longitude)
+                };
+                if (variacaoAngulo >= 10) ultimoEnvioPorAngulo = agora;
+                if (motoMap) atualizarMapaMoto(latitude, longitude);
+            }
+        };
+        watchId = navigator.geolocation.watchPosition(verificarEnvio, (err) => console.error(err), { enableHighAccuracy: true, timeout: 15000 });
+    }
+
+    function pararRastreamentoMoto() {
+        if (watchId) { navigator.geolocation.clearWatch(watchId); watchId = null; }
+    }
+    function atualizarMapaMoto(lat, lng) {
+        if (!motoMap) return;
+        if (!motoMarker) motoMarker = L.marker([lat,lng], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Sua posição").openPopup();
+        else motoMarker.setLatLng([lat,lng]);
+        motoMap.setView([lat,lng], 15);
+        // Atualizar popup com endereço
+        obterEnderecoAproximado(lat, lng).then(end => {
+            motoMarker.bindPopup(`<b>Sua posição</b><br>${end}`).openPopup();
+        });
+    }
+
+    // ========== RECEBER POSIÇÃO EM TEMPO REAL (CLIENTE) ==========
+    function assinarPosicaoMoto() {
+        if (posicaoSubscription) posicaoSubscription.unsubscribe();
+        posicaoSubscription = supabase
+            .channel('posicoes')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posicoes' }, (payload) => {
+                const novaPos = payload.new;
+                if (clientMarker && clientMap) {
+                    clientMarker.setLatLng([novaPos.latitude, novaPos.longitude]);
+                    clientMap.setView([novaPos.latitude, novaPos.longitude], 14);
+                    const dataHora = new Date(novaPos.timestamp).toLocaleString('pt-BR');
+                    document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${dataHora}`;
+                    obterEnderecoAproximado(novaPos.latitude, novaPos.longitude).then(end => {
+                        clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`).openPopup();
+                    });
+                }
+            })
+            .subscribe();
+    }
+
+    // ========== TELAS ==========
+    async function fazerLogin(email, senha) {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, senha });
+        if (error) { alert("Erro: " + error.message); return false; }
+        // Buscar dados adicionais na tabela usuarios
+        const { data: userData, error: userError } = await supabase
+            .from('usuarios')
+            .select('*')
+            .eq('email', email)
+            .single();
+        if (userError) { alert("Usuário não encontrado na tabela."); return false; }
+        currentUser = {
+            id: userData.id,
+            email: userData.email,
+            nome: userData.nome,
+            papel: userData.papel,
+            endereco: userData.endereco,
+            latCasa: null, lngCasa: null
+        };
+        if (currentUser.endereco) {
+            const coords = await geocodificarEndereco(currentUser.endereco);
+            if (coords) { currentUser.latCasa = coords.lat; currentUser.lngCasa = coords.lng; }
+        }
+        return true;
+    }
+
+    async function fazerCadastroCliente(email, senha, nome, endereco, telefone) {
+        // Criar usuário no auth
+        const { data, error } = await supabase.auth.signUp({ email, password: senha });
+        if (error) { alert(error.message); return false; }
+        // Inserir na tabela usuarios
+        const { error: insertError } = await supabase.from('usuarios').insert({
+            id: data.user.id,
+            email: email,
+            nome: nome,
+            papel: 'cliente',
+            endereco: endereco,
+            telefone: telefone
+        });
+        if (insertError) { alert("Erro ao cadastrar: " + insertError.message); return false; }
+        return true;
+    }
+
+    function renderAuthScreen() {
+        const root = document.getElementById("appRoot");
+        root.innerHTML = `
+            <div class="auth-screen">
+                <h2 style="text-align:center">Ronda Noturna</h2>
+                <div id="loginForm">
+                    <input type="email" id="loginEmail" placeholder="E-mail" />
+                    <input type="password" id="loginSenha" placeholder="Senha" />
+                    <button id="loginBtn">Entrar</button>
+                    <div class="toggle-auth" id="showReg">Cadastrar-se como cliente</div>
+                </div>
+                <div id="regForm" class="hidden">
+                    <input type="text" id="regNome" placeholder="Nome completo" />
+                    <input type="email" id="regEmail" placeholder="E-mail" />
+                    <input type="password" id="regSenha" placeholder="Senha" />
+                    <input type="text" id="regEndereco" placeholder="Endereço completo" />
+                    <input type="text" id="regTelefone" placeholder="Telefone" />
+                    <button id="regBtn">Cadastrar</button>
+                    <div class="toggle-auth" id="backToLogin">← Voltar ao login</div>
+                </div>
+            </div>
+        `;
+        document.getElementById("loginBtn").onclick = async () => {
+            const email = document.getElementById("loginEmail").value.trim();
+            const senha = document.getElementById("loginSenha").value;
+            if (await fazerLogin(email, senha)) {
+                if (currentUser.papel === 'cliente') renderDashboardCliente();
+                else if (currentUser.papel === 'motoqueiro') renderDashboardMoto();
+                else if (currentUser.papel === 'admin') alert("Painel admin em breve");
+            }
+        };
+        document.getElementById("showReg").onclick = () => {
+            document.getElementById("loginForm").classList.add("hidden");
+            document.getElementById("regForm").classList.remove("hidden");
+        };
+        document.getElementById("backToLogin").onclick = () => {
+            document.getElementById("regForm").classList.add("hidden");
+            document.getElementById("loginForm").classList.remove("hidden");
+        };
+        document.getElementById("regBtn").onclick = async () => {
+            const nome = document.getElementById("regNome").value.trim();
+            const email = document.getElementById("regEmail").value.trim();
+            const senha = document.getElementById("regSenha").value;
+            const endereco = document.getElementById("regEndereco").value.trim();
+            const telefone = document.getElementById("regTelefone").value.trim();
+            if (!nome || !email || !senha || !endereco) { alert("Preencha todos os campos"); return; }
+            if (await fazerCadastroCliente(email, senha, nome, endereco, telefone)) {
+                alert("Cadastro realizado! Faça login.");
+                document.getElementById("regForm").classList.add("hidden");
+                document.getElementById("loginForm").classList.remove("hidden");
+            }
+        };
+    }
+
+    async function renderDashboardCliente() {
+        if (clientUpdateInterval) clearInterval(clientUpdateInterval);
+        const root = document.getElementById("appRoot");
+        root.innerHTML = `
+            <div class="app-container">
+                <div class="header">
+                    <div class="logo"><h1><i class="fas fa-motorcycle"></i> Ronda Noturna</h1></div>
+                    <div class="user-info">
+                        <i class="fas fa-user"></i> ${currentUser.nome}
+                        <button class="editar-btn" id="editarEnderecoBtn"><i class="fas fa-edit"></i> Editar endereço</button>
+                        <button class="logout-btn" id="logoutBtn">Sair</button>
+                    </div>
+                </div>
+                <div class="dashboard">
+                    <div class="card">
+                        <h3><i class="fas fa-map-marked-alt"></i> Localização do Motoqueiro</h3>
+                        <div id="mapContainer" class="map-container"></div>
+                        <div class="info-hora" id="ultimaPosicaoHora">Última atualização: aguardando...</div>
+                        <div class="ultima-passagem" id="ultimaPassagem">Última passagem: aguardando...</div>
+                        <button class="panico-btn" id="panicoBtn"><i class="fas fa-bell"></i> Pânico - Acionar Motoqueiro</button>
+                    </div>
+                </div>
+                <footer>Posição atualizada em tempo real. Ícone da casa mostra seu endereço.</footer>
+            </div>
+        `;
+        if (clientMap) clientMap.remove();
+        clientMap = L.map("mapContainer").setView([-23.5505, -46.6333], 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' }).addTo(clientMap);
+        clientMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto() }).addTo(clientMap).bindPopup("Motoqueiro");
+
+        function atualizarMarcadorCasa() {
+            if (casaMarker) casaMarker.remove();
+            if (currentUser.latCasa && currentUser.lngCasa) {
+                casaMarker = L.marker([currentUser.latCasa, currentUser.lngCasa], { icon: criarIconeCasa() }).addTo(clientMap)
+                    .bindPopup(`<b>Sua casa</b><br>${currentUser.endereco}`).openPopup();
+                clientMap.fitBounds(L.latLngBounds([[currentUser.latCasa, currentUser.lngCasa]]));
+            }
+        }
+        atualizarMarcadorCasa();
+
+        // Buscar última passagem do cliente
+        const { data: rondaData, error: rondaError } = await supabase
+            .from('rondas')
+            .select('timestamp')
+            .eq('cliente_id', currentUser.id)
+            .order('timestamp', { ascending: false })
+            .limit(1);
+        if (!rondaError && rondaData && rondaData[0]) {
+            const ultima = new Date(rondaData[0].timestamp).toLocaleString('pt-BR');
+            document.getElementById("ultimaPassagem").innerHTML = `<i class="fas fa-clock"></i> Última passagem: ${ultima}`;
+        } else {
+            document.getElementById("ultimaPassagem").innerHTML = `<i class="fas fa-clock"></i> Última passagem: Nenhuma ainda`;
+        }
+
+        // Assinar novas posições
+        assinarPosicaoMoto();
+
+        document.getElementById("editarEnderecoBtn").onclick = async () => {
+            const novoEnd = prompt("Digite seu novo endereço completo:", currentUser.endereco);
+            if (novoEnd && novoEnd.trim()) {
+                const coords = await geocodificarEndereco(novoEnd);
+                if (!coords) { alert("Endereço não encontrado."); return; }
+                currentUser.endereco = novoEnd;
+                currentUser.latCasa = coords.lat;
+                currentUser.lngCasa = coords.lng;
+                await supabase.from('usuarios').update({ endereco: novoEnd }).eq('id', currentUser.id);
+                atualizarMarcadorCasa();
+                alert("Endereço atualizado!");
+            }
+        };
+        document.getElementById("logoutBtn").onclick = () => {
+            if (posicaoSubscription) posicaoSubscription.unsubscribe();
+            supabase.auth.signOut();
+            currentUser = null;
+            renderAuthScreen();
+        };
+        document.getElementById("panicoBtn").onclick = async () => {
+            alert("Pânico acionado! O motoqueiro foi notificado.");
+            // Aqui você pode inserir uma notificação na tabela "alertas" (opcional)
+        };
+    }
+
+    async function renderDashboardMoto() {
+        if (clientUpdateInterval) clearInterval(clientUpdateInterval);
+        const root = document.getElementById("appRoot");
+        root.innerHTML = `
+            <div class="app-container">
+                <div class="header">
+                    <div class="logo"><h1><i class="fas fa-motorcycle"></i> Painel Motoqueiro</h1></div>
+                    <div class="user-info"><i class="fas fa-user-astronaut"></i> ${currentUser.nome}<button class="logout-btn" id="logoutMotoBtn">Sair</button></div>
+                </div>
+                <div class="dashboard">
+                    <div class="card">
+                        <h3><i class="fas fa-satellite-dish"></i> Minha Localização (envio a cada 60s ou >10°)</h3>
+                        <div id="motoMapContainer" class="map-container"></div>
+                        <div id="gpsStatus" class="status-gps">Inicializando...</div>
+                        <div id="horaUltimaPosicao" class="info-hora"></div>
+                        <button id="pararRastreamentoBtn" style="background:#ef4444; width:100%; padding:8px; border:none; border-radius:40px; margin-top:8px;">Desativar GPS</button>
+                        <button id="reiniciarRastreamentoBtn" style="background:#22c55e; width:100%; padding:8px; border:none; border-radius:40px; margin-top:8px;">Ativar GPS</button>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-bell"></i> Alertas de pânico (em breve)</h3>
+                        <div id="alertasPanico"><p>Nenhum alerta</p></div>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-history"></i> Histórico de rondas realizadas (automático)</h3>
+                        <div id="historicoMoto" style="max-height:200px; overflow-y:auto;">Carregando...</div>
+                    </div>
+                </div>
+                <footer>GPS envia posição a cada 60s ou quando muda direção >10°.</footer>
+            </div>
+        `;
+        if (motoMap) motoMap.remove();
+        motoMap = L.map("motoMapContainer").setView([-23.5505, -46.6333], 15);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(motoMap);
+        motoMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Sua posição");
+        // Carregar histórico de rondas
+        const { data: rondas, error } = await supabase
+            .from('rondas')
+            .select('*, usuarios(nome, endereco)')
+            .eq('motoqueiro_id', currentUser.id)
+            .order('timestamp', { ascending: false });
+        if (!error && rondas) {
+            document.getElementById("historicoMoto").innerHTML = rondas.map(r => `<div><i class="fas fa-check-circle"></i> ${new Date(r.timestamp).toLocaleString('pt-BR')} - ${r.usuarios?.endereco || 'Cliente'}</div>`).join('') || "Nenhuma ronda registrada";
+        } else {
+            document.getElementById("historicoMoto").innerHTML = "Nenhuma ronda registrada";
+        }
+
+        document.getElementById("pararRastreamentoBtn").onclick = () => pararRastreamentoMoto();
+        document.getElementById("reiniciarRastreamentoBtn").onclick = () => { pararRastreamentoMoto(); iniciarRastreamentoMoto(); };
+        document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); supabase.auth.signOut(); currentUser = null; renderAuthScreen(); };
+        iniciarRastreamentoMoto();
+    }
+
+    // Verificar se já existe sessão ativa
+    async function checkSession() {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (session) {
+            const { data: userData } = await supabase.from('usuarios').select('*').eq('email', session.user.email).single();
+            if (userData) {
+                currentUser = {
+                    id: userData.id,
+                    email: userData.email,
+                    nome: userData.nome,
+                    papel: userData.papel,
+                    endereco: userData.endereco,
+                    latCasa: null, lngCasa: null
+                };
+                if (currentUser.endereco) {
+                    const coords = await geocodificarEndereco(currentUser.endereco);
+                    if (coords) { currentUser.latCasa = coords.lat; currentUser.lngCasa = coords.lng; }
+                }
+                if (currentUser.papel === 'cliente') renderDashboardCliente();
+                else if (currentUser.papel === 'motoqueiro') renderDashboardMoto();
+                else renderAuthScreen();
+                return;
+            }
+        }
+        renderAuthScreen();
+    }
+
+    checkSession();
+</script>
 </body>
 </html>
