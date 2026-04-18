@@ -122,7 +122,7 @@
         } catch(e) { return "Rua não identificada"; }
     }
 
-    // Carregar dados (garantindo que termina antes da UI)
+    // Carregar dados (com timeout na geocodificação para não travar no celular)
     async function loadDB() {
         const storedClients = localStorage.getItem("rondaClients");
         if(storedClients) {
@@ -134,10 +134,16 @@
                 ultimaPassagem: null, historicoPassagens: [], latCasa: null, lngCasa: null
             }];
         }
-        // Geocodificar endereços dos clientes
+        // Geocodificar endereços dos clientes com timeout de 5 segundos por endereço
         for (let client of clientsDB) {
             if (!clientCoordsCache[client.endereco]) {
-                const coords = await geocodificarEndereco(client.endereco);
+                const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout geocoding")), 5000));
+                let coords = null;
+                try {
+                    coords = await Promise.race([geocodificarEndereco(client.endereco), timeoutPromise]);
+                } catch(e) {
+                    console.warn(`Falha ao geocodificar ${client.endereco}:`, e);
+                }
                 if (coords) {
                     clientCoordsCache[client.endereco] = coords;
                     client.latCasa = coords.lat;
@@ -571,9 +577,28 @@
         });
     }
 
-    // Inicialização
+    // ========== INICIALIZAÇÃO COM TRY/CATCH E TIMEOUT ==========
     (async () => {
-        await loadDB();
+        try {
+            await loadDB();
+        } catch(e) {
+            console.error("Erro no loadDB:", e);
+            // Garante que a tela aparece mesmo se loadDB falhar
+            if (!clientsDB.length) {
+                clientsDB = [{
+                    id: "c1", nome: "Hélio Crispim", telefone: "11999999999",
+                    endereco: "R. Manoel Elías de Castro, 471 - Nações, Campina Grande - PB", senha: "123",
+                    ultimaPassagem: null, historicoPassagens: [], latCasa: null, lngCasa: null
+                }];
+            }
+            if (!motoqueiroDB) {
+                motoqueiroDB = {
+                    id: "m1", nome: "Alex Moto", senha: "123",
+                    localizacao: { lat: -23.5505, lng: -46.6333, timestamp: Date.now() },
+                    historicoRondasFeitas: [], alertas: []
+                };
+            }
+        }
         renderAuthScreen();
     })();
 </script>
