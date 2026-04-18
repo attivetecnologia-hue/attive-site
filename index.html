@@ -44,9 +44,9 @@
 <div id="appRoot"></div>
 
 <script>
-    // ========== CONFIGURAÇÃO DO SUPABASE ==========
-    const SUPABASE_URL = "SUA_URL_DO_SUPABASE";  // Ex: https://seuprojeto.supabase.co
-    const SUPABASE_ANON_KEY = "SUA_ANON_KEY";    // Anon Public Key
+    // ========== CONFIGURAÇÃO DO SUPABASE (CREDENCIAIS INSERIDAS) ==========
+    const SUPABASE_URL = "https://xjjyaxccbylpiwpfoxaq.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_y9sDx5DqyjjXzV7CAxEpGQ_23W18H_t";
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // ========== DADOS LOCAIS (apenas estado) ==========
@@ -240,7 +240,7 @@
 
     // ========== TELAS ==========
     async function fazerLogin(email, senha) {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, senha });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
         if (error) { alert("Erro: " + error.message); return false; }
         // Buscar dados adicionais na tabela usuarios
         const { data: userData, error: userError } = await supabase
@@ -248,7 +248,7 @@
             .select('*')
             .eq('email', email)
             .single();
-        if (userError) { alert("Usuário não encontrado na tabela."); return false; }
+        if (userError) { alert("Usuário não encontrado na tabela. Contate o administrador."); return false; }
         currentUser = {
             id: userData.id,
             email: userData.email,
@@ -454,7 +454,7 @@
         // Carregar histórico de rondas
         const { data: rondas, error } = await supabase
             .from('rondas')
-            .select('*, usuarios(nome, endereco)')
+            .select('*, usuarios!rondas_cliente_id_fkey(nome, endereco)')
             .eq('motoqueiro_id', currentUser.id)
             .order('timestamp', { ascending: false });
         if (!error && rondas) {
@@ -473,7 +473,11 @@
     async function checkSession() {
         const { data: { session }, error } = await supabase.auth.getSession();
         if (session) {
-            const { data: userData } = await supabase.from('usuarios').select('*').eq('email', session.user.email).single();
+            const { data: userData, error: userError } = await supabase
+                .from('usuarios')
+                .select('*')
+                .eq('email', session.user.email)
+                .single();
             if (userData) {
                 currentUser = {
                     id: userData.id,
