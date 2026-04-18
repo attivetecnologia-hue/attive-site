@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Ronda Noturna - Rastreamento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0f1e; color: #eef2ff; padding: 12px; }
+        .app-container { max-width: 100%; margin: 0 auto; background: #0f172a; border-radius: 24px; overflow: hidden; border: 1px solid #1e293b; }
+        .header { background: #020617; padding: 0.8rem 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .logo h1 { font-size: 1.3rem; font-weight: 700; background: linear-gradient(135deg, #facc15, #ff8c00); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .user-info { display: flex; align-items: center; gap: 12px; background: #1e293b; padding: 6px 16px; border-radius: 40px; font-size: 0.85rem; }
+        .logout-btn { background: none; border: 1px solid #ef4444; color: #fecaca; padding: 4px 12px; border-radius: 40px; cursor: pointer; }
+        .dashboard { padding: 1rem; display: flex; flex-direction: column; gap: 1rem; }
+        .card { background: #111827; border-radius: 20px; padding: 1rem; border: 1px solid #1f2a44; }
+        .card h3 { font-size: 1.1rem; margin-bottom: 0.8rem; border-left: 3px solid #facc15; padding-left: 10px; display: flex; align-items: center; gap: 8px; }
+        .map-container { height: 280px; border-radius: 16px; overflow: hidden; background: #1e293b; }
+        .panico-btn { background: #dc2626; width: 100%; padding: 12px; border: none; border-radius: 60px; font-weight: bold; color: white; cursor: pointer; margin-top: 12px; font-size: 1rem; }
+        .rua-item { background: #1e293b; padding: 8px 12px; border-radius: 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .btn-passagem { background: #facc15; border: none; padding: 6px 14px; border-radius: 40px; font-weight: bold; cursor: pointer; }
+        .status-gps { font-size: 0.75rem; margin-top: 8px; padding: 6px; border-radius: 16px; background: #1e293b; text-align: center; }
+        .auth-screen { max-width: 400px; margin: 30px auto; background: #111827; border-radius: 28px; padding: 1.5rem; }
+        .auth-screen input { width: 100%; padding: 12px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: white; }
+        .auth-screen button { width: 100%; background: #facc15; border: none; padding: 12px; border-radius: 40px; font-weight: bold; margin-top: 15px; cursor: pointer; color: #0f172a; }
+        .toggle-auth { text-align: center; margin-top: 15px; color: #94a3b8; cursor: pointer; font-size: 0.85rem; }
+        .hidden { display: none; }
+        .moto-marker i { font-size: 28px; color: #0047AB; text-shadow: 1px 1px 0 #000; }
+        footer { text-align: center; padding: 1rem; font-size: 0.7rem; color: #475569; border-top: 1px solid #1e293b; }
+        @media (min-width: 768px) {
+            .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div id="appRoot"></div>
+
+<script>
+    // ========== CONFIGURAÇÃO DO FIREBASE ==========
+    const firebaseConfig = {
+        apiKey: "SUA_API_KEY",
+        authDomain: "SEU_PROJETO.firebaseapp.com",
+        databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
+        projectId: "SEU_PROJETO",
+        storageBucket: "SEU_PROJETO.appspot.com",
+        messagingSenderId: "SEU_SENDER_ID",
+        appId: "SEU_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const posicaoRef = database.ref('ronda/posicaoMotoqueiro');
+
+    // ========== DADOS LOCAIS ==========
+    let clientsDB = [];
+    let motoqueiroDB = null;
+    let watchId = null;
+    let currentUser = null;
+    let clientUpdateInterval = null;
+    let motoMap = null, motoMarker = null, clientMap = null, clientMarker = null;
+
+    // Carregar dados do localStorage
+    function loadDB() {
+        const storedClients = localStorage.getItem("rondaClients");
+        if(storedClients) {
+            clientsDB = JSON.parse(storedClients);
+        } else {
+            clientsDB = [{
+                id: "c1", nome: "Hélio Crispim", telefone: "11999999999",
+                endereco: "R. Manoel Elías de Castro, 471 - Nações, Campina Grande - PB", senha: "123"
+            }];
+            localStorage.setItem("rondaClients", JSON.stringify(clientsDB));
+        }
+        const storedMoto = localStorage.getItem("rondaMotoqueiro");
+        if(storedMoto) {
+            motoqueiroDB = JSON.parse(storedMoto);
+        } else {
+            motoqueiroDB = {
+                id: "m1", nome: "Alex Moto", senha: "123",
+                localizacao: { lat: -23.5505, lng: -46.6333, timestamp: Date.now() },
+                historicoRondasFeitas: [], alertas: []
+            };
+            localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
+        }
+    }
+    function saveDB() {
+        localStorage.setItem("rondaClients", JSON.stringify(clientsDB));
+        localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
+    }
+
+    // Ícone da moto
+    function criarIconeMoto() {
+        return L.divIcon({
+            html: '<i class="fas fa-motorcycle"></i>',
+            iconSize: [30,30],
+            className: 'moto-marker',
+            popupAnchor: [0,-10]
+        });
+    }
+
+    // ========== RASTREAMENTO DO MOTOQUEIRO (envia posição a cada 30s) ==========
+    function iniciarRastreamentoMoto() {
+        if (!navigator.geolocation) {
+            atualizarStatusGPS("Geolocalização não suportada.", false);
+            return;
+        }
+        if (watchId !== null) return;
+        atualizarStatusGPS("Iniciando GPS...", false);
+        const enviarPosicao = () => {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude, accuracy } = position.coords;
+                    const posObj = {
+                        lat: latitude,
+                        lng: longitude,
+                        timestamp: Date.now(),
+                        accuracy: accuracy
+                    };
+                    posicaoRef.set(posObj);
+                    motoqueiroDB.localizacao = posObj;
+                    localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
+                    atualizarStatusGPS(`Posição enviada. Precisão: ${accuracy}m`, true);
+                    if (currentUser?.type === 'moto' && motoMap) atualizarMapaMoto(latitude, longitude);
+                },
+                (error) => {
+                    let msg = "";
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED: msg = "Permissão negada."; break;
+                        case error.POSITION_UNAVAILABLE: msg = "Sinal GPS indisponível."; break;
+                        case error.TIMEOUT: msg = "Tempo limite excedido."; break;
+                        default: msg = "Erro desconhecido.";
+                    }
+                    atualizarStatusGPS(`Erro: ${msg}`, false);
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        };
+        enviarPosicao();
+        watchId = setInterval(enviarPosicao, 30000);
+    }
+    function pararRastreamentoMoto() {
+        if (watchId) { clearInterval(watchId); watchId = null; }
+        atualizarStatusGPS("Rastreamento desativado.", false);
+    }
+    function atualizarStatusGPS(mensagem, isOk) {
+        const div = document.getElementById("gpsStatus");
+        if (div) {
+            div.innerHTML = `<i class="fas ${isOk ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i> ${mensagem}`;
+            div.className = `status-gps ${isOk ? 'ok' : 'erro'}`;
+        }
+    }
+    function atualizarMapaMoto(lat, lng) {
+        if (!motoMap) return;
+        if (!motoMarker) motoMarker = L.marker([lat,lng], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Sua posição").openPopup();
+        else motoMarker.setLatLng([lat,lng]);
+        motoMap.setView([lat,lng], 15);
+    }
+
+    // ========== TELAS DE AUTENTICAÇÃO ==========
+    function renderAuthScreen() {
+        const root = document.getElementById("appRoot");
+        root.innerHTML = `
+            <div class="auth-screen">
+                <h2 style="text-align:center">Ronda Noturna</h2>
+                <div style="display:flex; gap:10px; margin:20px 0;">
+                    <button id="btnClienteLogin" style="flex:1;">Sou Cliente</button>
+                    <button id="btnMotoLogin" style="flex:1;">Sou Motoqueiro</button>
+                </div>
+                <div id="loginFormCliente" class="hidden">
+                    <input type="text" id="cliTelefone" placeholder="Telefone" />
+                    <input type="password" id="cliSenha" placeholder="Senha" />
+                    <button id="loginClienteBtn">Entrar</button>
+                    <div class="toggle-auth" id="showRegCliente">Cadastrar cliente</div>
+                </div>
+                <div id="loginFormMoto" class="hidden">
+                    <input type="text" id="motoNome" placeholder="Nome" />
+                    <input type="password" id="motoSenha" placeholder="Senha" />
+                    <button id="loginMotoBtn">Entrar</button>
+                    <div class="toggle-auth" id="showRegMoto">Cadastrar motoqueiro</div>
+                </div>
+                <div id="regCliente" class="hidden">
+                    <input type="text" id="regNome" placeholder="Nome" />
+                    <input type="text" id="regTelefone" placeholder="Telefone" />
+                    <input type="text" id="regEndereco" placeholder="Endereço" />
+                    <input type="password" id="regSenha" placeholder="Senha" />
+                    <button id="cadastrarClienteBtn">Cadastrar</button>
+                    <div class="toggle-auth" id="backToLoginCliente">Voltar</div>
+                </div>
+                <div id="regMoto" class="hidden">
+                    <input type="text" id="motoRegNome" placeholder="Nome" />
+                    <input type="password" id="motoRegSenha" placeholder="Senha" />
+                    <button id="cadastrarMotoBtn">Cadastrar</button>
+                    <div class="toggle-auth" id="backToLoginMoto">Voltar</div>
+                </div>
+            </div>
+        `;
+        function showLogin(tipo) {
+            document.getElementById("loginFormCliente").classList.toggle("hidden", tipo !== "cliente");
+            document.getElementById("loginFormMoto").classList.toggle("hidden", tipo !== "moto");
+            document.getElementById("regCliente").classList.add("hidden");
+            document.getElementById("regMoto").classList.add("hidden");
+        }
+        function showRegister(tipo) {
+            if(tipo === "cliente") {
+                document.getElementById("loginFormCliente").classList.add("hidden");
+                document.getElementById("regCliente").classList.remove("hidden");
+            } else {
+                document.getElementById("loginFormMoto").classList.add("hidden");
+                document.getElementById("regMoto").classList.remove("hidden");
+            }
+        }
+        document.getElementById("btnClienteLogin").onclick = () => showLogin("cliente");
+        document.getElementById("btnMotoLogin").onclick = () => showLogin("moto");
+        document.getElementById("loginClienteBtn").onclick = () => {
+            const tel = document.getElementById("cliTelefone").value.trim();
+            const senha = document.getElementById("cliSenha").value;
+            const client = clientsDB.find(c => c.telefone === tel && c.senha === senha);
+            if(client) { currentUser = { type: "client", data: client }; renderDashboardCliente(client); }
+            else alert("Cliente não encontrado. Demo: 11999999999 / 123");
+        };
+        document.getElementById("loginMotoBtn").onclick = () => {
+            const nome = document.getElementById("motoNome").value.trim();
+            const senha = document.getElementById("motoSenha").value;
+            if(motoqueiroDB && motoqueiroDB.nome === nome && motoqueiroDB.senha === senha) {
+                currentUser = { type: "moto", data: motoqueiroDB };
+                renderDashboardMoto(motoqueiroDB);
+            } else alert("Motoqueiro não encontrado. Demo: Alex Moto / 123");
+        };
+        document.getElementById("showRegCliente").onclick = () => showRegister("cliente");
+        document.getElementById("showRegMoto").onclick = () => showRegister("moto");
+        document.getElementById("cadastrarClienteBtn").onclick = () => {
+            const nome = document.getElementById("regNome").value.trim();
+            const tel = document.getElementById("regTelefone").value.trim();
+            const end = document.getElementById("regEndereco").value.trim();
+            const senha = document.getElementById("regSenha").value;
+            if(!nome || !tel || !end || !senha) return alert("Preencha todos");
+            if(clientsDB.find(c => c.telefone === tel)) return alert("Telefone já existe");
+            clientsDB.push({ id: Date.now().toString(), nome, telefone: tel, endereco: end, senha });
+            saveDB();
+            alert("Cadastrado! Faça login.");
+            showLogin("cliente");
+        };
+        document.getElementById("cadastrarMotoBtn").onclick = () => {
+            const nome = document.getElementById("motoRegNome").value.trim();
+            const senha = document.getElementById("motoRegSenha").value;
+            if(!nome || !senha) return;
+            motoqueiroDB = { id: "m1", nome, senha, localizacao: { lat: -23.5505, lng: -46.6333, timestamp: Date.now() }, historicoRondasFeitas: [], alertas: [] };
+            saveDB();
+            alert("Motoqueiro cadastrado! Faça login.");
+            showLogin("moto");
+        };
+        document.getElementById("backToLoginCliente").onclick = () => showLogin("cliente");
+        document.getElementById("backToLoginMoto").onclick = () => showLogin("moto");
+    }
+
+    // ========== DASHBOARD CLIENTE ==========
+    function renderDashboardCliente(client) {
+        if(clientUpdateInterval) clearInterval(clientUpdateInterval);
+        const root = document.getElementById("appRoot");
+        root.innerHTML = `
+            <div class="app-container">
+                <div class="header">
+                    <div class="logo"><h1><i class="fas fa-motorcycle"></i> Ronda Noturna</h1></div>
+                    <div class="user-info"><i class="fas fa-user"></i> ${client.nome}<button class="logout-btn" id="logoutBtn">Sair</button></div>
+                </div>
+                <div class="dashboard">
+                    <div class="card">
+                        <h3><i class="fas fa-map-marked-alt"></i> Localização do Motoqueiro</h3>
+                        <div id="mapContainer" class="map-container"></div>
+                        <button class="panico-btn" id="panicoBtn"><i class="fas fa-bell"></i> Pânico - Acionar Motoqueiro</button>
+                    </div>
+                </div>
+                <footer>Posição atualizada em tempo real</footer>
+            </div>
+        `;
+        if(clientMap) clientMap.remove();
+        clientMap = L.map("mapContainer").setView([-23.5505, -46.6333], 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' }).addTo(clientMap);
+        clientMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto() }).addTo(clientMap).bindPopup("Motoqueiro");
+
+        posicaoRef.on('value', (snapshot) => {
+            const pos = snapshot.val();
+            if (pos && pos.lat && pos.lng) {
+                clientMarker.setLatLng([pos.lat, pos.lng]);
+                clientMap.setView([pos.lat, pos.lng], 14);
+            }
+        });
+
+        document.getElementById("logoutBtn").onclick = () => { currentUser = null; renderAuthScreen(); };
+        document.getElementById("panicoBtn").onclick = () => {
+            alert("Pânico acionado! O motoqueiro foi notificado.");
+            if(motoqueiroDB) {
+                if(!motoqueiroDB.alertas) motoqueiroDB.alertas = [];
+                motoqueiroDB.alertas.push({ cliente: client.nome, endereco: client.endereco, horario: new Date().toLocaleTimeString() });
+                saveDB();
+            }
+        };
+    }
+
+    // ========== DASHBOARD MOTOQUEIRO ==========
+    function renderDashboardMoto(moto) {
+        if(clientUpdateInterval) clearInterval(clientUpdateInterval);
+        loadDB();
+        const ruas = [...new Set(clientsDB.map(c => c.endereco))];
+        const root = document.getElementById("appRoot");
+        root.innerHTML = `
+            <div class="app-container">
+                <div class="header">
+                    <div class="logo"><h1><i class="fas fa-motorcycle"></i> Painel Motoqueiro</h1></div>
+                    <div class="user-info"><i class="fas fa-user-astronaut"></i> ${moto.nome}<button class="logout-btn" id="logoutMotoBtn">Sair</button></div>
+                </div>
+                <div class="dashboard">
+                    <div class="card">
+                        <h3><i class="fas fa-satellite-dish"></i> Minha Localização</h3>
+                        <div id="motoMapContainer" class="map-container"></div>
+                        <div id="gpsStatus" class="status-gps">Inicializando...</div>
+                        <button id="pararRastreamentoBtn" style="background:#ef4444; width:100%; padding:8px; border:none; border-radius:40px; margin-top:8px;">Desativar GPS</button>
+                        <button id="reiniciarRastreamentoBtn" style="background:#22c55e; width:100%; padding:8px; border:none; border-radius:40px; margin-top:8px;">Ativar GPS</button>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-road"></i> Registrar passagem por rua</h3>
+                        <div id="listaRuas">${ruas.length === 0 ? "<p>Nenhum cliente cadastrado.</p>" : ruas.map(rua => `<div class="rua-item"><span><i class="fas fa-location-dot"></i> ${rua}</span><button class="btn-passagem" data-rua="${rua}">Passei agora</button></div>`).join('')}</div>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-bell"></i> Alertas de pânico</h3>
+                        <div id="alertasPanico">${moto.alertas?.length ? moto.alertas.map(a => `<div class="rua-item" style="border-left-color:red;"><i class="fas fa-exclamation-circle"></i> ${a.cliente} - ${a.endereco} às ${a.horario} <button class="responderAlerta" data-end="${a.endereco}">Atender</button></div>`).join('') : "<p>Nenhum alerta</p>"}</div>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-history"></i> Histórico de rondas realizadas</h3>
+                        <div id="historicoMoto">${moto.historicoRondasFeitas?.map(h => `<div><i class="fas fa-check-circle"></i> ${h}</div>`).join('') || "Nenhuma ronda registrada"}</div>
+                    </div>
+                </div>
+                <footer>GPS ativo. Use "Passei agora" para cada rua.</footer>
+            </div>
+        `;
+        if(motoMap) motoMap.remove();
+        motoMap = L.map("motoMapContainer").setView([moto.localizacao.lat, moto.localizacao.lng], 15);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(motoMap);
+        motoMarker = L.marker([moto.localizacao.lat, moto.localizacao.lng], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Sua posição");
+
+        document.getElementById("pararRastreamentoBtn").onclick = () => pararRastreamentoMoto();
+        document.getElementById("reiniciarRastreamentoBtn").onclick = () => { pararRastreamentoMoto(); iniciarRastreamentoMoto(); };
+        document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); currentUser = null; renderAuthScreen(); };
+        document.querySelectorAll(".btn-passagem").forEach(btn => {
+            btn.onclick = () => {
+                const rua = btn.getAttribute("data-rua");
+                const agora = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+                moto.historicoRondasFeitas.unshift(`${rua} às ${agora}`);
+                saveDB();
+                renderDashboardMoto(moto);
+            };
+        });
+        document.querySelectorAll(".responderAlerta").forEach(btn => {
+            btn.onclick = () => {
+                const end = btn.getAttribute("data-end");
+                alert(`Atendendo alerta em ${end}`);
+                moto.alertas = moto.alertas.filter(a => a.endereco !== end);
+                saveDB();
+                renderDashboardMoto(moto);
+            };
+        });
+        if (!watchId && moto.rastreamentoAtivo !== false) iniciarRastreamentoMoto();
+    }
+
+    loadDB();
+    renderAuthScreen();
+</script>
+</body>
+</html>
