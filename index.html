@@ -17,6 +17,7 @@
         .logo h1 { font-size: 1.3rem; font-weight: 700; background: linear-gradient(135deg, #facc15, #ff8c00); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .user-info { display: flex; align-items: center; gap: 12px; background: #1e293b; padding: 6px 16px; border-radius: 40px; font-size: 0.85rem; flex-wrap: wrap; }
         .logout-btn { background: none; border: 1px solid #ef4444; color: #fecaca; padding: 4px 12px; border-radius: 40px; cursor: pointer; }
+        .editar-btn { background: none; border: 1px solid #facc15; color: #facc15; padding: 4px 12px; border-radius: 40px; cursor: pointer; font-size: 0.7rem; margin-left: 8px; }
         .dashboard { padding: 1rem; display: flex; flex-direction: column; gap: 1rem; }
         .card { background: #111827; border-radius: 20px; padding: 1rem; border: 1px solid #1f2a44; }
         .card h3 { font-size: 1.1rem; margin-bottom: 0.8rem; border-left: 3px solid #facc15; padding-left: 10px; display: flex; align-items: center; gap: 8px; }
@@ -39,6 +40,11 @@
         }
         .moto-marker i { font-size: 28px; color: #0047AB; text-shadow: 1px 1px 0 #000; }
         .casa-marker i { font-size: 24px; color: #facc15; text-shadow: 1px 1px 0 #000; }
+        .status-gps { font-size: 0.8rem; margin-top: 8px; padding: 6px; border-radius: 16px; background: #1e293b; text-align: center; }
+        .status-gps.ok { background: #14532d; color: #bbf7d0; }
+        .status-gps.erro { background: #7f1a1a; color: #fecaca; }
+        .info-hora { background: #0f172a; color: #86efac; padding: 6px; border-radius: 16px; margin-top: 8px; text-align: center; font-size: 0.8rem; }
+        .ultima-passagem { font-size: 0.8rem; margin-top: 8px; padding: 6px; background: #1e293b; border-radius: 16px; text-align: center; }
     </style>
 </head>
 <body>
@@ -123,7 +129,7 @@
         return L.divIcon({ html: '<i class="fas fa-home"></i>', iconSize: [24,24], className: 'casa-marker', popupAnchor: [0,-10] });
     }
 
-    // ========== RASTREAMENTO MOTOQUEIRO ==========
+    // ========== RASTREAMENTO MOTOQUEIRO (COM STATUS CORRIGIDO) ==========
     async function enviarPosicao(lat, lng, precisao, timestamp) {
         if (!currentUser || currentUser.papel !== 'motoqueiro') return;
         const dataHoraStr = new Date(timestamp).toLocaleString('pt-BR');
@@ -134,9 +140,15 @@
             precisao: precisao,
             timestamp: new Date(timestamp).toISOString()
         });
-        if (error) console.error("Erro ao inserir posição:", error);
-        else console.log("Posição enviada:", dataHoraStr);
+        if (error) {
+            console.error("Erro ao inserir posição:", error);
+            atualizarStatusGPS(`Erro: ${error.message}`, false);
+        } else {
+            console.log("Posição enviada:", dataHoraStr);
+            atualizarStatusGPS(`Posição enviada: ${dataHoraStr} | Precisão: ${precisao}m`, true);
+        }
 
+        // Detectar passagem automática
         const { data: clientes, error: clientesError } = await supabaseClient
             .from('usuarios')
             .select('id, endereco, ultima_passagem')
@@ -165,9 +177,32 @@
         }
     }
 
+    function atualizarStatusGPS(mensagem, isOk) {
+        let div = document.getElementById("gpsStatus");
+        if (!div) {
+            const container = document.querySelector("#motoMapContainer")?.parentNode;
+            if (container) {
+                div = document.createElement("div");
+                div.id = "gpsStatus";
+                div.className = "status-gps";
+                container.appendChild(div);
+            } else {
+                console.warn("Elemento gpsStatus não encontrado");
+                return;
+            }
+        }
+        div.innerHTML = `<i class="fas ${isOk ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i> ${mensagem}`;
+        div.className = `status-gps ${isOk ? 'ok' : 'erro'}`;
+    }
+
     function iniciarRastreamentoMoto() {
-        if (!navigator.geolocation) return;
+        if (!navigator.geolocation) {
+            atualizarStatusGPS("Geolocalização não suportada.", false);
+            return;
+        }
         if (watchId !== null) return;
+        atualizarStatusGPS("Aguardando sinal GPS...", false);
+        
         const verificarEnvio = (position) => {
             const { latitude, longitude, accuracy } = position.coords;
             const agora = Date.now();
@@ -194,11 +229,18 @@
                 if (motoMap) atualizarMapaMoto(latitude, longitude);
             }
         };
-        watchId = navigator.geolocation.watchPosition(verificarEnvio, (err) => console.error(err), { enableHighAccuracy: true, timeout: 15000 });
+        watchId = navigator.geolocation.watchPosition(verificarEnvio, 
+            (err) => {
+                console.error(err);
+                atualizarStatusGPS("Erro no GPS: " + err.message, false);
+            }, 
+            { enableHighAccuracy: true, timeout: 15000 }
+        );
     }
 
     function pararRastreamentoMoto() {
         if (watchId) { navigator.geolocation.clearWatch(watchId); watchId = null; }
+        atualizarStatusGPS("Rastreamento desativado.", false);
     }
 
     function atualizarMapaMoto(lat, lng) {
@@ -402,7 +444,7 @@
         document.getElementById("panicoBtn").onclick = () => alert("Pânico acionado! O motoqueiro foi notificado.");
     }
 
-    // ========== DASHBOARD MOTOQUEIRO ==========
+    // ========== DASHBOARD MOTOQUEIRO (com status corrigido) ==========
     async function renderDashboardMoto() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -416,7 +458,7 @@
                     <div class="card">
                         <h3><i class="fas fa-satellite-dish"></i> Minha Localização (envio a cada 60s ou >10°)</h3>
                         <div id="motoMapContainer" class="map-container"></div>
-                        <div id="gpsStatus" class="status-gps">Inicializando...</div>
+                        <div id="gpsStatus" class="status-gps erro">Inicializando...</div>
                         <div id="horaUltimaPosicao" class="info-hora"></div>
                         <button id="pararRastreamentoBtn" style="background:#ef4444; width:100%; padding:8px; border:none; border-radius:40px; margin-top:8px;">Desativar GPS</button>
                         <button id="reiniciarRastreamentoBtn" style="background:#22c55e; width:100%; padding:8px; border:none; border-radius:40px; margin-top:8px;">Ativar GPS</button>
@@ -449,13 +491,23 @@
             document.getElementById("historicoMoto").innerHTML = "Nenhuma ronda registrada";
         }
 
+        // Iniciar rastreamento e atualizar status com última posição conhecida (se houver)
+        iniciarRastreamentoMoto();
+        // Tentar carregar a última posição do localStorage do motoqueiro (se existir)
+        const storedMoto = localStorage.getItem("rondaMotoqueiro");
+        if (storedMoto) {
+            const motoData = JSON.parse(storedMoto);
+            if (motoData.localizacao && motoData.localizacao.dataHora) {
+                atualizarStatusGPS(`Última posição conhecida: ${motoData.localizacao.dataHora}`, true);
+            }
+        }
+
         document.getElementById("pararRastreamentoBtn").onclick = () => pararRastreamentoMoto();
         document.getElementById("reiniciarRastreamentoBtn").onclick = () => { pararRastreamentoMoto(); iniciarRastreamentoMoto(); };
         document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
-        iniciarRastreamentoMoto();
     }
 
-    // ========== DASHBOARD ADMIN (com mapa e filtros) ==========
+    // ========== DASHBOARD ADMIN ==========
     async function renderDashboardAdmin() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         // Buscar dados
@@ -466,7 +518,6 @@
         let usuarios = usuariosRes.data || [];
         const posicoes = posicoesRes.data || [];
 
-        // Agrupar últimas posições por motoqueiro
         const ultimasPosicoes = {};
         for (const pos of posicoes) {
             if (!ultimasPosicoes[pos.motoqueiro_id] && pos.usuarios?.papel === 'motoqueiro') {
@@ -474,12 +525,9 @@
             }
         }
 
-        // Preparar dados para mapa: clientes com geocodificação e motoqueiros com última posição
-        // Vamos usar cache para não geocodificar repetidamente
         const clientes = usuarios.filter(u => u.papel === 'cliente' && u.endereco);
         const motoqueiros = usuarios.filter(u => u.papel === 'motoqueiro');
 
-        // Inicializar mapa e depois adicionar marcadores (assíncrono)
         const root = document.getElementById("appRoot");
         root.innerHTML = `
             <div class="app-container">
@@ -509,10 +557,8 @@
                                 <thead>
                                     <tr><th>Nome</th><th>Email</th><th>Papel</th><th>Endereço</th><th>Ações</th></tr>
                                 </thead>
-                                <tbody id="tabelaUsuariosBody">
-                                    <!-- Preenchido via JS -->
-                                </tbody>
-                            </table>
+                                <tbody id="tabelaUsuariosBody"></tbody>
+                            8>
                         </div>
                     </div>
                     <div class="card card-full">
@@ -521,7 +567,7 @@
                             <table>
                                 <thead><tr><th>Cliente</th><th>Endereço</th><th>Data/Hora</th><th>Distância (m)</th></tr></thead>
                                 <tbody id="rondasAdminBody"></tbody>
-                            </table>
+                            ~
                         </div>
                     </div>
                 </div>
@@ -546,7 +592,6 @@
             </tr>
         `).join('');
 
-        // Função para preencher tabela com filtros
         function renderizarTabelaUsuarios() {
             const busca = document.getElementById("filtroBusca").value.toLowerCase();
             const papel = document.getElementById("filtroPapel").value;
@@ -581,11 +626,9 @@
                     const novoPapel = prompt("Novo papel (cliente / motoqueiro / admin):", usuario.papel);
                     if (!novoPapel || !['cliente','motoqueiro','admin'].includes(novoPapel)) return alert("Papel inválido");
                     await supabaseClient.from('usuarios').update({ nome: novoNome, endereco: novoEndereco || null, papel: novoPapel }).eq('id', id);
-                    // Recarregar dados e re-renderizar
                     const { data: novosUsuarios } = await supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false });
                     usuarios = novosUsuarios || [];
                     renderizarTabelaUsuarios();
-                    // Atualizar mapa também (reconstruir)
                     carregarMapaAdmin();
                 };
             });
@@ -603,32 +646,28 @@
             });
         }
 
-        // Mapa
         let adminMap = null;
         async function carregarMapaAdmin() {
             if (adminMap) adminMap.remove();
             adminMap = L.map("adminMapContainer").setView([-23.5505, -46.6333], 13);
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' }).addTo(adminMap);
             
-            // Adicionar marcadores de clientes
             for (const cliente of clientes) {
                 const coords = await geocodificarEndereco(cliente.endereco);
                 if (coords) {
-                    const marker = L.marker([coords.lat, coords.lng], { icon: criarIconeCasa() })
+                    L.marker([coords.lat, coords.lng], { icon: criarIconeCasa() })
                         .addTo(adminMap)
                         .bindPopup(`<b>${cliente.nome}</b><br>${cliente.endereco}`);
                 }
             }
-            // Adicionar marcadores de motoqueiros (última posição)
             for (const moto of motoqueiros) {
                 const ultimaPos = ultimasPosicoes[moto.id];
                 if (ultimaPos) {
-                    const marker = L.marker([ultimaPos.latitude, ultimaPos.longitude], { icon: criarIconeMoto() })
+                    L.marker([ultimaPos.latitude, ultimaPos.longitude], { icon: criarIconeMoto() })
                         .addTo(adminMap)
                         .bindPopup(`<b>${moto.nome}</b><br>Última posição: ${new Date(ultimaPos.timestamp).toLocaleString('pt-BR')}`);
                 }
             }
-            // Ajustar zoom para mostrar todos os marcadores
             if (clientes.length > 0 || Object.keys(ultimasPosicoes).length > 0) {
                 const bounds = [];
                 for (const cliente of clientes) {
@@ -642,11 +681,9 @@
             }
         }
 
-        // Inicializar
         renderizarTabelaUsuarios();
         await carregarMapaAdmin();
 
-        // Eventos de filtro
         document.getElementById("filtroBusca").addEventListener("input", renderizarTabelaUsuarios);
         document.getElementById("filtroPapel").addEventListener("change", renderizarTabelaUsuarios);
 
@@ -663,7 +700,6 @@
             const { data, error } = await supabaseClient.auth.signUp({ email, password: senha });
             if (error) return alert(error.message);
             await supabaseClient.from('usuarios').insert({ id: data.user.id, email, nome, papel, endereco: endereco || null });
-            // Recarregar dados
             const { data: novosUsuarios } = await supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false });
             usuarios = novosUsuarios || [];
             renderizarTabelaUsuarios();
