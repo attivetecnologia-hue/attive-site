@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Ronda Noturna - Rastreamento</title>
+    <title>Ronda Noturna - Rastreamento Inteligente (60s/10°)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -23,15 +23,15 @@
         .card h3 { font-size: 1.1rem; margin-bottom: 0.8rem; border-left: 3px solid #facc15; padding-left: 10px; display: flex; align-items: center; gap: 8px; }
         .map-container { height: 280px; border-radius: 16px; overflow: hidden; background: #1e293b; }
         .panico-btn { background: #dc2626; width: 100%; padding: 12px; border: none; border-radius: 60px; font-weight: bold; color: white; cursor: pointer; margin-top: 12px; font-size: 1rem; }
-        .rua-item { background: #1e293b; padding: 8px 12px; border-radius: 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-        .btn-passagem { background: #facc15; border: none; padding: 6px 14px; border-radius: 40px; font-weight: bold; cursor: pointer; }
-        .status-gps { font-size: 0.75rem; margin-top: 8px; padding: 6px; border-radius: 16px; background: #1e293b; text-align: center; }
+        .status-gps, .info-hora { font-size: 0.8rem; margin-top: 8px; padding: 6px; border-radius: 16px; background: #1e293b; text-align: center; }
+        .info-hora { background: #0f172a; color: #86efac; }
         .auth-screen { max-width: 400px; margin: 30px auto; background: #111827; border-radius: 28px; padding: 1.5rem; }
         .auth-screen input { width: 100%; padding: 12px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: white; }
         .auth-screen button { width: 100%; background: #facc15; border: none; padding: 12px; border-radius: 40px; font-weight: bold; margin-top: 15px; cursor: pointer; color: #0f172a; }
         .toggle-auth { text-align: center; margin-top: 15px; color: #94a3b8; cursor: pointer; font-size: 0.85rem; }
         .hidden { display: none; }
         .moto-marker i { font-size: 28px; color: #0047AB; text-shadow: 1px 1px 0 #000; }
+        .ultima-passagem { font-size: 0.8rem; margin-top: 8px; padding: 6px; background: #1e293b; border-radius: 16px; text-align: center; }
         footer { text-align: center; padding: 1rem; font-size: 0.7rem; color: #475569; border-top: 1px solid #1e293b; }
         @media (min-width: 768px) {
             .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
@@ -60,21 +60,88 @@
     let clientsDB = [];
     let motoqueiroDB = null;
     let watchId = null;
+    let ultimoPontoSalvo = null;      // { lat, lng, timestamp, bearing }
+    let ultimoEnvioPorAngulo = 0;
     let currentUser = null;
     let clientUpdateInterval = null;
     let motoMap = null, motoMarker = null, clientMap = null, clientMarker = null;
+    let clientCoordsCache = {};
+    let enderecoCache = {};            // cache para reverse geocoding (endereço do popup)
+
+    // ========== FUNÇÕES AUXILIARES ==========
+    function calcularDistancia(lat1, lon1, lat2, lon2) {
+        const R = 6371000;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) ** 2 +
+                  Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
+                  Math.sin(dLon/2) ** 2;
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    }
+
+    // Cálculo do bearing (ângulo entre dois pontos)
+    function calcularBearing(lat1, lng1, lat2, lng2) {
+        const toRad = (deg) => deg * Math.PI / 180;
+        const toDeg = (rad) => rad * 180 / Math.PI;
+        const dLng = toRad(lng2 - lng1);
+        const y = Math.sin(dLng) * Math.cos(toRad(lat2));
+        const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) - Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(dLng);
+        let bearing = toDeg(Math.atan2(y, x));
+        return (bearing + 360) % 360;
+    }
+
+    // Geocodificação reversa (obter endereço a partir de lat/lng)
+    async function obterEnderecoPopup(lat, lng) {
+        const chave = `${lat.toFixed(5)},${lng.toFixed(5)}`;
+        if (enderecoCache[chave]) return enderecoCache[chave];
+        try {
+            const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            let endereco = "Endereço não identificado";
+            if (data.address) {
+                const rua = data.address.road || data.address.street || data.address.suburb || "";
+                const numero = data.address.house_number || "";
+                endereco = rua && numero ? `${rua}, ${numero}` : (rua || data.address.city || "Localização aproximada");
+            }
+            enderecoCache[chave] = endereco;
+            if (Object.keys(enderecoCache).length > 200) delete enderecoCache[Object.keys(enderecoCache)[0]];
+            return endereco;
+        } catch(e) {
+            return "Endereço não disponível";
+        }
+    }
+
+    // Geocodificação direta (para endereço do cliente)
+    async function geocodificarEndereco(endereco) {
+        try {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}&limit=1`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (data && data[0]) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+        } catch(e) { console.error(e); }
+        return null;
+    }
 
     // Carregar dados do localStorage
-    function loadDB() {
+    async function loadDB() {
         const storedClients = localStorage.getItem("rondaClients");
         if(storedClients) {
             clientsDB = JSON.parse(storedClients);
         } else {
             clientsDB = [{
                 id: "c1", nome: "Hélio Crispim", telefone: "11999999999",
-                endereco: "R. Manoel Elías de Castro, 471 - Nações, Campina Grande - PB", senha: "123"
+                endereco: "R. Manoel Elías de Castro, 471 - Nações, Campina Grande - PB", senha: "123",
+                ultimaPassagem: null,
+                historicoPassagens: []
             }];
             localStorage.setItem("rondaClients", JSON.stringify(clientsDB));
+        }
+        for (let client of clientsDB) {
+            if (!clientCoordsCache[client.endereco]) {
+                const coords = await geocodificarEndereco(client.endereco);
+                if (coords) clientCoordsCache[client.endereco] = coords;
+            }
         }
         const storedMoto = localStorage.getItem("rondaMotoqueiro");
         if(storedMoto) {
@@ -93,7 +160,7 @@
         localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
     }
 
-    // Ícone da moto
+    // Ícone da moto (com popup configurado depois)
     function criarIconeMoto() {
         return L.divIcon({
             html: '<i class="fas fa-motorcycle"></i>',
@@ -103,48 +170,117 @@
         });
     }
 
-    // ========== RASTREAMENTO DO MOTOQUEIRO (envia posição a cada 30s) ==========
+    // Função para atualizar popup do marcador da moto com endereço
+    async function atualizarPopupMarcador(marker, lat, lng) {
+        const endereco = await obterEnderecoPopup(lat, lng);
+        marker.bindPopup(`<b>📍 Localização atual</b><br>${endereco}`).openPopup();
+    }
+
+    // ========== RASTREAMENTO INTELIGENTE (60s + 10 graus) ==========
     function iniciarRastreamentoMoto() {
         if (!navigator.geolocation) {
             atualizarStatusGPS("Geolocalização não suportada.", false);
             return;
         }
         if (watchId !== null) return;
-        atualizarStatusGPS("Iniciando GPS...", false);
-        const enviarPosicao = () => {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude, accuracy } = position.coords;
+        atualizarStatusGPS("Iniciando rastreamento inteligente (60s/10°)...", false);
+        
+        // Função que decide se deve salvar/enviar a posição
+        const deveEnviar = (novaLat, novaLng, novoTimestamp) => {
+            if (!ultimoPontoSalvo) return true;
+            const diffTempo = (novoTimestamp - ultimoPontoSalvo.timestamp) / 1000;
+            if (diffTempo >= 60) return true;
+            // Verificar mudança de direção (10 graus)
+            if (novoTimestamp - ultimoEnvioPorAngulo < 5000) return false; // mínimo 5s entre verificações de ângulo
+            const bearingAtual = calcularBearing(ultimoPontoSalvo.lat, ultimoPontoSalvo.lng, novaLat, novaLng);
+            let diffAngulo = Math.abs(bearingAtual - (ultimoPontoSalvo.bearing || 0));
+            diffAngulo = Math.min(diffAngulo, 360 - diffAngulo);
+            if (diffAngulo > 10) {
+                ultimoEnvioPorAngulo = novoTimestamp;
+                return true;
+            }
+            return false;
+        };
+
+        // O watchPosition nos dá a posição continuamente (alta frequência)
+        // Mas só vamos salvar/enviar quando a condição for satisfeita
+        watchId = navigator.geolocation.watchPosition(
+            async (position) => {
+                const { latitude, longitude, accuracy } = position.coords;
+                const agora = Date.now();
+                const deve = deveEnviar(latitude, longitude, agora);
+                if (deve) {
+                    const dataHoraStr = new Date(agora).toLocaleString('pt-BR');
+                    const bearing = ultimoPontoSalvo ? calcularBearing(ultimoPontoSalvo.lat, ultimoPontoSalvo.lng, latitude, longitude) : 0;
                     const posObj = {
                         lat: latitude,
                         lng: longitude,
-                        timestamp: Date.now(),
-                        accuracy: accuracy
+                        timestamp: agora,
+                        accuracy: accuracy,
+                        dataHora: dataHoraStr,
+                        bearing: bearing
                     };
+                    // Envia para Firebase
                     posicaoRef.set(posObj);
+                    // Atualiza dados locais
                     motoqueiroDB.localizacao = posObj;
                     localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
-                    atualizarStatusGPS(`Posição enviada. Precisão: ${accuracy}m`, true);
-                    if (currentUser?.type === 'moto' && motoMap) atualizarMapaMoto(latitude, longitude);
-                },
-                (error) => {
-                    let msg = "";
-                    switch(error.code) {
-                        case error.PERMISSION_DENIED: msg = "Permissão negada."; break;
-                        case error.POSITION_UNAVAILABLE: msg = "Sinal GPS indisponível."; break;
-                        case error.TIMEOUT: msg = "Tempo limite excedido."; break;
-                        default: msg = "Erro desconhecido.";
+                    atualizarStatusGPS(`Posição enviada (60s/10°): ${dataHoraStr} | Precisão: ${accuracy}m`, true);
+                    if (currentUser?.type === 'moto' && motoMap) {
+                        atualizarMapaMoto(latitude, longitude);
+                        // Atualizar popup do marcador com endereço
+                        if (motoMarker) atualizarPopupMarcador(motoMarker, latitude, longitude);
                     }
-                    atualizarStatusGPS(`Erro: ${msg}`, false);
-                },
-                { enableHighAccuracy: true, timeout: 10000 }
-            );
-        };
-        enviarPosicao();
-        watchId = setInterval(enviarPosicao, 30000);
+                    // Salvar ponto para referência futura
+                    ultimoPontoSalvo = { lat: latitude, lng: longitude, timestamp: agora, bearing: bearing };
+                    
+                    // ========== DETECÇÃO AUTOMÁTICA DE PASSAGEM ==========
+                    for (let client of clientsDB) {
+                        const coords = clientCoordsCache[client.endereco];
+                        if (coords) {
+                            const distancia = calcularDistancia(latitude, longitude, coords.lat, coords.lng);
+                            if (distancia <= 50) {
+                                const ultimaPassagem = client.ultimaPassagem ? new Date(client.ultimaPassagem).getTime() : 0;
+                                if (agora - ultimaPassagem > 60000) {
+                                    client.ultimaPassagem = agora;
+                                    if (!client.historicoPassagens) client.historicoPassagens = [];
+                                    client.historicoPassagens.unshift(dataHoraStr);
+                                    if (client.historicoPassagens.length > 20) client.historicoPassagens.pop();
+                                    motoqueiroDB.historicoRondasFeitas.unshift(`${client.endereco} - ${dataHoraStr}`);
+                                    if (motoqueiroDB.historicoRondasFeitas.length > 50) motoqueiroDB.historicoRondasFeitas.pop();
+                                    saveDB();
+                                    if (currentUser?.type === 'moto') atualizarHistoricoMoto();
+                                    console.log(`Passagem registrada para ${client.nome} - ${dataHoraStr}`);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // Apenas atualiza a localização atual sem enviar (para manter o último ponto salvo)
+                    motoqueiroDB.localizacao = { lat: latitude, lng: longitude, timestamp: agora, accuracy: accuracy };
+                    localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
+                    // Atualizar mapa do motoqueiro mesmo sem enviar?
+                    if (currentUser?.type === 'moto' && motoMap) {
+                        atualizarMapaMoto(latitude, longitude);
+                    }
+                }
+            },
+            (error) => {
+                let msg = "";
+                switch(error.code) {
+                    case error.PERMISSION_DENIED: msg = "Permissão negada."; break;
+                    case error.POSITION_UNAVAILABLE: msg = "Sinal GPS indisponível."; break;
+                    case error.TIMEOUT: msg = "Tempo limite excedido."; break;
+                    default: msg = "Erro desconhecido.";
+                }
+                atualizarStatusGPS(`Erro GPS: ${msg}`, false);
+            },
+            { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }
+        );
     }
+
     function pararRastreamentoMoto() {
-        if (watchId) { clearInterval(watchId); watchId = null; }
+        if (watchId) { navigator.geolocation.clearWatch(watchId); watchId = null; }
         atualizarStatusGPS("Rastreamento desativado.", false);
     }
     function atualizarStatusGPS(mensagem, isOk) {
@@ -156,12 +292,29 @@
     }
     function atualizarMapaMoto(lat, lng) {
         if (!motoMap) return;
-        if (!motoMarker) motoMarker = L.marker([lat,lng], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Sua posição").openPopup();
-        else motoMarker.setLatLng([lat,lng]);
+        if (!motoMarker) {
+            motoMarker = L.marker([lat,lng], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Carregando endereço...").openPopup();
+            atualizarPopupMarcador(motoMarker, lat, lng);
+        } else {
+            motoMarker.setLatLng([lat,lng]);
+            atualizarPopupMarcador(motoMarker, lat, lng);
+        }
         motoMap.setView([lat,lng], 15);
+        // Atualizar data/hora da última posição no painel
+        const horaDiv = document.getElementById("horaUltimaPosicao");
+        if (horaDiv && motoqueiroDB && motoqueiroDB.localizacao) {
+            const dataHora = motoqueiroDB.localizacao.dataHora || new Date(motoqueiroDB.localizacao.timestamp).toLocaleString('pt-BR');
+            horaDiv.innerHTML = `<i class="fas fa-clock"></i> Última posição enviada: ${dataHora}`;
+        }
+    }
+    function atualizarHistoricoMoto() {
+        const container = document.getElementById("historicoMoto");
+        if (container && motoqueiroDB) {
+            container.innerHTML = motoqueiroDB.historicoRondasFeitas?.map(h => `<div><i class="fas fa-check-circle"></i> ${h}</div>`).join('') || "Nenhuma ronda registrada";
+        }
     }
 
-    // ========== TELAS DE AUTENTICAÇÃO ==========
+    // ========== TELAS DE AUTENTICAÇÃO (igual anterior) ==========
     function renderAuthScreen() {
         const root = document.getElementById("appRoot");
         root.innerHTML = `
@@ -233,14 +386,17 @@
         };
         document.getElementById("showRegCliente").onclick = () => showRegister("cliente");
         document.getElementById("showRegMoto").onclick = () => showRegister("moto");
-        document.getElementById("cadastrarClienteBtn").onclick = () => {
+        document.getElementById("cadastrarClienteBtn").onclick = async () => {
             const nome = document.getElementById("regNome").value.trim();
             const tel = document.getElementById("regTelefone").value.trim();
             const end = document.getElementById("regEndereco").value.trim();
             const senha = document.getElementById("regSenha").value;
             if(!nome || !tel || !end || !senha) return alert("Preencha todos");
             if(clientsDB.find(c => c.telefone === tel)) return alert("Telefone já existe");
-            clientsDB.push({ id: Date.now().toString(), nome, telefone: tel, endereco: end, senha });
+            const coords = await geocodificarEndereco(end);
+            if (!coords) return alert("Não foi possível localizar o endereço. Verifique.");
+            clientCoordsCache[end] = coords;
+            clientsDB.push({ id: Date.now().toString(), nome, telefone: tel, endereco: end, senha, ultimaPassagem: null, historicoPassagens: [] });
             saveDB();
             alert("Cadastrado! Faça login.");
             showLogin("cliente");
@@ -272,22 +428,44 @@
                     <div class="card">
                         <h3><i class="fas fa-map-marked-alt"></i> Localização do Motoqueiro</h3>
                         <div id="mapContainer" class="map-container"></div>
+                        <div class="info-hora" id="ultimaPosicaoHora">Última atualização: aguardando...</div>
+                        <div class="ultima-passagem" id="ultimaPassagem">Última passagem: aguardando...</div>
                         <button class="panico-btn" id="panicoBtn"><i class="fas fa-bell"></i> Pânico - Acionar Motoqueiro</button>
                     </div>
                 </div>
-                <footer>Posição atualizada em tempo real</footer>
+                <footer>Rastreamento inteligente (60s/10°). Clique na moto para ver o endereço.</footer>
             </div>
         `;
         if(clientMap) clientMap.remove();
         clientMap = L.map("mapContainer").setView([-23.5505, -46.6333], 13);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' }).addTo(clientMap);
-        clientMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto() }).addTo(clientMap).bindPopup("Motoqueiro");
+        clientMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto() }).addTo(clientMap).bindPopup("Carregando endereço...");
 
-        posicaoRef.on('value', (snapshot) => {
+        function atualizarUltimaPassagem() {
+            const ultima = client.ultimaPassagem ? new Date(client.ultimaPassagem).toLocaleString('pt-BR') : "Nenhuma passagem registrada ainda";
+            document.getElementById("ultimaPassagem").innerHTML = `<i class="fas fa-clock"></i> Última passagem: ${ultima}`;
+        }
+        atualizarUltimaPassagem();
+
+        // Listener da posição no Firebase
+        posicaoRef.on('value', async (snapshot) => {
             const pos = snapshot.val();
             if (pos && pos.lat && pos.lng) {
                 clientMarker.setLatLng([pos.lat, pos.lng]);
                 clientMap.setView([pos.lat, pos.lng], 14);
+                // Atualizar popup com endereço
+                const endereco = await obterEnderecoPopup(pos.lat, pos.lng);
+                clientMarker.bindPopup(`<b>📍 Motoqueiro</b><br>${endereco}`).openPopup();
+                // Atualizar texto de última atualização
+                const dataHora = pos.dataHora || new Date(pos.timestamp).toLocaleString('pt-BR');
+                document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${dataHora}`;
+            }
+            // Verificar se a última passagem do cliente foi atualizada
+            const updatedClient = clientsDB.find(c => c.id === client.id);
+            if (updatedClient && updatedClient.ultimaPassagem !== client.ultimaPassagem) {
+                client.ultimaPassagem = updatedClient.ultimaPassagem;
+                client.historicoPassagens = updatedClient.historicoPassagens;
+                atualizarUltimaPassagem();
             }
         });
 
@@ -306,7 +484,6 @@
     function renderDashboardMoto(moto) {
         if(clientUpdateInterval) clearInterval(clientUpdateInterval);
         loadDB();
-        const ruas = [...new Set(clientsDB.map(c => c.endereco))];
         const root = document.getElementById("appRoot");
         root.innerHTML = `
             <div class="app-container">
@@ -316,45 +493,44 @@
                 </div>
                 <div class="dashboard">
                     <div class="card">
-                        <h3><i class="fas fa-satellite-dish"></i> Minha Localização</h3>
+                        <h3><i class="fas fa-satellite-dish"></i> Minha Localização (Inteligente: 60s/10°)</h3>
                         <div id="motoMapContainer" class="map-container"></div>
                         <div id="gpsStatus" class="status-gps">Inicializando...</div>
+                        <div id="horaUltimaPosicao" class="info-hora" style="margin-top:5px;"></div>
                         <button id="pararRastreamentoBtn" style="background:#ef4444; width:100%; padding:8px; border:none; border-radius:40px; margin-top:8px;">Desativar GPS</button>
                         <button id="reiniciarRastreamentoBtn" style="background:#22c55e; width:100%; padding:8px; border:none; border-radius:40px; margin-top:8px;">Ativar GPS</button>
                     </div>
                     <div class="card">
-                        <h3><i class="fas fa-road"></i> Registrar passagem por rua</h3>
-                        <div id="listaRuas">${ruas.length === 0 ? "<p>Nenhum cliente cadastrado.</p>" : ruas.map(rua => `<div class="rua-item"><span><i class="fas fa-location-dot"></i> ${rua}</span><button class="btn-passagem" data-rua="${rua}">Passei agora</button></div>`).join('')}</div>
-                    </div>
-                    <div class="card">
                         <h3><i class="fas fa-bell"></i> Alertas de pânico</h3>
-                        <div id="alertasPanico">${moto.alertas?.length ? moto.alertas.map(a => `<div class="rua-item" style="border-left-color:red;"><i class="fas fa-exclamation-circle"></i> ${a.cliente} - ${a.endereco} às ${a.horario} <button class="responderAlerta" data-end="${a.endereco}">Atender</button></div>`).join('') : "<p>Nenhum alerta</p>"}</div>
+                        <div id="alertasPanico">${moto.alertas?.length ? moto.alertas.map(a => `<div style="background:#1e293b; padding:8px; border-radius:16px; margin-bottom:8px; border-left:3px solid red;"><i class="fas fa-exclamation-circle"></i> ${a.cliente} - ${a.endereco} às ${a.horario} <button class="responderAlerta" data-end="${a.endereco}" style="margin-left:10px;">Atender</button></div>`).join('') : "<p>Nenhum alerta</p>"}</div>
                     </div>
                     <div class="card">
-                        <h3><i class="fas fa-history"></i> Histórico de rondas realizadas</h3>
-                        <div id="historicoMoto">${moto.historicoRondasFeitas?.map(h => `<div><i class="fas fa-check-circle"></i> ${h}</div>`).join('') || "Nenhuma ronda registrada"}</div>
+                        <h3><i class="fas fa-history"></i> Histórico de rondas realizadas (automático)</h3>
+                        <div id="historicoMoto" style="max-height:200px; overflow-y:auto;">${moto.historicoRondasFeitas?.map(h => `<div><i class="fas fa-check-circle"></i> ${h}</div>`).join('') || "Nenhuma ronda registrada"}</div>
                     </div>
                 </div>
-                <footer>GPS ativo. Use "Passei agora" para cada rua.</footer>
+                <footer>Rastreamento inteligente: envia posição a cada 60s ou quando muda direção >10°. Clique na moto para ver o endereço.</footer>
             </div>
         `;
         if(motoMap) motoMap.remove();
         motoMap = L.map("motoMapContainer").setView([moto.localizacao.lat, moto.localizacao.lng], 15);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(motoMap);
-        motoMarker = L.marker([moto.localizacao.lat, moto.localizacao.lng], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Sua posição");
+        motoMarker = L.marker([moto.localizacao.lat, moto.localizacao.lng], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Carregando endereço...");
+        // Atualizar popup com endereço atual
+        atualizarPopupMarcador(motoMarker, moto.localizacao.lat, moto.localizacao.lng);
+
+        function atualizarHoraUltimaPosicao() {
+            const div = document.getElementById("horaUltimaPosicao");
+            if (div && motoqueiroDB && motoqueiroDB.localizacao) {
+                const dataHora = motoqueiroDB.localizacao.dataHora || new Date(motoqueiroDB.localizacao.timestamp).toLocaleString('pt-BR');
+                div.innerHTML = `<i class="fas fa-clock"></i> Última posição enviada: ${dataHora}`;
+            }
+        }
+        atualizarHoraUltimaPosicao();
 
         document.getElementById("pararRastreamentoBtn").onclick = () => pararRastreamentoMoto();
         document.getElementById("reiniciarRastreamentoBtn").onclick = () => { pararRastreamentoMoto(); iniciarRastreamentoMoto(); };
         document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); currentUser = null; renderAuthScreen(); };
-        document.querySelectorAll(".btn-passagem").forEach(btn => {
-            btn.onclick = () => {
-                const rua = btn.getAttribute("data-rua");
-                const agora = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-                moto.historicoRondasFeitas.unshift(`${rua} às ${agora}`);
-                saveDB();
-                renderDashboardMoto(moto);
-            };
-        });
         document.querySelectorAll(".responderAlerta").forEach(btn => {
             btn.onclick = () => {
                 const end = btn.getAttribute("data-end");
@@ -365,10 +541,18 @@
             };
         });
         if (!watchId && moto.rastreamentoAtivo !== false) iniciarRastreamentoMoto();
+        // Atualizar histórico e hora periodicamente
+        setInterval(() => {
+            loadDB();
+            atualizarHistoricoMoto();
+            atualizarHoraUltimaPosicao();
+        }, 5000);
     }
 
-    loadDB();
-    renderAuthScreen();
+    (async () => {
+        await loadDB();
+        renderAuthScreen();
+    })();
 </script>
 </body>
 </html>
