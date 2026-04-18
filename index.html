@@ -129,7 +129,7 @@
         return L.divIcon({ html: '<i class="fas fa-home"></i>', iconSize: [24,24], className: 'casa-marker', popupAnchor: [0,-10] });
     }
 
-    // ========== RASTREAMENTO MOTOQUEIRO (COM STATUS CORRIGIDO) ==========
+    // ========== RASTREAMENTO MOTOQUEIRO ==========
     async function enviarPosicao(lat, lng, precisao, timestamp) {
         if (!currentUser || currentUser.papel !== 'motoqueiro') return;
         const dataHoraStr = new Date(timestamp).toLocaleString('pt-BR');
@@ -253,23 +253,35 @@
         });
     }
 
+    // ========== RECEBER POSIÇÕES EM TEMPO REAL (CLIENTE) ==========
     function assinarPosicaoMoto() {
-        if (posicaoSubscription) posicaoSubscription.unsubscribe();
+        if (posicaoSubscription) {
+            posicaoSubscription.unsubscribe();
+        }
         posicaoSubscription = supabaseClient
-            .channel('posicoes')
-            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posicoes' }, (payload) => {
-                const novaPos = payload.new;
-                if (clientMarker && clientMap) {
-                    clientMarker.setLatLng([novaPos.latitude, novaPos.longitude]);
-                    clientMap.setView([novaPos.latitude, novaPos.longitude], 14);
-                    const dataHora = new Date(novaPos.timestamp).toLocaleString('pt-BR');
-                    document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${dataHora}`;
-                    obterEnderecoAproximado(novaPos.latitude, novaPos.longitude).then(end => {
-                        clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`).openPopup();
-                    });
+            .channel('posicoes-channel')
+            .on(
+                'postgres_changes',
+                { event: 'INSERT', schema: 'public', table: 'posicoes' },
+                (payload) => {
+                    const novaPos = payload.new;
+                    console.log("Nova posição recebida:", novaPos);
+                    if (clientMarker && clientMap) {
+                        clientMarker.setLatLng([novaPos.latitude, novaPos.longitude]);
+                        clientMap.setView([novaPos.latitude, novaPos.longitude], 14);
+                        const dataHora = new Date(novaPos.timestamp).toLocaleString('pt-BR');
+                        document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${dataHora}`;
+                        obterEnderecoAproximado(novaPos.latitude, novaPos.longitude).then(end => {
+                            clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`).openPopup();
+                        });
+                    } else {
+                        console.warn("Mapa ou marcador do cliente não inicializado");
+                    }
                 }
-            })
-            .subscribe();
+            )
+            .subscribe((status) => {
+                console.log("Status da assinatura:", status);
+            });
     }
 
     // ========== AUTENTICAÇÃO E DASHBOARDS ==========
@@ -366,7 +378,7 @@
         };
     }
 
-    // ========== DASHBOARD CLIENTE ==========
+    // ========== DASHBOARD CLIENTE (COM CARGA INICIAL E SUBSCRIÇÃO) ==========
     async function renderDashboardCliente() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -407,6 +419,31 @@
         }
         atualizarMarcadorCasa();
 
+        // Buscar a última posição da moto (para já aparecer no mapa ao carregar)
+        async function carregarUltimaPosicao() {
+            const { data, error } = await supabaseClient
+                .from('posicoes')
+                .select('*')
+                .order('timestamp', { ascending: false })
+                .limit(1);
+            if (error) {
+                console.error("Erro ao buscar última posição:", error);
+                return;
+            }
+            if (data && data.length > 0) {
+                const ultima = data[0];
+                clientMarker.setLatLng([ultima.latitude, ultima.longitude]);
+                clientMap.setView([ultima.latitude, ultima.longitude], 14);
+                const dataHora = new Date(ultima.timestamp).toLocaleString('pt-BR');
+                document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${dataHora}`;
+                const endereco = await obterEnderecoAproximado(ultima.latitude, ultima.longitude);
+                clientMarker.bindPopup(`<b>Motoqueiro</b><br>${endereco}`).openPopup();
+            } else {
+                document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-exclamation-triangle"></i> Nenhuma posição recebida ainda.`;
+            }
+        }
+
+        // Buscar última passagem do cliente
         const { data: rondaData } = await supabaseClient
             .from('rondas')
             .select('timestamp')
@@ -420,7 +457,9 @@
             document.getElementById("ultimaPassagem").innerHTML = `<i class="fas fa-clock"></i> Última passagem: Nenhuma ainda`;
         }
 
+        // Assinar novas posições e carregar última posição
         assinarPosicaoMoto();
+        await carregarUltimaPosicao();
 
         document.getElementById("editarEnderecoBtn").onclick = async () => {
             const novoEnd = prompt("Digite seu novo endereço completo:", currentUser.endereco);
@@ -444,7 +483,7 @@
         document.getElementById("panicoBtn").onclick = () => alert("Pânico acionado! O motoqueiro foi notificado.");
     }
 
-    // ========== DASHBOARD MOTOQUEIRO (com status corrigido) ==========
+    // ========== DASHBOARD MOTOQUEIRO ==========
     async function renderDashboardMoto() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -491,9 +530,7 @@
             document.getElementById("historicoMoto").innerHTML = "Nenhuma ronda registrada";
         }
 
-        // Iniciar rastreamento e atualizar status com última posição conhecida (se houver)
         iniciarRastreamentoMoto();
-        // Tentar carregar a última posição do localStorage do motoqueiro (se existir)
         const storedMoto = localStorage.getItem("rondaMotoqueiro");
         if (storedMoto) {
             const motoData = JSON.parse(storedMoto);
@@ -507,10 +544,9 @@
         document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
     }
 
-    // ========== DASHBOARD ADMIN ==========
+    // ========== DASHBOARD ADMIN (mantido igual) ==========
     async function renderDashboardAdmin() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
-        // Buscar dados
         const [usuariosRes, posicoesRes] = await Promise.all([
             supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false }),
             supabaseClient.from('posicoes').select('*, usuarios(nome, papel)').order('timestamp', { ascending: false })
@@ -554,11 +590,9 @@
                         </div>
                         <div style="overflow-x: auto;">
                             <table id="tabelaUsuarios">
-                                <thead>
-                                    <tr><th>Nome</th><th>Email</th><th>Papel</th><th>Endereço</th><th>Ações</th></tr>
-                                </thead>
+                                <thead><tr><th>Nome</th><th>Email</th><th>Papel</th><th>Endereço</th><th>Ações</th></tr></thead>
                                 <tbody id="tabelaUsuariosBody"></tbody>
-                            8>
+                            </table>
                         </div>
                     </div>
                     <div class="card card-full">
@@ -567,7 +601,7 @@
                             <table>
                                 <thead><tr><th>Cliente</th><th>Endereço</th><th>Data/Hora</th><th>Distância (m)</th></tr></thead>
                                 <tbody id="rondasAdminBody"></tbody>
-                            ~
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -575,7 +609,6 @@
             </div>
         `;
 
-        // Carregar últimas rondas
         const rondasRes = await supabaseClient
             .from('rondas')
             .select('*, usuarios(nome, endereco)')
@@ -596,12 +629,8 @@
             const busca = document.getElementById("filtroBusca").value.toLowerCase();
             const papel = document.getElementById("filtroPapel").value;
             let filtered = usuarios;
-            if (busca) {
-                filtered = filtered.filter(u => u.nome.toLowerCase().includes(busca) || u.email.toLowerCase().includes(busca));
-            }
-            if (papel !== 'todos') {
-                filtered = filtered.filter(u => u.papel === papel);
-            }
+            if (busca) filtered = filtered.filter(u => u.nome.toLowerCase().includes(busca) || u.email.toLowerCase().includes(busca));
+            if (papel !== 'todos') filtered = filtered.filter(u => u.papel === papel);
             const tbody = document.getElementById("tabelaUsuariosBody");
             tbody.innerHTML = filtered.map(u => `
                 <tr>
@@ -615,7 +644,6 @@
                     </td>
                 </tr>
             `).join('');
-            // Reatribuir eventos
             document.querySelectorAll(".editarUsuarioBtn").forEach(btn => {
                 btn.onclick = async () => {
                     const id = btn.getAttribute("data-id");
@@ -651,7 +679,6 @@
             if (adminMap) adminMap.remove();
             adminMap = L.map("adminMapContainer").setView([-23.5505, -46.6333], 13);
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' }).addTo(adminMap);
-            
             for (const cliente of clientes) {
                 const coords = await geocodificarEndereco(cliente.endereco);
                 if (coords) {
