@@ -122,7 +122,7 @@
         } catch(e) { return "Rua não identificada"; }
     }
 
-    // Carregar dados (agora garantindo que termina antes da UI)
+    // Carregar dados (garantindo que termina antes da UI)
     async function loadDB() {
         const storedClients = localStorage.getItem("rondaClients");
         if(storedClients) {
@@ -148,13 +148,11 @@
                 client.lngCasa = clientCoordsCache[client.endereco].lng;
             }
         }
-        // Salvar clientes com coordenadas
         localStorage.setItem("rondaClients", JSON.stringify(clientsDB));
 
         const storedMoto = localStorage.getItem("rondaMotoqueiro");
         if(storedMoto) {
             motoqueiroDB = JSON.parse(storedMoto);
-            // Verificar se o motoqueiro tem os campos necessários
             if (!motoqueiroDB.nome || !motoqueiroDB.senha) {
                 motoqueiroDB = { id: "m1", nome: "Alex Moto", senha: "123", localizacao: { lat: -23.5505, lng: -46.6333, timestamp: Date.now() }, historicoRondasFeitas: [], alertas: [] };
                 localStorage.setItem("rondaMotoqueiro", JSON.stringify(motoqueiroDB));
@@ -290,7 +288,7 @@
         }
     }
 
-    // ========== TELAS DE AUTENTICAÇÃO (com reset) ==========
+    // ========== TELAS DE AUTENTICAÇÃO ==========
     function renderAuthScreen() {
         const root = document.getElementById("appRoot");
         root.innerHTML = `
@@ -329,6 +327,7 @@
                 </div>
             </div>
         `;
+        
         function showLogin(tipo) {
             document.getElementById("loginFormCliente").classList.toggle("hidden", tipo !== "cliente");
             document.getElementById("loginFormMoto").classList.toggle("hidden", tipo !== "moto");
@@ -344,6 +343,7 @@
                 document.getElementById("regMoto").classList.remove("hidden");
             }
         }
+        
         document.getElementById("btnClienteLogin").onclick = () => showLogin("cliente");
         document.getElementById("btnMotoLogin").onclick = () => showLogin("moto");
         
@@ -356,12 +356,11 @@
             else alert("Cliente não encontrado. Demo: 11999999999 / 123");
         };
         
-        // Login Motoqueiro (agora com validação robusta)
+        // Login Motoqueiro (com recarga para garantir dados atualizados)
         document.getElementById("loginMotoBtn").onclick = async () => {
             const nome = document.getElementById("motoNome").value.trim();
             const senha = document.getElementById("motoSenha").value;
-            // Recarregar dados para garantir que o motoqueiroDB está atualizado
-            await loadDB();
+            await loadDB(); // recarrega para garantir que o motoqueiroDB está correto
             if (motoqueiroDB && motoqueiroDB.nome === nome && motoqueiroDB.senha === senha) {
                 currentUser = { type: "moto", data: motoqueiroDB };
                 renderDashboardMoto(motoqueiroDB);
@@ -572,7 +571,7 @@
         });
     }
 
-    // Inicialização (garantir que loadDB termine antes da tela)
+    // Inicialização
     (async () => {
         await loadDB();
         renderAuthScreen();
