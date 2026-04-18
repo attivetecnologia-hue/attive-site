@@ -93,14 +93,31 @@
         return (bearing + 360) % 360;
     }
 
+    // Geocodificação melhorada (com fallback)
     async function geocodificarEndereco(endereco) {
         try {
-            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}&limit=1`;
+            // Tenta primeiro com o endereço completo (inclui número)
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}&limit=1&addressdetails=1`;
             const resp = await fetch(url);
             const data = await resp.json();
-            if (data && data[0]) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
-        } catch(e) { console.error("Erro geocodificação:", e); }
-        return null;
+            if (data && data[0]) {
+                return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+            }
+            // Fallback: tenta remover o número (se houver) e buscar só a rua
+            const semNumero = endereco.replace(/\d+/g, '').replace(/,/g, '').trim();
+            if (semNumero !== endereco) {
+                const url2 = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(semNumero)}&limit=1`;
+                const resp2 = await fetch(url2);
+                const data2 = await resp2.json();
+                if (data2 && data2[0]) {
+                    return { lat: parseFloat(data2[0].lat), lng: parseFloat(data2[0].lon) };
+                }
+            }
+            return null;
+        } catch(e) {
+            console.error("Erro geocodificação:", e);
+            return null;
+        }
     }
 
     async function obterEnderecoAproximado(lat, lng) {
@@ -418,7 +435,7 @@
         document.getElementById("backToLoginMoto").onclick = () => showLogin("moto");
     }
 
-    // ========== DASHBOARD CLIENTE ==========
+    // ========== DASHBOARD CLIENTE (com botão "Ajustar casa") ==========
     function renderDashboardCliente(client) {
         if(clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -429,6 +446,7 @@
                     <div class="user-info">
                         <i class="fas fa-user"></i> ${client.nome}
                         <button class="editar-btn" id="editarEnderecoBtn"><i class="fas fa-edit"></i> Editar endereço</button>
+                        <button class="editar-btn" id="recalcCasaBtn"><i class="fas fa-sync-alt"></i> Ajustar casa</button>
                         <button class="logout-btn" id="logoutBtn">Sair</button>
                     </div>
                 </div>
@@ -456,6 +474,17 @@
                     .bindPopup(`<b>Sua casa</b><br>${client.endereco}`).openPopup();
                 const bounds = L.latLngBounds([[client.latCasa, client.lngCasa]]);
                 clientMap.fitBounds(bounds);
+            } else {
+                // Se não houver coordenadas, tenta geocodificar novamente
+                geocodificarEndereco(client.endereco).then(coords => {
+                    if (coords) {
+                        client.latCasa = coords.lat;
+                        client.lngCasa = coords.lng;
+                        clientCoordsCache[client.endereco] = coords;
+                        saveDB();
+                        atualizarMarcadorCasa();
+                    }
+                });
             }
         }
         atualizarMarcadorCasa();
@@ -500,6 +529,24 @@
                 alert("Endereço atualizado!");
             }
         };
+        
+        // Botão "Ajustar casa" - recalcula as coordenadas do endereço atual
+        document.getElementById("recalcCasaBtn").onclick = async () => {
+            const coords = await geocodificarEndereco(client.endereco);
+            if (coords) {
+                client.latCasa = coords.lat;
+                client.lngCasa = coords.lng;
+                clientCoordsCache[client.endereco] = coords;
+                const idx = clientsDB.findIndex(c => c.id === client.id);
+                if (idx !== -1) clientsDB[idx] = client;
+                saveDB();
+                atualizarMarcadorCasa();
+                alert("Posição da casa recalculada. Verifique no mapa.");
+            } else {
+                alert("Não foi possível localizar o endereço. Verifique se ele está correto.");
+            }
+        };
+        
         document.getElementById("logoutBtn").onclick = () => { currentUser = null; renderAuthScreen(); };
         document.getElementById("panicoBtn").onclick = () => {
             alert("Pânico acionado! O motoqueiro foi notificado.");
@@ -577,13 +624,12 @@
         });
     }
 
-    // ========== INICIALIZAÇÃO COM TRY/CATCH E TIMEOUT ==========
+    // ========== INICIALIZAÇÃO ==========
     (async () => {
         try {
             await loadDB();
         } catch(e) {
             console.error("Erro no loadDB:", e);
-            // Garante que a tela aparece mesmo se loadDB falhar
             if (!clientsDB.length) {
                 clientsDB = [{
                     id: "c1", nome: "Hélio Crispim", telefone: "11999999999",
