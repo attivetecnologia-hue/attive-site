@@ -29,7 +29,6 @@
         .auth-screen input { width: 100%; padding: 12px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: white; }
         .auth-screen button { width: 100%; background: #facc15; border: none; padding: 12px; border-radius: 40px; font-weight: bold; margin-top: 15px; cursor: pointer; color: #0f172a; }
         .toggle-auth { text-align: center; margin-top: 15px; color: #94a3b8; cursor: pointer; font-size: 0.85rem; }
-        .reset-btn { background: #ef4444; margin-top: 10px; }
         .hidden { display: none; }
         .moto-marker i { font-size: 28px; color: #0047AB; text-shadow: 1px 1px 0 #000; }
         .casa-marker i { font-size: 24px; color: #facc15; text-shadow: 1px 1px 0 #000; }
@@ -44,13 +43,14 @@
 <div id="appRoot"></div>
 
 <script>
-    // ========== CONFIGURAÇÃO DO SUPABASE (CREDENCIAIS INSERIDAS) ==========
+    // ========== CONFIGURAÇÃO DO SUPABASE ==========
     const SUPABASE_URL = "https://xjjyaxccbylpiwpfoxaq.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_y9sDx5DqyjjXzV7CAxEpGQ_23W18H_t";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // Cria o cliente e o armazena em uma variável (não redeclara o global)
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // ========== DADOS LOCAIS (apenas estado) ==========
-    let currentUser = null;          // { id, email, nome, papel, endereco, latCasa, lngCasa }
+    // ========== DADOS LOCAIS ==========
+    let currentUser = null;
     let watchId = null;
     let ultimoEnvio = { timestamp: 0, lat: 0, lng: 0, bearing: 0 };
     let ultimoEnvioPorAngulo = 0;
@@ -58,8 +58,6 @@
     let motoMap = null, motoMarker = null;
     let clientUpdateInterval = null;
     let posicaoSubscription = null;
-
-    // Cache para geocodificação reversa (endereço a partir de lat/lng)
     let reverseCache = {};
 
     // ========== FUNÇÕES AUXILIARES ==========
@@ -107,12 +105,29 @@
         return L.divIcon({ html: '<i class="fas fa-home"></i>', iconSize: [24,24], className: 'casa-marker', popupAnchor: [0,-10] });
     }
 
-    // ========== RASTREAMENTO INTELIGENTE (motoqueiro) ==========
+    // Geocodificação com cache
+    let geoCache = {};
+    async function geocodificarEndereco(endereco) {
+        const cacheKey = `geo_${endereco}`;
+        if (geoCache[cacheKey]) return geoCache[cacheKey];
+        try {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}&limit=1`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (data && data[0]) {
+                const coords = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+                geoCache[cacheKey] = coords;
+                return coords;
+            }
+        } catch(e) { console.error("Geocodificação falhou", e); }
+        return null;
+    }
+
+    // ========== RASTREAMENTO INTELIGENTE ==========
     async function enviarPosicao(lat, lng, precisao, timestamp) {
         if (!currentUser || currentUser.papel !== 'motoqueiro') return;
         const dataHoraStr = new Date(timestamp).toLocaleString('pt-BR');
-        // Inserir na tabela posicoes
-        const { error } = await supabase.from('posicoes').insert({
+        const { error } = await supabaseClient.from('posicoes').insert({
             motoqueiro_id: currentUser.id,
             latitude: lat,
             longitude: lng,
@@ -123,24 +138,21 @@
         else console.log("Posição enviada:", dataHoraStr);
 
         // Detectar passagem automática (distância <= 50m de cada cliente)
-        const { data: clientes, error: clientesError } = await supabase
+        const { data: clientes, error: clientesError } = await supabaseClient
             .from('usuarios')
             .select('id, endereco, ultima_passagem')
             .eq('papel', 'cliente');
         if (!clientesError && clientes) {
             for (let cliente of clientes) {
                 if (!cliente.endereco) continue;
-                // Geocodificar endereço do cliente (uma vez, mas aqui simplificamos)
                 let coords = await geocodificarEndereco(cliente.endereco);
                 if (coords) {
                     const dist = calcularDistancia(lat, lng, coords.lat, coords.lng);
                     if (dist <= 50) {
                         const ultima = cliente.ultima_passagem ? new Date(cliente.ultima_passagem).getTime() : 0;
                         if (timestamp - ultima > 60000) {
-                            // Atualizar ultima_passagem do cliente
-                            await supabase.from('usuarios').update({ ultima_passagem: new Date(timestamp).toISOString() }).eq('id', cliente.id);
-                            // Inserir na tabela rondas
-                            await supabase.from('rondas').insert({
+                            await supabaseClient.from('usuarios').update({ ultima_passagem: new Date(timestamp).toISOString() }).eq('id', cliente.id);
+                            await supabaseClient.from('rondas').insert({
                                 cliente_id: cliente.id,
                                 motoqueiro_id: currentUser.id,
                                 timestamp: new Date(timestamp).toISOString(),
@@ -152,24 +164,6 @@
                 }
             }
         }
-    }
-
-    async function geocodificarEndereco(endereco) {
-        // Usa Nominatim com cache simples
-        const cacheKey = `geo_${endereco}`;
-        if (window.geoCache && window.geoCache[cacheKey]) return window.geoCache[cacheKey];
-        try {
-            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}&limit=1`;
-            const resp = await fetch(url);
-            const data = await resp.json();
-            if (data && data[0]) {
-                const coords = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
-                if (!window.geoCache) window.geoCache = {};
-                window.geoCache[cacheKey] = coords;
-                return coords;
-            }
-        } catch(e) { console.error("Geocodificação falhou", e); }
-        return null;
     }
 
     function iniciarRastreamentoMoto() {
@@ -207,12 +201,12 @@
     function pararRastreamentoMoto() {
         if (watchId) { navigator.geolocation.clearWatch(watchId); watchId = null; }
     }
+
     function atualizarMapaMoto(lat, lng) {
         if (!motoMap) return;
         if (!motoMarker) motoMarker = L.marker([lat,lng], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Sua posição").openPopup();
         else motoMarker.setLatLng([lat,lng]);
         motoMap.setView([lat,lng], 15);
-        // Atualizar popup com endereço
         obterEnderecoAproximado(lat, lng).then(end => {
             motoMarker.bindPopup(`<b>Sua posição</b><br>${end}`).openPopup();
         });
@@ -221,7 +215,7 @@
     // ========== RECEBER POSIÇÃO EM TEMPO REAL (CLIENTE) ==========
     function assinarPosicaoMoto() {
         if (posicaoSubscription) posicaoSubscription.unsubscribe();
-        posicaoSubscription = supabase
+        posicaoSubscription = supabaseClient
             .channel('posicoes')
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posicoes' }, (payload) => {
                 const novaPos = payload.new;
@@ -238,17 +232,16 @@
             .subscribe();
     }
 
-    // ========== TELAS ==========
+    // ========== AUTENTICAÇÃO E DASHBOARDS ==========
     async function fazerLogin(email, senha) {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: senha });
         if (error) { alert("Erro: " + error.message); return false; }
-        // Buscar dados adicionais na tabela usuarios
-        const { data: userData, error: userError } = await supabase
+        const { data: userData, error: userError } = await supabaseClient
             .from('usuarios')
             .select('*')
             .eq('email', email)
             .single();
-        if (userError) { alert("Usuário não encontrado na tabela. Contate o administrador."); return false; }
+        if (userError) { alert("Usuário não encontrado na tabela."); return false; }
         currentUser = {
             id: userData.id,
             email: userData.email,
@@ -265,11 +258,9 @@
     }
 
     async function fazerCadastroCliente(email, senha, nome, endereco, telefone) {
-        // Criar usuário no auth
-        const { data, error } = await supabase.auth.signUp({ email, password: senha });
+        const { data, error } = await supabaseClient.auth.signUp({ email, password: senha });
         if (error) { alert(error.message); return false; }
-        // Inserir na tabela usuarios
-        const { error: insertError } = await supabase.from('usuarios').insert({
+        const { error: insertError } = await supabaseClient.from('usuarios').insert({
             id: data.user.id,
             email: email,
             nome: nome,
@@ -375,8 +366,7 @@
         }
         atualizarMarcadorCasa();
 
-        // Buscar última passagem do cliente
-        const { data: rondaData, error: rondaError } = await supabase
+        const { data: rondaData, error: rondaError } = await supabaseClient
             .from('rondas')
             .select('timestamp')
             .eq('cliente_id', currentUser.id)
@@ -389,7 +379,6 @@
             document.getElementById("ultimaPassagem").innerHTML = `<i class="fas fa-clock"></i> Última passagem: Nenhuma ainda`;
         }
 
-        // Assinar novas posições
         assinarPosicaoMoto();
 
         document.getElementById("editarEnderecoBtn").onclick = async () => {
@@ -400,20 +389,20 @@
                 currentUser.endereco = novoEnd;
                 currentUser.latCasa = coords.lat;
                 currentUser.lngCasa = coords.lng;
-                await supabase.from('usuarios').update({ endereco: novoEnd }).eq('id', currentUser.id);
+                await supabaseClient.from('usuarios').update({ endereco: novoEnd }).eq('id', currentUser.id);
                 atualizarMarcadorCasa();
                 alert("Endereço atualizado!");
             }
         };
         document.getElementById("logoutBtn").onclick = () => {
             if (posicaoSubscription) posicaoSubscription.unsubscribe();
-            supabase.auth.signOut();
+            supabaseClient.auth.signOut();
             currentUser = null;
             renderAuthScreen();
         };
         document.getElementById("panicoBtn").onclick = async () => {
             alert("Pânico acionado! O motoqueiro foi notificado.");
-            // Aqui você pode inserir uma notificação na tabela "alertas" (opcional)
+            // Opcional: inserir alerta na tabela "alertas"
         };
     }
 
@@ -451,10 +440,10 @@
         motoMap = L.map("motoMapContainer").setView([-23.5505, -46.6333], 15);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(motoMap);
         motoMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Sua posição");
-        // Carregar histórico de rondas
-        const { data: rondas, error } = await supabase
+
+        const { data: rondas, error } = await supabaseClient
             .from('rondas')
-            .select('*, usuarios!rondas_cliente_id_fkey(nome, endereco)')
+            .select('*, usuarios(nome, endereco)')
             .eq('motoqueiro_id', currentUser.id)
             .order('timestamp', { ascending: false });
         if (!error && rondas) {
@@ -465,19 +454,14 @@
 
         document.getElementById("pararRastreamentoBtn").onclick = () => pararRastreamentoMoto();
         document.getElementById("reiniciarRastreamentoBtn").onclick = () => { pararRastreamentoMoto(); iniciarRastreamentoMoto(); };
-        document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); supabase.auth.signOut(); currentUser = null; renderAuthScreen(); };
+        document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
         iniciarRastreamentoMoto();
     }
 
-    // Verificar se já existe sessão ativa
     async function checkSession() {
-        const { data: { session }, error } = await supabase.auth.getSession();
+        const { data: { session }, error } = await supabaseClient.auth.getSession();
         if (session) {
-            const { data: userData, error: userError } = await supabase
-                .from('usuarios')
-                .select('*')
-                .eq('email', session.user.email)
-                .single();
+            const { data: userData } = await supabaseClient.from('usuarios').select('*').eq('email', session.user.email).single();
             if (userData) {
                 currentUser = {
                     id: userData.id,
