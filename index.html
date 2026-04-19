@@ -59,12 +59,12 @@
         .btn-toggle { background: #22c55e; width: 100%; padding: 10px; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #0f172a; }
         .btn-toggle.ativo { background: #ef4444; color: white; }
         .btn-centralizar { background: #3b82f6; width: 100%; padding: 8px; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .modal-mapa, .modal-editar { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; flex-direction: column; }
+        .modal-mapa, .modal-editar, .modal-novo { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; flex-direction: column; }
         .modal-header { background: #1e293b; padding: 10px; display: flex; justify-content: space-between; align-items: center; }
         .modal-map-container { flex: 1; }
         .modal-footer { background: #1e293b; padding: 10px; text-align: center; }
-        .modal-editar .modal-content { background: #0f172a; margin: 50px auto; max-width: 500px; border-radius: 24px; padding: 20px; }
-        .modal-editar input, .modal-editar select { width: 100%; padding: 10px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: white; }
+        .modal-editar .modal-content, .modal-novo .modal-content { background: #0f172a; margin: 50px auto; max-width: 500px; border-radius: 24px; padding: 20px; }
+        .modal-editar input, .modal-editar select, .modal-novo input, .modal-novo select { width: 100%; padding: 10px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: white; }
         .casa-ajustada { color: #22c55e; margin-left: 5px; }
     </style>
 </head>
@@ -355,6 +355,43 @@
         };
     }
 
+    // ========== MODAL NOVO USUÁRIO ==========
+    async function abrirNovoUsuario() {
+        const modal = document.createElement('div'); modal.className = 'modal-novo';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h3 style="margin-bottom:15px;">Novo Usuário</h3>
+                <label>Nome</label><input id="novoNome" placeholder="Nome completo" />
+                <label>Email</label><input id="novoEmail" placeholder="Email" />
+                <label>Senha</label><input id="novoSenha" type="password" placeholder="Senha" />
+                <label>Papel</label><select id="novoPapel"><option value="cliente">Cliente</option><option value="motoqueiro">Motoqueiro</option></select>
+                <label>Endereço</label><input id="novoEndereco" placeholder="Endereço (opcional)" />
+                <label>Telefone</label><input id="novoTelefone" placeholder="Telefone (opcional)" />
+                <div style="display:flex; gap:10px; margin-top:20px;"><button id="criarUsuario" style="background:#22c55e;">Criar</button><button id="cancelarNovo" style="background:#ef4444;">Cancelar</button></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('cancelarNovo').onclick = () => modal.remove();
+        document.getElementById('criarUsuario').onclick = async () => {
+            const nome = document.getElementById('novoNome').value.trim();
+            const email = document.getElementById('novoEmail').value.trim();
+            const senha = document.getElementById('novoSenha').value;
+            const papel = document.getElementById('novoPapel').value;
+            const endereco = document.getElementById('novoEndereco').value.trim();
+            const telefone = document.getElementById('novoTelefone').value.trim();
+            if (!nome || !email || !senha) { alert("Nome, email e senha são obrigatórios"); return; }
+            const { data, error } = await supabaseClient.auth.signUp({ email, password: senha });
+            if (error) { alert("Erro no Auth: " + error.message); return; }
+            const { error: insertError } = await supabaseClient.from('usuarios').insert({
+                id: data.user.id, email, nome, papel, endereco: endereco || null, telefone: telefone || null
+            });
+            if (insertError) { alert("Erro ao inserir na tabela: " + insertError.message); return; }
+            showToast("Usuário criado com sucesso!");
+            modal.remove();
+            if (window.renderDashboardAdmin) renderDashboardAdmin();
+        };
+    }
+
     // ========== RECEBER POSIÇÕES EM TEMPO REAL (CLIENTE) ==========
     function assinarPosicaoMoto() {
         if (posicaoSubscription) posicaoSubscription.unsubscribe();
@@ -516,7 +553,7 @@
         document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
     }
 
-    // ========== DASHBOARD ADMIN (COM MELHORIAS UX) ==========
+    // ========== DASHBOARD ADMIN ==========
     let adminData = { usuarios: [], motoqueiros: [], clientes: [], ultimasPosicoes: {}, rondas: [] };
     let currentPage = 1, itemsPerPage = 20, sortField = 'nome', sortOrder = 'asc';
     async function renderDashboardAdmin() {
@@ -542,12 +579,12 @@
                     <div class="card card-full"><h3><i class="fas fa-map-marked-alt"></i> Mapa de Clientes e Motoqueiros</h3><div id="adminMapContainer" class="map-container"></div><button id="atualizarMapaBtn" style="background:#3b82f6; margin-top:8px; padding:6px; border-radius:40px;">Atualizar mapa</button></div>
                     <div class="card card-full"><h3><i class="fas fa-list"></i> Gerenciar Usuários</h3>
                         <div class="filtros"><input type="text" id="filtroBusca" placeholder="Buscar nome/email"><select id="filtroPapel"><option value="todos">Todos os papéis</option><option value="cliente">Clientes</option><option value="motoqueiro">Motoqueiros</option><option value="admin">Administradores</option></select><button id="exportarCsvBtn"><i class="fas fa-download"></i> Exportar CSV</button><button id="novoUsuarioBtn"><i class="fas fa-plus"></i> Novo Usuário</button></div>
-                        <div style="overflow-x: auto;"><table id="tabelaUsuarios"><thead><tr><th data-field="nome">Nome ↕</th><th data-field="email">Email ↕</th><th data-field="papel">Papel ↕</th><th data-field="endereco">Endereço ↕</th><th>Ações</th></tr></thead><tbody id="tabelaUsuariosBody"></tbody></table></div>
+                        <div style="overflow-x: auto;"><table id="tabelaUsuarios"><thead><th data-field="nome">Nome ↕</th><th data-field="email">Email ↕</th><th data-field="papel">Papel ↕</th><th data-field="endereco">Endereço ↕</th><th>Ações</th></thead><tbody id="tabelaUsuariosBody"></tbody></table></div>
                         <div class="pagination" id="pagination"></div>
                     </div>
                     <div class="card card-full"><h3><i class="fas fa-history"></i> Rondas</h3>
                         <div class="filtros"><input type="date" id="dataInicio"><input type="date" id="dataFim"><button id="filtrarRondasBtn">Filtrar</button></div>
-                        <div style="overflow-x: auto;"><table id="tabelaRondas"><thead><tr><th>Cliente</th><th>Endereço</th><th>Data/Hora</th><th>Distância (m)</th></tr></thead><tbody id="rondasAdminBody"></tbody></table></div>
+                        <div style="overflow-x: auto;"><table id="tabelaRondas"><thead><th>Cliente</th><th>Endereço</th><th>Data/Hora</th><th>Distância (m)</th></thead><tbody id="rondasAdminBody"></tbody></table></div>
                     </div>
                 </div>
                 <footer>Painel Administrativo • Use satélite para ajustar casas</footer>
@@ -589,7 +626,7 @@
             const tbody = document.getElementById("tabelaUsuariosBody");
             tbody.innerHTML = paginated.map(u => `
                 <tr><td>${u.nome}</td><td>${u.email}</td><td>${u.papel}</td><td>${u.endereco || '-'} ${u.lat_casa && u.lng_casa ? '<i class="fas fa-check-circle casa-ajustada" title="Casa ajustada manualmente"></i>' : ''}</td>
-                <td><button class="editarUsuarioBtn" data-id="${u.id}" style="background:#facc15;"><i class="fas fa-edit"></i></button> <button class="excluirUsuarioBtn" data-id="${u.id}" data-email="${u.email}" style="background:#ef4444;"><i class="fas fa-trash"></i></button> <button class="ajustarCasaBtn" data-id="${u.id}" data-nome="${u.nome}" data-endereco="${u.endereco||''}" style="background:#3b82f6;"><i class="fas fa-map-marker-alt"></i> Casa</button></td></tr>
+                <td><button class="editarUsuarioBtn" data-id="${u.id}" style="background:#facc15;"><i class="fas fa-edit"></i></button> <button class="excluirUsuarioBtn" data-id="${u.id}" data-email="${u.email}" style="background:#ef4444;"><i class="fas fa-trash"></i></button> <button class="ajustarCasaBtn" data-id="${u.id}" data-nome="${u.nome}" data-endereco="${u.endereco||''}" style="background:#3b82f6;"><i class="fas fa-map-marker-alt"></i> Casa</button></td>
             `).join('');
             const totalPages = Math.ceil(filtered.length/itemsPerPage);
             const pagDiv = document.getElementById("pagination");
@@ -617,17 +654,7 @@
             const csv = csvRows.map(row => row.map(cell => `"${cell}"`).join(",")).join("\n");
             const blob = new Blob([csv], {type: "text/csv"}); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "usuarios.csv"; a.click(); URL.revokeObjectURL(a.href);
         };
-        document.getElementById("novoUsuarioBtn").onclick = async () => {
-            const nome = prompt("Nome completo:"); if (!nome) return;
-            const email = prompt("Email:"); if (!email) return;
-            const senha = prompt("Senha temporária:"); if (!senha) return;
-            const papel = prompt("Papel (cliente / motoqueiro):"); if (!papel || (papel !== 'cliente' && papel !== 'motoqueiro')) return alert("Papel inválido");
-            const endereco = prompt("Endereço (opcional):");
-            const { data, error } = await supabaseClient.auth.signUp({ email, password: senha });
-            if (error) return alert(error.message);
-            await supabaseClient.from('usuarios').insert({ id: data.user.id, email, nome, papel, endereco: endereco || null });
-            renderDashboardAdmin();
-        };
+        document.getElementById("novoUsuarioBtn").onclick = () => abrirNovoUsuario();
         document.querySelectorAll("th[data-field]").forEach(th => th.onclick = () => { sortField = th.dataset.field; sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; currentPage = 1; renderTabelaUsuarios(); });
         document.getElementById("filtroBusca").addEventListener("input", () => { currentPage = 1; renderTabelaUsuarios(); });
         document.getElementById("filtroPapel").addEventListener("change", () => { currentPage = 1; renderTabelaUsuarios(); });
