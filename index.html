@@ -101,6 +101,11 @@
         setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
+    // ========== FUNÇÕES AUXILIARES DE FORMATAÇÃO ==========
+    function formatarDataHoraBrasilia(timestamp) {
+        return new Date(timestamp).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+    }
+
     // ========== AUXILIAR FUNCTIONS ==========
     function calcularDistancia(lat1, lon1, lat2, lon2) {
         const R = 6371000;
@@ -177,7 +182,7 @@
     // ========== RASTREAMENTO MOTOQUEIRO ==========
     async function enviarPosicao(lat, lng, precisao, timestamp) {
         if (!currentUser || currentUser.papel !== 'motoqueiro') return;
-        const dataHoraStr = new Date(timestamp).toLocaleString('pt-BR');
+        const dataHoraStr = formatarDataHoraBrasilia(timestamp);
         const { error } = await supabaseClient.from('posicoes').insert({
             motoqueiro_id: currentUser.id,
             latitude: lat,
@@ -428,7 +433,6 @@
 
     // ========== TESTE FORÇADO DE RONDA (ADMIN) ==========
     async function testarRonda(clienteId, clienteNome) {
-        // Buscar o primeiro motoqueiro disponível
         const { data: motoqueiros, error: motoError } = await supabaseClient
             .from('usuarios')
             .select('id')
@@ -450,12 +454,10 @@
             showToast(`❌ Erro ao registrar ronda: ${insertError.message}`);
         } else {
             showToast(`✅ Ronda de teste registrada para ${clienteNome}`);
-            // Limpar filtros de data e recarregar a página do admin
             const inicioInput = document.getElementById("dataInicio");
             const fimInput = document.getElementById("dataFim");
             if (inicioInput) inicioInput.value = '';
             if (fimInput) fimInput.value = '';
-            // Recarregar dados e re-renderizar admin
             await renderDashboardAdmin();
         }
     }
@@ -468,7 +470,7 @@
             if (clientMarker && clientMap) {
                 clientMarker.setLatLng([novaPos.latitude, novaPos.longitude]);
                 clientMap.setView([novaPos.latitude, novaPos.longitude], 14);
-                document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${new Date(novaPos.timestamp).toLocaleString('pt-BR')}`;
+                document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${formatarDataHoraBrasilia(novaPos.timestamp)}`;
                 obterEnderecoAproximado(novaPos.latitude, novaPos.longitude).then(end => clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`));
             }
         }).subscribe();
@@ -567,13 +569,13 @@
             if (data && data[0]) {
                 clientMarker.setLatLng([data[0].latitude, data[0].longitude]);
                 clientMap.setView([data[0].latitude, data[0].longitude], 14);
-                document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${new Date(data[0].timestamp).toLocaleString('pt-BR')}`;
+                document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${formatarDataHoraBrasilia(data[0].timestamp)}`;
                 const end = await obterEnderecoAproximado(data[0].latitude, data[0].longitude);
                 clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`);
             } else document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-exclamation-triangle"></i> Nenhuma posição recebida ainda.`;
         }
         const { data: rondaData } = await supabaseClient.from('rondas').select('timestamp').eq('cliente_id', currentUser.id).order('timestamp', { ascending: false }).limit(1);
-        document.getElementById("ultimaPassagem").innerHTML = rondaData && rondaData[0] ? `<i class="fas fa-clock"></i> Última passagem: ${new Date(rondaData[0].timestamp).toLocaleString('pt-BR')}` : `<i class="fas fa-clock"></i> Última passagem: Nenhuma ainda`;
+        document.getElementById("ultimaPassagem").innerHTML = rondaData && rondaData[0] ? `<i class="fas fa-clock"></i> Última passagem: ${formatarDataHoraBrasilia(rondaData[0].timestamp)}` : `<i class="fas fa-clock"></i> Última passagem: Nenhuma ainda`;
         assinarPosicaoMoto();
         await carregarUltimaPosicao();
         document.getElementById("editarEnderecoBtn").onclick = async () => {
@@ -623,31 +625,27 @@
             }
         }
         const { data: rondas } = await supabaseClient.from('rondas').select('*, usuarios(nome, endereco)').eq('motoqueiro_id', currentUser.id).order('timestamp', { ascending: false }).limit(5);
-        document.getElementById("historicoMoto").innerHTML = rondas && rondas.length ? rondas.map(r => `<div><i class="fas fa-check-circle"></i> ${new Date(r.timestamp).toLocaleString('pt-BR')} - ${r.usuarios?.endereco || 'Cliente'}</div>`).join('') : "Nenhuma ronda registrada";
+        document.getElementById("historicoMoto").innerHTML = rondas && rondas.length ? rondas.map(r => `<div><i class="fas fa-check-circle"></i> ${formatarDataHoraBrasilia(r.timestamp)} - ${r.usuarios?.endereco || 'Cliente'}</div>`).join('') : "Nenhuma ronda registrada";
         document.getElementById("toggleRastreamentoBtn").onclick = () => watchId !== null ? pararRastreamentoMoto() : iniciarRastreamentoMoto();
         document.getElementById("centralizarMapaBtn").onclick = () => centralizarMapaMoto();
         const storedMoto = localStorage.getItem("rondaMotoqueiro");
-        if (storedMoto) { const motoData = JSON.parse(storedMoto); if (motoData.localizacao?.dataHora) atualizarStatusGPS(`Última posição conhecida: ${motoData.localizacao.dataHora}`, true); }
+        if (storedMoto) { const motoData = JSON.parse(storedMoto); if (motoData.localizacao?.dataHora) atualizarStatusGPS(`Última posição conhecida: ${formatarDataHoraBrasilia(motoData.localizacao.timestamp)}`, true); }
         document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
     }
 
-    // ========== DASHBOARD ADMIN (CORRIGIDO) ==========
+    // ========== DASHBOARD ADMIN ==========
     let adminData = { usuarios: [], motoqueiros: [], clientes: [], ultimasPosicoes: {}, rondas: [] };
     let currentPage = 1, itemsPerPage = 20, sortField = 'nome', sortOrder = 'asc';
     async function renderDashboardAdmin() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
-        
-        // Carregar dados com a relação correta para rondas
         const [usuariosRes, posicoesRes, rondasRes] = await Promise.all([
             supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false }),
             supabaseClient.from('posicoes').select('*, usuarios(nome, papel)').order('timestamp', { ascending: false }),
             supabaseClient.from('rondas').select('*, usuarios:cliente_id(nome, endereco)').order('timestamp', { ascending: false })
         ]);
-        
         adminData.usuarios = usuariosRes.data || [];
         adminData.rondas = rondasRes.data || [];
         const posicoes = posicoesRes.data || [];
-        
         adminData.ultimasPosicoes = {};
         for (const pos of posicoes) {
             if (!adminData.ultimasPosicoes[pos.motoqueiro_id] && pos.usuarios?.papel === 'motoqueiro') {
@@ -657,7 +655,6 @@
         adminData.clientes = adminData.usuarios.filter(u => u.papel === 'cliente' && u.endereco);
         adminData.motoqueiros = adminData.usuarios.filter(u => u.papel === 'motoqueiro');
 
-        // Renderizar HTML
         const root = document.getElementById("appRoot");
         root.innerHTML = `
             <div class="app-container">
@@ -678,7 +675,6 @@
             </div>
         `;
 
-        // Inicializar mapa
         const streetLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM & CartoDB' });
         const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri, Maxar, Earthstar' });
         if (adminMap) adminMap.remove();
@@ -696,7 +692,7 @@
             }
             for (const moto of adminData.motoqueiros) {
                 const ultimaPos = adminData.ultimasPosicoes[moto.id];
-                if (ultimaPos) L.marker([ultimaPos.latitude, ultimaPos.longitude], { icon: criarIconeMoto(), zIndexOffset: 100 }).addTo(adminMap).bindPopup(`<b>${moto.nome}</b><br>Última posição: ${new Date(ultimaPos.timestamp).toLocaleString('pt-BR')}`);
+                if (ultimaPos) L.marker([ultimaPos.latitude, ultimaPos.longitude], { icon: criarIconeMoto(), zIndexOffset: 100 }).addTo(adminMap).bindPopup(`<b>${moto.nome}</b><br>Última posição: ${formatarDataHoraBrasilia(ultimaPos.timestamp)}`);
             }
             const bounds = [];
             adminData.clientes.forEach(c => { if (c.lat_casa && c.lng_casa) bounds.push([c.lat_casa, c.lng_casa]); });
@@ -756,7 +752,7 @@
                         <tr>
                             <td>${r.usuarios?.nome || 'Cliente não encontrado'}</td>
                             <td>${r.usuarios?.endereco || '-'}</td>
-                            <td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td>
+                            <td>${formatarDataHoraBrasilia(r.timestamp)}</td>
                             <td>${r.distancia_metros || '-'}</td>
                         </tr>
                     `).join('');
@@ -764,7 +760,6 @@
             }
         }
 
-        // Eventos
         document.getElementById("atualizarMapaBtn").onclick = () => carregarMapaAdmin();
         document.getElementById("exportarCsvBtn").onclick = () => {
             const filtrados = adminData.usuarios.filter(u => (document.getElementById("filtroBusca").value === '' || u.nome.toLowerCase().includes(document.getElementById("filtroBusca").value.toLowerCase())) && (document.getElementById("filtroPapel").value === 'todos' || u.papel === document.getElementById("filtroPapel").value));
@@ -783,10 +778,8 @@
             renderTabelaRondas(inicio, fim);
         };
         document.getElementById("logoutAdminBtn").onclick = () => { supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
-        
-        // Renderizar tabelas e mapa
         renderTabelaUsuarios();
-        renderTabelaRondas(); // chamada inicial sem filtros
+        renderTabelaRondas();
         await carregarMapaAdmin();
     }
 
