@@ -218,8 +218,8 @@
                     }
                     if (dist <= 50) {
                         const ultima = cliente.ultima_passagem ? new Date(cliente.ultima_passagem).getTime() : 0;
-                        // INTERVALO REDUZIDO PARA 10 SEGUNDOS (TESTES)
-                        if (timestamp - ultima > 10000) {
+                        // ALTERADO: intervalo agora é 0 (registra a cada posição)
+                        if (timestamp - ultima > 0) {
                             await supabaseClient.from('usuarios').update({ ultima_passagem: new Date(timestamp).toISOString() }).eq('id', cliente.id);
                             const { error: insertRonda } = await supabaseClient.from('rondas').insert({
                                 cliente_id: cliente.id,
@@ -235,7 +235,7 @@
                                 showToast(`✅ Passagem registrada para ${cliente.nome.split(' ')[0]}`);
                             }
                         } else {
-                            console.log(`Passagem ignorada (menos de 10s desde a última): ${cliente.nome}`);
+                            console.log(`Passagem ignorada (tempo decorrido <= 0): ${cliente.nome}`);
                         }
                     }
                 }
@@ -747,7 +747,7 @@
             const tbody = document.getElementById("rondasAdminBody");
             if (tbody) {
                 if (filtered.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4">Nenhuma ronda registrada</td><tr>';
+                    tbody.innerHTML = '<tr><td colspan="4">Nenhuma ronda registrada</td></tr>';
                 } else {
                     tbody.innerHTML = filtered.map(r => `
                         <tr>
