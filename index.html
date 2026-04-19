@@ -66,6 +66,7 @@
         .modal-editar .modal-content, .modal-novo .modal-content { background: #0f172a; margin: 50px auto; max-width: 500px; border-radius: 24px; padding: 20px; }
         .modal-editar input, .modal-editar select, .modal-novo input, .modal-novo select { width: 100%; padding: 10px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: white; }
         .casa-ajustada { color: #22c55e; margin-left: 5px; }
+        .cliente-proximo { margin-top: 12px; background: #1e293b; border-radius: 16px; padding: 8px; text-align: center; }
     </style>
 </head>
 <body>
@@ -154,13 +155,14 @@
         return null;
     }
 
+    // Ícones com zIndexOffset para garantir ordem visual
     function criarIconeMoto() {
         return L.divIcon({
             html: '<i class="fas fa-motorcycle"></i>',
             iconSize: [30,30],
             className: 'moto-marker',
             popupAnchor: [0,-10],
-            zIndexOffset: 100   // Força a moto a ficar acima da casa
+            zIndexOffset: 100
         });
     }
     function criarIconeCasa() {
@@ -169,7 +171,7 @@
             iconSize: [24,24],
             className: 'casa-marker',
             popupAnchor: [0,-10],
-            zIndexOffset: 10    // Menor que o da moto
+            zIndexOffset: 10
         });
     }
 
@@ -192,48 +194,52 @@
             atualizarStatusGPS(`Posição enviada: ${dataHoraStr} | Precisão: ${precisao}m`, true);
         }
 
-        // Detectar passagens automáticas
+        // Verificar passagens próximas
         const { data: clientes, error: clientesError } = await supabaseClient
             .from('usuarios')
             .select('id, endereco, ultima_passagem, nome, lat_casa, lng_casa')
             .eq('papel', 'cliente');
         if (!clientesError && clientes) {
+            let clienteMaisProximo = null;
+            let menorDistancia = Infinity;
             for (let cliente of clientes) {
                 let coords = null;
-                if (cliente.lat_casa && cliente.lng_casa) {
-                    coords = { lat: cliente.lat_casa, lng: cliente.lng_casa };
-                } else if (cliente.endereco) {
-                    coords = await geocodificarEndereco(cliente.endereco);
-                }
+                if (cliente.lat_casa && cliente.lng_casa) coords = { lat: cliente.lat_casa, lng: cliente.lng_casa };
+                else if (cliente.endereco) coords = await geocodificarEndereco(cliente.endereco);
                 if (coords) {
                     const dist = calcularDistancia(lat, lng, coords.lat, coords.lng);
-                    console.log(`Distância para ${cliente.nome}: ${Math.round(dist)}m`);
+                    if (dist < menorDistancia) {
+                        menorDistancia = dist;
+                        clienteMaisProximo = { nome: cliente.nome, distancia: dist };
+                    }
                     if (dist <= 50) {
                         const ultima = cliente.ultima_passagem ? new Date(cliente.ultima_passagem).getTime() : 0;
                         if (timestamp - ultima > 60000) {
                             await supabaseClient.from('usuarios').update({ ultima_passagem: new Date(timestamp).toISOString() }).eq('id', cliente.id);
-                            const { error: insertRondaError } = await supabaseClient.from('rondas').insert({
+                            const { error: insertRonda } = await supabaseClient.from('rondas').insert({
                                 cliente_id: cliente.id,
                                 motoqueiro_id: currentUser.id,
                                 timestamp: new Date(timestamp).toISOString(),
                                 distancia_metros: Math.round(dist)
                             });
-                            if (insertRondaError) {
-                                console.error("Erro ao inserir ronda:", insertRondaError);
-                            } else {
+                            if (insertRonda) console.error("Erro ao inserir ronda:", insertRonda);
+                            else {
                                 console.log(`Passagem registrada para cliente ${cliente.id} - ${dataHoraStr}`);
                                 showToast(`✅ Passagem registrada para ${cliente.nome.split(' ')[0]}`);
                             }
                         } else {
-                            console.log(`Passagem ignorada (menos de 60s desde a última) para ${cliente.nome}`);
+                            console.log(`Passagem ignorada (menos de 60s desde a última): ${cliente.nome}`);
                         }
                     }
-                } else {
-                    console.warn(`Não foi possível obter coordenadas para o cliente ${cliente.nome} (endereço: ${cliente.endereco})`);
                 }
             }
-        } else if (clientesError) {
-            console.error("Erro ao buscar clientes:", clientesError);
+            // Atualizar card "Cliente mais próximo" no painel do motoqueiro
+            const proximoDiv = document.getElementById("clienteProximo");
+            if (proximoDiv && clienteMaisProximo) {
+                proximoDiv.innerHTML = `<i class="fas fa-user"></i> <strong>${clienteMaisProximo.nome.split(' ')[0]}</strong> está a ${Math.round(clienteMaisProximo.distancia)} metros`;
+            } else if (proximoDiv) {
+                proximoDiv.innerHTML = `<i class="fas fa-user"></i> Nenhum cliente próximo`;
+            }
         }
     }
 
@@ -342,7 +348,7 @@
         document.body.appendChild(modal);
         const map = L.map('modalMapContainer').setView([lat, lng], 18);
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri, Maxar, Earthstar' }).addTo(map);
-        const marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+        const marker = L.marker([lat, lng], { draggable: true, zIndexOffset: 200 }).addTo(map);
         document.getElementById('fecharModalAjuste').onclick = () => modal.remove();
         document.getElementById('salvarPosicaoAjuste').onclick = async () => {
             const newPos = marker.getLatLng();
@@ -417,6 +423,35 @@
             modal.remove();
             if (window.renderDashboardAdmin) renderDashboardAdmin();
         };
+    }
+
+    // ========== TESTE FORÇADO DE RONDA (ADMIN) ==========
+    async function testarRonda(clienteId, clienteNome) {
+        // Buscar o primeiro motoqueiro disponível
+        const { data: motoqueiros, error: motoError } = await supabaseClient
+            .from('usuarios')
+            .select('id')
+            .eq('papel', 'motoqueiro')
+            .limit(1);
+        if (motoError || !motoqueiros || motoqueiros.length === 0) {
+            showToast("❌ Nenhum motoqueiro encontrado para testar a ronda.");
+            return;
+        }
+        const motoqueiroId = motoqueiros[0].id;
+        const { error: insertError } = await supabaseClient.from('rondas').insert({
+            cliente_id: clienteId,
+            motoqueiro_id: motoqueiroId,
+            timestamp: new Date().toISOString(),
+            distancia_metros: 25
+        });
+        if (insertError) {
+            console.error("Erro ao inserir ronda de teste:", insertError);
+            showToast(`❌ Erro ao registrar ronda: ${insertError.message}`);
+        } else {
+            showToast(`✅ Ronda de teste registrada para ${clienteNome}`);
+            // Recarregar a tabela de rondas no admin
+            if (window.renderDashboardAdmin) renderDashboardAdmin();
+        }
     }
 
     // ========== RECEBER POSIÇÕES EM TEMPO REAL (CLIENTE) ==========
@@ -503,21 +538,29 @@
         if (clientMap) clientMap.remove();
         clientMap = L.map("mapContainer").setView([-23.5505, -46.6333], 13);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM & CartoDB' }).addTo(clientMap);
-        clientMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto() }).addTo(clientMap).bindPopup("Motoqueiro");
+        clientMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto(), zIndexOffset: 100 }).addTo(clientMap).bindPopup("Motoqueiro");
+
         function atualizarMarcadorCasa() {
             if (casaMarker) casaMarker.remove();
             if (currentUser.latCasa && currentUser.lngCasa) {
-                casaMarker = L.marker([currentUser.latCasa, currentUser.lngCasa], { icon: criarIconeCasa() }).addTo(clientMap).bindPopup(`<b>Sua casa</b><br>${currentUser.endereco}`).openPopup();
+                casaMarker = L.marker([currentUser.latCasa, currentUser.lngCasa], { icon: criarIconeCasa(), zIndexOffset: 10 }).addTo(clientMap)
+                    .bindPopup(`<b>Sua casa</b><br>${currentUser.endereco}`).openPopup();
                 clientMap.fitBounds(L.latLngBounds([[currentUser.latCasa, currentUser.lngCasa]]));
             } else if (currentUser.endereco) {
-                geocodificarEndereco(currentUser.endereco).then(coords => { if (coords) { casaMarker = L.marker([coords.lat, coords.lng], { icon: criarIconeCasa() }).addTo(clientMap).bindPopup(`<b>Sua casa</b><br>${currentUser.endereco}`).openPopup(); clientMap.fitBounds(L.latLngBounds([[coords.lat, coords.lng]])); } });
+                geocodificarEndereco(currentUser.endereco).then(coords => { if (coords) {
+                    casaMarker = L.marker([coords.lat, coords.lng], { icon: criarIconeCasa(), zIndexOffset: 10 }).addTo(clientMap)
+                        .bindPopup(`<b>Sua casa</b><br>${currentUser.endereco}`).openPopup();
+                    clientMap.fitBounds(L.latLngBounds([[coords.lat, coords.lng]]));
+                } });
             }
         }
         atualizarMarcadorCasa();
+
         async function carregarUltimaPosicao() {
             const { data } = await supabaseClient.from('posicoes').select('*').order('timestamp', { ascending: false }).limit(1);
             if (data && data[0]) {
-                clientMarker.setLatLng([data[0].latitude, data[0].longitude]); clientMap.setView([data[0].latitude, data[0].longitude], 14);
+                clientMarker.setLatLng([data[0].latitude, data[0].longitude]);
+                clientMap.setView([data[0].latitude, data[0].longitude], 14);
                 document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${new Date(data[0].timestamp).toLocaleString('pt-BR')}`;
                 const end = await obterEnderecoAproximado(data[0].latitude, data[0].longitude);
                 clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`);
@@ -541,7 +584,7 @@
         document.getElementById("panicoBtn").onclick = () => alert("Pânico acionado! O motoqueiro foi notificado.");
     }
 
-    // ========== DASHBOARD MOTOQUEIRO ==========
+    // ========== DASHBOARD MOTOQUEIRO (com cliente mais próximo) ==========
     async function renderDashboardMoto() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -549,6 +592,7 @@
             <div class="app-container">
                 <div class="header"><div class="logo"><h1><i class="fas fa-motorcycle"></i> Painel Motoqueiro</h1></div><div class="user-info"><i class="fas fa-user-astronaut"></i> ${currentUser.nome}<button class="logout-btn" id="logoutMotoBtn">Sair</button></div></div>
                 <div class="dashboard"><div class="card"><h3><i class="fas fa-satellite-dish"></i> Minha Localização</h3><div id="motoMapContainer" class="map-container"></div><div id="gpsStatus" class="status-gps erro"><span class="led led-cinza"></span> <i class="fas fa-exclamation-triangle"></i> Inicializando...</div><div id="horaUltimaPosicao" class="info-hora"></div><button id="toggleRastreamentoBtn" class="btn-toggle"><i class="fas fa-play"></i> Iniciar Rastreamento</button><button id="centralizarMapaBtn" class="btn-centralizar"><i class="fas fa-crosshairs"></i> Centralizar no mapa</button></div>
+                <div class="card"><h3><i class="fas fa-chart-line"></i> Cliente mais próximo</h3><div id="clienteProximo" class="cliente-proximo">Aguardando posição...</div></div>
                 <div class="card"><h3><i class="fas fa-bell"></i> Alertas de pânico (em breve)</h3><div id="alertasPanico"><p>Nenhum alerta</p></div></div>
                 <div class="card"><h3><i class="fas fa-history"></i> Histórico de rondas (últimas 5)</h3><div id="historicoMoto" class="historico-limitado">Carregando...</div></div></div>
                 <footer>Toque na moto para ver o endereço. Casas dos clientes estão marcadas.</footer>
@@ -557,7 +601,7 @@
         if (motoMap) motoMap.remove();
         motoMap = L.map("motoMapContainer").setView([-23.5505, -46.6333], 15);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM & CartoDB' }).addTo(motoMap);
-        motoMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Carregando...");
+        motoMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto(), zIndexOffset: 100 }).addTo(motoMap).bindPopup("Carregando...");
         clientesMarkers = [];
         const { data: clientes } = await supabaseClient.from('usuarios').select('id, nome, endereco, lat_casa, lng_casa').eq('papel', 'cliente');
         if (clientes) {
@@ -566,7 +610,8 @@
                 if (cliente.lat_casa && cliente.lng_casa) coords = { lat: cliente.lat_casa, lng: cliente.lng_casa };
                 else if (cliente.endereco) coords = await geocodificarEndereco(cliente.endereco);
                 if (coords) {
-                    const marker = L.marker([coords.lat, coords.lng], { icon: criarIconeCasa() }).addTo(motoMap).bindPopup(`<b>${cliente.nome.split(' ')[0]}</b><br>${cliente.endereco}`);
+                    const marker = L.marker([coords.lat, coords.lng], { icon: criarIconeCasa(), zIndexOffset: 10 }).addTo(motoMap)
+                        .bindPopup(`<b>${cliente.nome.split(' ')[0]}</b><br>${cliente.endereco}`);
                     clientesMarkers.push(marker);
                 }
             }
@@ -580,7 +625,7 @@
         document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
     }
 
-    // ========== DASHBOARD ADMIN ==========
+    // ========== DASHBOARD ADMIN (com botão Testar Ronda) ==========
     let adminData = { usuarios: [], motoqueiros: [], clientes: [], ultimasPosicoes: {}, rondas: [] };
     let currentPage = 1, itemsPerPage = 20, sortField = 'nome', sortOrder = 'asc';
     async function renderDashboardAdmin() {
@@ -630,16 +675,24 @@
                 let coords = null;
                 if (cliente.lat_casa && cliente.lng_casa) coords = { lat: cliente.lat_casa, lng: cliente.lng_casa };
                 else if (cliente.endereco) coords = await geocodificarEndereco(cliente.endereco);
-                if (coords) L.marker([coords.lat, coords.lng], { icon: criarIconeCasa() }).addTo(adminMap).bindPopup(`<b>${cliente.nome}</b><br>${cliente.endereco}`);
+                if (coords) {
+                    L.marker([coords.lat, coords.lng], { icon: criarIconeCasa(), zIndexOffset: 10 })
+                        .addTo(adminMap)
+                        .bindPopup(`<b>${cliente.nome}</b><br>${cliente.endereco}`);
+                }
             }
             for (const moto of adminData.motoqueiros) {
                 const ultimaPos = adminData.ultimasPosicoes[moto.id];
-                if (ultimaPos) L.marker([ultimaPos.latitude, ultimaPos.longitude], { icon: criarIconeMoto() }).addTo(adminMap).bindPopup(`<b>${moto.nome}</b><br>Última posição: ${new Date(ultimaPos.timestamp).toLocaleString('pt-BR')}`);
+                if (ultimaPos) {
+                    L.marker([ultimaPos.latitude, ultimaPos.longitude], { icon: criarIconeMoto(), zIndexOffset: 100 })
+                        .addTo(adminMap)
+                        .bindPopup(`<b>${moto.nome}</b><br>Última posição: ${new Date(ultimaPos.timestamp).toLocaleString('pt-BR')}`);
+                }
             }
-            const bounds = []; adminData.clientes.forEach(c => { if (c.lat_casa && c.lng_casa) bounds.push([c.lat_casa, c.lng_casa]); });
+            const bounds = [];
+            adminData.clientes.forEach(c => { if (c.lat_casa && c.lng_casa) bounds.push([c.lat_casa, c.lng_casa]); });
             Object.values(adminData.ultimasPosicoes).forEach(p => bounds.push([p.latitude, p.longitude]));
             if (bounds.length) adminMap.fitBounds(bounds);
-            // Verificar inatividade do motoqueiro
             const ultimaPosMoto = Object.values(adminData.ultimasPosicoes)[0];
             if (ultimaPosMoto && (Date.now() - new Date(ultimaPosMoto.timestamp).getTime() > 300000)) showToast("⚠️ Motoqueiro inativo há mais de 5 minutos!");
         }
@@ -661,6 +714,7 @@
                         <button class="editarUsuarioBtn" data-id="${u.id}" style="background:#facc15;"><i class="fas fa-edit"></i></button>
                         <button class="excluirUsuarioBtn" data-id="${u.id}" data-email="${u.email}" style="background:#ef4444;"><i class="fas fa-trash"></i></button>
                         <button class="ajustarCasaBtn" data-id="${u.id}" data-nome="${u.nome}" data-endereco="${u.endereco||''}" style="background:#3b82f6;"><i class="fas fa-map-marker-alt"></i> Casa</button>
+                        <button class="testarRondaBtn" data-id="${u.id}" data-nome="${u.nome}" style="background:#f59e0b;"><i class="fas fa-flask"></i> Testar Ronda</button>
                     </td>
                 </tr>
             `).join('');
@@ -673,18 +727,21 @@
             document.querySelectorAll(".editarUsuarioBtn").forEach(btn => btn.onclick = async () => { const id = btn.getAttribute("data-id"); const usuario = adminData.usuarios.find(u => u.id === id); abrirEditarUsuario(usuario); });
             document.querySelectorAll(".excluirUsuarioBtn").forEach(btn => btn.onclick = async () => { const id = btn.getAttribute("data-id"), email = btn.getAttribute("data-email"); if(confirm(`Excluir ${email}?`)) { await supabaseClient.from('usuarios').delete().eq('id', id); renderDashboardAdmin(); } });
             document.querySelectorAll(".ajustarCasaBtn").forEach(btn => btn.onclick = () => { const id = btn.getAttribute("data-id"), nome = btn.getAttribute("data-nome"), endereco = btn.getAttribute("data-endereco"); abrirAjusteCasa(id, nome, endereco); });
+            document.querySelectorAll(".testarRondaBtn").forEach(btn => btn.onclick = () => { const id = btn.getAttribute("data-id"), nome = btn.getAttribute("data-nome"); testarRonda(id, nome); });
         }
 
         function renderTabelaRondas(dataInicio, dataFim) {
             let filtered = adminData.rondas;
             if (dataInicio) filtered = filtered.filter(r => new Date(r.timestamp) >= new Date(dataInicio));
             if (dataFim) filtered = filtered.filter(r => new Date(r.timestamp) <= new Date(dataFim));
-            document.getElementById("rondasAdminBody").innerHTML = filtered.map(r => `<tr>
-                <td>${r.usuarios?.nome || '-'}</td>
-                <td>${r.usuarios?.endereco || '-'}</td>
-                <td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td>
-                <td>${r.distancia_metros || '-'}</td>
-            </tr>`).join('');
+            document.getElementById("rondasAdminBody").innerHTML = filtered.map(r => `
+                <tr>
+                    <td>${r.usuarios?.nome || '-'}</td>
+                    <td>${r.usuarios?.endereco || '-'}</td>
+                    <td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td>
+                    <td>${r.distancia_metros || '-'}</td>
+                </tr>
+            `).join('');
         }
 
         document.getElementById("atualizarMapaBtn").onclick = () => carregarMapaAdmin();
