@@ -103,6 +103,7 @@
 
     // ========== FUNÇÕES AUXILIARES DE FORMATAÇÃO ==========
     function formatarDataHoraBrasilia(timestamp) {
+        if (!timestamp) return "";
         return new Date(timestamp).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
     }
 
@@ -218,7 +219,7 @@
                     }
                     if (dist <= 50) {
                         const ultima = cliente.ultima_passagem ? new Date(cliente.ultima_passagem).getTime() : 0;
-                        // ALTERADO: intervalo agora é 0 (registra a cada posição)
+                        // Intervalo zero: registra a cada posição (toast aparece sempre)
                         if (timestamp - ultima > 0) {
                             await supabaseClient.from('usuarios').update({ ultima_passagem: new Date(timestamp).toISOString() }).eq('id', cliente.id);
                             const { error: insertRonda } = await supabaseClient.from('rondas').insert({
@@ -753,7 +754,7 @@
                         <tr>
                             <td>${r.usuarios?.nome || 'Cliente não encontrado'}</td>
                             <td>${r.usuarios?.endereco || '-'}</td>
-                            <td>${new Date(r.timestamp).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}</td>
+                            <td>${formatarDataHoraBrasilia(r.timestamp)}</td>
                             <td>${r.distancia_metros || '-'}</td>
                         </tr>
                     `).join('');
