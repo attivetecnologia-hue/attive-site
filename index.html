@@ -155,10 +155,22 @@
     }
 
     function criarIconeMoto() {
-        return L.divIcon({ html: '<i class="fas fa-motorcycle"></i>', iconSize: [30,30], className: 'moto-marker', popupAnchor: [0,-10] });
+        return L.divIcon({
+            html: '<i class="fas fa-motorcycle"></i>',
+            iconSize: [30,30],
+            className: 'moto-marker',
+            popupAnchor: [0,-10],
+            zIndexOffset: 100   // Força a moto a ficar acima da casa
+        });
     }
     function criarIconeCasa() {
-        return L.divIcon({ html: '<i class="fas fa-home"></i>', iconSize: [24,24], className: 'casa-marker', popupAnchor: [0,-10] });
+        return L.divIcon({
+            html: '<i class="fas fa-home"></i>',
+            iconSize: [24,24],
+            className: 'casa-marker',
+            popupAnchor: [0,-10],
+            zIndexOffset: 10    // Menor que o da moto
+        });
     }
 
     // ========== RASTREAMENTO MOTOQUEIRO ==========
@@ -180,6 +192,7 @@
             atualizarStatusGPS(`Posição enviada: ${dataHoraStr} | Precisão: ${precisao}m`, true);
         }
 
+        // Detectar passagens automáticas
         const { data: clientes, error: clientesError } = await supabaseClient
             .from('usuarios')
             .select('id, endereco, ultima_passagem, nome, lat_casa, lng_casa')
@@ -187,26 +200,40 @@
         if (!clientesError && clientes) {
             for (let cliente of clientes) {
                 let coords = null;
-                if (cliente.lat_casa && cliente.lng_casa) coords = { lat: cliente.lat_casa, lng: cliente.lng_casa };
-                else if (cliente.endereco) coords = await geocodificarEndereco(cliente.endereco);
+                if (cliente.lat_casa && cliente.lng_casa) {
+                    coords = { lat: cliente.lat_casa, lng: cliente.lng_casa };
+                } else if (cliente.endereco) {
+                    coords = await geocodificarEndereco(cliente.endereco);
+                }
                 if (coords) {
                     const dist = calcularDistancia(lat, lng, coords.lat, coords.lng);
+                    console.log(`Distância para ${cliente.nome}: ${Math.round(dist)}m`);
                     if (dist <= 50) {
                         const ultima = cliente.ultima_passagem ? new Date(cliente.ultima_passagem).getTime() : 0;
                         if (timestamp - ultima > 60000) {
                             await supabaseClient.from('usuarios').update({ ultima_passagem: new Date(timestamp).toISOString() }).eq('id', cliente.id);
-                            await supabaseClient.from('rondas').insert({
+                            const { error: insertRondaError } = await supabaseClient.from('rondas').insert({
                                 cliente_id: cliente.id,
                                 motoqueiro_id: currentUser.id,
                                 timestamp: new Date(timestamp).toISOString(),
                                 distancia_metros: Math.round(dist)
                             });
-                            console.log(`Passagem registrada para cliente ${cliente.id} - ${dataHoraStr}`);
-                            showToast(`✅ Passagem registrada para ${cliente.nome.split(' ')[0]}`);
+                            if (insertRondaError) {
+                                console.error("Erro ao inserir ronda:", insertRondaError);
+                            } else {
+                                console.log(`Passagem registrada para cliente ${cliente.id} - ${dataHoraStr}`);
+                                showToast(`✅ Passagem registrada para ${cliente.nome.split(' ')[0]}`);
+                            }
+                        } else {
+                            console.log(`Passagem ignorada (menos de 60s desde a última) para ${cliente.nome}`);
                         }
                     }
+                } else {
+                    console.warn(`Não foi possível obter coordenadas para o cliente ${cliente.nome} (endereço: ${cliente.endereco})`);
                 }
             }
+        } else if (clientesError) {
+            console.error("Erro ao buscar clientes:", clientesError);
         }
     }
 
@@ -625,8 +652,17 @@
             const start = (currentPage-1)*itemsPerPage, end = start + itemsPerPage, paginated = filtered.slice(start, end);
             const tbody = document.getElementById("tabelaUsuariosBody");
             tbody.innerHTML = paginated.map(u => `
-                <tr><td>${u.nome}</td><td>${u.email}</td><td>${u.papel}</td><td>${u.endereco || '-'} ${u.lat_casa && u.lng_casa ? '<i class="fas fa-check-circle casa-ajustada" title="Casa ajustada manualmente"></i>' : ''}</td>
-                <td><button class="editarUsuarioBtn" data-id="${u.id}" style="background:#facc15;"><i class="fas fa-edit"></i></button> <button class="excluirUsuarioBtn" data-id="${u.id}" data-email="${u.email}" style="background:#ef4444;"><i class="fas fa-trash"></i></button> <button class="ajustarCasaBtn" data-id="${u.id}" data-nome="${u.nome}" data-endereco="${u.endereco||''}" style="background:#3b82f6;"><i class="fas fa-map-marker-alt"></i> Casa</button></td>
+                <tr>
+                    <td>${u.nome}</td>
+                    <td>${u.email}</td>
+                    <td>${u.papel}</td>
+                    <td>${u.endereco || '-'} ${u.lat_casa && u.lng_casa ? '<i class="fas fa-check-circle casa-ajustada" title="Casa ajustada manualmente"></i>' : ''}</td>
+                    <td>
+                        <button class="editarUsuarioBtn" data-id="${u.id}" style="background:#facc15;"><i class="fas fa-edit"></i></button>
+                        <button class="excluirUsuarioBtn" data-id="${u.id}" data-email="${u.email}" style="background:#ef4444;"><i class="fas fa-trash"></i></button>
+                        <button class="ajustarCasaBtn" data-id="${u.id}" data-nome="${u.nome}" data-endereco="${u.endereco||''}" style="background:#3b82f6;"><i class="fas fa-map-marker-alt"></i> Casa</button>
+                    </td>
+                </tr>
             `).join('');
             const totalPages = Math.ceil(filtered.length/itemsPerPage);
             const pagDiv = document.getElementById("pagination");
@@ -643,7 +679,12 @@
             let filtered = adminData.rondas;
             if (dataInicio) filtered = filtered.filter(r => new Date(r.timestamp) >= new Date(dataInicio));
             if (dataFim) filtered = filtered.filter(r => new Date(r.timestamp) <= new Date(dataFim));
-            document.getElementById("rondasAdminBody").innerHTML = filtered.map(r => `<tr><td>${r.usuarios?.nome || '-'}</td><td>${r.usuarios?.endereco || '-'}</td><td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td><td>${r.distancia_metros || '-'}</td></tr>`).join('');
+            document.getElementById("rondasAdminBody").innerHTML = filtered.map(r => `<tr>
+                <td>${r.usuarios?.nome || '-'}</td>
+                <td>${r.usuarios?.endereco || '-'}</td>
+                <td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td>
+                <td>${r.distancia_metros || '-'}</td>
+            </tr>`).join('');
         }
 
         document.getElementById("atualizarMapaBtn").onclick = () => carregarMapaAdmin();
