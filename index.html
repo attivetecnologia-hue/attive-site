@@ -455,7 +455,8 @@
             const fimInput = document.getElementById("dataFim");
             if (inicioInput) inicioInput.value = '';
             if (fimInput) fimInput.value = '';
-            if (window.renderDashboardAdmin) renderDashboardAdmin();
+            // Recarregar dados e re-renderizar admin
+            await renderDashboardAdmin();
         }
     }
 
@@ -630,24 +631,33 @@
         document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
     }
 
-    // ========== DASHBOARD ADMIN ==========
+    // ========== DASHBOARD ADMIN (CORRIGIDO) ==========
     let adminData = { usuarios: [], motoqueiros: [], clientes: [], ultimasPosicoes: {}, rondas: [] };
     let currentPage = 1, itemsPerPage = 20, sortField = 'nome', sortOrder = 'asc';
     async function renderDashboardAdmin() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
+        
+        // Carregar dados com a relação correta para rondas
         const [usuariosRes, posicoesRes, rondasRes] = await Promise.all([
             supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false }),
             supabaseClient.from('posicoes').select('*, usuarios(nome, papel)').order('timestamp', { ascending: false }),
-            supabaseClient.from('rondas').select('*, usuarios(nome, endereco)').order('timestamp', { ascending: false })
+            supabaseClient.from('rondas').select('*, usuarios:cliente_id(nome, endereco)').order('timestamp', { ascending: false })
         ]);
+        
         adminData.usuarios = usuariosRes.data || [];
+        adminData.rondas = rondasRes.data || [];
         const posicoes = posicoesRes.data || [];
+        
         adminData.ultimasPosicoes = {};
-        for (const pos of posicoes) if (!adminData.ultimasPosicoes[pos.motoqueiro_id] && pos.usuarios?.papel === 'motoqueiro') adminData.ultimasPosicoes[pos.motoqueiro_id] = pos;
+        for (const pos of posicoes) {
+            if (!adminData.ultimasPosicoes[pos.motoqueiro_id] && pos.usuarios?.papel === 'motoqueiro') {
+                adminData.ultimasPosicoes[pos.motoqueiro_id] = pos;
+            }
+        }
         adminData.clientes = adminData.usuarios.filter(u => u.papel === 'cliente' && u.endereco);
         adminData.motoqueiros = adminData.usuarios.filter(u => u.papel === 'motoqueiro');
-        adminData.rondas = rondasRes.data || [];
 
+        // Renderizar HTML
         const root = document.getElementById("appRoot");
         root.innerHTML = `
             <div class="app-container">
@@ -667,6 +677,8 @@
                 <footer>Painel Administrativo • Use satélite para ajustar casas</footer>
             </div>
         `;
+
+        // Inicializar mapa
         const streetLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM & CartoDB' });
         const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri, Maxar, Earthstar' });
         if (adminMap) adminMap.remove();
@@ -680,19 +692,11 @@
                 let coords = null;
                 if (cliente.lat_casa && cliente.lng_casa) coords = { lat: cliente.lat_casa, lng: cliente.lng_casa };
                 else if (cliente.endereco) coords = await geocodificarEndereco(cliente.endereco);
-                if (coords) {
-                    L.marker([coords.lat, coords.lng], { icon: criarIconeCasa(), zIndexOffset: 10 })
-                        .addTo(adminMap)
-                        .bindPopup(`<b>${cliente.nome}</b><br>${cliente.endereco}`);
-                }
+                if (coords) L.marker([coords.lat, coords.lng], { icon: criarIconeCasa(), zIndexOffset: 10 }).addTo(adminMap).bindPopup(`<b>${cliente.nome}</b><br>${cliente.endereco}`);
             }
             for (const moto of adminData.motoqueiros) {
                 const ultimaPos = adminData.ultimasPosicoes[moto.id];
-                if (ultimaPos) {
-                    L.marker([ultimaPos.latitude, ultimaPos.longitude], { icon: criarIconeMoto(), zIndexOffset: 100 })
-                        .addTo(adminMap)
-                        .bindPopup(`<b>${moto.nome}</b><br>Última posição: ${new Date(ultimaPos.timestamp).toLocaleString('pt-BR')}`);
-                }
+                if (ultimaPos) L.marker([ultimaPos.latitude, ultimaPos.longitude], { icon: criarIconeMoto(), zIndexOffset: 100 }).addTo(adminMap).bindPopup(`<b>${moto.nome}</b><br>Última posição: ${new Date(ultimaPos.timestamp).toLocaleString('pt-BR')}`);
             }
             const bounds = [];
             adminData.clientes.forEach(c => { if (c.lat_casa && c.lng_casa) bounds.push([c.lat_casa, c.lng_casa]); });
@@ -745,17 +749,22 @@
             }
             const tbody = document.getElementById("rondasAdminBody");
             if (tbody) {
-                tbody.innerHTML = filtered.map(r => `
-                    <tr>
-                        <td>${r.usuarios?.nome || '-'}</td>
-                        <td>${r.usuarios?.endereco || '-'}</td>
-                        <td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td>
-                        <td>${r.distancia_metros || '-'}</td>
-                    </tr>
-                `).join('');
+                if (filtered.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4">Nenhuma ronda registrada</td></tr>';
+                } else {
+                    tbody.innerHTML = filtered.map(r => `
+                        <tr>
+                            <td>${r.usuarios?.nome || 'Cliente não encontrado'}</td>
+                            <td>${r.usuarios?.endereco || '-'}</td>
+                            <td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td>
+                            <td>${r.distancia_metros || '-'}</td>
+                        </tr>
+                    `).join('');
+                }
             }
         }
 
+        // Eventos
         document.getElementById("atualizarMapaBtn").onclick = () => carregarMapaAdmin();
         document.getElementById("exportarCsvBtn").onclick = () => {
             const filtrados = adminData.usuarios.filter(u => (document.getElementById("filtroBusca").value === '' || u.nome.toLowerCase().includes(document.getElementById("filtroBusca").value.toLowerCase())) && (document.getElementById("filtroPapel").value === 'todos' || u.papel === document.getElementById("filtroPapel").value));
@@ -774,8 +783,10 @@
             renderTabelaRondas(inicio, fim);
         };
         document.getElementById("logoutAdminBtn").onclick = () => { supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
+        
+        // Renderizar tabelas e mapa
         renderTabelaUsuarios();
-        renderTabelaRondas();
+        renderTabelaRondas(); // chamada inicial sem filtros
         await carregarMapaAdmin();
     }
 
