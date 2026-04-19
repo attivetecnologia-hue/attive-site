@@ -27,12 +27,16 @@
         .auth-screen button { width: 100%; background: #facc15; border: none; padding: 12px; border-radius: 40px; font-weight: bold; margin-top: 15px; cursor: pointer; color: #0f172a; }
         .toggle-auth { text-align: center; margin-top: 15px; color: #94a3b8; cursor: pointer; font-size: 0.85rem; }
         .hidden { display: none; }
-        .filtros { display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; }
-        .filtros input, .filtros select { background: #1e293b; border: 1px solid #334155; padding: 8px 12px; border-radius: 40px; color: white; }
-        .btn-table { background: none; border: none; cursor: pointer; margin: 0 4px; }
+        .filtros { display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; align-items: center; }
+        .filtros input, .filtros select, .filtros button { background: #1e293b; border: 1px solid #334155; padding: 8px 12px; border-radius: 40px; color: white; cursor: pointer; }
+        .filtros button { background: #3b82f6; }
         table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
         th, td { padding: 8px; text-align: left; border-bottom: 1px solid #334155; }
-        th { background: #1e293b; }
+        th { background: #1e293b; cursor: pointer; user-select: none; }
+        th:hover { background: #334155; }
+        .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 15px; flex-wrap: wrap; }
+        .pagination button { background: #1e293b; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; }
+        .pagination button.active { background: #facc15; color: #0f172a; }
         footer { text-align: center; padding: 1rem; font-size: 0.7rem; color: #475569; border-top: 1px solid #1e293b; }
         @media (min-width: 768px) {
             .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
@@ -55,15 +59,18 @@
         .btn-toggle { background: #22c55e; width: 100%; padding: 10px; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #0f172a; }
         .btn-toggle.ativo { background: #ef4444; color: white; }
         .btn-centralizar { background: #3b82f6; width: 100%; padding: 8px; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .modal-mapa { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; flex-direction: column; }
+        .modal-mapa, .modal-editar { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; flex-direction: column; }
         .modal-header { background: #1e293b; padding: 10px; display: flex; justify-content: space-between; align-items: center; }
         .modal-map-container { flex: 1; }
         .modal-footer { background: #1e293b; padding: 10px; text-align: center; }
+        .modal-editar .modal-content { background: #0f172a; margin: 50px auto; max-width: 500px; border-radius: 24px; padding: 20px; }
+        .modal-editar input, .modal-editar select { width: 100%; padding: 10px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: white; }
+        .casa-ajustada { color: #22c55e; margin-left: 5px; }
     </style>
 </head>
 <body>
 <div id="appRoot"></div>
-<div id="toast" class="toast">✅ Passagem registrada</div>
+<div id="toast" class="toast">✅ Ação concluída</div>
 
 <script>
     // ========== SUPABASE CONFIG ==========
@@ -88,7 +95,7 @@
     // ========== TOAST ==========
     function showToast(message) {
         const toast = document.getElementById("toast");
-        toast.textContent = message || "✅ Passagem registrada";
+        toast.textContent = message || "✅ Ação concluída";
         toast.classList.add("show");
         setTimeout(() => toast.classList.remove("show"), 3000);
     }
@@ -179,13 +186,9 @@
             .eq('papel', 'cliente');
         if (!clientesError && clientes) {
             for (let cliente of clientes) {
-                // Usar coordenada manual se existir, senão geocodificar
                 let coords = null;
-                if (cliente.lat_casa && cliente.lng_casa) {
-                    coords = { lat: cliente.lat_casa, lng: cliente.lng_casa };
-                } else if (cliente.endereco) {
-                    coords = await geocodificarEndereco(cliente.endereco);
-                }
+                if (cliente.lat_casa && cliente.lng_casa) coords = { lat: cliente.lat_casa, lng: cliente.lng_casa };
+                else if (cliente.endereco) coords = await geocodificarEndereco(cliente.endereco);
                 if (coords) {
                     const dist = calcularDistancia(lat, lng, coords.lat, coords.lng);
                     if (dist <= 50) {
@@ -223,9 +226,7 @@
         }
         const ledSpan = div.querySelector('.led') || document.createElement('span');
         ledSpan.className = `led ${isOk ? 'led-verde' : (mensagem.includes('Erro') ? 'led-vermelho' : 'led-cinza')}`;
-        if (!div.querySelector('.led')) {
-            div.insertBefore(ledSpan, div.firstChild);
-        }
+        if (!div.querySelector('.led')) div.insertBefore(ledSpan, div.firstChild);
         div.innerHTML = `${ledSpan.outerHTML} <i class="fas ${isOk ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i> ${mensagem}`;
         div.className = `status-gps ${isOk ? 'ok' : 'erro'}`;
     }
@@ -237,7 +238,6 @@
         }
         if (watchId !== null) return;
         atualizarStatusGPS("Aguardando sinal GPS...", false);
-        
         const verificarEnvio = (position) => {
             const { latitude, longitude, accuracy } = position.coords;
             const agora = Date.now();
@@ -264,161 +264,120 @@
                 if (motoMap) atualizarMapaMoto(latitude, longitude);
             }
         };
-        watchId = navigator.geolocation.watchPosition(verificarEnvio, 
-            (err) => {
-                console.error(err);
-                atualizarStatusGPS("Erro no GPS: " + err.message, false);
-            }, 
-            { enableHighAccuracy: true, timeout: 15000 }
-        );
+        watchId = navigator.geolocation.watchPosition(verificarEnvio, (err) => {
+            console.error(err);
+            atualizarStatusGPS("Erro no GPS: " + err.message, false);
+        }, { enableHighAccuracy: true, timeout: 15000 });
         const toggleBtn = document.getElementById("toggleRastreamentoBtn");
-        if (toggleBtn) {
-            toggleBtn.innerHTML = '<i class="fas fa-stop"></i> Parar Rastreamento';
-            toggleBtn.classList.add("ativo");
-        }
+        if (toggleBtn) { toggleBtn.innerHTML = '<i class="fas fa-stop"></i> Parar Rastreamento'; toggleBtn.classList.add("ativo"); }
     }
 
     function pararRastreamentoMoto() {
         if (watchId) { navigator.geolocation.clearWatch(watchId); watchId = null; }
         atualizarStatusGPS("Rastreamento desativado.", false);
         const toggleBtn = document.getElementById("toggleRastreamentoBtn");
-        if (toggleBtn) {
-            toggleBtn.innerHTML = '<i class="fas fa-play"></i> Iniciar Rastreamento';
-            toggleBtn.classList.remove("ativo");
-        }
+        if (toggleBtn) { toggleBtn.innerHTML = '<i class="fas fa-play"></i> Iniciar Rastreamento'; toggleBtn.classList.remove("ativo"); }
     }
 
     function atualizarMapaMoto(lat, lng) {
         if (!motoMap) return;
-        if (!motoMarker) {
-            motoMarker = L.marker([lat,lng], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Carregando...");
-        } else {
-            motoMarker.setLatLng([lat,lng]);
-        }
+        if (!motoMarker) motoMarker = L.marker([lat,lng], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Carregando...");
+        else motoMarker.setLatLng([lat,lng]);
         motoMap.setView([lat,lng], 15);
-        obterEnderecoAproximado(lat, lng).then(end => {
-            motoMarker.bindPopup(`<b>Sua posição</b><br>${end}`);
-        });
+        obterEnderecoAproximado(lat, lng).then(end => motoMarker.bindPopup(`<b>Sua posição</b><br>${end}`));
     }
 
     function centralizarMapaMoto() {
         if (!motoMap) return;
         const bounds = [];
-        if (motoMarker) {
-            const latlng = motoMarker.getLatLng();
-            bounds.push([latlng.lat, latlng.lng]);
-        }
-        clientesMarkers.forEach(marker => {
-            const latlng = marker.getLatLng();
-            bounds.push([latlng.lat, latlng.lng]);
-        });
-        if (bounds.length > 0) {
-            motoMap.fitBounds(bounds);
-        } else {
-            motoMap.setView([-23.5505, -46.6333], 13);
-        }
+        if (motoMarker) bounds.push(motoMarker.getLatLng());
+        clientesMarkers.forEach(marker => bounds.push(marker.getLatLng()));
+        if (bounds.length) motoMap.fitBounds(bounds);
+        else motoMap.setView([-23.5505, -46.6333], 13);
     }
 
     // ========== AJUSTE MANUAL DA CASA (ADMIN) ==========
     async function abrirAjusteCasa(clienteId, clienteNome, endereco) {
         let lat, lng;
-        const { data: cliente, error } = await supabaseClient
-            .from('usuarios')
-            .select('lat_casa, lng_casa')
-            .eq('id', clienteId)
-            .single();
-        if (cliente && cliente.lat_casa && cliente.lng_casa) {
-            lat = cliente.lat_casa;
-            lng = cliente.lng_casa;
-        } else {
+        const { data: cliente, error } = await supabaseClient.from('usuarios').select('lat_casa, lng_casa').eq('id', clienteId).single();
+        if (cliente && cliente.lat_casa && cliente.lng_casa) { lat = cliente.lat_casa; lng = cliente.lng_casa; }
+        else {
             const coords = await geocodificarEndereco(endereco);
             if (coords) { lat = coords.lat; lng = coords.lng; }
             else { lat = -23.5505; lng = -46.6333; }
         }
-        
-        const modal = document.createElement('div');
-        modal.className = 'modal-mapa';
+        const modal = document.createElement('div'); modal.className = 'modal-mapa';
         modal.innerHTML = `
-            <div class="modal-header">
-                <span>Ajustando casa de ${clienteNome}</span>
-                <button id="fecharModalAjuste" style="background:#ef4444; border:none; padding:5px 10px; border-radius:20px; cursor:pointer;">Fechar</button>
-            </div>
+            <div class="modal-header"><span>Ajustando casa de ${clienteNome}</span><button id="fecharModalAjuste" style="background:#ef4444; border:none; padding:5px 10px; border-radius:20px;">Fechar</button></div>
             <div id="modalMapContainer" class="modal-map-container"></div>
-            <div class="modal-footer">
-                <button id="salvarPosicaoAjuste" style="background:#22c55e; border:none; padding:8px 20px; border-radius:40px; cursor:pointer;">Salvar posição</button>
-            </div>
+            <div class="modal-footer"><button id="salvarPosicaoAjuste" style="background:#22c55e; border:none; padding:8px 20px; border-radius:40px;">Salvar posição</button></div>
         `;
         document.body.appendChild(modal);
-        
-        const mapContainer = document.getElementById('modalMapContainer');
-        const map = L.map(mapContainer).setView([lat, lng], 18);
-        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Esri, Maxar, Earthstar'
-        }).addTo(map);
-        
+        const map = L.map('modalMapContainer').setView([lat, lng], 18);
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri, Maxar, Earthstar' }).addTo(map);
         const marker = L.marker([lat, lng], { draggable: true }).addTo(map);
-        marker.on('dragend', () => {
-            const pos = marker.getLatLng();
-            console.log('Nova posição:', pos.lat, pos.lng);
-        });
-        
         document.getElementById('fecharModalAjuste').onclick = () => modal.remove();
         document.getElementById('salvarPosicaoAjuste').onclick = async () => {
             const newPos = marker.getLatLng();
-            const { error } = await supabaseClient
-                .from('usuarios')
-                .update({ lat_casa: newPos.lat, lng_casa: newPos.lng })
-                .eq('id', clienteId);
+            const { error } = await supabaseClient.from('usuarios').update({ lat_casa: newPos.lat, lng_casa: newPos.lng }).eq('id', clienteId);
             if (error) alert('Erro ao salvar: ' + error.message);
-            else {
-                alert('Posição salva com sucesso!');
-                modal.remove();
-                if (adminMap && typeof carregarMapaAdmin === 'function') await carregarMapaAdmin();
-            }
+            else { showToast(`Posição da casa de ${clienteNome} salva!`); modal.remove(); if (adminMap && typeof carregarMapaAdmin === 'function') await carregarMapaAdmin(); }
+        };
+    }
+
+    // ========== MODAL EDITAR USUÁRIO ==========
+    async function abrirEditarUsuario(usuario) {
+        const modal = document.createElement('div'); modal.className = 'modal-editar';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h3 style="margin-bottom:15px;">Editar Usuário</h3>
+                <label>Nome</label><input id="editNome" value="${usuario.nome}" />
+                <label>Email</label><input id="editEmail" value="${usuario.email}" />
+                <label>Papel</label><select id="editPapel"><option value="cliente" ${usuario.papel==='cliente'?'selected':''}>Cliente</option><option value="motoqueiro" ${usuario.papel==='motoqueiro'?'selected':''}>Motoqueiro</option><option value="admin" ${usuario.papel==='admin'?'selected':''}>Admin</option></select>
+                <label>Endereço</label><input id="editEndereco" value="${usuario.endereco || ''}" />
+                <label>Telefone</label><input id="editTelefone" value="${usuario.telefone || ''}" />
+                <div style="display:flex; gap:10px; margin-top:20px;"><button id="salvarEdicao" style="background:#22c55e;">Salvar</button><button id="cancelarEdicao" style="background:#ef4444;">Cancelar</button></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('cancelarEdicao').onclick = () => modal.remove();
+        document.getElementById('salvarEdicao').onclick = async () => {
+            const novoNome = document.getElementById('editNome').value.trim();
+            const novoEmail = document.getElementById('editEmail').value.trim();
+            const novoPapel = document.getElementById('editPapel').value;
+            const novoEndereco = document.getElementById('editEndereco').value.trim();
+            const novoTelefone = document.getElementById('editTelefone').value.trim();
+            if (!novoNome || !novoEmail) { alert("Nome e email são obrigatórios"); return; }
+            await supabaseClient.from('usuarios').update({ nome: novoNome, email: novoEmail, papel: novoPapel, endereco: novoEndereco || null, telefone: novoTelefone || null }).eq('id', usuario.id);
+            showToast("Usuário atualizado!");
+            modal.remove();
+            if (window.renderDashboardAdmin) renderDashboardAdmin();
         };
     }
 
     // ========== RECEBER POSIÇÕES EM TEMPO REAL (CLIENTE) ==========
     function assinarPosicaoMoto() {
         if (posicaoSubscription) posicaoSubscription.unsubscribe();
-        posicaoSubscription = supabaseClient
-            .channel('posicoes-channel')
-            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posicoes' }, (payload) => {
-                const novaPos = payload.new;
-                console.log("Nova posição recebida:", novaPos);
-                if (clientMarker && clientMap) {
-                    clientMarker.setLatLng([novaPos.latitude, novaPos.longitude]);
-                    clientMap.setView([novaPos.latitude, novaPos.longitude], 14);
-                    const dataHora = new Date(novaPos.timestamp).toLocaleString('pt-BR');
-                    document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${dataHora}`;
-                    obterEnderecoAproximado(novaPos.latitude, novaPos.longitude).then(end => {
-                        clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`);
-                    });
-                } else {
-                    console.warn("Mapa ou marcador do cliente não inicializado");
-                }
-            })
-            .subscribe((status) => console.log("Status da assinatura:", status));
+        posicaoSubscription = supabaseClient.channel('posicoes-channel').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posicoes' }, (payload) => {
+            const novaPos = payload.new;
+            if (clientMarker && clientMap) {
+                clientMarker.setLatLng([novaPos.latitude, novaPos.longitude]);
+                clientMap.setView([novaPos.latitude, novaPos.longitude], 14);
+                document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${new Date(novaPos.timestamp).toLocaleString('pt-BR')}`;
+                obterEnderecoAproximado(novaPos.latitude, novaPos.longitude).then(end => clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`));
+            }
+        }).subscribe();
     }
 
-    // ========== AUTENTICAÇÃO E DASHBOARDS ==========
+    // ========== AUTENTICAÇÃO ==========
     async function fazerLogin(email, senha) {
         const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: senha });
         if (error) { alert("Erro: " + error.message); return false; }
-        const { data: userData, error: userError } = await supabaseClient
-            .from('usuarios')
-            .select('*')
-            .eq('email', email)
-            .single();
+        const { data: userData, error: userError } = await supabaseClient.from('usuarios').select('*').eq('email', email).single();
         if (userError || !userData) { alert("Usuário não encontrado na tabela."); return false; }
         currentUser = {
-            id: userData.id,
-            email: userData.email,
-            nome: userData.nome,
-            papel: userData.papel,
-            endereco: userData.endereco,
-            latCasa: userData.lat_casa || null,
-            lngCasa: userData.lng_casa || null
+            id: userData.id, email: userData.email, nome: userData.nome, papel: userData.papel,
+            endereco: userData.endereco, latCasa: userData.lat_casa || null, lngCasa: userData.lng_casa || null
         };
         if (!currentUser.latCasa && currentUser.endereco) {
             const coords = await geocodificarEndereco(currentUser.endereco);
@@ -430,14 +389,7 @@
     async function fazerCadastroCliente(email, senha, nome, endereco, telefone) {
         const { data, error } = await supabaseClient.auth.signUp({ email, password: senha });
         if (error) { alert(error.message); return false; }
-        const { error: insertError } = await supabaseClient.from('usuarios').insert({
-            id: data.user.id,
-            email: email,
-            nome: nome,
-            papel: 'cliente',
-            endereco: endereco,
-            telefone: telefone
-        });
+        const { error: insertError } = await supabaseClient.from('usuarios').insert({ id: data.user.id, email, nome, papel: 'cliente', endereco, telefone });
         if (insertError) { alert("Erro ao cadastrar: " + insertError.message); return false; }
         return true;
     }
@@ -447,21 +399,8 @@
         root.innerHTML = `
             <div class="auth-screen">
                 <h2 style="text-align:center">Ronda Noturna</h2>
-                <div id="loginForm">
-                    <input type="email" id="loginEmail" placeholder="E-mail" />
-                    <input type="password" id="loginSenha" placeholder="Senha" />
-                    <button id="loginBtn">Entrar</button>
-                    <div class="toggle-auth" id="showReg">Cadastrar-se como cliente</div>
-                </div>
-                <div id="regForm" class="hidden">
-                    <input type="text" id="regNome" placeholder="Nome completo" />
-                    <input type="email" id="regEmail" placeholder="E-mail" />
-                    <input type="password" id="regSenha" placeholder="Senha" />
-                    <input type="text" id="regEndereco" placeholder="Endereço completo" />
-                    <input type="text" id="regTelefone" placeholder="Telefone" />
-                    <button id="regBtn">Cadastrar</button>
-                    <div class="toggle-auth" id="backToLogin">← Voltar ao login</div>
-                </div>
+                <div id="loginForm"><input type="email" id="loginEmail" placeholder="E-mail" /><input type="password" id="loginSenha" placeholder="Senha" /><button id="loginBtn">Entrar</button><div class="toggle-auth" id="showReg">Cadastrar-se como cliente</div></div>
+                <div id="regForm" class="hidden"><input type="text" id="regNome" placeholder="Nome completo" /><input type="email" id="regEmail" placeholder="E-mail" /><input type="password" id="regSenha" placeholder="Senha" /><input type="text" id="regEndereco" placeholder="Endereço completo" /><input type="text" id="regTelefone" placeholder="Telefone" /><button id="regBtn">Cadastrar</button><div class="toggle-auth" id="backToLogin">← Voltar ao login</div></div>
             </div>
         `;
         document.getElementById("loginBtn").onclick = async () => {
@@ -473,14 +412,8 @@
                 else if (currentUser.papel === 'admin') renderDashboardAdmin();
             }
         };
-        document.getElementById("showReg").onclick = () => {
-            document.getElementById("loginForm").classList.add("hidden");
-            document.getElementById("regForm").classList.remove("hidden");
-        };
-        document.getElementById("backToLogin").onclick = () => {
-            document.getElementById("regForm").classList.add("hidden");
-            document.getElementById("loginForm").classList.remove("hidden");
-        };
+        document.getElementById("showReg").onclick = () => { document.getElementById("loginForm").classList.add("hidden"); document.getElementById("regForm").classList.remove("hidden"); };
+        document.getElementById("backToLogin").onclick = () => { document.getElementById("regForm").classList.add("hidden"); document.getElementById("loginForm").classList.remove("hidden"); };
         document.getElementById("regBtn").onclick = async () => {
             const nome = document.getElementById("regNome").value.trim();
             const email = document.getElementById("regEmail").value.trim();
@@ -488,11 +421,7 @@
             const endereco = document.getElementById("regEndereco").value.trim();
             const telefone = document.getElementById("regTelefone").value.trim();
             if (!nome || !email || !senha || !endereco) { alert("Preencha todos os campos"); return; }
-            if (await fazerCadastroCliente(email, senha, nome, endereco, telefone)) {
-                alert("Cadastro realizado! Faça login.");
-                document.getElementById("regForm").classList.add("hidden");
-                document.getElementById("loginForm").classList.remove("hidden");
-            }
+            if (await fazerCadastroCliente(email, senha, nome, endereco, telefone)) { alert("Cadastro realizado! Faça login."); document.getElementById("regForm").classList.add("hidden"); document.getElementById("loginForm").classList.remove("hidden"); }
         };
     }
 
@@ -502,23 +431,8 @@
         const root = document.getElementById("appRoot");
         root.innerHTML = `
             <div class="app-container">
-                <div class="header">
-                    <div class="logo"><h1><i class="fas fa-motorcycle"></i> Ronda Noturna</h1></div>
-                    <div class="user-info">
-                        <i class="fas fa-user"></i> ${currentUser.nome}
-                        <button class="editar-btn" id="editarEnderecoBtn"><i class="fas fa-edit"></i> Editar endereço</button>
-                        <button class="logout-btn" id="logoutBtn">Sair</button>
-                    </div>
-                </div>
-                <div class="dashboard">
-                    <div class="card">
-                        <h3><i class="fas fa-map-marked-alt"></i> Localização do Motoqueiro</h3>
-                        <div id="mapContainer" class="map-container"></div>
-                        <div class="info-hora" id="ultimaPosicaoHora">Última atualização: aguardando...</div>
-                        <div class="ultima-passagem" id="ultimaPassagem">Última passagem: aguardando...</div>
-                        <button class="panico-btn" id="panicoBtn"><i class="fas fa-bell"></i> Pânico - Acionar Motoqueiro</button>
-                    </div>
-                </div>
+                <div class="header"><div class="logo"><h1><i class="fas fa-motorcycle"></i> Ronda Noturna</h1></div><div class="user-info"><i class="fas fa-user"></i> ${currentUser.nome}<button class="editar-btn" id="editarEnderecoBtn"><i class="fas fa-edit"></i> Editar endereço</button><button class="logout-btn" id="logoutBtn">Sair</button></div></div>
+                <div class="dashboard"><div class="card"><h3><i class="fas fa-map-marked-alt"></i> Localização do Motoqueiro</h3><div id="mapContainer" class="map-container"></div><div class="info-hora" id="ultimaPosicaoHora">Última atualização: aguardando...</div><div class="ultima-passagem" id="ultimaPassagem">Última passagem: aguardando...</div><button class="panico-btn" id="panicoBtn"><i class="fas fa-bell"></i> Pânico - Acionar Motoqueiro</button></div></div>
                 <footer>Posição atualizada em tempo real. Ícone da casa mostra seu endereço.</footer>
             </div>
         `;
@@ -526,69 +440,40 @@
         clientMap = L.map("mapContainer").setView([-23.5505, -46.6333], 13);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM & CartoDB' }).addTo(clientMap);
         clientMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto() }).addTo(clientMap).bindPopup("Motoqueiro");
-
         function atualizarMarcadorCasa() {
             if (casaMarker) casaMarker.remove();
             if (currentUser.latCasa && currentUser.lngCasa) {
-                casaMarker = L.marker([currentUser.latCasa, currentUser.lngCasa], { icon: criarIconeCasa() }).addTo(clientMap)
-                    .bindPopup(`<b>Sua casa</b><br>${currentUser.endereco}`).openPopup();
+                casaMarker = L.marker([currentUser.latCasa, currentUser.lngCasa], { icon: criarIconeCasa() }).addTo(clientMap).bindPopup(`<b>Sua casa</b><br>${currentUser.endereco}`).openPopup();
                 clientMap.fitBounds(L.latLngBounds([[currentUser.latCasa, currentUser.lngCasa]]));
             } else if (currentUser.endereco) {
-                geocodificarEndereco(currentUser.endereco).then(coords => {
-                    if (coords) {
-                        casaMarker = L.marker([coords.lat, coords.lng], { icon: criarIconeCasa() }).addTo(clientMap)
-                            .bindPopup(`<b>Sua casa</b><br>${currentUser.endereco}`).openPopup();
-                        clientMap.fitBounds(L.latLngBounds([[coords.lat, coords.lng]]));
-                    }
-                });
+                geocodificarEndereco(currentUser.endereco).then(coords => { if (coords) { casaMarker = L.marker([coords.lat, coords.lng], { icon: criarIconeCasa() }).addTo(clientMap).bindPopup(`<b>Sua casa</b><br>${currentUser.endereco}`).openPopup(); clientMap.fitBounds(L.latLngBounds([[coords.lat, coords.lng]])); } });
             }
         }
         atualizarMarcadorCasa();
-
         async function carregarUltimaPosicao() {
-            const { data, error } = await supabaseClient.from('posicoes').select('*').order('timestamp', { ascending: false }).limit(1);
-            if (!error && data && data[0]) {
-                const ultima = data[0];
-                clientMarker.setLatLng([ultima.latitude, ultima.longitude]);
-                clientMap.setView([ultima.latitude, ultima.longitude], 14);
-                const dataHora = new Date(ultima.timestamp).toLocaleString('pt-BR');
-                document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${dataHora}`;
-                const endereco = await obterEnderecoAproximado(ultima.latitude, ultima.longitude);
-                clientMarker.bindPopup(`<b>Motoqueiro</b><br>${endereco}`);
-            } else {
-                document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-exclamation-triangle"></i> Nenhuma posição recebida ainda.`;
-            }
+            const { data } = await supabaseClient.from('posicoes').select('*').order('timestamp', { ascending: false }).limit(1);
+            if (data && data[0]) {
+                clientMarker.setLatLng([data[0].latitude, data[0].longitude]); clientMap.setView([data[0].latitude, data[0].longitude], 14);
+                document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-sync-alt"></i> Última atualização: ${new Date(data[0].timestamp).toLocaleString('pt-BR')}`;
+                const end = await obterEnderecoAproximado(data[0].latitude, data[0].longitude);
+                clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`);
+            } else document.getElementById("ultimaPosicaoHora").innerHTML = `<i class="fas fa-exclamation-triangle"></i> Nenhuma posição recebida ainda.`;
         }
-
         const { data: rondaData } = await supabaseClient.from('rondas').select('timestamp').eq('cliente_id', currentUser.id).order('timestamp', { ascending: false }).limit(1);
-        if (rondaData && rondaData[0]) {
-            document.getElementById("ultimaPassagem").innerHTML = `<i class="fas fa-clock"></i> Última passagem: ${new Date(rondaData[0].timestamp).toLocaleString('pt-BR')}`;
-        } else {
-            document.getElementById("ultimaPassagem").innerHTML = `<i class="fas fa-clock"></i> Última passagem: Nenhuma ainda`;
-        }
-
+        document.getElementById("ultimaPassagem").innerHTML = rondaData && rondaData[0] ? `<i class="fas fa-clock"></i> Última passagem: ${new Date(rondaData[0].timestamp).toLocaleString('pt-BR')}` : `<i class="fas fa-clock"></i> Última passagem: Nenhuma ainda`;
         assinarPosicaoMoto();
         await carregarUltimaPosicao();
-
         document.getElementById("editarEnderecoBtn").onclick = async () => {
             const novoEnd = prompt("Digite seu novo endereço completo:", currentUser.endereco);
             if (novoEnd && novoEnd.trim()) {
                 const coords = await geocodificarEndereco(novoEnd);
                 if (!coords) { alert("Endereço não encontrado."); return; }
-                currentUser.endereco = novoEnd;
-                currentUser.latCasa = coords.lat;
-                currentUser.lngCasa = coords.lng;
+                currentUser.endereco = novoEnd; currentUser.latCasa = coords.lat; currentUser.lngCasa = coords.lng;
                 await supabaseClient.from('usuarios').update({ endereco: novoEnd, lat_casa: coords.lat, lng_casa: coords.lng }).eq('id', currentUser.id);
-                atualizarMarcadorCasa();
-                alert("Endereço atualizado!");
+                atualizarMarcadorCasa(); alert("Endereço atualizado!");
             }
         };
-        document.getElementById("logoutBtn").onclick = () => {
-            if (posicaoSubscription) posicaoSubscription.unsubscribe();
-            supabaseClient.auth.signOut();
-            currentUser = null;
-            renderAuthScreen();
-        };
+        document.getElementById("logoutBtn").onclick = () => { if (posicaoSubscription) posicaoSubscription.unsubscribe(); supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
         document.getElementById("panicoBtn").onclick = () => alert("Pânico acionado! O motoqueiro foi notificado.");
     }
 
@@ -598,28 +483,10 @@
         const root = document.getElementById("appRoot");
         root.innerHTML = `
             <div class="app-container">
-                <div class="header">
-                    <div class="logo"><h1><i class="fas fa-motorcycle"></i> Painel Motoqueiro</h1></div>
-                    <div class="user-info"><i class="fas fa-user-astronaut"></i> ${currentUser.nome}<button class="logout-btn" id="logoutMotoBtn">Sair</button></div>
-                </div>
-                <div class="dashboard">
-                    <div class="card">
-                        <h3><i class="fas fa-satellite-dish"></i> Minha Localização</h3>
-                        <div id="motoMapContainer" class="map-container"></div>
-                        <div id="gpsStatus" class="status-gps erro"><span class="led led-cinza"></span> <i class="fas fa-exclamation-triangle"></i> Inicializando...</div>
-                        <div id="horaUltimaPosicao" class="info-hora"></div>
-                        <button id="toggleRastreamentoBtn" class="btn-toggle"><i class="fas fa-play"></i> Iniciar Rastreamento</button>
-                        <button id="centralizarMapaBtn" class="btn-centralizar"><i class="fas fa-crosshairs"></i> Centralizar no mapa</button>
-                    </div>
-                    <div class="card">
-                        <h3><i class="fas fa-bell"></i> Alertas de pânico (em breve)</h3>
-                        <div id="alertasPanico"><p>Nenhum alerta</p></div>
-                    </div>
-                    <div class="card">
-                        <h3><i class="fas fa-history"></i> Histórico de rondas (últimas 5)</h3>
-                        <div id="historicoMoto" class="historico-limitado">Carregando...</div>
-                    </div>
-                </div>
+                <div class="header"><div class="logo"><h1><i class="fas fa-motorcycle"></i> Painel Motoqueiro</h1></div><div class="user-info"><i class="fas fa-user-astronaut"></i> ${currentUser.nome}<button class="logout-btn" id="logoutMotoBtn">Sair</button></div></div>
+                <div class="dashboard"><div class="card"><h3><i class="fas fa-satellite-dish"></i> Minha Localização</h3><div id="motoMapContainer" class="map-container"></div><div id="gpsStatus" class="status-gps erro"><span class="led led-cinza"></span> <i class="fas fa-exclamation-triangle"></i> Inicializando...</div><div id="horaUltimaPosicao" class="info-hora"></div><button id="toggleRastreamentoBtn" class="btn-toggle"><i class="fas fa-play"></i> Iniciar Rastreamento</button><button id="centralizarMapaBtn" class="btn-centralizar"><i class="fas fa-crosshairs"></i> Centralizar no mapa</button></div>
+                <div class="card"><h3><i class="fas fa-bell"></i> Alertas de pânico (em breve)</h3><div id="alertasPanico"><p>Nenhum alerta</p></div></div>
+                <div class="card"><h3><i class="fas fa-history"></i> Histórico de rondas (últimas 5)</h3><div id="historicoMoto" class="historico-limitado">Carregando...</div></div></div>
                 <footer>Toque na moto para ver o endereço. Casas dos clientes estão marcadas.</footer>
             </div>
         `;
@@ -628,7 +495,6 @@
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM & CartoDB' }).addTo(motoMap);
         motoMarker = L.marker([-23.5505, -46.6333], { icon: criarIconeMoto() }).addTo(motoMap).bindPopup("Carregando...");
         clientesMarkers = [];
-
         const { data: clientes } = await supabaseClient.from('usuarios').select('id, nome, endereco, lat_casa, lng_casa').eq('papel', 'cliente');
         if (clientes) {
             for (const cliente of clientes) {
@@ -636,241 +502,140 @@
                 if (cliente.lat_casa && cliente.lng_casa) coords = { lat: cliente.lat_casa, lng: cliente.lng_casa };
                 else if (cliente.endereco) coords = await geocodificarEndereco(cliente.endereco);
                 if (coords) {
-                    const primeiroNome = cliente.nome.split(' ')[0];
-                    const marker = L.marker([coords.lat, coords.lng], { icon: criarIconeCasa() })
-                        .addTo(motoMap)
-                        .bindPopup(`<b>${primeiroNome}</b><br>${cliente.endereco}`);
+                    const marker = L.marker([coords.lat, coords.lng], { icon: criarIconeCasa() }).addTo(motoMap).bindPopup(`<b>${cliente.nome.split(' ')[0]}</b><br>${cliente.endereco}`);
                     clientesMarkers.push(marker);
                 }
             }
         }
-
         const { data: rondas } = await supabaseClient.from('rondas').select('*, usuarios(nome, endereco)').eq('motoqueiro_id', currentUser.id).order('timestamp', { ascending: false }).limit(5);
-        const historicoDiv = document.getElementById("historicoMoto");
-        if (rondas && rondas.length) {
-            historicoDiv.innerHTML = rondas.map(r => `<div><i class="fas fa-check-circle"></i> ${new Date(r.timestamp).toLocaleString('pt-BR')} - ${r.usuarios?.endereco || 'Cliente'}</div>`).join('');
-        } else {
-            historicoDiv.innerHTML = "Nenhuma ronda registrada";
-        }
-
-        document.getElementById("toggleRastreamentoBtn").onclick = () => {
-            if (watchId !== null) pararRastreamentoMoto();
-            else iniciarRastreamentoMoto();
-        };
+        document.getElementById("historicoMoto").innerHTML = rondas && rondas.length ? rondas.map(r => `<div><i class="fas fa-check-circle"></i> ${new Date(r.timestamp).toLocaleString('pt-BR')} - ${r.usuarios?.endereco || 'Cliente'}</div>`).join('') : "Nenhuma ronda registrada";
+        document.getElementById("toggleRastreamentoBtn").onclick = () => watchId !== null ? pararRastreamentoMoto() : iniciarRastreamentoMoto();
         document.getElementById("centralizarMapaBtn").onclick = () => centralizarMapaMoto();
-
         const storedMoto = localStorage.getItem("rondaMotoqueiro");
-        if (storedMoto) {
-            const motoData = JSON.parse(storedMoto);
-            if (motoData.localizacao && motoData.localizacao.dataHora) {
-                atualizarStatusGPS(`Última posição conhecida: ${motoData.localizacao.dataHora}`, true);
-            }
-        }
-
-        document.getElementById("logoutMotoBtn").onclick = () => {
-            pararRastreamentoMoto();
-            supabaseClient.auth.signOut();
-            currentUser = null;
-            renderAuthScreen();
-        };
+        if (storedMoto) { const motoData = JSON.parse(storedMoto); if (motoData.localizacao?.dataHora) atualizarStatusGPS(`Última posição conhecida: ${motoData.localizacao.dataHora}`, true); }
+        document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
     }
 
-    // ========== DASHBOARD ADMIN (com satélite e ajuste de casa) ==========
+    // ========== DASHBOARD ADMIN (COM MELHORIAS UX) ==========
+    let adminData = { usuarios: [], motoqueiros: [], clientes: [], ultimasPosicoes: {}, rondas: [] };
+    let currentPage = 1, itemsPerPage = 20, sortField = 'nome', sortOrder = 'asc';
     async function renderDashboardAdmin() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
-        const [usuariosRes, posicoesRes] = await Promise.all([
+        const [usuariosRes, posicoesRes, rondasRes] = await Promise.all([
             supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false }),
-            supabaseClient.from('posicoes').select('*, usuarios(nome, papel)').order('timestamp', { ascending: false })
+            supabaseClient.from('posicoes').select('*, usuarios(nome, papel)').order('timestamp', { ascending: false }),
+            supabaseClient.from('rondas').select('*, usuarios(nome, endereco)').order('timestamp', { ascending: false })
         ]);
-        let usuarios = usuariosRes.data || [];
+        adminData.usuarios = usuariosRes.data || [];
         const posicoes = posicoesRes.data || [];
-
-        const ultimasPosicoes = {};
-        for (const pos of posicoes) {
-            if (!ultimasPosicoes[pos.motoqueiro_id] && pos.usuarios?.papel === 'motoqueiro') {
-                ultimasPosicoes[pos.motoqueiro_id] = pos;
-            }
-        }
-
-        const clientes = usuarios.filter(u => u.papel === 'cliente' && u.endereco);
-        const motoqueiros = usuarios.filter(u => u.papel === 'motoqueiro');
+        adminData.ultimasPosicoes = {};
+        for (const pos of posicoes) if (!adminData.ultimasPosicoes[pos.motoqueiro_id] && pos.usuarios?.papel === 'motoqueiro') adminData.ultimasPosicoes[pos.motoqueiro_id] = pos;
+        adminData.clientes = adminData.usuarios.filter(u => u.papel === 'cliente' && u.endereco);
+        adminData.motoqueiros = adminData.usuarios.filter(u => u.papel === 'motoqueiro');
+        adminData.rondas = rondasRes.data || [];
 
         const root = document.getElementById("appRoot");
         root.innerHTML = `
             <div class="app-container">
-                <div class="header">
-                    <div class="logo"><h1><i class="fas fa-tachometer-alt"></i> Painel Admin</h1></div>
-                    <div class="user-info"><i class="fas fa-user-shield"></i> ${currentUser.nome}<button class="logout-btn" id="logoutAdminBtn">Sair</button></div>
-                </div>
+                <div class="header"><div class="logo"><h1><i class="fas fa-tachometer-alt"></i> Painel Admin</h1></div><div class="user-info"><i class="fas fa-user-shield"></i> ${currentUser.nome}<button class="logout-btn" id="logoutAdminBtn">Sair</button></div></div>
                 <div class="dashboard">
-                    <div class="card card-full">
-                        <h3><i class="fas fa-map-marked-alt"></i> Mapa de Clientes e Motoqueiros</h3>
-                        <div id="adminMapContainer" class="map-container"></div>
+                    <div class="card card-full"><h3><i class="fas fa-map-marked-alt"></i> Mapa de Clientes e Motoqueiros</h3><div id="adminMapContainer" class="map-container"></div><button id="atualizarMapaBtn" style="background:#3b82f6; margin-top:8px; padding:6px; border-radius:40px;">Atualizar mapa</button></div>
+                    <div class="card card-full"><h3><i class="fas fa-list"></i> Gerenciar Usuários</h3>
+                        <div class="filtros"><input type="text" id="filtroBusca" placeholder="Buscar nome/email"><select id="filtroPapel"><option value="todos">Todos os papéis</option><option value="cliente">Clientes</option><option value="motoqueiro">Motoqueiros</option><option value="admin">Administradores</option></select><button id="exportarCsvBtn"><i class="fas fa-download"></i> Exportar CSV</button><button id="novoUsuarioBtn"><i class="fas fa-plus"></i> Novo Usuário</button></div>
+                        <div style="overflow-x: auto;"><table id="tabelaUsuarios"><thead><tr><th data-field="nome">Nome ↕</th><th data-field="email">Email ↕</th><th data-field="papel">Papel ↕</th><th data-field="endereco">Endereço ↕</th><th>Ações</th></tr></thead><tbody id="tabelaUsuariosBody"></tbody></table></div>
+                        <div class="pagination" id="pagination"></div>
                     </div>
-                    <div class="card card-full">
-                        <h3><i class="fas fa-list"></i> Gerenciar Usuários</h3>
-                        <div class="filtros">
-                            <input type="text" id="filtroBusca" placeholder="Buscar por nome ou e-mail" style="flex:2;">
-                            <select id="filtroPapel">
-                                <option value="todos">Todos os papéis</option>
-                                <option value="cliente">Clientes</option>
-                                <option value="motoqueiro">Motoqueiros</option>
-                                <option value="admin">Administradores</option>
-                            </select>
-                            <button id="novoUsuarioBtn" style="background: #22c55e; border: none; padding: 8px 16px; border-radius: 40px;"><i class="fas fa-plus"></i> Novo Usuário</button>
-                        </div>
-                        <div style="overflow-x: auto;">
-                            <table id="tabelaUsuarios">
-                                <thead><tr><th>Nome</th><th>Email</th><th>Papel</th><th>Endereço</th><th>Ações</th></tr></thead>
-                                <tbody id="tabelaUsuariosBody"></tbody>
-                            8>
-                        </div>
-                    </div>
-                    <div class="card card-full">
-                        <h3><i class="fas fa-history"></i> Últimas Rondas</h3>
-                        <div style="overflow-x: auto;">
-                            <table>
-                                <thead><tr><th>Cliente</th><th>Endereço</th><th>Data/Hora</th><th>Distância (m)</th></tr></thead>
-                                <tbody id="rondasAdminBody"></tbody>
-                            8>
-                        </div>
+                    <div class="card card-full"><h3><i class="fas fa-history"></i> Rondas</h3>
+                        <div class="filtros"><input type="date" id="dataInicio"><input type="date" id="dataFim"><button id="filtrarRondasBtn">Filtrar</button></div>
+                        <div style="overflow-x: auto;"><table id="tabelaRondas"><thead><tr><th>Cliente</th><th>Endereço</th><th>Data/Hora</th><th>Distância (m)</th></tr></thead><tbody id="rondasAdminBody"></tbody></table></div>
                     </div>
                 </div>
                 <footer>Painel Administrativo • Use satélite para ajustar casas</footer>
             </div>
         `;
-
-        const rondasRes = await supabaseClient.from('rondas').select('*, usuarios(nome, endereco)').order('timestamp', { ascending: false }).limit(50);
-        const rondas = rondasRes.data || [];
-        document.getElementById("rondasAdminBody").innerHTML = rondas.map(r => `
-            <tr><td>${r.usuarios?.nome || '-'}</td><td>${r.usuarios?.endereco || '-'}</td><td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td><td>${r.distancia_metros || '-'}</td></tr>
-        `).join('');
-
-        // Mapa admin com controle de camadas
-        if (adminMap) adminMap.remove();
-        adminMap = L.map("adminMapContainer").setView([-23.5505, -46.6333], 13);
         const streetLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM & CartoDB' });
         const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri, Maxar, Earthstar' });
+        if (adminMap) adminMap.remove();
+        adminMap = L.map("adminMapContainer").setView([-23.5505, -46.6333], 13);
         streetLayer.addTo(adminMap);
         L.control.layers({ "Mapa de Ruas": streetLayer, "Satélite": satelliteLayer }).addTo(adminMap);
 
-        let adminClientesMarkers = [];
         async function carregarMapaAdmin() {
-            adminClientesMarkers.forEach(m => m.remove());
-            adminClientesMarkers = [];
-            for (const cliente of clientes) {
+            adminMap.eachLayer(layer => { if (layer instanceof L.Marker && !(layer.options.icon instanceof L.Icon.Default)) adminMap.removeLayer(layer); });
+            for (const cliente of adminData.clientes) {
                 let coords = null;
                 if (cliente.lat_casa && cliente.lng_casa) coords = { lat: cliente.lat_casa, lng: cliente.lng_casa };
                 else if (cliente.endereco) coords = await geocodificarEndereco(cliente.endereco);
-                if (coords) {
-                    const marker = L.marker([coords.lat, coords.lng], { icon: criarIconeCasa() })
-                        .addTo(adminMap)
-                        .bindPopup(`<b>${cliente.nome}</b><br>${cliente.endereco}`);
-                    adminClientesMarkers.push(marker);
-                }
+                if (coords) L.marker([coords.lat, coords.lng], { icon: criarIconeCasa() }).addTo(adminMap).bindPopup(`<b>${cliente.nome}</b><br>${cliente.endereco}`);
             }
-            for (const moto of motoqueiros) {
-                const ultimaPos = ultimasPosicoes[moto.id];
-                if (ultimaPos) {
-                    L.marker([ultimaPos.latitude, ultimaPos.longitude], { icon: criarIconeMoto() })
-                        .addTo(adminMap)
-                        .bindPopup(`<b>${moto.nome}</b><br>Última posição: ${new Date(ultimaPos.timestamp).toLocaleString('pt-BR')}`);
-                }
+            for (const moto of adminData.motoqueiros) {
+                const ultimaPos = adminData.ultimasPosicoes[moto.id];
+                if (ultimaPos) L.marker([ultimaPos.latitude, ultimaPos.longitude], { icon: criarIconeMoto() }).addTo(adminMap).bindPopup(`<b>${moto.nome}</b><br>Última posição: ${new Date(ultimaPos.timestamp).toLocaleString('pt-BR')}`);
             }
-            const bounds = [];
-            for (const marker of adminClientesMarkers) bounds.push(marker.getLatLng());
-            for (const pos of Object.values(ultimasPosicoes)) bounds.push([pos.latitude, pos.longitude]);
+            const bounds = []; adminData.clientes.forEach(c => { if (c.lat_casa && c.lng_casa) bounds.push([c.lat_casa, c.lng_casa]); });
+            Object.values(adminData.ultimasPosicoes).forEach(p => bounds.push([p.latitude, p.longitude]));
             if (bounds.length) adminMap.fitBounds(bounds);
+            // Verificar inatividade do motoqueiro
+            const ultimaPosMoto = Object.values(adminData.ultimasPosicoes)[0];
+            if (ultimaPosMoto && (Date.now() - new Date(ultimaPosMoto.timestamp).getTime() > 300000)) showToast("⚠️ Motoqueiro inativo há mais de 5 minutos!");
         }
 
-        function renderizarTabelaUsuarios() {
+        function renderTabelaUsuarios() {
             const busca = document.getElementById("filtroBusca").value.toLowerCase();
             const papel = document.getElementById("filtroPapel").value;
-            let filtered = usuarios;
-            if (busca) filtered = filtered.filter(u => u.nome.toLowerCase().includes(busca) || u.email.toLowerCase().includes(busca));
-            if (papel !== 'todos') filtered = filtered.filter(u => u.papel === papel);
+            let filtered = adminData.usuarios.filter(u => (busca === '' || u.nome.toLowerCase().includes(busca) || u.email.toLowerCase().includes(busca)) && (papel === 'todos' || u.papel === papel));
+            filtered.sort((a,b) => { let valA = a[sortField] || '', valB = b[sortField] || ''; if (sortField === 'nome') valA = a.nome, valB = b.nome; if (sortOrder === 'asc') return valA > valB ? 1 : -1; else return valA < valB ? 1 : -1; });
+            const start = (currentPage-1)*itemsPerPage, end = start + itemsPerPage, paginated = filtered.slice(start, end);
             const tbody = document.getElementById("tabelaUsuariosBody");
-            tbody.innerHTML = filtered.map(u => `
-                <tr>
-                    <td>${u.nome}</td>
-                    <td>${u.email}</td>
-                    <td>${u.papel}</td>
-                    <td>${u.endereco || '-'}</td>
-                    <td>
-                        <button class="editarUsuarioBtn" data-id="${u.id}" style="background:#facc15; border:none; padding:4px 8px; border-radius:20px; margin-right:5px;"><i class="fas fa-edit"></i></button>
-                        <button class="excluirUsuarioBtn" data-id="${u.id}" data-email="${u.email}" style="background:#ef4444; border:none; padding:4px 8px; border-radius:20px;"><i class="fas fa-trash"></i></button>
-                        <button class="ajustarCasaBtn" data-id="${u.id}" data-nome="${u.nome}" data-endereco="${u.endereco || ''}" style="background:#3b82f6; border:none; padding:4px 8px; border-radius:20px;"><i class="fas fa-map-marker-alt"></i> Casa</button>
-                    </td>
-                </tr>
+            tbody.innerHTML = paginated.map(u => `
+                <tr><td>${u.nome}</td><td>${u.email}</td><td>${u.papel}</td><td>${u.endereco || '-'} ${u.lat_casa && u.lng_casa ? '<i class="fas fa-check-circle casa-ajustada" title="Casa ajustada manualmente"></i>' : ''}</td>
+                <td><button class="editarUsuarioBtn" data-id="${u.id}" style="background:#facc15;"><i class="fas fa-edit"></i></button> <button class="excluirUsuarioBtn" data-id="${u.id}" data-email="${u.email}" style="background:#ef4444;"><i class="fas fa-trash"></i></button> <button class="ajustarCasaBtn" data-id="${u.id}" data-nome="${u.nome}" data-endereco="${u.endereco||''}" style="background:#3b82f6;"><i class="fas fa-map-marker-alt"></i> Casa</button></td></tr>
             `).join('');
-            document.querySelectorAll(".editarUsuarioBtn").forEach(btn => {
-                btn.onclick = async () => {
-                    const id = btn.getAttribute("data-id");
-                    const usuario = usuarios.find(u => u.id === id);
-                    const novoNome = prompt("Novo nome:", usuario.nome);
-                    if (!novoNome) return;
-                    const novoEndereco = prompt("Novo endereço:", usuario.endereco || "");
-                    const novoPapel = prompt("Novo papel (cliente / motoqueiro / admin):", usuario.papel);
-                    if (!novoPapel || !['cliente','motoqueiro','admin'].includes(novoPapel)) return alert("Papel inválido");
-                    await supabaseClient.from('usuarios').update({ nome: novoNome, endereco: novoEndereco || null, papel: novoPapel }).eq('id', id);
-                    const { data: novosUsuarios } = await supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false });
-                    usuarios = novosUsuarios || [];
-                    renderizarTabelaUsuarios();
-                    carregarMapaAdmin();
-                };
-            });
-            document.querySelectorAll(".excluirUsuarioBtn").forEach(btn => {
-                btn.onclick = async () => {
-                    const id = btn.getAttribute("data-id");
-                    const email = btn.getAttribute("data-email");
-                    if (!confirm(`Excluir ${email}?`)) return;
-                    await supabaseClient.from('usuarios').delete().eq('id', id);
-                    const { data: novosUsuarios } = await supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false });
-                    usuarios = novosUsuarios || [];
-                    renderizarTabelaUsuarios();
-                    carregarMapaAdmin();
-                };
-            });
-            document.querySelectorAll(".ajustarCasaBtn").forEach(btn => {
-                btn.onclick = () => {
-                    const id = btn.getAttribute("data-id");
-                    const nome = btn.getAttribute("data-nome");
-                    const endereco = btn.getAttribute("data-endereco");
-                    abrirAjusteCasa(id, nome, endereco);
-                };
-            });
+            const totalPages = Math.ceil(filtered.length/itemsPerPage);
+            const pagDiv = document.getElementById("pagination");
+            pagDiv.innerHTML = `<button ${currentPage===1?'disabled':''} id="prevPage">Anterior</button> ${Array.from({length:totalPages}, (_,i)=>`<button class="${currentPage===i+1?'active':''}" data-page="${i+1}">${i+1}</button>`).join('')} <button ${currentPage===totalPages?'disabled':''} id="nextPage">Próximo</button>`;
+            document.querySelectorAll("[data-page]").forEach(btn => btn.onclick = () => { currentPage = parseInt(btn.dataset.page); renderTabelaUsuarios(); });
+            document.getElementById("prevPage")?.addEventListener("click", () => { if(currentPage>1) { currentPage--; renderTabelaUsuarios(); } });
+            document.getElementById("nextPage")?.addEventListener("click", () => { if(currentPage<totalPages) { currentPage++; renderTabelaUsuarios(); } });
+            document.querySelectorAll(".editarUsuarioBtn").forEach(btn => btn.onclick = async () => { const id = btn.getAttribute("data-id"); const usuario = adminData.usuarios.find(u => u.id === id); abrirEditarUsuario(usuario); });
+            document.querySelectorAll(".excluirUsuarioBtn").forEach(btn => btn.onclick = async () => { const id = btn.getAttribute("data-id"), email = btn.getAttribute("data-email"); if(confirm(`Excluir ${email}?`)) { await supabaseClient.from('usuarios').delete().eq('id', id); renderDashboardAdmin(); } });
+            document.querySelectorAll(".ajustarCasaBtn").forEach(btn => btn.onclick = () => { const id = btn.getAttribute("data-id"), nome = btn.getAttribute("data-nome"), endereco = btn.getAttribute("data-endereco"); abrirAjusteCasa(id, nome, endereco); });
         }
 
-        renderizarTabelaUsuarios();
-        await carregarMapaAdmin();
+        function renderTabelaRondas(dataInicio, dataFim) {
+            let filtered = adminData.rondas;
+            if (dataInicio) filtered = filtered.filter(r => new Date(r.timestamp) >= new Date(dataInicio));
+            if (dataFim) filtered = filtered.filter(r => new Date(r.timestamp) <= new Date(dataFim));
+            document.getElementById("rondasAdminBody").innerHTML = filtered.map(r => `<tr><td>${r.usuarios?.nome || '-'}</td><td>${r.usuarios?.endereco || '-'}</td><td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td><td>${r.distancia_metros || '-'}</td></tr>`).join('');
+        }
 
-        document.getElementById("filtroBusca").addEventListener("input", renderizarTabelaUsuarios);
-        document.getElementById("filtroPapel").addEventListener("change", renderizarTabelaUsuarios);
-
+        document.getElementById("atualizarMapaBtn").onclick = () => carregarMapaAdmin();
+        document.getElementById("exportarCsvBtn").onclick = () => {
+            const filtrados = adminData.usuarios.filter(u => (document.getElementById("filtroBusca").value === '' || u.nome.toLowerCase().includes(document.getElementById("filtroBusca").value.toLowerCase())) && (document.getElementById("filtroPapel").value === 'todos' || u.papel === document.getElementById("filtroPapel").value));
+            const csvRows = [["Nome","Email","Papel","Endereço","Telefone","Lat Casa","Lng Casa"]];
+            filtrados.forEach(u => csvRows.push([u.nome, u.email, u.papel, u.endereco || '', u.telefone || '', u.lat_casa || '', u.lng_casa || '']));
+            const csv = csvRows.map(row => row.map(cell => `"${cell}"`).join(",")).join("\n");
+            const blob = new Blob([csv], {type: "text/csv"}); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "usuarios.csv"; a.click(); URL.revokeObjectURL(a.href);
+        };
         document.getElementById("novoUsuarioBtn").onclick = async () => {
-            const nome = prompt("Nome completo:");
-            if (!nome) return;
-            const email = prompt("Email:");
-            if (!email) return;
-            const senha = prompt("Senha temporária:");
-            if (!senha) return;
-            const papel = prompt("Papel (cliente / motoqueiro):");
-            if (!papel || (papel !== 'cliente' && papel !== 'motoqueiro')) return alert("Papel inválido");
+            const nome = prompt("Nome completo:"); if (!nome) return;
+            const email = prompt("Email:"); if (!email) return;
+            const senha = prompt("Senha temporária:"); if (!senha) return;
+            const papel = prompt("Papel (cliente / motoqueiro):"); if (!papel || (papel !== 'cliente' && papel !== 'motoqueiro')) return alert("Papel inválido");
             const endereco = prompt("Endereço (opcional):");
             const { data, error } = await supabaseClient.auth.signUp({ email, password: senha });
             if (error) return alert(error.message);
             await supabaseClient.from('usuarios').insert({ id: data.user.id, email, nome, papel, endereco: endereco || null });
-            const { data: novosUsuarios } = await supabaseClient.from('usuarios').select('*').order('created_at', { ascending: false });
-            usuarios = novosUsuarios || [];
-            renderizarTabelaUsuarios();
-            carregarMapaAdmin();
+            renderDashboardAdmin();
         };
-
-        document.getElementById("logoutAdminBtn").onclick = () => {
-            supabaseClient.auth.signOut();
-            currentUser = null;
-            renderAuthScreen();
-        };
+        document.querySelectorAll("th[data-field]").forEach(th => th.onclick = () => { sortField = th.dataset.field; sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; currentPage = 1; renderTabelaUsuarios(); });
+        document.getElementById("filtroBusca").addEventListener("input", () => { currentPage = 1; renderTabelaUsuarios(); });
+        document.getElementById("filtroPapel").addEventListener("change", () => { currentPage = 1; renderTabelaUsuarios(); });
+        document.getElementById("filtrarRondasBtn").onclick = () => { const inicio = document.getElementById("dataInicio").value; const fim = document.getElementById("dataFim").value; renderTabelaRondas(inicio, fim); };
+        document.getElementById("logoutAdminBtn").onclick = () => { supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
+        renderTabelaUsuarios();
+        renderTabelaRondas();
+        await carregarMapaAdmin();
     }
 
     // ========== SESSION CHECK ==========
@@ -880,13 +645,8 @@
             const { data: userData } = await supabaseClient.from('usuarios').select('*').eq('email', session.user.email).single();
             if (userData) {
                 currentUser = {
-                    id: userData.id,
-                    email: userData.email,
-                    nome: userData.nome,
-                    papel: userData.papel,
-                    endereco: userData.endereco,
-                    latCasa: userData.lat_casa || null,
-                    lngCasa: userData.lng_casa || null
+                    id: userData.id, email: userData.email, nome: userData.nome, papel: userData.papel,
+                    endereco: userData.endereco, latCasa: userData.lat_casa || null, lngCasa: userData.lng_casa || null
                 };
                 if (!currentUser.latCasa && currentUser.endereco) {
                     const coords = await geocodificarEndereco(currentUser.endereco);
