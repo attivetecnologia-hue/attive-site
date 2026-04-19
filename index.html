@@ -218,7 +218,8 @@
                     }
                     if (dist <= 50) {
                         const ultima = cliente.ultima_passagem ? new Date(cliente.ultima_passagem).getTime() : 0;
-                        if (timestamp - ultima > 60000) {
+                        // INTERVALO REDUZIDO PARA 10 SEGUNDOS (TESTES)
+                        if (timestamp - ultima > 10000) {
                             await supabaseClient.from('usuarios').update({ ultima_passagem: new Date(timestamp).toISOString() }).eq('id', cliente.id);
                             const { error: insertRonda } = await supabaseClient.from('rondas').insert({
                                 cliente_id: cliente.id,
@@ -234,7 +235,7 @@
                                 showToast(`✅ Passagem registrada para ${cliente.nome.split(' ')[0]}`);
                             }
                         } else {
-                            console.log(`Passagem ignorada (menos de 60s desde a última): ${cliente.nome}`);
+                            console.log(`Passagem ignorada (menos de 10s desde a última): ${cliente.nome}`);
                         }
                     }
                 }
@@ -746,13 +747,13 @@
             const tbody = document.getElementById("rondasAdminBody");
             if (tbody) {
                 if (filtered.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4">Nenhuma ronda registrada</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="4">Nenhuma ronda registrada</td><tr>';
                 } else {
                     tbody.innerHTML = filtered.map(r => `
                         <tr>
                             <td>${r.usuarios?.nome || 'Cliente não encontrado'}</td>
                             <td>${r.usuarios?.endereco || '-'}</td>
-                            <td>${formatarDataHoraBrasilia(r.timestamp)}</td>
+                            <td>${new Date(r.timestamp).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}</td>
                             <td>${r.distancia_metros || '-'}</td>
                         </tr>
                     `).join('');
