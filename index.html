@@ -104,7 +104,8 @@
     // ========== FUNÇÕES AUXILIARES DE FORMATAÇÃO ==========
     function formatarDataHoraBrasilia(timestamp) {
         if (!timestamp) return "";
-        return new Date(timestamp).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+        // Força interpretação como UTC
+        return new Date(timestamp + 'Z').toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
     }
 
     // ========== AUXILIAR FUNCTIONS ==========
@@ -218,9 +219,8 @@
                         clienteMaisProximo = { nome: cliente.nome, distancia: dist };
                     }
                     if (dist <= 50) {
-                        const ultima = cliente.ultima_passagem ? new Date(cliente.ultima_passagem).getTime() : 0;
-                        // Intervalo zero: registra a cada posição (toast aparece sempre)
-                        if (timestamp - ultima > 0) {
+                        // CORREÇÃO: força registrar a cada posição (ignora intervalo de tempo)
+                        if (true) {
                             await supabaseClient.from('usuarios').update({ ultima_passagem: new Date(timestamp).toISOString() }).eq('id', cliente.id);
                             const { error: insertRonda } = await supabaseClient.from('rondas').insert({
                                 cliente_id: cliente.id,
@@ -232,7 +232,7 @@
                                 console.error("Erro ao inserir ronda:", insertRonda);
                                 showToast(`❌ Erro ao registrar ronda para ${cliente.nome.split(' ')[0]}: ${insertRonda.message}`);
                             } else {
-                                console.log(`Passagem registrada para cliente ${cliente.id} - ${dataHoraStr}`);
+                                console.log(`Passagem registrada para cliente ${cliente.id}`);
                                 showToast(`✅ Passagem registrada para ${cliente.nome.split(' ')[0]}`);
                             }
                         } else {
