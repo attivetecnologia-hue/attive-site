@@ -155,7 +155,6 @@
         return null;
     }
 
-    // Ícones com zIndexOffset para garantir ordem visual
     function criarIconeMoto() {
         return L.divIcon({
             html: '<i class="fas fa-motorcycle"></i>',
@@ -222,8 +221,10 @@
                                 timestamp: new Date(timestamp).toISOString(),
                                 distancia_metros: Math.round(dist)
                             });
-                            if (insertRonda) console.error("Erro ao inserir ronda:", insertRonda);
-                            else {
+                            if (insertRonda) {
+                                console.error("Erro ao inserir ronda:", insertRonda);
+                                showToast(`❌ Erro ao registrar ronda para ${cliente.nome.split(' ')[0]}: ${insertRonda.message}`);
+                            } else {
                                 console.log(`Passagem registrada para cliente ${cliente.id} - ${dataHoraStr}`);
                                 showToast(`✅ Passagem registrada para ${cliente.nome.split(' ')[0]}`);
                             }
@@ -449,7 +450,11 @@
             showToast(`❌ Erro ao registrar ronda: ${insertError.message}`);
         } else {
             showToast(`✅ Ronda de teste registrada para ${clienteNome}`);
-            // Recarregar a tabela de rondas no admin
+            // Limpar filtros de data e recarregar a página do admin
+            const inicioInput = document.getElementById("dataInicio");
+            const fimInput = document.getElementById("dataFim");
+            if (inicioInput) inicioInput.value = '';
+            if (fimInput) fimInput.value = '';
             if (window.renderDashboardAdmin) renderDashboardAdmin();
         }
     }
@@ -584,7 +589,7 @@
         document.getElementById("panicoBtn").onclick = () => alert("Pânico acionado! O motoqueiro foi notificado.");
     }
 
-    // ========== DASHBOARD MOTOQUEIRO (com cliente mais próximo) ==========
+    // ========== DASHBOARD MOTOQUEIRO ==========
     async function renderDashboardMoto() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -625,7 +630,7 @@
         document.getElementById("logoutMotoBtn").onclick = () => { pararRastreamentoMoto(); supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
     }
 
-    // ========== DASHBOARD ADMIN (com botão Testar Ronda) ==========
+    // ========== DASHBOARD ADMIN ==========
     let adminData = { usuarios: [], motoqueiros: [], clientes: [], ultimasPosicoes: {}, rondas: [] };
     let currentPage = 1, itemsPerPage = 20, sortField = 'nome', sortOrder = 'asc';
     async function renderDashboardAdmin() {
@@ -732,16 +737,23 @@
 
         function renderTabelaRondas(dataInicio, dataFim) {
             let filtered = adminData.rondas;
-            if (dataInicio) filtered = filtered.filter(r => new Date(r.timestamp) >= new Date(dataInicio));
-            if (dataFim) filtered = filtered.filter(r => new Date(r.timestamp) <= new Date(dataFim));
-            document.getElementById("rondasAdminBody").innerHTML = filtered.map(r => `
-                <tr>
-                    <td>${r.usuarios?.nome || '-'}</td>
-                    <td>${r.usuarios?.endereco || '-'}</td>
-                    <td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td>
-                    <td>${r.distancia_metros || '-'}</td>
-                </tr>
-            `).join('');
+            if (dataInicio && dataInicio !== '') {
+                filtered = filtered.filter(r => new Date(r.timestamp) >= new Date(dataInicio));
+            }
+            if (dataFim && dataFim !== '') {
+                filtered = filtered.filter(r => new Date(r.timestamp) <= new Date(dataFim));
+            }
+            const tbody = document.getElementById("rondasAdminBody");
+            if (tbody) {
+                tbody.innerHTML = filtered.map(r => `
+                    <tr>
+                        <td>${r.usuarios?.nome || '-'}</td>
+                        <td>${r.usuarios?.endereco || '-'}</td>
+                        <td>${new Date(r.timestamp).toLocaleString('pt-BR')}</td>
+                        <td>${r.distancia_metros || '-'}</td>
+                    </tr>
+                `).join('');
+            }
         }
 
         document.getElementById("atualizarMapaBtn").onclick = () => carregarMapaAdmin();
@@ -756,7 +768,11 @@
         document.querySelectorAll("th[data-field]").forEach(th => th.onclick = () => { sortField = th.dataset.field; sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; currentPage = 1; renderTabelaUsuarios(); });
         document.getElementById("filtroBusca").addEventListener("input", () => { currentPage = 1; renderTabelaUsuarios(); });
         document.getElementById("filtroPapel").addEventListener("change", () => { currentPage = 1; renderTabelaUsuarios(); });
-        document.getElementById("filtrarRondasBtn").onclick = () => { const inicio = document.getElementById("dataInicio").value; const fim = document.getElementById("dataFim").value; renderTabelaRondas(inicio, fim); };
+        document.getElementById("filtrarRondasBtn").onclick = () => {
+            const inicio = document.getElementById("dataInicio").value;
+            const fim = document.getElementById("dataFim").value;
+            renderTabelaRondas(inicio, fim);
+        };
         document.getElementById("logoutAdminBtn").onclick = () => { supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
         renderTabelaUsuarios();
         renderTabelaRondas();
