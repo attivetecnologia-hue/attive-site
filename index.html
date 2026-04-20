@@ -10,7 +10,6 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* (mantenha o CSS exatamente igual ao último código enviado) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0f1e; color: #eef2ff; padding: 12px; }
         .app-container { max-width: 100%; margin: 0 auto; background: #0f172a; border-radius: 24px; overflow: hidden; border: 1px solid #1e293b; }
@@ -132,18 +131,21 @@
         setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
-    // ========== FUNÇÃO DE FORMATAÇÃO CORRIGIDA (DEFINITIVA) ==========
+    // ========== FUNÇÃO CORRIGIDA DE FORMATAÇÃO (DEFINITIVA) ==========
     function formatarDataHoraBrasilia(timestamp) {
         if (!timestamp) return "";
         let date;
         if (typeof timestamp === 'string') {
             let ts = timestamp;
-            // Captura formatos 'YYYY-MM-DD HH:MM:SS' ou 'YYYY-MM-DD HH:MM:SS.ms'
+            // Se for string no formato 'YYYY-MM-DD HH:MM:SS.ms' (com espaço)
             if (ts.match(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.\d+)?$/)) {
                 ts = ts.replace(' ', 'T') + 'Z';
-            } else if (!ts.includes('Z') && !ts.includes('+') && !ts.includes('-') && ts.length === 19) {
+            }
+            // Se for string no formato 'YYYY-MM-DDTHH:MM:SS.ms' (sem Z)
+            else if (ts.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?$/)) {
                 ts += 'Z';
             }
+            // Se for string ISO com Z ou offset, mantém
             date = new Date(ts);
         } else if (typeof timestamp === 'number') {
             date = new Date(timestamp);
@@ -217,7 +219,7 @@
     function criarIconeMoto() { return L.divIcon({ html: '<i class="fas fa-motorcycle"></i>', iconSize: [30,30], className: 'moto-marker', popupAnchor: [0,-10], zIndexOffset: 100 }); }
     function criarIconeCasa() { return L.divIcon({ html: '<i class="fas fa-home"></i>', iconSize: [24,24], className: 'casa-marker', popupAnchor: [0,-10], zIndexOffset: 10 }); }
 
-    // ========== DASHBOARD CLIENTE (COM CONVERSÃO FORÇADA) ==========
+    // ========== DASHBOARD CLIENTE ==========
     async function renderDashboardCliente() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -316,7 +318,6 @@
                 console.error("Erro ao buscar passagens:", error);
                 return;
             }
-            // Última passagem
             if (rondas && rondas.length > 0) {
                 const timestampRaw = rondas[0].timestamp;
                 const timestampFormatado = formatarDataHoraBrasilia(timestampRaw);
@@ -325,7 +326,6 @@
             } else {
                 document.getElementById("ultimaPassagem").innerHTML = "Nenhuma passagem registrada";
             }
-            // Histórico (3 itens)
             const historicoDiv = document.getElementById("historicoPassagens");
             if (rondas && rondas.length > 0) {
                 historicoDiv.innerHTML = rondas.map(r => `
@@ -349,7 +349,7 @@
                         clientMarker.setLatLng([novaPos.latitude, novaPos.longitude]);
                         clientMap.setView([novaPos.latitude, novaPos.longitude], 14);
                         obterEnderecoAproximado(novaPos.latitude, novaPos.longitude).then(end => clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`));
-                        carregarPassagens(); // atualiza passagens (pode ter nova ronda)
+                        carregarPassagens();
                     }
                 })
                 .subscribe();
@@ -445,7 +445,7 @@
         iniciarRastreamentoMoto();
     }
 
-    // Funções auxiliares do motoqueiro (enviarPosicao, etc.) – iguais ao código anterior
+    // Funções auxiliares do motoqueiro
     async function enviarPosicao(lat, lng, precisao, timestamp) {
         if (!currentUser || currentUser.papel !== 'motoqueiro') return;
         const dataHoraStr = formatarDataHoraBrasilia(timestamp);
@@ -571,8 +571,7 @@
         else motoMap.setView([-23.5505, -46.6333], 13);
     }
 
-    // ========== DASHBOARD ADMIN (resumido para manter o código enxuto) ==========
-    // (O admin permanece igual ao último código funcional – não foi alterado)
+    // ========== DASHBOARD ADMIN (COMPLETO) ==========
     let adminData = { usuarios: [], motoqueiros: [], clientes: [], ultimasPosicoes: {}, rondas: [] };
     let currentPage = 1, itemsPerPage = 20, sortField = 'nome', sortOrder = 'asc';
     async function renderDashboardAdmin() {
@@ -622,7 +621,7 @@
                     </div>
                     <div class="card card-full"><h3><i class="fas fa-history"></i> Rondas</h3>
                         <div class="filtros"><input type="date" id="dataInicio"><input type="date" id="dataFim"><button id="filtrarRondasBtn">Filtrar</button></div>
-                        <div style="overflow-x: auto;"><table id="tabelaRondas"><thead><th>Cliente</th><th>Endereço</th><th>Data/Hora</th><th>Distância (m)</th></thead><tbody id="rondasAdminBody"></tbody></table></div>
+                        <div style="overflow-x: auto;"><table id="tabelaRondas"><thead><th>Cliente</th><th>Endereço</th><th>Data/Hora</th><th>Distância (m)</th></thead><tbody id="rondasAdminBody"></tbody><table></div>
                     </div>
                 </div>
                 <footer>Painel Administrativo • Use satélite para ajustar casas</footer>
@@ -715,7 +714,7 @@
             if (dataFim && dataFim !== '') filtered = filtered.filter(r => new Date(r.timestamp) <= new Date(dataFim));
             const tbody = document.getElementById("rondasAdminBody");
             if (tbody) {
-                if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="4">Nenhuma ronda registrada</td></tr>'; }
+                if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="4">Nenhuma ronda registrada<td></tr>'; }
                 else { tbody.innerHTML = filtered.map(r => `
                     <tr>
                         <td>${r.usuarios?.nome || 'Cliente não encontrado'}</td>
@@ -747,6 +746,7 @@
         await carregarMapaAdmin();
     }
 
+    // Funções auxiliares do admin
     async function abrirAjusteCasa(clienteId, clienteNome, endereco) {
         let lat, lng;
         const { data: cliente, error } = await supabaseClient.from('usuarios').select('lat_casa, lng_casa').eq('id', clienteId).single();
