@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* (estilos iguais ao último código, mantidos) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0f1e; color: #eef2ff; padding: 12px; }
         .app-container { max-width: 100%; margin: 0 auto; background: #0f172a; border-radius: 24px; overflow: hidden; border: 1px solid #1e293b; }
@@ -67,7 +68,6 @@
         .modal-editar input, .modal-editar select, .modal-novo input, .modal-novo select { width: 100%; padding: 10px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: white; }
         .casa-ajustada { color: #22c55e; margin-left: 5px; }
         .cliente-proximo { margin-top: 12px; background: #1e293b; border-radius: 16px; padding: 8px; text-align: center; }
-        /* Estilos específicos do cliente */
         .cliente-header { background: #020617; padding: 1rem 1.2rem; text-align: center; border-bottom: 1px solid #1e293b; }
         .cliente-logo h1 { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #facc15, #ff8c00); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 0.5rem; }
         .user-bar { display: flex; justify-content: center; align-items: center; gap: 1rem; background: #1e293b; padding: 0.5rem 1rem; border-radius: 60px; width: fit-content; margin: 0 auto; }
@@ -128,20 +128,24 @@
         setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
-    // ========== FORMATAÇÃO ==========
+    // ========== FORMATAÇÃO CORRIGIDA ==========
     function formatarDataHoraBrasilia(timestamp) {
         if (!timestamp) return "";
+        // Converte para objeto Date de forma confiável
         let date;
         if (typeof timestamp === 'number') {
             date = new Date(timestamp);
         } else {
-            let dateStr = timestamp;
-            if (!dateStr.includes('Z') && !dateStr.includes('+') && !dateStr.includes('-') && dateStr.length === 19) {
-                dateStr += 'Z';
+            // Se for string, assegura que é interpretada como UTC
+            let str = timestamp;
+            // Se não tiver indicador de timezone, adiciona 'Z' (UTC)
+            if (!str.includes('Z') && !str.includes('+') && !str.includes('-') && str.length === 19) {
+                str += 'Z';
             }
-            date = new Date(dateStr);
+            date = new Date(str);
         }
         if (isNaN(date.getTime())) return "Data inválida";
+        // Converte para horário de Brasília
         return date.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
     }
 
@@ -198,7 +202,7 @@
     function criarIconeMoto() { return L.divIcon({ html: '<i class="fas fa-motorcycle"></i>', iconSize: [30,30], className: 'moto-marker', popupAnchor: [0,-10], zIndexOffset: 100 }); }
     function criarIconeCasa() { return L.divIcon({ html: '<i class="fas fa-home"></i>', iconSize: [24,24], className: 'casa-marker', popupAnchor: [0,-10], zIndexOffset: 10 }); }
 
-    // ========== DASHBOARD CLIENTE (COM AS ALTERAÇÕES SOLICITADAS) ==========
+    // ========== DASHBOARD CLIENTE (COM CORREÇÃO DA MOTO) ==========
     async function renderDashboardCliente() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -296,6 +300,30 @@
         }
         await carregarPassagens();
 
+        // Carregar última posição da moto
+        async function carregarUltimaPosicaoMoto() {
+            const { data, error } = await supabaseClient
+                .from('posicoes')
+                .select('*')
+                .order('timestamp', { ascending: false })
+                .limit(1);
+            if (error) {
+                console.error("Erro ao carregar última posição:", error);
+                return;
+            }
+            if (data && data.length > 0) {
+                const pos = data[0];
+                clientMarker.setLatLng([pos.latitude, pos.longitude]);
+                clientMap.setView([pos.latitude, pos.longitude], 14);
+                const endereco = await obterEnderecoAproximado(pos.latitude, pos.longitude);
+                clientMarker.bindPopup(`<b>Motoqueiro</b><br>${endereco}`);
+            } else {
+                console.log("Nenhuma posição encontrada");
+            }
+        }
+        await carregarUltimaPosicaoMoto();
+
+        // Assinar novas posições da moto
         function assinarPosicaoMoto() {
             if (posicaoSubscription) posicaoSubscription.unsubscribe();
             posicaoSubscription = supabaseClient.channel('posicoes-channel').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posicoes' }, (payload) => {
@@ -337,7 +365,7 @@
         };
     }
 
-    // ========== DASHBOARD MOTOQUEIRO (COMPLETO) ==========
+    // ========== DASHBOARD MOTOQUEIRO (COMPLETO, IGUAL ANTERIOR) ==========
     async function renderDashboardMoto() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -402,7 +430,7 @@
         iniciarRastreamentoMoto();
     }
 
-    // Funções auxiliares do motoqueiro
+    // Funções auxiliares do motoqueiro (mesmo código anterior, resumido para espaço)
     async function enviarPosicao(lat, lng, precisao, timestamp) {
         if (!currentUser || currentUser.papel !== 'motoqueiro') return;
         const dataHoraStr = formatarDataHoraBrasilia(timestamp);
@@ -435,7 +463,7 @@
                     const dist = calcularDistancia(lat, lng, coords.lat, coords.lng);
                     if (dist < menorDistancia) { menorDistancia = dist; clienteMaisProximo = { nome: cliente.nome, distancia: dist }; }
                     if (dist <= 50) {
-                        if (true) { // força registro
+                        if (true) {
                             await supabaseClient.from('usuarios').update({ ultima_passagem: new Date(timestamp).toISOString() }).eq('id', cliente.id);
                             const { error: insertRonda } = await supabaseClient.from('rondas').insert({
                                 cliente_id: cliente.id,
@@ -528,7 +556,7 @@
         else motoMap.setView([-23.5505, -46.6333], 13);
     }
 
-    // ========== DASHBOARD ADMIN (COMPLETO) ==========
+    // ========== DASHBOARD ADMIN (COMPLETO, IGUAL ANTERIOR) ==========
     let adminData = { usuarios: [], motoqueiros: [], clientes: [], ultimasPosicoes: {}, rondas: [] };
     let currentPage = 1, itemsPerPage = 20, sortField = 'nome', sortOrder = 'asc';
     async function renderDashboardAdmin() {
