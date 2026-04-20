@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* ========== CSS (idêntico ao anterior, otimizado) ========== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0f1e; color: #eef2ff; padding: 12px; }
         .app-container { max-width: 100%; margin: 0 auto; background: #0f172a; border-radius: 24px; overflow: hidden; border: 1px solid #1e293b; }
@@ -131,24 +132,26 @@
         setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
-    // ========== FORMATAÇÃO DE DATA/HORA CORRIGIDA ==========
+    // ========== FUNÇÃO DE FORMATAÇÃO CORRIGIDA ==========
     function formatarDataHoraBrasilia(timestamp) {
         if (!timestamp) return "";
         let date;
         if (typeof timestamp === 'string') {
             let ts = timestamp;
-            // Se for string no formato 'YYYY-MM-DD HH:MM:SS' (sem timezone), adiciona 'Z' para forçar UTC
             if (ts.match(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/)) {
                 ts = ts.replace(' ', 'T') + 'Z';
             } else if (!ts.includes('Z') && !ts.includes('+') && !ts.includes('-') && ts.length === 19) {
                 ts += 'Z';
             }
             date = new Date(ts);
+        } else if (typeof timestamp === 'number') {
+            date = new Date(timestamp);
+        } else if (timestamp instanceof Date) {
+            date = timestamp;
         } else {
             date = new Date(timestamp);
         }
         if (isNaN(date.getTime())) return "Data inválida";
-        // Formatar para DD-MM-YYYY HH:MM:SS no horário de Brasília
         const options = { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
         const parts = new Intl.DateTimeFormat('pt-BR', options).formatToParts(date);
         const day = parts.find(p => p.type === 'day')?.value;
@@ -213,7 +216,7 @@
     function criarIconeMoto() { return L.divIcon({ html: '<i class="fas fa-motorcycle"></i>', iconSize: [30,30], className: 'moto-marker', popupAnchor: [0,-10], zIndexOffset: 100 }); }
     function criarIconeCasa() { return L.divIcon({ html: '<i class="fas fa-home"></i>', iconSize: [24,24], className: 'casa-marker', popupAnchor: [0,-10], zIndexOffset: 10 }); }
 
-    // ========== DASHBOARD CLIENTE (CORRIGIDO) ==========
+    // ========== DASHBOARD CLIENTE (COM AUTO-REFRESH E HORA CORRIGIDA) ==========
     async function renderDashboardCliente() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -340,7 +343,7 @@
                         clientMarker.setLatLng([novaPos.latitude, novaPos.longitude]);
                         clientMap.setView([novaPos.latitude, novaPos.longitude], 14);
                         obterEnderecoAproximado(novaPos.latitude, novaPos.longitude).then(end => clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`));
-                        carregarPassagens(); // atualiza passagens (pode ter nova ronda)
+                        carregarPassagens();
                     }
                 })
                 .subscribe();
@@ -562,7 +565,7 @@
         else motoMap.setView([-23.5505, -46.6333], 13);
     }
 
-    // ========== DASHBOARD ADMIN (COM APROVAÇÃO) ==========
+    // ========== DASHBOARD ADMIN (COM APROVAÇÃO CORRIGIDA) ==========
     let adminData = { usuarios: [], motoqueiros: [], clientes: [], ultimasPosicoes: {}, rondas: [] };
     let currentPage = 1, itemsPerPage = 20, sortField = 'nome', sortOrder = 'asc';
     async function renderDashboardAdmin() {
@@ -705,7 +708,7 @@
             if (dataFim && dataFim !== '') filtered = filtered.filter(r => new Date(r.timestamp) <= new Date(dataFim));
             const tbody = document.getElementById("rondasAdminBody");
             if (tbody) {
-                if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="4">Nenhuma ronda registrada<td></tr>'; }
+                if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="4">Nenhuma ronda registrada</td><tr>'; }
                 else { tbody.innerHTML = filtered.map(r => `
                     <tr>
                         <td>${r.usuarios?.nome || 'Cliente não encontrado'}</td>
@@ -737,7 +740,7 @@
         await carregarMapaAdmin();
     }
 
-    // Funções auxiliares do admin (abrirAjusteCasa, abrirEditarUsuario, abrirNovoUsuario, testarRonda)
+    // Funções auxiliares do admin
     async function abrirAjusteCasa(clienteId, clienteNome, endereco) {
         let lat, lng;
         const { data: cliente, error } = await supabaseClient.from('usuarios').select('lat_casa, lng_casa').eq('id', clienteId).single();
@@ -821,7 +824,7 @@
             if (error) { alert("Erro no Auth: " + error.message); return; }
             const { error: insertError } = await supabaseClient.from('usuarios').insert({
                 id: data.user.id, email, nome, papel, endereco: endereco || null, telefone: telefone || null,
-                aprovado: true
+                aprovado: true // admin cria já aprovado
             });
             if (insertError) { alert("Erro ao inserir na tabela: " + insertError.message); return; }
             showToast("Usuário criado com sucesso!");
@@ -844,6 +847,7 @@
         if (error) { alert("Erro: " + error.message); return false; }
         const { data: userData, error: userError } = await supabaseClient.from('usuarios').select('*').eq('email', email).single();
         if (userError || !userData) { alert("Usuário não encontrado na tabela."); return false; }
+        // Verificar aprovação (apenas para clientes)
         if (userData.papel === 'cliente' && userData.aprovado !== true) {
             alert("Aguardando aprovação do administrador. Você receberá um e-mail quando for aprovado.");
             await supabaseClient.auth.signOut();
@@ -864,7 +868,7 @@
         if (error) { alert(error.message); return false; }
         const { error: insertError } = await supabaseClient.from('usuarios').insert({
             id: data.user.id, email, nome, papel: 'cliente', endereco, telefone,
-            aprovado: false
+            aprovado: false // novo cliente aguarda aprovação
         });
         if (insertError) { alert("Erro ao cadastrar: " + insertError.message); return false; }
         return true;
