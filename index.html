@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* (Mantido o mesmo CSS do código anterior - otimizado para cliente) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0f1e; color: #eef2ff; padding: 12px; }
         .app-container { max-width: 100%; margin: 0 auto; background: #0f172a; border-radius: 24px; overflow: hidden; border: 1px solid #1e293b; }
@@ -67,7 +68,7 @@
         .modal-editar input, .modal-editar select, .modal-novo input, .modal-novo select { width: 100%; padding: 10px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: white; }
         .casa-ajustada { color: #22c55e; margin-left: 5px; }
         .cliente-proximo { margin-top: 12px; background: #1e293b; border-radius: 16px; padding: 8px; text-align: center; }
-        /* Estilos específicos do cliente (otimizados para mobile) */
+        /* Estilos específicos do cliente */
         .cliente-header { background: #020617; padding: 0.6rem 1rem; text-align: center; border-bottom: 1px solid #1e293b; }
         .cliente-logo h1 { font-size: 1.3rem; font-weight: 700; background: linear-gradient(135deg, #facc15, #ff8c00); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 0.3rem; }
         .user-bar { display: flex; justify-content: center; align-items: center; gap: 0.8rem; background: #1e293b; padding: 0.3rem 0.8rem; border-radius: 60px; width: fit-content; margin: 0 auto; }
@@ -82,7 +83,6 @@
         .info-value { font-size: 0.9rem; font-weight: 600; }
         .historico-item { background: #1e293b; border-radius: 10px; padding: 8px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; }
         .historico-data { font-size: 0.75rem; color: #cbd5e1; }
-        /* Mobile: mapa menor, sem rodapé, compacto */
         @media (max-width: 767px) {
             .map-container { height: 200px; }
             .cliente-header { padding: 0.4rem 0.8rem; }
@@ -95,6 +95,9 @@
             .dashboard-cliente-grid { display: grid; grid-template-columns: 1fr 0.6fr; gap: 1.2rem; align-items: start; }
             .map-container { height: 380px; margin-bottom: 0; }
         }
+        .badge-aprovado { background: #22c55e; color: #0f172a; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; display: inline-block; }
+        .badge-pendente { background: #facc15; color: #0f172a; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; display: inline-block; }
+        .btn-aprovar { background: #22c55e; border: none; padding: 4px 8px; border-radius: 20px; cursor: pointer; font-size: 0.7rem; margin-left: 5px; }
     </style>
 </head>
 <body>
@@ -116,6 +119,7 @@
     let motoMap = null, motoMarker = null;
     let clientUpdateInterval = null;
     let posicaoSubscription = null;
+    let rondasSubscription = null;
     let reverseCache = {};
     let geoCache = {};
     let clientesMarkers = [];
@@ -132,7 +136,16 @@
     // ========== FORMATAÇÃO DE DATA/HORA ==========
     function formatarDataHoraBrasilia(timestamp) {
         if (!timestamp) return "";
-        const date = new Date(timestamp);
+        let date;
+        if (typeof timestamp === 'string') {
+            let ts = timestamp;
+            if (!ts.includes('Z') && !ts.includes('+') && !ts.includes('-') && ts.length === 19) {
+                ts += 'Z';
+            }
+            date = new Date(ts);
+        } else {
+            date = new Date(timestamp);
+        }
         if (isNaN(date.getTime())) return "Data inválida";
         return date.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
     }
@@ -190,7 +203,7 @@
     function criarIconeMoto() { return L.divIcon({ html: '<i class="fas fa-motorcycle"></i>', iconSize: [30,30], className: 'moto-marker', popupAnchor: [0,-10], zIndexOffset: 100 }); }
     function criarIconeCasa() { return L.divIcon({ html: '<i class="fas fa-home"></i>', iconSize: [24,24], className: 'casa-marker', popupAnchor: [0,-10], zIndexOffset: 10 }); }
 
-    // ========== DASHBOARD CLIENTE (SEM BOTÃO DE PÂNICO, OTIMIZADO) ==========
+    // ========== DASHBOARD CLIENTE ==========
     async function renderDashboardCliente() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -225,7 +238,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Rodapé removido em mobile, mas mantido para desktop (oculto via CSS) -->
                 <footer>Toque no mapa para centralizar • Casa com ícone amarelo</footer>
             </div>
         `;
@@ -257,7 +269,6 @@
         }
         atualizarMarcadorCasa();
 
-        // Carregar última posição da moto
         async function carregarUltimaPosicaoMoto() {
             const { data, error } = await supabaseClient
                 .from('posicoes')
@@ -320,24 +331,36 @@
                     clientMarker.setLatLng([novaPos.latitude, novaPos.longitude]);
                     clientMap.setView([novaPos.latitude, novaPos.longitude], 14);
                     obterEnderecoAproximado(novaPos.latitude, novaPos.longitude).then(end => clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`));
-                    carregarPassagens(); // atualiza passagens quando nova posição chegar
+                    carregarPassagens();
                 }
             }).subscribe();
+        }
+
+        function assinarRondas() {
+            if (rondasSubscription) rondasSubscription.unsubscribe();
+            rondasSubscription = supabaseClient.channel('rondas-channel')
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'rondas', filter: `cliente_id=eq.${currentUser.id}` }, () => {
+                    carregarPassagens();
+                    showToast("✅ Nova passagem registrada!");
+                })
+                .subscribe();
         }
 
         await carregarUltimaPosicaoMoto();
         await carregarPassagens();
         assinarPosicaoMoto();
+        assinarRondas();
 
         document.getElementById("logoutBtn").onclick = () => {
             if (posicaoSubscription) posicaoSubscription.unsubscribe();
+            if (rondasSubscription) rondasSubscription.unsubscribe();
             supabaseClient.auth.signOut();
             currentUser = null;
             renderAuthScreen();
         };
     }
 
-    // ========== DASHBOARD MOTOQUEIRO (COMPLETO) ==========
+    // ========== DASHBOARD MOTOQUEIRO (COMPLETO, SEM ALTERAÇÕES DE APROVAÇÃO) ==========
     async function renderDashboardMoto() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -402,7 +425,7 @@
         iniciarRastreamentoMoto();
     }
 
-    // Funções auxiliares do motoqueiro
+    // Funções auxiliares do motoqueiro (enviarPosicao, atualizarStatusGPS, etc.) - mantidas iguais
     async function enviarPosicao(lat, lng, precisao, timestamp) {
         if (!currentUser || currentUser.papel !== 'motoqueiro') return;
         const dataHoraStr = formatarDataHoraBrasilia(timestamp);
@@ -435,7 +458,7 @@
                     const dist = calcularDistancia(lat, lng, coords.lat, coords.lng);
                     if (dist < menorDistancia) { menorDistancia = dist; clienteMaisProximo = { nome: cliente.nome, distancia: dist }; }
                     if (dist <= 50) {
-                        if (true) { // força registro
+                        if (true) {
                             await supabaseClient.from('usuarios').update({ ultima_passagem: new Date(timestamp).toISOString() }).eq('id', cliente.id);
                             const { error: insertRonda } = await supabaseClient.from('rondas').insert({
                                 cliente_id: cliente.id,
@@ -528,9 +551,11 @@
         else motoMap.setView([-23.5505, -46.6333], 13);
     }
 
-    // ========== DASHBOARD ADMIN (COMPLETO) ==========
+    // ========== DASHBOARD ADMIN (COM APROVAÇÃO) ==========
     let adminData = { usuarios: [], motoqueiros: [], clientes: [], ultimasPosicoes: {}, rondas: [] };
     let currentPage = 1, itemsPerPage = 20, sortField = 'nome', sortOrder = 'asc';
+    let filtroStatus = 'todos'; // 'todos', 'aprovados', 'pendentes'
+
     async function renderDashboardAdmin() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const [usuariosRes, posicoesRes, rondasRes] = await Promise.all([
@@ -549,6 +574,7 @@
         }
         adminData.clientes = adminData.usuarios.filter(u => u.papel === 'cliente' && u.endereco);
         adminData.motoqueiros = adminData.usuarios.filter(u => u.papel === 'motoqueiro');
+
         const root = document.getElementById("appRoot");
         root.innerHTML = `
             <div class="app-container">
@@ -556,8 +582,23 @@
                 <div class="dashboard">
                     <div class="card card-full"><h3><i class="fas fa-map-marked-alt"></i> Mapa de Clientes e Motoqueiros</h3><div id="adminMapContainer" class="map-container"></div><button id="atualizarMapaBtn" style="background:#3b82f6; margin-top:8px; padding:6px; border-radius:40px;">Atualizar mapa</button></div>
                     <div class="card card-full"><h3><i class="fas fa-list"></i> Gerenciar Usuários</h3>
-                        <div class="filtros"><input type="text" id="filtroBusca" placeholder="Buscar nome/email"><select id="filtroPapel"><option value="todos">Todos os papéis</option><option value="cliente">Clientes</option><option value="motoqueiro">Motoqueiros</option><option value="admin">Administradores</option></select><button id="exportarCsvBtn"><i class="fas fa-download"></i> Exportar CSV</button><button id="novoUsuarioBtn"><i class="fas fa-plus"></i> Novo Usuário</button></div>
-                        <div style="overflow-x: auto;"><table id="tabelaUsuarios"><thead><th data-field="nome">Nome ↕</th><th data-field="email">Email ↕</th><th data-field="papel">Papel ↕</th><th data-field="endereco">Endereço ↕</th><th>Ações</th></thead><tbody id="tabelaUsuariosBody"></tbody></table></div>
+                        <div class="filtros">
+                            <input type="text" id="filtroBusca" placeholder="Buscar nome/email">
+                            <select id="filtroPapel">
+                                <option value="todos">Todos os papéis</option>
+                                <option value="cliente">Clientes</option>
+                                <option value="motoqueiro">Motoqueiros</option>
+                                <option value="admin">Administradores</option>
+                            </select>
+                            <select id="filtroStatusAdmin">
+                                <option value="todos">Todos os status</option>
+                                <option value="aprovados">Aprovados</option>
+                                <option value="pendentes">Pendentes</option>
+                            </select>
+                            <button id="exportarCsvBtn"><i class="fas fa-download"></i> Exportar CSV</button>
+                            <button id="novoUsuarioBtn"><i class="fas fa-plus"></i> Novo Usuário</button>
+                        </div>
+                        <div style="overflow-x: auto;"><table id="tabelaUsuarios"><thead><th data-field="nome">Nome ↕</th><th data-field="email">Email ↕</th><th data-field="papel">Papel ↕</th><th data-field="endereco">Endereço ↕</th><th>Status</th><th>Ações</th></thead><tbody id="tabelaUsuariosBody"></tbody></table></div>
                         <div class="pagination" id="pagination"></div>
                     </div>
                     <div class="card card-full"><h3><i class="fas fa-history"></i> Rondas</h3>
@@ -568,12 +609,14 @@
                 <footer>Painel Administrativo • Use satélite para ajustar casas</footer>
             </div>
         `;
+
         const streetLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM & CartoDB' });
         const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri, Maxar, Earthstar' });
         if (adminMap) adminMap.remove();
         adminMap = L.map("adminMapContainer").setView([-23.5505, -46.6333], 13);
         streetLayer.addTo(adminMap);
         L.control.layers({ "Mapa de Ruas": streetLayer, "Satélite": satelliteLayer }).addTo(adminMap);
+
         async function carregarMapaAdmin() {
             adminMap.eachLayer(layer => { if (layer instanceof L.Marker && !(layer.options.icon instanceof L.Icon.Default)) adminMap.removeLayer(layer); });
             for (const cliente of adminData.clientes) {
@@ -593,27 +636,36 @@
             const ultimaPosMoto = Object.values(adminData.ultimasPosicoes)[0];
             if (ultimaPosMoto && (Date.now() - new Date(ultimaPosMoto.timestamp).getTime() > 300000)) showToast("⚠️ Motoqueiro inativo há mais de 5 minutos!");
         }
+
         function renderTabelaUsuarios() {
             const busca = document.getElementById("filtroBusca").value.toLowerCase();
             const papel = document.getElementById("filtroPapel").value;
+            const statusFiltro = document.getElementById("filtroStatusAdmin").value;
             let filtered = adminData.usuarios.filter(u => (busca === '' || u.nome.toLowerCase().includes(busca) || u.email.toLowerCase().includes(busca)) && (papel === 'todos' || u.papel === papel));
+            if (statusFiltro === 'aprovados') filtered = filtered.filter(u => u.aprovado === true);
+            if (statusFiltro === 'pendentes') filtered = filtered.filter(u => u.aprovado !== true);
             filtered.sort((a,b) => { let valA = a[sortField] || '', valB = b[sortField] || ''; if (sortField === 'nome') valA = a.nome, valB = b.nome; if (sortOrder === 'asc') return valA > valB ? 1 : -1; else return valA < valB ? 1 : -1; });
             const start = (currentPage-1)*itemsPerPage, end = start + itemsPerPage, paginated = filtered.slice(start, end);
             const tbody = document.getElementById("tabelaUsuariosBody");
-            tbody.innerHTML = paginated.map(u => `
-                <tr>
-                    <td>${u.nome}</td>
-                    <td>${u.email}</td>
-                    <td>${u.papel}</td>
-                    <td>${u.endereco || '-'} ${u.lat_casa && u.lng_casa ? '<i class="fas fa-check-circle casa-ajustada" title="Casa ajustada manualmente"></i>' : ''}</td>
-                    <td>
-                        <button class="editarUsuarioBtn" data-id="${u.id}" style="background:#facc15;"><i class="fas fa-edit"></i></button>
-                        <button class="excluirUsuarioBtn" data-id="${u.id}" data-email="${u.email}" style="background:#ef4444;"><i class="fas fa-trash"></i></button>
-                        <button class="ajustarCasaBtn" data-id="${u.id}" data-nome="${u.nome}" data-endereco="${u.endereco||''}" style="background:#3b82f6;"><i class="fas fa-map-marker-alt"></i> Casa</button>
-                        <button class="testarRondaBtn" data-id="${u.id}" data-nome="${u.nome}" style="background:#f59e0b;"><i class="fas fa-flask"></i> Testar Ronda</button>
-                    </td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = paginated.map(u => {
+                const statusBadge = u.aprovado ? '<span class="badge-aprovado">Aprovado</span>' : '<span class="badge-pendente">Pendente</span>';
+                const approveButton = (!u.aprovado && u.papel === 'cliente') ? `<button class="btn-aprovar" data-id="${u.id}" data-nome="${u.nome}">Aprovar</button>` : '';
+                return `
+                    <tr>
+                        <td>${u.nome}</td>
+                        <td>${u.email}</td>
+                        <td>${u.papel}</td>
+                        <td>${u.endereco || '-'} ${u.lat_casa && u.lng_casa ? '<i class="fas fa-check-circle casa-ajustada" title="Casa ajustada manualmente"></i>' : ''}</td>
+                        <td>${statusBadge} ${approveButton}</td>
+                        <td>
+                            <button class="editarUsuarioBtn" data-id="${u.id}" style="background:#facc15;"><i class="fas fa-edit"></i></button>
+                            <button class="excluirUsuarioBtn" data-id="${u.id}" data-email="${u.email}" style="background:#ef4444;"><i class="fas fa-trash"></i></button>
+                            <button class="ajustarCasaBtn" data-id="${u.id}" data-nome="${u.nome}" data-endereco="${u.endereco||''}" style="background:#3b82f6;"><i class="fas fa-map-marker-alt"></i> Casa</button>
+                            <button class="testarRondaBtn" data-id="${u.id}" data-nome="${u.nome}" style="background:#f59e0b;"><i class="fas fa-flask"></i> Testar Ronda</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
             const totalPages = Math.ceil(filtered.length/itemsPerPage);
             const pagDiv = document.getElementById("pagination");
             pagDiv.innerHTML = `<button ${currentPage===1?'disabled':''} id="prevPage">Anterior</button> ${Array.from({length:totalPages}, (_,i)=>`<button class="${currentPage===i+1?'active':''}" data-page="${i+1}">${i+1}</button>`).join('')} <button ${currentPage===totalPages?'disabled':''} id="nextPage">Próximo</button>`;
@@ -624,7 +676,20 @@
             document.querySelectorAll(".excluirUsuarioBtn").forEach(btn => btn.onclick = async () => { const id = btn.getAttribute("data-id"), email = btn.getAttribute("data-email"); if(confirm(`Excluir ${email}?`)) { await supabaseClient.from('usuarios').delete().eq('id', id); renderDashboardAdmin(); } });
             document.querySelectorAll(".ajustarCasaBtn").forEach(btn => btn.onclick = () => { const id = btn.getAttribute("data-id"), nome = btn.getAttribute("data-nome"), endereco = btn.getAttribute("data-endereco"); abrirAjusteCasa(id, nome, endereco); });
             document.querySelectorAll(".testarRondaBtn").forEach(btn => btn.onclick = () => { const id = btn.getAttribute("data-id"), nome = btn.getAttribute("data-nome"); testarRonda(id, nome); });
+            document.querySelectorAll(".btn-aprovar").forEach(btn => btn.onclick = async () => {
+                const id = btn.getAttribute("data-id");
+                const nome = btn.getAttribute("data-nome");
+                if (confirm(`Aprovar o cliente ${nome}?`)) {
+                    const { error } = await supabaseClient.from('usuarios').update({ aprovado: true }).eq('id', id);
+                    if (error) showToast(`Erro ao aprovar: ${error.message}`);
+                    else {
+                        showToast(`Cliente ${nome} aprovado!`);
+                        renderDashboardAdmin();
+                    }
+                }
+            });
         }
+
         function renderTabelaRondas(dataInicio, dataFim) {
             let filtered = adminData.rondas;
             if (dataInicio && dataInicio !== '') filtered = filtered.filter(r => new Date(r.timestamp) >= new Date(dataInicio));
@@ -642,11 +707,12 @@
                 `).join(''); }
             }
         }
+
         document.getElementById("atualizarMapaBtn").onclick = () => carregarMapaAdmin();
         document.getElementById("exportarCsvBtn").onclick = () => {
             const filtrados = adminData.usuarios.filter(u => (document.getElementById("filtroBusca").value === '' || u.nome.toLowerCase().includes(document.getElementById("filtroBusca").value.toLowerCase())) && (document.getElementById("filtroPapel").value === 'todos' || u.papel === document.getElementById("filtroPapel").value));
-            const csvRows = [["Nome","Email","Papel","Endereço","Telefone","Lat Casa","Lng Casa"]];
-            filtrados.forEach(u => csvRows.push([u.nome, u.email, u.papel, u.endereco || '', u.telefone || '', u.lat_casa || '', u.lng_casa || '']));
+            const csvRows = [["Nome","Email","Papel","Endereço","Telefone","Lat Casa","Lng Casa","Aprovado"]];
+            filtrados.forEach(u => csvRows.push([u.nome, u.email, u.papel, u.endereco || '', u.telefone || '', u.lat_casa || '', u.lng_casa || '', u.aprovado ? 'Sim' : 'Não']));
             const csv = csvRows.map(row => row.map(cell => `"${cell}"`).join(",")).join("\n");
             const blob = new Blob([csv], {type: "text/csv"}); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "usuarios.csv"; a.click(); URL.revokeObjectURL(a.href);
         };
@@ -654,6 +720,7 @@
         document.querySelectorAll("th[data-field]").forEach(th => th.onclick = () => { sortField = th.dataset.field; sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; currentPage = 1; renderTabelaUsuarios(); });
         document.getElementById("filtroBusca").addEventListener("input", () => { currentPage = 1; renderTabelaUsuarios(); });
         document.getElementById("filtroPapel").addEventListener("change", () => { currentPage = 1; renderTabelaUsuarios(); });
+        document.getElementById("filtroStatusAdmin").addEventListener("change", () => { currentPage = 1; renderTabelaUsuarios(); });
         document.getElementById("filtrarRondasBtn").onclick = () => { const inicio = document.getElementById("dataInicio").value; const fim = document.getElementById("dataFim").value; renderTabelaRondas(inicio, fim); };
         document.getElementById("logoutAdminBtn").onclick = () => { supabaseClient.auth.signOut(); currentUser = null; renderAuthScreen(); };
         renderTabelaUsuarios();
@@ -661,7 +728,7 @@
         await carregarMapaAdmin();
     }
 
-    // Funções auxiliares do admin
+    // Funções auxiliares do admin (abrirAjusteCasa, abrirEditarUsuario, abrirNovoUsuario, testarRonda)
     async function abrirAjusteCasa(clienteId, clienteNome, endereco) {
         let lat, lng;
         const { data: cliente, error } = await supabaseClient.from('usuarios').select('lat_casa, lng_casa').eq('id', clienteId).single();
@@ -743,7 +810,10 @@
             if (!nome || !email || !senha) { alert("Nome, email e senha são obrigatórios"); return; }
             const { data, error } = await supabaseClient.auth.signUp({ email, password: senha });
             if (error) { alert("Erro no Auth: " + error.message); return; }
-            const { error: insertError } = await supabaseClient.from('usuarios').insert({ id: data.user.id, email, nome, papel, endereco: endereco || null, telefone: telefone || null });
+            const { error: insertError } = await supabaseClient.from('usuarios').insert({
+                id: data.user.id, email, nome, papel, endereco: endereco || null, telefone: telefone || null,
+                aprovado: true // admin cria já aprovado
+            });
             if (insertError) { alert("Erro ao inserir na tabela: " + insertError.message); return; }
             showToast("Usuário criado com sucesso!");
             modal.remove();
@@ -759,12 +829,18 @@
         else { showToast(`✅ Ronda de teste registrada para ${clienteNome}`); const inicioInput = document.getElementById("dataInicio"); const fimInput = document.getElementById("dataFim"); if (inicioInput) inicioInput.value = ''; if (fimInput) fimInput.value = ''; await renderDashboardAdmin(); }
     }
 
-    // ========== AUTENTICAÇÃO ==========
+    // ========== AUTENTICAÇÃO (COM VERIFICAÇÃO DE APROVAÇÃO) ==========
     async function fazerLogin(email, senha) {
         const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: senha });
         if (error) { alert("Erro: " + error.message); return false; }
         const { data: userData, error: userError } = await supabaseClient.from('usuarios').select('*').eq('email', email).single();
         if (userError || !userData) { alert("Usuário não encontrado na tabela."); return false; }
+        // Verificar aprovação (apenas para clientes; admin e motoqueiro sempre aprovados)
+        if (userData.papel === 'cliente' && userData.aprovado !== true) {
+            alert("Aguardando aprovação do administrador. Você receberá um e-mail quando for aprovado.");
+            await supabaseClient.auth.signOut();
+            return false;
+        }
         currentUser = {
             id: userData.id, email: userData.email, nome: userData.nome, papel: userData.papel,
             endereco: userData.endereco, latCasa: userData.lat_casa || null, lngCasa: userData.lng_casa || null
@@ -775,13 +851,18 @@
         }
         return true;
     }
+
     async function fazerCadastroCliente(email, senha, nome, endereco, telefone) {
         const { data, error } = await supabaseClient.auth.signUp({ email, password: senha });
         if (error) { alert(error.message); return false; }
-        const { error: insertError } = await supabaseClient.from('usuarios').insert({ id: data.user.id, email, nome, papel: 'cliente', endereco, telefone });
+        const { error: insertError } = await supabaseClient.from('usuarios').insert({
+            id: data.user.id, email, nome, papel: 'cliente', endereco, telefone,
+            aprovado: false // novo cliente aguarda aprovação
+        });
         if (insertError) { alert("Erro ao cadastrar: " + insertError.message); return false; }
         return true;
     }
+
     function renderAuthScreen() {
         const root = document.getElementById("appRoot");
         root.innerHTML = `
@@ -809,14 +890,26 @@
             const endereco = document.getElementById("regEndereco").value.trim();
             const telefone = document.getElementById("regTelefone").value.trim();
             if (!nome || !email || !senha || !endereco) { alert("Preencha todos os campos"); return; }
-            if (await fazerCadastroCliente(email, senha, nome, endereco, telefone)) { alert("Cadastro realizado! Faça login."); document.getElementById("regForm").classList.add("hidden"); document.getElementById("loginForm").classList.remove("hidden"); }
+            if (await fazerCadastroCliente(email, senha, nome, endereco, telefone)) {
+                alert("Cadastro realizado! Aguarde a aprovação do administrador.");
+                document.getElementById("regForm").classList.add("hidden");
+                document.getElementById("loginForm").classList.remove("hidden");
+            }
         };
     }
+
     async function checkSession() {
         const { data: { session } } = await supabaseClient.auth.getSession();
         if (session) {
             const { data: userData } = await supabaseClient.from('usuarios').select('*').eq('email', session.user.email).single();
             if (userData) {
+                // Verificar aprovação novamente
+                if (userData.papel === 'cliente' && userData.aprovado !== true) {
+                    alert("Sua conta ainda não foi aprovada pelo administrador.");
+                    await supabaseClient.auth.signOut();
+                    renderAuthScreen();
+                    return;
+                }
                 currentUser = {
                     id: userData.id, email: userData.email, nome: userData.nome, papel: userData.papel,
                     endereco: userData.endereco, latCasa: userData.lat_casa || null, lngCasa: userData.lng_casa || null
@@ -833,6 +926,7 @@
         }
         renderAuthScreen();
     }
+
     checkSession();
 </script>
 </body>
