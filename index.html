@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* (Mantido o mesmo CSS do código anterior - otimizado para cliente) */
+        /* (CSS mantido igual ao anterior – otimizado para cliente) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0f1e; color: #eef2ff; padding: 12px; }
         .app-container { max-width: 100%; margin: 0 auto; background: #0f172a; border-radius: 24px; overflow: hidden; border: 1px solid #1e293b; }
@@ -68,7 +68,6 @@
         .modal-editar input, .modal-editar select, .modal-novo input, .modal-novo select { width: 100%; padding: 10px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: white; }
         .casa-ajustada { color: #22c55e; margin-left: 5px; }
         .cliente-proximo { margin-top: 12px; background: #1e293b; border-radius: 16px; padding: 8px; text-align: center; }
-        /* Estilos específicos do cliente */
         .cliente-header { background: #020617; padding: 0.6rem 1rem; text-align: center; border-bottom: 1px solid #1e293b; }
         .cliente-logo h1 { font-size: 1.3rem; font-weight: 700; background: linear-gradient(135deg, #facc15, #ff8c00); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 0.3rem; }
         .user-bar { display: flex; justify-content: center; align-items: center; gap: 0.8rem; background: #1e293b; padding: 0.3rem 0.8rem; border-radius: 60px; width: fit-content; margin: 0 auto; }
@@ -133,13 +132,16 @@
         setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
-    // ========== FORMATAÇÃO DE DATA/HORA ==========
+    // ========== FORMATAÇÃO DE DATA/HORA CORRIGIDA ==========
     function formatarDataHoraBrasilia(timestamp) {
         if (!timestamp) return "";
         let date;
         if (typeof timestamp === 'string') {
             let ts = timestamp;
-            if (!ts.includes('Z') && !ts.includes('+') && !ts.includes('-') && ts.length === 19) {
+            // Se for string no formato 'YYYY-MM-DD HH:MM:SS' (sem timezone), adiciona 'Z' para forçar UTC
+            if (ts.match(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/)) {
+                ts = ts.replace(' ', 'T') + 'Z';
+            } else if (!ts.includes('Z') && !ts.includes('+') && !ts.includes('-') && ts.length === 19) {
                 ts += 'Z';
             }
             date = new Date(ts);
@@ -147,7 +149,16 @@
             date = new Date(timestamp);
         }
         if (isNaN(date.getTime())) return "Data inválida";
-        return date.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+        // Formatar para DD-MM-YYYY HH:MM:SS no horário de Brasília
+        const options = { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        const parts = new Intl.DateTimeFormat('pt-BR', options).formatToParts(date);
+        const day = parts.find(p => p.type === 'day')?.value;
+        const month = parts.find(p => p.type === 'month')?.value;
+        const year = parts.find(p => p.type === 'year')?.value;
+        const hour = parts.find(p => p.type === 'hour')?.value;
+        const minute = parts.find(p => p.type === 'minute')?.value;
+        const second = parts.find(p => p.type === 'second')?.value;
+        return `${day}-${month}-${year} ${hour}:${minute}:${second}`;
     }
 
     // ========== AUXILIARES ==========
@@ -203,7 +214,7 @@
     function criarIconeMoto() { return L.divIcon({ html: '<i class="fas fa-motorcycle"></i>', iconSize: [30,30], className: 'moto-marker', popupAnchor: [0,-10], zIndexOffset: 100 }); }
     function criarIconeCasa() { return L.divIcon({ html: '<i class="fas fa-home"></i>', iconSize: [24,24], className: 'casa-marker', popupAnchor: [0,-10], zIndexOffset: 10 }); }
 
-    // ========== DASHBOARD CLIENTE ==========
+    // ========== DASHBOARD CLIENTE (COM AUTO-REFRESH DE RONDAS E HORA CORRIGIDA) ==========
     async function renderDashboardCliente() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -331,7 +342,7 @@
                     clientMarker.setLatLng([novaPos.latitude, novaPos.longitude]);
                     clientMap.setView([novaPos.latitude, novaPos.longitude], 14);
                     obterEnderecoAproximado(novaPos.latitude, novaPos.longitude).then(end => clientMarker.bindPopup(`<b>Motoqueiro</b><br>${end}`));
-                    carregarPassagens();
+                    carregarPassagens(); // atualiza passagens quando nova posição chegar
                 }
             }).subscribe();
         }
@@ -339,8 +350,9 @@
         function assinarRondas() {
             if (rondasSubscription) rondasSubscription.unsubscribe();
             rondasSubscription = supabaseClient.channel('rondas-channel')
-                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'rondas', filter: `cliente_id=eq.${currentUser.id}` }, () => {
-                    carregarPassagens();
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'rondas', filter: `cliente_id=eq.${currentUser.id}` }, (payload) => {
+                    console.log("Nova ronda detectada para este cliente:", payload);
+                    carregarPassagens(); // atualiza imediatamente o histórico
                     showToast("✅ Nova passagem registrada!");
                 })
                 .subscribe();
@@ -360,7 +372,7 @@
         };
     }
 
-    // ========== DASHBOARD MOTOQUEIRO (COMPLETO, SEM ALTERAÇÕES DE APROVAÇÃO) ==========
+    // ========== DASHBOARD MOTOQUEIRO (COMPLETO) ==========
     async function renderDashboardMoto() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const root = document.getElementById("appRoot");
@@ -425,7 +437,7 @@
         iniciarRastreamentoMoto();
     }
 
-    // Funções auxiliares do motoqueiro (enviarPosicao, atualizarStatusGPS, etc.) - mantidas iguais
+    // Funções auxiliares do motoqueiro (enviarPosicao, atualizarStatusGPS, etc.)
     async function enviarPosicao(lat, lng, precisao, timestamp) {
         if (!currentUser || currentUser.papel !== 'motoqueiro') return;
         const dataHoraStr = formatarDataHoraBrasilia(timestamp);
@@ -554,8 +566,6 @@
     // ========== DASHBOARD ADMIN (COM APROVAÇÃO) ==========
     let adminData = { usuarios: [], motoqueiros: [], clientes: [], ultimasPosicoes: {}, rondas: [] };
     let currentPage = 1, itemsPerPage = 20, sortField = 'nome', sortOrder = 'asc';
-    let filtroStatus = 'todos'; // 'todos', 'aprovados', 'pendentes'
-
     async function renderDashboardAdmin() {
         if (clientUpdateInterval) clearInterval(clientUpdateInterval);
         const [usuariosRes, posicoesRes, rondasRes] = await Promise.all([
@@ -696,7 +706,7 @@
             if (dataFim && dataFim !== '') filtered = filtered.filter(r => new Date(r.timestamp) <= new Date(dataFim));
             const tbody = document.getElementById("rondasAdminBody");
             if (tbody) {
-                if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="4">Nenhuma ronda registrada</td></tr>'; }
+                if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="4">Nenhuma ronda registrada<td></table>'; }
                 else { tbody.innerHTML = filtered.map(r => `
                     <tr>
                         <td>${r.usuarios?.nome || 'Cliente não encontrado'}</td>
@@ -829,13 +839,12 @@
         else { showToast(`✅ Ronda de teste registrada para ${clienteNome}`); const inicioInput = document.getElementById("dataInicio"); const fimInput = document.getElementById("dataFim"); if (inicioInput) inicioInput.value = ''; if (fimInput) fimInput.value = ''; await renderDashboardAdmin(); }
     }
 
-    // ========== AUTENTICAÇÃO (COM VERIFICAÇÃO DE APROVAÇÃO) ==========
+    // ========== AUTENTICAÇÃO ==========
     async function fazerLogin(email, senha) {
         const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: senha });
         if (error) { alert("Erro: " + error.message); return false; }
         const { data: userData, error: userError } = await supabaseClient.from('usuarios').select('*').eq('email', email).single();
         if (userError || !userData) { alert("Usuário não encontrado na tabela."); return false; }
-        // Verificar aprovação (apenas para clientes; admin e motoqueiro sempre aprovados)
         if (userData.papel === 'cliente' && userData.aprovado !== true) {
             alert("Aguardando aprovação do administrador. Você receberá um e-mail quando for aprovado.");
             await supabaseClient.auth.signOut();
@@ -851,18 +860,16 @@
         }
         return true;
     }
-
     async function fazerCadastroCliente(email, senha, nome, endereco, telefone) {
         const { data, error } = await supabaseClient.auth.signUp({ email, password: senha });
         if (error) { alert(error.message); return false; }
         const { error: insertError } = await supabaseClient.from('usuarios').insert({
             id: data.user.id, email, nome, papel: 'cliente', endereco, telefone,
-            aprovado: false // novo cliente aguarda aprovação
+            aprovado: false
         });
         if (insertError) { alert("Erro ao cadastrar: " + insertError.message); return false; }
         return true;
     }
-
     function renderAuthScreen() {
         const root = document.getElementById("appRoot");
         root.innerHTML = `
@@ -897,13 +904,11 @@
             }
         };
     }
-
     async function checkSession() {
         const { data: { session } } = await supabaseClient.auth.getSession();
         if (session) {
             const { data: userData } = await supabaseClient.from('usuarios').select('*').eq('email', session.user.email).single();
             if (userData) {
-                // Verificar aprovação novamente
                 if (userData.papel === 'cliente' && userData.aprovado !== true) {
                     alert("Sua conta ainda não foi aprovada pelo administrador.");
                     await supabaseClient.auth.signOut();
@@ -926,7 +931,6 @@
         }
         renderAuthScreen();
     }
-
     checkSession();
 </script>
 </body>
