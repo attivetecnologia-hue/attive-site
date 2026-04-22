@@ -632,7 +632,14 @@ body { background: var(--bg); color: var(--white); font-family: var(--font); fon
   }
   
   function abrirWA() { window.open('https://wa.me/5583996787788?text=Olá! Recebi a proposta 093-2026 do Clube Campestre e quero conversar.', '_blank'); }
-  document.getElementById('data-hoje').innerHTML = new Date().toLocaleDateString('pt-BR', { day:'numeric', month:'long', year:'numeric' });
+  
+  // ========== DATA DE EMISSÃO FIXADA NO DIA 20 ==========
+  const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const mes = meses[hoje.getMonth()];
+  const dataFormatada = `20 de ${mes} de ${ano}`;
+  document.getElementById('data-hoje').innerHTML = dataFormatada;
   
   // Animações scroll
   const animated = document.querySelectorAll('.animate-on-scroll');
