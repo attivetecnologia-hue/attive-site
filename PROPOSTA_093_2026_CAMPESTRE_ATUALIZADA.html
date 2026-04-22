@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Proposta CFTV + Interfones | Clube Campestre | Attive</title>
+<title>Proposta CFTV + Interfones | Clube Campestre | Attive | Atualizada</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -669,7 +669,6 @@ body { background: var(--bg); color: var(--white); font-family: var(--font); fon
   function atualizarStatus(checkboxClicado = null) {
     let selecionadas = checkboxes.filter(cb => cb.checked).length;
     if (selecionadas > 17) {
-      // Se excedeu, desmarca o checkbox que acabou de ser marcado (se fornecido)
       if (checkboxClicado && checkboxClicado.checked) {
         checkboxClicado.checked = false;
         selecionadas--;
