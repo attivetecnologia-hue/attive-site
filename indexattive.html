@@ -1,0 +1,2143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attive Tecnologia | Inteligência em Segurança e Elétrica</title>
+  <meta property="og:title" content="Attive Tecnologia | Inteligência em Segurança e Elétrica" />
+  <meta property="og:description" content="Soluções integradas de alta performance em CFTV, alarmes e projetos elétricos com rigor técnico e profissionalismo." />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts: Poppins + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ============================================================
+       RESET & VARIÁVEIS GLOBAIS
+    ============================================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --navy:       #001f37;
+      --navy-light: #002d52;
+      --blue:       #0077b6;
+      --blue-light: #00b4d8;
+      --blue-dark:  #005a8c;
+      --white:      #ffffff;
+      --gray-light: #f4f6f9;
+      --gray-mid:   #e0e4ea;
+      --gray-metal: #a9a9a9;
+      --text-dark:  #1a1a2e;
+      --text-body:  #3d3d5c;
+      --shadow-sm:  0 2px 8px rgba(0,0,0,.08);
+      --shadow-md:  0 6px 24px rgba(0,0,0,.12);
+      --shadow-lg:  0 12px 40px rgba(0,0,0,.18);
+      --radius-sm:  8px;
+      --radius-md:  14px;
+      --radius-lg:  24px;
+      --transition: .3s ease;
+      --font:       'Poppins', sans-serif;
+      --font-alt:   'Inter', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font);
+      color: var(--text-body);
+      background: var(--gray-light);
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ============================================================
+       UTILITÁRIOS
+    ============================================================ */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--navy);
+      text-align: center;
+      margin-bottom: .5rem;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--gray-metal);
+      text-align: center;
+      margin-bottom: 3rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-divider {
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--blue), var(--blue-light));
+      border-radius: 2px;
+      margin: .6rem auto 1.2rem;
+    }
+
+    /* Fade-in via scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Highlight ao navegar para a seção */
+    @keyframes section-highlight {
+      0%   { box-shadow: inset 0 0 0 0 rgba(0,119,182,0); }
+      20%  { box-shadow: inset 0 0 0 4px rgba(0,119,182,.12); }
+      100% { box-shadow: inset 0 0 0 0 rgba(0,119,182,0); }
+    }
+
+    .section-highlight {
+      animation: section-highlight 1.2s ease-out;
+    }
+
+    /* ============================================================
+       HEADER / NAVEGAÇÃO — Glassmorphism
+    ============================================================ */
+    #header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 1.1rem 0;
+      transition: background var(--transition), box-shadow var(--transition), padding var(--transition), backdrop-filter var(--transition);
+      background: transparent;
+    }
+
+    #header.scrolled {
+      background: rgba(0,31,55,.88);
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      box-shadow: 0 4px 24px rgba(0,0,0,.18);
+      padding: .7rem 0;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Logo */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: .5px;
+    }
+
+    .logo-img {
+      height: 48px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      filter: brightness(1) drop-shadow(0 0 6px rgba(0,180,216,.3));
+      transition: filter var(--transition);
+    }
+
+    @media (max-width: 640px) {
+      .logo span { display: none; }
+    }
+
+    .logo:hover .logo-img {
+      filter: brightness(1.1) drop-shadow(0 0 10px rgba(0,180,216,.5));
+    }
+
+    /* Menu desktop */
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,.85);
+      font-size: .92rem;
+      font-weight: 500;
+      position: relative;
+      transition: color var(--transition);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--blue-light);
+      border-radius: 2px;
+      transition: width var(--transition);
+    }
+
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cta {
+      background: var(--blue);
+      color: var(--white) !important;
+      padding: .45rem 1.1rem;
+      border-radius: 50px;
+      font-weight: 600 !important;
+      transition: background var(--transition), transform var(--transition) !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--blue-light) !important;
+      transform: translateY(-2px);
+    }
+
+    .nav-cta::after { display: none !important; }
+
+    /* Hambúrguer */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Menu mobile */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: rgba(0,31,55,.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 0 1.5rem;
+      gap: 1rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s ease, padding .4s ease;
+    }
+
+    .mobile-menu.open {
+      max-height: 400px;
+      padding: 1rem 1.5rem 1.5rem;
+    }
+
+    .mobile-menu a {
+      color: rgba(255,255,255,.85);
+      font-size: 1rem;
+      font-weight: 500;
+      padding: .5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      transition: color var(--transition);
+    }
+
+    .mobile-menu a:hover { color: var(--blue-light); }
+
+    /* ============================================================
+       HERO SECTION — Refatorada
+    ============================================================ */
+    #inicio {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+
+      /* Imagem técnica: rack de servidores / data center */
+      background:
+        linear-gradient(135deg, rgba(0,31,55,.96) 0%, rgba(0,45,82,.85) 50%, rgba(0,119,182,.2) 100%),
+        url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1600&q=80') center/cover no-repeat;
+    }
+
+    /* Grid tecnológico sobreposto */
+    #inicio::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,180,216,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,180,216,.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    #inicio::after {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,119,182,.15) 0%, transparent 70%);
+      top: -150px;
+      right: -150px;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(0,119,182,.2);
+      border: 1px solid rgba(0,180,216,.35);
+      color: var(--blue-light);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: .35rem .9rem;
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-title .highlight {
+      background: linear-gradient(90deg, var(--blue), var(--blue-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(.95rem, 2vw, 1.15rem);
+      color: rgba(255,255,255,.7);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .85rem 1.8rem;
+      border-radius: 50px;
+      font-family: var(--font);
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), var(--blue-light));
+      color: var(--white);
+      box-shadow: 0 4px 20px rgba(0,119,182,.45);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,119,182,.6);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,.5);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255,255,255,.1);
+      border-color: var(--white);
+      transform: translateY(-3px);
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      color: rgba(255,255,255,.4);
+      font-size: .75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+
+    .scroll-indicator i { font-size: 1.2rem; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ============================================================
+       SOBRE
+    ============================================================ */
+    #sobre {
+      padding: 6rem 0;
+      background: var(--white);
+      scroll-margin-top: 80px;
+    }
+
+    .sobre-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .sobre-text h2 {
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+
+    .sobre-text p {
+      color: var(--text-body);
+      line-height: 1.8;
+      font-size: .97rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .sobre-stats {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: .78rem;
+      color: var(--gray-metal);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-top: .2rem;
+    }
+
+    /* Cards de diferenciais */
+    .diferenciais-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .diferencial-card {
+      background: var(--gray-light);
+      border-radius: var(--radius-md);
+      padding: 1.4rem;
+      border: 1px solid var(--gray-mid);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .diferencial-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--blue);
+    }
+
+    .diferencial-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--blue), var(--blue-light));
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 1.1rem;
+      margin-bottom: .8rem;
+    }
+
+    .diferencial-card h4 {
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: .3rem;
+    }
+
+    .diferencial-card p {
+      font-size: .82rem;
+      color: var(--gray-metal);
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       LIDERANÇA TÉCNICA
+    ============================================================ */
+    #lideranca {
+      padding: 6rem 0;
+      background: var(--navy);
+      scroll-margin-top: 80px;
+    }
+
+    #lideranca .section-title { color: var(--white); }
+    #lideranca .section-divider { margin-bottom: 3rem; }
+
+    .lideranca-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 3rem;
+      align-items: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .lideranca-foto {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--blue);
+      box-shadow: 0 0 30px rgba(0,119,182,.3);
+      flex-shrink: 0;
+    }
+
+    .lideranca-info h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: .3rem;
+    }
+
+    .lideranca-cargo {
+      font-size: .9rem;
+      color: var(--blue-light);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: .6rem;
+    }
+
+    .lideranca-crea {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: rgba(0,119,182,.2);
+      border: 1px solid rgba(0,180,216,.3);
+      padding: .25rem .8rem;
+      border-radius: 50px;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--blue-light);
+      font-family: var(--font-alt);
+      letter-spacing: .5px;
+      margin-bottom: .8rem;
+    }
+
+    .lideranca-info p {
+      font-size: .92rem;
+      color: rgba(255,255,255,.7);
+      line-height: 1.7;
+      max-width: 500px;
+    }
+
+    @media (max-width: 640px) {
+      .lideranca-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1.5rem;
+      }
+      .lideranca-foto {
+        margin: 0 auto;
+        width: 160px;
+        height: 160px;
+      }
+      .lideranca-info p { margin: 0 auto; }
+      .lideranca-crea { justify-content: center; }
+      .lideranca-cargo { justify-content: center; }
+    }
+
+    /* ============================================================
+       TECNOLOGIAS — Faixa de parceiros
+    ============================================================ */
+    #tecnologias {
+      padding: 3.5rem 0;
+      background: var(--white);
+      border-top: 1px solid var(--gray-mid);
+      border-bottom: 1px solid var(--gray-mid);
+    }
+
+    #tecnologias p {
+      text-align: center;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--gray-metal);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 2rem;
+    }
+
+    .tech-grid {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tech-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      width: 130px;
+    }
+
+    .tech-logo-wrap {
+      width: 130px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: .55;
+      filter: grayscale(1) brightness(1.2);
+      transition: opacity var(--transition), filter var(--transition);
+    }
+
+    .tech-logo {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .tech-item:hover .tech-logo-wrap {
+      opacity: .85;
+      filter: grayscale(0) brightness(1);
+    }
+
+    .tech-item span {
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--gray-metal);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    /* ============================================================
+       SERVIÇOS — Cards c/ badges de conformidade
+    ============================================================ */
+    #servicos {
+      padding: 6rem 0;
+      background: var(--gray-light);
+      scroll-margin-top: 80px;
+    }
+
+    .servicos-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.2rem;
+    }
+
+    @media (max-width: 1100px) {
+      .servicos-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.8rem;
+      }
+    }
+
+    .servico-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      padding: 2rem 1.8rem;
+      border: 1px solid var(--gray-mid);
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .servico-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--blue), var(--blue-light));
+      border-radius: 4px 0 0 4px;
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform var(--transition);
+    }
+
+    .servico-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .servico-card:hover::before { transform: scaleY(1); }
+
+    .servico-icon-wrap {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, rgba(0,119,182,.12), rgba(0,180,216,.12));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+      transition: background var(--transition);
+    }
+
+    .servico-card:hover .servico-icon-wrap {
+      background: linear-gradient(135deg, var(--blue), var(--blue-light));
+    }
+
+    .servico-icon-wrap i {
+      font-size: 1.6rem;
+      color: var(--blue);
+      transition: color var(--transition);
+    }
+
+    .servico-card:hover .servico-icon-wrap i { color: var(--white); }
+
+    .servico-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: .6rem;
+    }
+
+    .servico-card p {
+      font-size: .88rem;
+      color: var(--text-body);
+      line-height: 1.7;
+    }
+
+    /* Badge de conformidade técnica */
+    .badge-nbr {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      margin-top: .8rem;
+      padding: .2rem .6rem;
+      background: rgba(0,119,182,.08);
+      border-radius: 4px;
+      font-size: .7rem;
+      font-weight: 600;
+      color: var(--blue);
+      letter-spacing: .3px;
+      font-family: var(--font-alt);
+      border: 1px solid rgba(0,119,182,.15);
+    }
+
+    .servico-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      margin-top: .8rem;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--blue);
+      transition: gap var(--transition), color var(--transition);
+    }
+
+    .servico-link:hover { gap: .6rem; color: var(--blue-light); }
+
+    /* ============================================================
+       CONTATO — Formulário simplificado
+    ============================================================ */
+    #contato {
+      padding: 6rem 0;
+      background: var(--gray-light);
+      scroll-margin-top: 80px;
+    }
+
+    .contato-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .contato-info h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 1rem;
+    }
+
+    .contato-info p {
+      font-size: .92rem;
+      color: var(--text-body);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .info-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--blue), var(--blue-light));
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .info-text strong {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: .15rem;
+    }
+
+    .info-text span {
+      font-size: .88rem;
+      color: var(--text-body);
+    }
+
+    .contato-form {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-mid);
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: .4rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: .8rem 1rem;
+      border: 1.5px solid var(--gray-mid);
+      border-radius: var(--radius-sm);
+      font-family: var(--font);
+      font-size: .9rem;
+      color: var(--text-dark);
+      background: var(--gray-light);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0,119,182,.12);
+      background: var(--white);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--blue), var(--blue-light));
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,119,182,.4);
+    }
+
+    /* ============================================================
+       RODAPÉ
+    ============================================================ */
+    #footer {
+      background: var(--navy);
+      color: rgba(255,255,255,.7);
+      padding: 3rem 0 1.5rem;
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .footer-brand .logo { margin-bottom: 1rem; }
+
+    .footer-brand p {
+      font-size: .87rem;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    .footer-address {
+      display: flex;
+      align-items: flex-start;
+      gap: .6rem;
+      margin-top: 1rem;
+      font-size: .84rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,.6);
+    }
+
+    .footer-address i {
+      color: var(--blue-light);
+      margin-top: .2rem;
+      flex-shrink: 0;
+    }
+
+    .footer-address a {
+      color: rgba(255,255,255,.6);
+      transition: color var(--transition);
+    }
+
+    .footer-address a:hover { color: var(--blue-light); }
+
+    .footer-col h4 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .footer-col ul li {
+      margin-bottom: .6rem;
+    }
+
+    .footer-col ul li a {
+      font-size: .87rem;
+      color: rgba(255,255,255,.6);
+      transition: color var(--transition);
+    }
+
+    .footer-col ul li a:hover { color: var(--blue-light); }
+
+    .social-links {
+      display: flex;
+      gap: .8rem;
+      margin-top: .5rem;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,.08);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,.7);
+      font-size: 1rem;
+      transition: background var(--transition), color var(--transition), transform var(--transition);
+    }
+
+    .social-link:hover {
+      background: var(--blue);
+      color: var(--white);
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      padding-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+
+    .footer-bottom p {
+      font-size: .82rem;
+    }
+
+    .footer-bottom .made-with {
+      font-size: .82rem;
+      color: rgba(255,255,255,.4);
+    }
+
+    /* ============================================================
+       PROVA SOCIAL — Avaliações Google
+    ============================================================ */
+    #prova-social {
+      padding: 5rem 0;
+      background: var(--gray-light);
+      scroll-margin-top: 80px;
+    }
+
+    .prova-social-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .prova-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      padding: 1.8rem;
+      border: 1px solid var(--gray-mid);
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+      position: relative;
+    }
+
+    .prova-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .prova-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 0.2rem;
+      left: 1rem;
+      font-size: 3.5rem;
+      color: var(--blue);
+      opacity: 0.15;
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+
+    .prova-estrelas {
+      color: #f4b400;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      margin-bottom: 0.8rem;
+    }
+
+    .prova-texto {
+      font-size: 0.92rem;
+      color: var(--text-body);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+
+    .prova-autor {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .prova-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--blue-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .prova-nome {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .prova-google {
+      font-size: 0.75rem;
+      color: var(--gray-metal);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .prova-google i {
+      color: #4285f4;
+      font-size: 0.85rem;
+    }
+
+    /* Classificação geral 5 estrelas */
+    .prova-geral {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-bottom: 2.5rem;
+      padding: 0.8rem 1.5rem;
+      background: var(--white);
+      border-radius: 50px;
+      border: 1px solid var(--gray-mid);
+      box-shadow: var(--shadow-sm);
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .prova-geral-estrelas {
+      color: #f4b400;
+      font-size: 1.4rem;
+      letter-spacing: 3px;
+    }
+
+    .prova-geral-texto {
+      font-size: 0.95rem;
+      color: var(--text-body);
+    }
+
+    .prova-geral-texto strong {
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    /* ============================================================
+       WHATSAPP FLUTUANTE — Elegante
+    ============================================================ */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      background: #25d366;
+      color: var(--white);
+      padding: .65rem 1.2rem .65rem .9rem;
+      border-radius: 50px;
+      font-family: var(--font);
+      font-size: .88rem;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(37,211,102,.4);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .whatsapp-float i {
+      font-size: 1.4rem;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 28px rgba(37,211,102,.6);
+    }
+
+    @media (max-width: 640px) {
+      .whatsapp-float {
+        bottom: 1.2rem;
+        right: 1.2rem;
+        padding: .6rem .9rem .6rem .7rem;
+        font-size: .8rem;
+      }
+      .whatsapp-float i { font-size: 1.2rem; }
+    }
+
+    /* ============================================================
+       RESPONSIVIDADE
+    ============================================================ */
+
+    @media (max-width: 900px) {
+      .sobre-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .contato-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .mobile-menu { display: flex; }
+
+      .hero-buttons { flex-direction: column; }
+      .btn { justify-content: center; }
+
+      .diferenciais-grid { grid-template-columns: 1fr; }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .sobre-stats { justify-content: center; }
+      .tech-grid { gap: 2rem; }
+      .tech-item i { font-size: 1.8rem; }
+    }
+
+    @media (max-width: 400px) {
+      .container { width: 94%; }
+      .contato-form { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       HEADER / NAVEGAÇÃO
+  ============================================================ -->
+  <header id="header">
+    <div class="container">
+      <nav class="nav-inner">
+
+        <!-- Logo -->
+        <a href="#inicio" class="logo">
+          <img
+            src="https://i.postimg.cc/4xb9f1dS/logobrancasemfundo-Copia.png"
+            alt="Attive Tecnologia"
+            class="logo-img"
+          />
+        </a>
+
+        <!-- Menu desktop -->
+        <ul class="nav-links">
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#lideranca">Equipe</a></li>
+          <li>
+            <a href="#contato" class="nav-cta">
+              <i class="fa-solid fa-envelope"></i> Contato
+            </a>
+          </li>
+        </ul>
+
+        <!-- Botão hambúrguer (mobile) -->
+        <button class="hamburger" id="hamburger" aria-label="Abrir menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+      </nav>
+    </div>
+
+    <!-- Menu mobile dropdown -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#inicio"   onclick="closeMobileMenu()">Início</a>
+      <a href="#sobre"    onclick="closeMobileMenu()">Sobre</a>
+      <a href="#servicos" onclick="closeMobileMenu()">Serviços</a>
+      <a href="#lideranca" onclick="closeMobileMenu()">Equipe</a>
+      <a href="#contato"  onclick="closeMobileMenu()">Contato</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       HERO SECTION
+  ============================================================ -->
+  <section id="inicio">
+    <div class="container">
+      <div class="hero-content">
+
+        <div class="hero-badge">
+          <i class="fa-solid fa-certificate"></i>
+          Engenharia de Precisão
+        </div>
+
+        <h1 class="hero-title">
+          <span class="highlight">Inteligência em Segurança</span><br />
+          Eletrônica e Elétrica
+        </h1>
+
+        <p class="hero-subtitle">
+          Soluções integradas sob medida para ativos de alto valor, desenvolvidas por especialistas com rigor técnico e conformidade NBR.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#contato" class="btn btn-primary">
+            <i class="fa-solid fa-clipboard-check"></i>
+            Solicitar Estudo de Viabilidade
+          </a>
+          <a
+            href="https://wa.me/5583996787788?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20Attive."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-outline"
+          >
+            <i class="fa-brands fa-whatsapp"></i>
+            Falar com Especialista
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Rolar</span>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SOBRE
+  ============================================================ -->
+  <section id="sobre">
+    <div class="container">
+
+      <div class="sobre-grid">
+
+        <div class="sobre-text reveal">
+          <p style="font-size:.8rem;font-weight:600;color:var(--blue);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem;">
+            Quem somos
+          </p>
+          <h2>Inovação que protege.<br />Precisão que transforma.</h2>
+          <div class="section-divider" style="margin:1rem 0;"></div>
+          <p>
+            A <strong>Attive Tecnologia</strong> nasceu da união entre engenharia de precisão e inovação
+            em segurança. Oferecemos sistemas inteligentes de monitoramento, controle de acesso e
+            automação para empresas e residências de alto padrão.
+          </p>
+          <p>
+            Nossa equipe é formada por um Engenheiro especializado e técnicos certificados, comprometidos
+            com a entrega de projetos sob medida, dentro do prazo e com suporte contínuo.
+          </p>
+
+          <div class="sobre-stats">
+            <div class="stat-item">
+              <div class="stat-number" data-target="1000" data-prefix="+">0</div>
+              <div class="stat-label">Projetos entregues</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" data-target="25" data-prefix="+">0</div>
+              <div class="stat-label">Anos de experiência</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="diferenciais-grid reveal">
+
+          <div class="diferencial-card">
+            <div class="diferencial-icon">
+              <i class="fa-solid fa-microchip"></i>
+            </div>
+            <h4>Tecnologia de ponta</h4>
+            <p>Equipamentos e sistemas de última geração, integrados e escaláveis.</p>
+          </div>
+
+          <div class="diferencial-card">
+            <div class="diferencial-icon">
+              <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <h4>Equipe Técnica Especializada</h4>
+            <p>Equipe técnica certificada com vasta experiência em projetos complexos.</p>
+          </div>
+
+          <div class="diferencial-card">
+            <div class="diferencial-icon">
+              <i class="fa-solid fa-drafting-compass"></i>
+            </div>
+            <h4>Projetos sob medida</h4>
+            <p>Soluções personalizadas para cada cliente, do diagnóstico à implantação.</p>
+          </div>
+
+          <div class="diferencial-card">
+            <div class="diferencial-icon">
+              <i class="fa-solid fa-certificate"></i>
+            </div>
+            <h4>Conformidade Técnica</h4>
+            <p>Projetos rigorosamente alinhados às normas técnicas NBR e de segurança, garantindo a máxima confiabilidade e proteção do seu patrimônio.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       LIDERANÇA TÉCNICA
+  ============================================================ -->
+  <section id="lideranca">
+    <div class="container">
+
+      <p class="section-title reveal">Liderança Técnica</p>
+      <div class="section-divider reveal"></div>
+
+      <div class="lideranca-grid reveal">
+        <!--
+          FOTO DO ENGENHEIRO:
+          Coloque sua foto profissional no src abaixo
+        -->
+        <img
+          src="https://i.postimg.cc/qvv7bbZ4/perfil13.png"
+          alt="Eng. Hélio Crispim"
+          class="lideranca-foto"
+        />
+
+        <div class="lideranca-info">
+          <h3>Hélio Crispim</h3>
+          <div class="lideranca-cargo">
+            <i class="fa-solid fa-helmet-safety"></i>
+            Engenheiro Eletricista & Sócio-Fundador
+          </div>
+          <div class="lideranca-crea">
+            <i class="fa-solid fa-qrcode"></i>
+            CREA: 12290192025PB
+          </div>
+          <p>
+            Profissional com décadas de experiência em projetos de segurança eletrônica, 
+            redes e automação. Cada projeto é acompanhado pessoalmente para garantir 
+            o mais alto padrão de qualidade, dentro das normas técnicas vigentes.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EQUIPAMENTOS HOMOLOGADOS
+  ============================================================ -->
+  <section id="tecnologias">
+    <div class="container">
+      <p>Equipamentos Homologados</p>
+      <div class="tech-grid">
+        <div class="tech-item" style="width:190px;">
+          <div class="tech-logo-wrap" style="width:180px;height:65px;">
+            <img src="https://i.postimg.cc/NG41nVjv/garen-new.png" alt="Garen" class="tech-logo" style="max-width:170px;max-height:55px;" />
+          </div>
+        </div>
+        <div class="tech-item" style="width:180px;">
+          <div class="tech-logo-wrap" style="width:170px;height:60px;">
+            <img src="https://i.postimg.cc/Jh322L6g/hikvision.png" alt="Hikvision" class="tech-logo" style="max-width:150px;max-height:50px;" />
+          </div>
+        </div>
+        <div class="tech-item" style="width:130px;">
+          <div class="tech-logo-wrap">
+            <img src="https://i.postimg.cc/G3QkfNmC/logo-control-id.png" alt="Control ID" class="tech-logo" />
+          </div>
+        </div>
+        <div class="tech-item" style="width:160px;">
+          <div class="tech-logo-wrap" style="width:150px;height:55px;">
+            <img src="https://i.postimg.cc/ZK5rzcCX/Logomarca-Intelbras-verde.png" alt="Intelbras" class="tech-logo" />
+          </div>
+        </div>
+        <div class="tech-item" style="width:160px;">
+          <div class="tech-logo-wrap" style="width:150px;height:55px;">
+            <img src="https://i.postimg.cc/660dPSpJ/Mikro-Tik-Logo-2022-svg.png" alt="MikroTik" class="tech-logo" style="max-width:140px;max-height:45px;" />
+          </div>
+        </div>
+        <div class="tech-item" style="width:130px;">
+          <div class="tech-logo-wrap">
+            <img src="https://i.postimg.cc/qMv8HLzD/Motorola-new-logo-svg.png" alt="Motorola" class="tech-logo" />
+          </div>
+        </div>
+        <div class="tech-item" style="width:130px;">
+          <div class="tech-logo-wrap">
+            <img src="https://i.postimg.cc/y6PFG5Yw/rossi.png" alt="Rossi" class="tech-logo" />
+          </div>
+        </div>
+        <div class="tech-item" style="width:130px;">
+          <div class="tech-logo-wrap">
+            <img src="https://i.postimg.cc/ryJSHbwL/Ubiquiti-Logo-Horizontal.png" alt="Ubiquiti" class="tech-logo" />
+          </div>
+        </div>
+        <div class="tech-item" style="width:210px;">
+          <div class="tech-logo-wrap" style="width:200px;height:72px;">
+            <img src="https://i.postimg.cc/QMgyy3YG/Frahm.png" alt="Frahm" class="tech-logo" style="max-width:180px;max-height:62px;" />
+          </div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-logo-wrap">
+            <img src="https://i.postimg.cc/YSNssHDc/jfl.jpg" alt="JFL" class="tech-logo" />
+          </div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-logo-wrap">
+            <img src="https://i.postimg.cc/YSNssHnJ/ppa.jpg" alt="PPA" class="tech-logo" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SERVIÇOS
+  ============================================================ -->
+  <section id="servicos">
+    <div class="container">
+
+      <p class="section-title reveal">Nossos Serviços</p>
+      <div class="section-divider reveal"></div>
+      <p class="section-subtitle reveal">
+        Soluções completas em segurança eletrônica, automação e engenharia,
+        desenvolvidas para atender às necessidades do seu negócio.
+      </p>
+
+      <div class="servicos-grid">
+
+        <!-- Serviço 1: Segurança Eletrônica -->
+        <div class="servico-card reveal">
+          <div class="servico-icon-wrap">
+            <i class="fa-solid fa-video"></i>
+          </div>
+          <h3>Segurança Eletrônica</h3>
+          <p>
+            Instalação e monitoramento de sistemas CFTV de alta resolução, alarmes perimetrais,
+            sensores de movimento e centrais de monitoramento 24 horas.
+          </p>
+          <div class="badge-nbr">
+            <i class="fa-solid fa-certificate"></i> NBR 16415
+          </div>
+          <a href="#contato" class="servico-link">
+            Saiba mais <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- Serviço 2: Controle de Acesso -->
+        <div class="servico-card reveal">
+          <div class="servico-icon-wrap">
+            <i class="fa-solid fa-fingerprint"></i>
+          </div>
+          <h3>Controle de Acesso</h3>
+          <p>
+            Sistemas com biometria, cartão RFID, reconhecimento facial e integração
+            com catracas e portões automáticos.
+          </p>
+          <div class="badge-nbr">
+            <i class="fa-solid fa-certificate"></i> NBR 15247
+          </div>
+          <a href="#contato" class="servico-link">
+            Saiba mais <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- Serviço 3: Redes -->
+        <div class="servico-card reveal">
+          <div class="servico-icon-wrap">
+            <i class="fa-solid fa-network-wired"></i>
+          </div>
+          <h3>Redes de Computadores</h3>
+          <p>
+            Projeto e implantação de redes cabeadas (Cat5e, Cat6, fibra óptica) e redes Wi-Fi
+            corporativas de alta performance.
+          </p>
+          <div class="badge-nbr">
+            <i class="fa-solid fa-certificate"></i> NBR 14565
+          </div>
+          <a href="#contato" class="servico-link">
+            Saiba mais <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- Serviço 4: Análise de Risco -->
+        <div class="servico-card reveal">
+          <div class="servico-icon-wrap">
+            <i class="fa-solid fa-file-shield"></i>
+          </div>
+          <h3>Análise de Risco e Laudos</h3>
+          <p>
+            Elaboração de laudos técnicos, análise de vulnerabilidades, consultoria em
+            segurança patrimonial e conformidade com normas ABNT.
+          </p>
+          <div class="badge-nbr">
+            <i class="fa-solid fa-certificate"></i> NBR 15247 / NBR 16415
+          </div>
+          <a href="#contato" class="servico-link">
+            Saiba mais <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- Serviço 5: Projetos Elétricos -->
+        <div class="servico-card reveal">
+          <div class="servico-icon-wrap">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+          <h3>Projetos Elétricos</h3>
+          <p>
+            Soluções completas em engenharia elétrica:<br /><br />
+            • Análise de disponibilidade de carga<br />
+            • Geração<br />
+            • Correção de fator de potência<br />
+            • Análise de qualidade de energia (queimas constantes, variações, indisponibilidade)<br />
+            • Análise fiscal
+          </p>
+          <div class="badge-nbr">
+            <i class="fa-solid fa-certificate"></i> NBR 5410
+          </div>
+          <a href="#contato" class="servico-link">
+            Saiba mais <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROVA SOCIAL — Avaliações Google
+  ============================================================ -->
+  <section id="prova-social">
+    <div class="container">
+      <p class="section-title reveal">O Que Nossos Clientes Dizem</p>
+      <div class="section-divider reveal"></div>
+      <p class="section-subtitle reveal">
+        A confiança de quem já experimentou nossos serviços é o nosso maior reconhecimento.
+      </p>
+
+      <div class="prova-geral reveal">
+        <span class="prova-geral-estrelas">★★★★★</span>
+        <span class="prova-geral-texto">Avaliação <strong>5,0</strong> no Google</span>
+      </div>
+
+      <div class="prova-social-grid">
+
+        <!-- Avaliação 1 -->
+        <div class="prova-card reveal">
+          <div class="prova-estrelas">★★★★★</div>
+          <p class="prova-texto">
+            "Somos muito satisfeitos com serviço (acredito que já tem mais de 10 anos) e com a atenção de Hélio com nossa casa e família."
+          </p>
+          <div class="prova-autor">
+            <div class="prova-avatar">FL</div>
+            <div>
+              <div class="prova-nome">Fernanda Lemos</div>
+              <div class="prova-google">
+                <i class="fa-brands fa-google"></i> Google Avaliações
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avaliação 2 -->
+        <div class="prova-card reveal">
+          <div class="prova-estrelas">★★★★★</div>
+          <p class="prova-texto">
+            "Attive foi muito ágil no atendimento, nos ofereceu às melhores marcas e soluções para a segurança de nossa casa. Fiquei muito satisfeito e super indico os serviços!"
+          </p>
+          <div class="prova-autor">
+            <div class="prova-avatar">PH</div>
+            <div>
+              <div class="prova-nome">Pablo Henrique</div>
+              <div class="prova-google">
+                <i class="fa-brands fa-google"></i> Google Avaliações
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avaliação 3 -->
+        <div class="prova-card reveal">
+          <div class="prova-estrelas">★★★★★</div>
+          <p class="prova-texto">
+            "Excelente equipe profissional, cuidado e zelo na execução dos trabalhos!! Super indico essa empresa!! Parabéns Attive Tecnologia!!"
+          </p>
+          <div class="prova-autor">
+            <div class="prova-avatar">JD</div>
+            <div>
+              <div class="prova-nome">Josué Dias</div>
+              <div class="prova-google">
+                <i class="fa-brands fa-google"></i> Google Avaliações
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avaliação 4 -->
+        <div class="prova-card reveal">
+          <div class="prova-estrelas">★★★★★</div>
+          <p class="prova-texto">
+            "Empresa séria e competente, recomendo!"
+          </p>
+          <div class="prova-autor">
+            <div class="prova-avatar">PL</div>
+            <div>
+              <div class="prova-nome">Pablo Levy Pereira Almeida</div>
+              <div class="prova-google">
+                <i class="fa-brands fa-google"></i> Google Avaliações
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avaliação 5 -->
+        <div class="prova-card reveal">
+          <div class="prova-estrelas">★★★★★</div>
+          <p class="prova-texto">
+            "Sempre muito bem atendido pelos profissionais da empresa. Produtos e serviços de qualidade."
+          </p>
+          <div class="prova-autor">
+            <div class="prova-avatar">VG</div>
+            <div>
+              <div class="prova-nome">Vinicius Gomes Mota</div>
+              <div class="prova-google">
+                <i class="fa-brands fa-google"></i> Google Avaliações
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avaliação 6 -->
+        <div class="prova-card reveal">
+          <div class="prova-estrelas">★★★★★</div>
+          <p class="prova-texto">
+            "Empresa de qualidade, atende as necessidades de segurança e imagem com excelência e o principal oferecem suporte imediato. Indico!"
+          </p>
+          <div class="prova-autor">
+            <div class="prova-avatar">EF</div>
+            <div>
+              <div class="prova-nome">Eveline Freitas</div>
+              <div class="prova-google">
+                <i class="fa-brands fa-google"></i> Google Avaliações
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTATO
+  ============================================================ -->
+  <section id="contato">
+    <div class="container">
+
+      <p class="section-title reveal">Entre em Contato</p>
+      <div class="section-divider reveal"></div>
+      <p class="section-subtitle reveal">
+        Fale com nossa equipe e descubra como podemos proteger o que é mais importante para você.
+      </p>
+
+      <div class="contato-grid">
+
+        <div class="contato-info reveal">
+          <h3>Solicite um Estudo de Viabilidade</h3>
+          <p>
+            Preencha o formulário e nossa equipe técnica entrará em contato para
+            entender suas necessidades e apresentar a melhor solução.
+          </p>
+
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div class="info-text">
+              <strong>E-mail</strong>
+              <span>attivetecnologia@gmail.com</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fa-solid fa-phone"></i>
+            </div>
+            <div class="info-text">
+              <strong>Telefone / WhatsApp</strong>
+              <span>(83) 99678-7788</span>
+            </div>
+          </div>
+
+          <a
+            href="https://wa.me/5583996787788?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20estudo%20de%20viabilidade%20para%20meu%20projeto."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+            style="margin-top:1.5rem;display:inline-flex;"
+          >
+            <i class="fa-brands fa-whatsapp"></i>
+            Falar com Especialista
+          </a>
+        </div>
+
+        <!-- Formulário simplificado -->
+        <div class="contato-form reveal">
+          <form id="contactForm" onsubmit="return handleForm(event)">
+
+            <div class="form-group">
+              <label for="nome">Nome completo *</label>
+              <input
+                type="text"
+                id="nome"
+                name="nome"
+                placeholder="Seu nome"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="empresa">Empresa / Condomínio</label>
+              <input
+                type="text"
+                id="empresa"
+                name="empresa"
+                placeholder="Nome da empresa ou condomínio"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="mensagem">Como podemos ajudar? *</label>
+              <textarea
+                id="mensagem"
+                name="mensagem"
+                placeholder="Descreva seu projeto ou necessidade..."
+                required
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">
+              <i class="fa-solid fa-paper-plane"></i>
+              Solicitar Análise
+            </button>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RODAPÉ
+  ============================================================ -->
+  <footer id="footer">
+    <div class="container">
+
+      <div class="footer-inner">
+
+        <div class="footer-brand">
+          <a href="#inicio" class="logo">
+            <img
+              src="https://i.postimg.cc/4xb9f1dS/logobrancasemfundo-Copia.png"
+              alt="Attive Tecnologia"
+              class="logo-img"
+              style="height:44px;"
+            />
+          </a>
+          <p>
+            Especialistas em segurança inteligente e engenharia de precisão.
+            Protegemos o que importa com tecnologia de ponta e excelência técnica.
+          </p>
+          <!-- Endereço para SEO Local → Campina Grande, PB -->
+          <div class="footer-address">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>
+              <a
+                href="https://www.google.com/maps/search/Campina+Grande+PB"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Campina Grande, Paraíba, Brasil
+              </a>
+            </span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Links rápidos</h4>
+          <ul>
+            <li><a href="#inicio">Início</a></li>
+            <li><a href="#sobre">Sobre nós</a></li>
+            <li><a href="#servicos">Serviços</a></li>
+            <li><a href="#lideranca">Liderança Técnica</a></li>
+            <li><a href="#contato">Contato</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Redes sociais</h4>
+          <p style="font-size:.85rem;margin-bottom:1rem;">
+            Siga-nos e fique por dentro das novidades em segurança e tecnologia.
+          </p>
+          <div class="social-links">
+            <a
+              href="https://www.instagram.com/attivetecnologia/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-link"
+              aria-label="Instagram Attive Tecnologia"
+            >
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/engenheiroheliocrispim/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-link"
+              aria-label="Instagram Eng. Hélio Crispim"
+            >
+              <i class="fa-solid fa-user-tie"></i>
+            </a>
+            <a
+              href="https://wa.me/5583996787788"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-link"
+              aria-label="WhatsApp"
+            >
+              <i class="fa-brands fa-whatsapp"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>© <span id="year"></span> Attive Tecnologia. Todos os direitos reservados.</p>
+        <p class="made-with">
+          <i class="fa-solid fa-shield-halved" style="color:var(--blue-light);"></i>
+          Segurança & Inovação
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       WHATSAPP FLUTUANTE ELEGANTE
+  ============================================================ -->
+  <a
+    href="https://wa.me/5583996787788?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20estudo%20de%20viabilidade%20para%20meu%20projeto."
+    target="_blank"
+    rel="noopener noreferrer"
+    class="whatsapp-float"
+    aria-label="Falar com Especialista"
+  >
+    <i class="fa-brands fa-whatsapp"></i>
+    <span>Falar com Especialista</span>
+  </a>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    // ── Ano dinâmico ────────────────────────────────────────────
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ── Header: glassmorphism ao rolar ─────────────────────────
+    const header = document.getElementById('header');
+    function handleScroll() {
+      header.classList.toggle('scrolled', window.scrollY > 60);
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // ── Menu hambúrguer ────────────────────────────────────────
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', isOpen);
+    });
+
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', false);
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!header.contains(e.target)) closeMobileMenu();
+    });
+
+    // ── Scroll Reveal ──────────────────────────────────────────
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+
+    // ── CountUp ────────────────────────────────────────────────
+    function animateCountUp(el) {
+      const target = parseInt(el.getAttribute('data-target'), 10);
+      const prefix = el.getAttribute('data-prefix') || '';
+      const step = target / 60;
+      let current = 0;
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          el.textContent = prefix + target;
+          clearInterval(timer);
+        } else {
+          el.textContent = prefix + Math.floor(current);
+        }
+      }, 33);
+    }
+    const countObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateCountUp(entry.target);
+            countObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    document.querySelectorAll('.stat-number').forEach((num) => countObserver.observe(num));
+
+    // ── Formulário → WhatsApp ──────────────────────────────────
+    function handleForm(event) {
+      event.preventDefault();
+      const nome     = document.getElementById('nome').value.trim();
+      const empresa  = (document.getElementById('empresa')?.value || '').trim();
+      const mensagem = document.getElementById('mensagem').value.trim();
+
+      if (!nome || !mensagem) {
+        alert('Por favor, preencha o nome e a mensagem.');
+        return false;
+      }
+
+      let texto = `Olá! Meu nome é ${nome}.`;
+      if (empresa) texto += `\nEmpresa/Condomínio: ${empresa}`;
+      texto += `\nMensagem: ${mensagem}`;
+
+      const url = `https://wa.me/5583996787788?text=${encodeURIComponent(texto)}`;
+      window.open(url, '_blank');
+      document.getElementById('contactForm').reset();
+      return false;
+    }
+
+    // ── Highlight seção destino ────────────────────────────────
+    function applySectionHighlight(id) {
+      const target = document.getElementById(id);
+      if (target) {
+        target.classList.remove('section-highlight');
+        void target.offsetWidth;
+        target.classList.add('section-highlight');
+      }
+    }
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', () => {
+        const href = link.getAttribute('href');
+        if (href && href.length > 1) {
+          setTimeout(() => applySectionHighlight(href.substring(1)), 800);
+        }
+      });
+    });
+
+    // ── Active link no scroll ─────────────────────────────────
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    function setActiveLink() {
+      let current = '';
+      sections.forEach((sec) => {
+        if (window.scrollY >= sec.offsetTop - 100) current = sec.getAttribute('id');
+      });
+      navLinks.forEach((link) => {
+        link.style.color = '';
+        if (link.getAttribute('href') === `#${current}`) link.style.color = 'var(--white)';
+      });
+    }
+    window.addEventListener('scroll', setActiveLink, { passive: true });
+  </script>
+
+</body>
+</html>
