@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Proposta CFTV + Alarme | Túlio | Attive</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #08141C; --bg2: #0D1E28; --bg3: #061018; --surface: #112233;
+  --blue: #1FA8E0; --blue2: #0E6FA3; --blue-dim: rgba(31,168,224,0.12);
+  --white: #F0F8FF; --gray: #7FA8C0; --gray2: #1E3448;
+  --green: #18C97A; --green-dim: rgba(24,201,122,0.1);
+  --gold: #FFD966; --gold-dim: rgba(255,217,102,0.1);
+  --orange: #FF8C42; --orange-dim: rgba(255,140,66,0.1);
+  --font: 'DM Sans', sans-serif; --serif: 'DM Serif Display', serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--white); font-family: var(--font); font-size: 15px; line-height: 1.7; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+.animate-fadeUp { animation: fadeInUp 0.7s ease forwards; }
+.animate-fadeLeft { animation: fadeInLeft 0.7s ease forwards; }
+.animate-fadeRight { animation: fadeInRight 0.7s ease forwards; }
+.animate-scale { animation: scaleIn 0.5s ease forwards; }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-container {
+  background: var(--surface);
+  border: 1px solid var(--blue2);
+  border-radius: 20px;
+  max-width: 450px;
+  width: 90%;
+  padding: 28px 24px;
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-container { transform: scale(1); }
+.modal-icon { margin-bottom: 16px; }
+.modal-title { font-family: var(--serif); font-size: 24px; margin-bottom: 12px; color: var(--orange); }
+.modal-message { font-size: 14px; color: var(--gray); margin-bottom: 24px; line-height: 1.6; }
+.modal-btn { background: var(--blue); color: var(--white); border: none; border-radius: 50px; padding: 12px 28px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.modal-btn:hover { background: var(--blue2); transform: translateY(-2px); }
+.cover {
+  min-height: 100vh;
+  background: var(--bg3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 44px 32px;
+  position: relative;
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 110% 80%, rgba(31,168,224,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cover-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, var(--blue), transparent); }
+.cover-dots {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+  height: 200px;
+  background-image: radial-gradient(circle, rgba(31,168,224,0.18) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: radial-gradient(ellipse at bottom right, black 30%, transparent 70%);
+}
+.cover-logo img { height: 70px; width: auto; display: block; animation: fadeInLeft 0.6s ease forwards; }
+.cover-body { animation: fadeInUp 0.8s ease 0.2s forwards; opacity: 0; animation-fill-mode: forwards; }
+.cover-footer { animation: fadeInUp 0.6s ease 0.4s forwards; opacity: 0; animation-fill-mode: forwards; }
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--blue2);
+  color: var(--blue);
+  padding: 7px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 28px;
+  background: var(--blue-dim);
+}
+.cover-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); display: inline-block; animation: pulse 2s infinite; }
+.cover-kicker { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+.cover-title { font-family: var(--serif); font-size: 52px; font-weight: 400; line-height: 1.1; margin-bottom: 16px; }
+.cover-title em { font-style: italic; color: var(--blue); }
+.cover-sub { font-size: 14px; color: var(--gray); max-width: 400px; line-height: 1.6; }
+.cover-footer { border-top: 1px solid var(--gray2); padding-top: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+.cover-footer-left p { font-size: 12px; color: var(--gray); line-height: 1.9; }
+.cover-footer-left strong { color: var(--white); font-weight: 500; }
+.cover-scroll { font-size: 11px; color: var(--gray); display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+.cover-scroll span { animation: bob 1.6s infinite; }
+@keyframes bob { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(5px); } }
+.main { max-width: 1200px; margin: 0 auto; padding: 0 24px 80px; }
+.sk { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+.sk::before { content: ''; width: 20px; height: 1px; background: var(--blue); }
+.st { font-family: var(--serif); font-size: 32px; font-weight: 400; line-height: 1.2; margin-bottom: 20px; }
+.st em { font-style: italic; color: var(--blue); }
+.sb { font-size: 14px; color: var(--gray); line-height: 1.8; }
+.divider { border: none; border-top: 1px solid var(--gray2); margin: 48px 0; }
+.diag-grid { display: grid; gap: 12px; margin-top: 20px; }
+.diag-item {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 12px 12px 0;
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+}
+.diag-item:hover { transform: translateX(5px); border-left-color: var(--green); }
+.dico { flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px; background: var(--blue-dim); border: 1px solid var(--blue2); display: flex; align-items: center; justify-content: center; }
+.servico-card {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  margin-bottom: 28px;
+}
+.servico-card:hover { transform: translateY(-3px); border-color: var(--blue); }
+.card-header {
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(31,168,224,0.05), transparent);
+  border-bottom: 1px solid var(--gray2);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.card-header input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--blue);
+  cursor: pointer;
+  margin: 0;
+}
+.card-header label {
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--gray);
+}
+.card-header h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--blue);
+  margin-left: auto;
+}
+.card-body { padding: 20px; }
+.preco {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gold);
+  margin: 0 0 8px;
+}
+.preco small {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--gray);
+}
+.divisoria-preco {
+  border-top: 1px solid var(--gray2);
+  margin: 12px 0 16px;
+  width: 100%;
+}
+.preco-detalhe { font-size: 13px; color: var(--gray); margin-bottom: 12px; border-left: 2px solid var(--blue); padding-left: 12px; }
+.materiais-list { list-style: none; margin: 16px 0; }
+.materiais-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; margin-bottom: 8px; }
+.materiais-list li .bullet { color: var(--blue); font-weight: bold; margin-right: 4px; }
+.total-box {
+  background: var(--blue-dim);
+  border: 1px solid var(--blue2);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 24px 0;
+  text-align: center;
+}
+.total-box .total-valor { font-size: 36px; font-weight: 700; color: var(--gold); }
+.total-subnote { font-size: 12px; color: var(--gray); margin-top: 8px; }
+.pagamento-box { background: var(--blue-dim); border: 1px solid var(--blue2); border-radius: 16px; padding: 20px; margin: 24px 0; }
+.pagamento-opcoes { display: flex; gap: 24px; flex-wrap: wrap; }
+.opcao-radio { display: flex; align-items: center; gap: 12px; background: var(--bg2); border-radius: 12px; padding: 12px 20px; flex: 1; min-width: 180px; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
+.opcao-radio.selected { border-color: var(--blue); background: var(--blue-dim); }
+.opcao-radio input { accent-color: var(--blue); width: 18px; height: 18px; cursor: pointer; }
+.opcao-radio label { font-size: 14px; font-weight: 500; cursor: pointer; flex: 1; }
+.opcao-radio .valor { font-weight: 700; color: var(--gold); margin-left: auto; }
+.cond-box {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 14px;
+  padding: 22px;
+  margin-top: 32px;
+}
+.cond-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.cond-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; }
+.cond-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 8px; }
+.cli-card { background: var(--surface); border: 1px solid var(--gray2); border-radius: 14px; padding: 22px; margin: 20px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cf label { font-size: 10px; color: var(--gray); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.cf p { font-size: 14px; font-weight: 500; margin-top: 3px; }
+.cf.full { grid-column: 1/-1; }
+.btn-main {
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 16px 32px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  display: block;
+  box-shadow: 0 4px 24px rgba(24,201,122,0.3);
+  transition: all 0.2s;
+}
+.btn-main:hover { transform: translateY(-3px); background: #1eb86e; }
+.apv-box { display: none; background: rgba(24,201,122,0.08); border: 1px solid rgba(24,201,122,0.25); border-radius: 16px; padding: 24px; text-align: center; margin: 32px 0; }
+.apv-box.show { display: block; }
+.apv-title { font-family: var(--serif); font-size: 20px; color: var(--green); margin: 8px 0 4px; }
+.sig { text-align: center; margin: 32px 0 8px; }
+.sig-avatar { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--blue); object-fit: cover; margin-bottom: 16px; }
+.sig-line { width: 160px; height: 1px; background: var(--gray2); margin: 0 auto 14px; }
+.sig-name { font-size: 13px; font-weight: 600; }
+.sig-crea { display: inline-block; margin-top: 8px; background: var(--blue-dim); border: 1px solid var(--blue2); color: var(--blue); font-size: 10px; font-weight: 700; padding: 3px 12px; border-radius: 20px; }
+.footer { border-top: 1px solid var(--gray2); padding: 22px 24px; text-align: center; font-size: 11px; color: var(--gray); }
+.wa-btn {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: #25D366;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 13px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 99;
+  transition: all 0.2s;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+.wa-btn:hover { transform: translateY(-3px); background: #20b859; }
+@media (max-width: 768px) {
+  .cover-title { font-size: 36px; }
+  .card-header h3 { font-size: 18px; margin-left: 0; }
+  .preco { font-size: 24px; }
+  .pagamento-opcoes { flex-direction: column; }
+  .cli-card { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="customModal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+    <div class="modal-title" id="modalTitle">Atenção</div>
+    <div class="modal-message" id="modalMessage">Mensagem personalizada</div>
+    <button class="modal-btn" id="modalOkBtn">OK</button>
+  </div>
+</div>
+
+<div class="cover">
+  <div class="cover-accent"></div>
+  <div class="cover-dots"></div>
+  <div class="cover-logo">
+    <img src="https://cdn.phototourl.com/free/2026-04-01-bd1ea34f-46fa-4af7-8452-af7677dbb7e9.png" alt="Attive Tecnologia">
+  </div>
+  <div class="cover-body">
+    <div class="cover-badge">A/C Túlio · Campina Grande - PB</div>
+    <div class="cover-kicker">Proposta Técnica · Orçamento 094-2026</div>
+    <div class="cover-title">Sistemas de<br><em>CFTV e Alarme</em></div>
+    <div class="cover-sub">Monitoramento residencial com câmera de segurança na fachada + alarme com sensores de movimento internos, tudo controlado pelo celular.</div>
+  </div>
+  <div class="cover-footer">
+    <div class="cover-footer-left">
+      <p><strong>Hélio Crispim</strong> · Eng. Eletricista</p>
+      <p>CREA-PB 12290192025PB</p>
+      <p>(83) 99678-7788</p>
+    </div>
+    <div class="cover-scroll" onclick="document.querySelector('.main').scrollIntoView({behavior:'smooth'})"><span>↓</span><small>Rolar</small></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="animate-on-scroll" data-animation="fadeUp">
+    <div class="sk">Análise do Ambiente</div>
+    <div class="st">Diagnóstico de <em>Segurança Eletrônica</em></div>
+    <div class="sb">O imóvel necessita de monitoramento da fachada com boa qualidade de imagem e um sistema de alarme interno com sensores de movimento, ambos com acesso remoto via aplicativo.</div>
+    <div class="diag-grid">
+      <div class="diag-item"><div class="dico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div><h4>Vigilância da fachada</h4><p>Portão e calçada com uma câmera FullHD posicionada no alto, visão noturna e detecção de movimento.</p></div></div>
+      <div class="diag-item"><div class="dico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><h4>Alarme interno por infravermelho</h4><p>Dois sensores de movimento (PIR) internos para detectar intrusão em áreas comuns, com notificações em tempo real.</p></div></div>
+      <div class="diag-item"><div class="dico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><h4>Controle total pelo celular</h4><p>Ambos os sistemas integrados a um único aplicativo, com gravação, alarmes e acionamento remoto.</p></div></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="animate-on-scroll" data-animation="fadeLeft">
+    <div class="sk">Proteção com alarme</div>
+    <div class="st">Cobertura <em>interna</em> por sensores PIR</div>
+    <div class="alarme-ilustracao" style="background:var(--surface); border:1px solid var(--gray2); border-radius:16px; padding:20px; margin:24px 0;">
+      <p style="color:var(--gray);">O sistema de alarme contará com sensores infravermelhos internos (PIR) posicionados em pontos estratégicos da residência. A central com bateria reserva e sirene avisam qualquer tentativa de invasão, com notificações instantâneas no celular.</p>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="animate-on-scroll" data-animation="scale">
+    <div class="sk">Soluções em segurança</div>
+    <div class="st">Escolha os serviços <em>desejados</em></div>
+    <div class="sb">Selecione abaixo o sistema de CFTV (câmera na fachada) e/ou o alarme interno. Ambos podem ser contratados juntos para máxima proteção.</div>
+
+    <!-- CFTV ÚNICO: tradicional com UMA câmera centralizada no topo da fachada e gravador 4 canais -->
+    <div class="servico-card">
+      <div class="card-header">
+        <input type="checkbox" id="checkCftv" checked>
+        <label for="checkCftv">Incluir este sistema</label>
+        <h3>CFTV Tradicional · Fachada</h3>
+      </div>
+      <div class="card-body">
+        <div class="preco" id="precoCftvMostra">R$ 1.199,00</div>
+        <div class="divisoria-preco"></div>
+        <div class="preco-detalhe">(Pagamento parcelado em 3x sem juros ou à vista com 7% de desconto)</div>
+        <ul class="materiais-list">
+          <li><span class="bullet">></span> 1 câmera FullHD externa (IP66) posicionada no alto da fachada – vista centralizada do portão e calçada</li>
+          <li><span class="bullet">></span> 1 gravador digital de 4 canais com HD incluso</li>
+          <li><span class="bullet">></span> Fonte de alimentação, cabos, conectores e protetores</li>
+          <li><span class="bullet">></span> Acesso remoto pelo celular (aplicativo gratuito)</li>
+          <li><span class="bullet">></span> Instalação profissional, configuração e treinamento</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Alarme interno (sensores infravermelhos, dois PIR) -->
+    <div class="servico-card">
+      <div class="card-header">
+        <input type="checkbox" id="checkAlarme" checked>
+        <label for="checkAlarme">Incluir este sistema</label>
+        <h3>Alarme Interno com PIR</h3>
+      </div>
+      <div class="card-body">
+        <div class="preco" id="precoAlarmeMostra">R$ 1.199,00</div>
+        <div class="divisoria-preco"></div>
+        <div class="preco-detalhe">(Pagamento parcelado em 3x sem juros ou à vista com 7% de desconto)</div>
+        <ul class="materiais-list">
+          <li><span class="bullet">></span> Central de alarme monitorável via aplicativo</li>
+          <li><span class="bullet">></span> 1 sirene interna e 1 bateria reserva</li>
+          <li><span class="bullet">></span> 2 sensores de movimento infravermelho (PIR) – para áreas internas (sala, corredor, etc.)</li>
+          <li><span class="bullet">></span> Acesso remoto, armar/desarmar pelo celular, notificações push</li>
+          <li><span class="bullet">></span> Instalação, configuração e treinamento completo</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Suporte mensal opcional -->
+    <div class="servico-card">
+      <div class="card-header">
+        <input type="checkbox" id="checkSuporte">
+        <label for="checkSuporte">Assinar mensalmente (opcional)</label>
+        <h3>Plano de Suporte Técnico</h3>
+      </div>
+      <div class="card-body">
+        <div class="preco">R$ 59,90 <small>/mês</small></div>
+        <div class="divisoria-preco"></div>
+        <div class="preco-detalhe">(Serviço recorrente – faturado separadamente)</div>
+        <ul class="materiais-list">
+          <li><span class="bullet">></span> Revisão mensal, limpeza de lentes e verificação de sensores</li>
+          <li><span class="bullet">></span> Teste de baterias, atualizações de firmware</li>
+          <li><span class="bullet">></span> Atendimento prioritário e relatório mensal</li>
+        </ul>
+        <div style="font-size:12px; color:var(--gray); margin-top:12px;">Assinatura opcional, não inclusa no valor total da instalação.</div>
+      </div>
+    </div>
+
+    <!-- Totalizador -->
+    <div class="total-box">
+      <div style="font-size: 14px; color: var(--gray); margin-bottom: 8px;">Total (instalação + equipamentos)</div>
+      <div class="total-valor" id="totalValor">R$ 2.398,00</div>
+      <div class="total-subnote">Valores calculados conforme seleção: CFTV + Alarme. Suporte mensal à parte.</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="animate-on-scroll" data-animation="fadeLeft">
+    <div class="sk">Condições Comerciais</div>
+    <div class="st">Pagamento e <em>Garantias</em></div>
+    <div class="pagamento-box">
+      <h4>Forma de pagamento (sobre o total único)</h4>
+      <div class="pagamento-opcoes" id="pagamento-opcoes">
+        <div class="opcao-radio" data-texto="À vista com 7% de desconto">
+          <input type="radio" name="pagamento" id="opcao_vista" value="vista" checked>
+          <label for="opcao_vista">À vista com 7% de desconto</label>
+          <span class="valor" id="valorVista">R$ --</span>
+        </div>
+        <div class="opcao-radio" data-texto="Parcelado em até 3x no cartão (sem juros)">
+          <input type="radio" name="pagamento" id="opcao_parc" value="parcelado">
+          <label for="opcao_parc">Parcelado em 3x sem juros</label>
+          <span class="valor" id="valorParc">3x R$ --</span>
+        </div>
+      </div>
+      <div class="obs-pagamento" style="margin-top: 12px; font-size: 12px;">Pagamento antecipado (PIX ou cartão) para agendamento. Desconto de 7% aplicado automaticamente na opção à vista.</div>
+    </div>
+
+    <div class="cond-box">
+      <h4>Condições Gerais</h4>
+      <ul class="cond-list">
+        <li><span class="cond-dot"></span><span><strong>Garantia:</strong> 90 dias sobre mão de obra; 12 meses sobre equipamentos (conforme fabricante).</span></li>
+        <li><span class="cond-dot"></span><span><strong>Agendamento:</strong> As instalações serão iniciadas conforme disponibilidade e ordem de confirmação.</span></li>
+        <li><span class="cond-dot"></span><span><strong>Alarme:</strong> Sensores infravermelhos internos (dois PIR).</span></li>
+        <li><span class="cond-dot"></span><span><strong>CFTV:</strong> Gravador de vídeo de 4 canais incluso.</span></li>
+      </ul>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="animate-on-scroll" data-animation="fadeRight">
+    <div class="sk">Dados da Proposta</div>
+    <div class="cli-card">
+      <div class="cf full"><label>Cliente</label><p>Túlio</p></div>
+      <div class="cf full"><label>Endereço</label><p>Rua Índios Cariris, 142 - Centro, Campina Grande - PB</p></div>
+      <div class="cf"><label>Data de emissão</label><p id="data-hoje"></p></div>
+      <div class="cf"><label>Validade</label><p>7 dias</p></div>
+    </div>
+    <div class="sig">
+      <img class="sig-avatar" src="https://cdn.phototourl.com/free/2026-04-01-5ab8b26d-2d00-46e8-aa83-234b907db1c7.png" alt="Hélio Crispim">
+      <div class="sig-line"></div>
+      <div class="sig-name">Hélio Crispim · Engenheiro Eletricista</div>
+      <span class="sig-crea">CREA-PB 12290192025PB</span>
+      <div class="sig-info">attivetecnologia@gmail.com · (83) 99678-7788</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="animate-on-scroll" data-animation="scale">
+    <div class="sk">Próximos Passos</div>
+    <div class="st">Vamos <em>começar?</em></div>
+    <div style="background:var(--surface); border:1px solid var(--gray2); border-radius:16px; padding:28px 24px; text-align:center;">
+      <p style="margin-bottom:20px;">Revise os serviços, selecione CFTV e/ou Alarme, escolha a forma de pagamento e clique em aprovar. O suporte mensal é opcional.</p>
+      <div class="btn-wrap"><button class="btn-main" id="btn-aprovar" onclick="aprovar()">Aprovar Orçamento</button></div>
+      <p style="margin-top:20px; font-size:12px;">Ao aprovar, você confirma o aceite das condições. Entraremos em contato para alinhar o agendamento.</p>
+    </div>
+    <div class="apv-box" id="apv-box">
+      <div class="apv-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="apv-title">Proposta Aprovada!</div>
+      <div class="apv-sub" id="apv-sub">Em breve nossa equipe entrará em contato.</div>
+    </div>
+  </div>
+</div>
+<div class="footer"><p>Attive Tecnologia · Segurança Eletrônica & Integração Tecnológica · Campina Grande - PB</p></div>
+<button class="wa-btn" onclick="abrirWA()"><svg viewBox="0 0 24 24" width="19" height="19" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Falar com a Attive</button>
+
+<script>
+function showModal(title, message) {
+  const modal = document.getElementById('customModal');
+  document.getElementById('modalTitle').innerText = title;
+  document.getElementById('modalMessage').innerHTML = message;
+  modal.classList.add('active');
+  document.getElementById('modalOkBtn').onclick = () => modal.classList.remove('active');
+  modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
+}
+function notificarAbertura() {
+  fetch('https://formsubmit.co/ajax/attivetecnologia@gmail.com', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ _subject: '📢 PROPOSTA ABERTA - Túlio', message: `Proposta aberta em ${new Date().toLocaleString('pt-BR')}.`, _captcha: 'false' })
+  }).catch(()=>{});
+}
+document.addEventListener('DOMContentLoaded', notificarAbertura);
+
+const precoUnitario = 1199.00;   // cada sistema
+const descontoAvista = 0.07;
+
+const checkCftv = document.getElementById('checkCftv');
+const checkAlarme = document.getElementById('checkAlarme');
+const totalSpan = document.getElementById('totalValor');
+const valorVistaSpan = document.getElementById('valorVista');
+const valorParcSpan = document.getElementById('valorParc');
+
+function formatarMoeda(valor) {
+  return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function calcularTotalUnico() {
+  let total = 0;
+  if (checkCftv.checked) total += precoUnitario;
+  if (checkAlarme.checked) total += precoUnitario;
+  return total;
+}
+
+function atualizarTotais() {
+  const total = calcularTotalUnico();
+  totalSpan.innerText = `R$ ${formatarMoeda(total)}`;
+  const totalComDesconto = total * (1 - descontoAvista);
+  const parcela = total / 3;
+  valorVistaSpan.innerHTML = `R$ ${formatarMoeda(totalComDesconto)}`;
+  if (total > 0) {
+    valorParcSpan.innerHTML = `3x R$ ${formatarMoeda(parcela)}`;
+  } else {
+    valorParcSpan.innerHTML = `3x R$ 0,00`;
+  }
+  const opVistaDiv = document.querySelector('.opcao-radio[data-texto*="À vista"]');
+  const opParcDiv = document.querySelector('.opcao-radio[data-texto*="Parcelado"]');
+  if (opVistaDiv) opVistaDiv.setAttribute('data-texto', `À vista com 7% de desconto (R$ ${formatarMoeda(totalComDesconto)})`);
+  if (opParcDiv && total > 0) opParcDiv.setAttribute('data-texto', `Parcelado em 3x sem juros (R$ ${formatarMoeda(parcela)}/mês)`);
+  else if (opParcDiv) opParcDiv.setAttribute('data-texto', 'Parcelado em 3x sem juros');
+}
+
+checkCftv.addEventListener('change', atualizarTotais);
+checkAlarme.addEventListener('change', atualizarTotais);
+atualizarTotais();
+
+const radiosPagamento = document.querySelectorAll('input[name="pagamento"]');
+const opcoesDiv = document.querySelectorAll('.opcao-radio');
+function updateSelected() { opcoesDiv.forEach(op => { const r = op.querySelector('input'); if(r && r.checked) op.classList.add('selected'); else op.classList.remove('selected'); }); }
+radiosPagamento.forEach(r => r.addEventListener('change', updateSelected));
+updateSelected();
+opcoesDiv.forEach(op => op.addEventListener('click', () => { const r = op.querySelector('input'); if(r && !r.checked) { r.checked = true; updateSelected(); } }));
+
+function getPagamentoSelecionado() {
+  const selected = document.querySelector('input[name="pagamento"]:checked');
+  if(!selected) return null;
+  const parent = selected.closest('.opcao-radio');
+  return { texto: parent?.getAttribute('data-texto') || (selected.value === 'vista' ? 'À vista com 7% de desconto' : 'Parcelado em 3x') };
+}
+
+function aprovar() {
+  const totalUnico = calcularTotalUnico();
+  if (totalUnico === 0) {
+    showModal('Nenhum serviço selecionado', 'Marque pelo menos o sistema de CFTV ou o alarme para aprovar a proposta.');
+    return;
+  }
+  const pag = getPagamentoSelecionado();
+  if(!pag) { showModal('Pagamento não selecionado', 'Escolha a forma de pagamento antes de aprovar.'); return; }
+  
+  let servicos = [];
+  if (checkCftv.checked) servicos.push('CFTV tradicional (câmera fachada + gravador 4 canais)');
+  if (checkAlarme.checked) servicos.push('Alarme interno com 2 sensores PIR');
+  const servicosStr = servicos.join(' + ');
+  const valorTotalFinal = pag.texto.includes('desconto') ? (totalUnico * (1 - descontoAvista)) : totalUnico;
+  const checkSuporte = document.getElementById('checkSuporte');
+  const suporteAtivo = checkSuporte.checked;
+  let suporteMsg = suporteAtivo ? ` + Plano de Suporte Mensal (R$ 59,90/mês - fatura separada)` : '';
+  
+  const msg = `Olá! Aprovo a proposta 094-2026 para Túlio. Serviços: ${servicosStr}. Valor ${pag.texto.includes('desconto') ? 'à vista com desconto' : 'parcelado'}: R$ ${formatarMoeda(valorTotalFinal)}. ${pag.texto}${suporteMsg}. Estou ciente das condições (alarme com dois sensores infravermelhos internos, câmera centralizada na fachada, gravador 4 canais). Aguardo agendamento.`;
+  
+  fetch('https://formsubmit.co/ajax/attivetecnologia@gmail.com', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ _subject:'Proposta 094-2026 Aprovada - Túlio', message:msg, _captcha:'false' })
+  }).catch(()=>{});
+  
+  window.open(`https://wa.me/5583996787788?text=${encodeURIComponent(msg)}`, '_blank');
+  const apv = document.getElementById('apv-box');
+  document.getElementById('apv-sub').innerHTML = `Proposta aprovada! ${servicosStr} - Total ${formatarMoeda(valorTotalFinal)}. ${suporteAtivo ? 'Suporte mensal contratado. ' : ''}Entraremos em contato.`;
+  apv.classList.add('show');
+  apv.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function abrirWA() { window.open('https://wa.me/5583996787788?text=Olá! Recebi a proposta 094-2026 de CFTV e Alarme e quero conversar.', '_blank'); }
+
+const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const hoje = new Date();
+document.getElementById('data-hoje').innerHTML = `${hoje.getDate()} de ${meses[hoje.getMonth()]} de ${hoje.getFullYear()}`;
+
+const animatedElements = document.querySelectorAll('.animate-on-scroll');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const anim = el.getAttribute('data-animation');
+      if (anim === 'fadeUp') el.classList.add('animate-fadeUp');
+      else if (anim === 'fadeLeft') el.classList.add('animate-fadeLeft');
+      else if (anim === 'fadeRight') el.classList.add('animate-fadeRight');
+      else if (anim === 'scale') el.classList.add('animate-scale');
+    } else {
+      entry.target.classList.remove('animate-fadeUp', 'animate-fadeLeft', 'animate-fadeRight', 'animate-scale');
+    }
+  });
+}, { threshold: 0.2 });
+animatedElements.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
