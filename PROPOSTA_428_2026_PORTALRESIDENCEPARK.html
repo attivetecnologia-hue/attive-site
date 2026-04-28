@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Proposta CFTV 16 Câmeras + Materiais | Portal Residence Park | Attive</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ========== ESTILOS ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #08141C;
+  --bg2: #0D1E28;
+  --bg3: #061018;
+  --surface: #112233;
+  --blue: #1FA8E0;
+  --blue2: #0E6FA3;
+  --blue-dim: rgba(31, 168, 224, 0.12);
+  --white: #F0F8FF;
+  --gray: #7FA8C0;
+  --gray2: #1E3448;
+  --green: #18C97A;
+  --green-dim: rgba(24, 201, 122, 0.1);
+  --gold: #FFD966;
+  --font: 'DM Sans', sans-serif;
+  --serif: 'DM Serif Display', serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* Animações */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse { 0%,100%{ opacity: 1; } 50%{ opacity: 0.5; } }
+@keyframes glow { 0%{ box-shadow:0 0 5px rgba(31,168,224,0.3); } 50%{ box-shadow:0 0 20px rgba(31,168,224,0.6); } 100%{ box-shadow:0 0 5px rgba(31,168,224,0.3); } }
+
+.animate-fadeUp { animation: fadeInUp 0.7s ease forwards; }
+.animate-fadeLeft { animation: fadeInLeft 0.7s ease forwards; }
+.animate-fadeRight { animation: fadeInRight 0.7s ease forwards; }
+.animate-scale { animation: scaleIn 0.5s ease forwards; }
+.animate-on-scroll { opacity: 0; }
+
+/* Layout principal */
+.cover {
+  min-height: 95vh;
+  background: var(--bg3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 44px 32px;
+  position: relative;
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 110% 80%, rgba(31,168,224,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cover-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, var(--blue), transparent); }
+.cover-dots {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+  height: 200px;
+  background-image: radial-gradient(circle, rgba(31,168,224,0.18) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: radial-gradient(ellipse at bottom right, black 30%, transparent 70%);
+}
+.cover-logo img { height: 70px; width: auto; display: block; animation: fadeInLeft 0.6s ease forwards; }
+.cover-body { animation: fadeInUp 0.8s ease 0.2s forwards; opacity: 0; animation-fill-mode: forwards; }
+.cover-footer { animation: fadeInUp 0.6s ease 0.4s forwards; opacity: 0; animation-fill-mode: forwards; }
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--blue2);
+  color: var(--blue);
+  padding: 7px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 28px;
+  background: var(--blue-dim);
+}
+.cover-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); display: inline-block; animation: pulse 2s infinite; }
+.cover-kicker { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+.cover-title { font-family: var(--serif); font-size: 52px; font-weight: 400; line-height: 1.1; margin-bottom: 16px; }
+.cover-title em { font-style: italic; color: var(--blue); }
+.cover-sub { font-size: 14px; color: var(--gray); max-width: 480px; line-height: 1.6; }
+.cover-footer {
+  border-top: 1px solid var(--gray2);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.cover-footer-left p { font-size: 12px; color: var(--gray); line-height: 1.9; }
+.cover-footer-left strong { color: var(--white); font-weight: 500; }
+.cover-scroll { font-size: 11px; color: var(--gray); display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+.cover-scroll span { animation: bob 1.6s infinite; }
+@keyframes bob { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(5px); } }
+.main { max-width: 1200px; margin: 0 auto; padding: 0 24px 80px; }
+.sk { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+.sk::before { content: ''; width: 20px; height: 1px; background: var(--blue); }
+.st { font-family: var(--serif); font-size: 32px; font-weight: 400; line-height: 1.2; margin-bottom: 20px; }
+.st em { font-style: italic; color: var(--blue); }
+.sb { font-size: 14px; color: var(--gray); line-height: 1.8; }
+.divider { border: none; border-top: 1px solid var(--gray2); margin: 48px 0; }
+
+/* Cards de diagnóstico */
+.diag-grid { display: grid; gap: 12px; margin-top: 20px; }
+.diag-item {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 12px 12px 0;
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+}
+.diag-item:hover { transform: translateX(5px); border-left-color: var(--green); }
+.dico { flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px; background: var(--blue-dim); border: 1px solid var(--blue2); display: flex; align-items: center; justify-content: center; }
+
+/* Serviço único */
+.servico-card {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 20px;
+  margin: 32px 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.servico-card:hover { transform: translateY(-3px); border-color: var(--blue); }
+.servico-card .card-header {
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(31,168,224,0.08), transparent);
+  border-bottom: 1px solid var(--gray2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.servico-card .card-header h3 { font-family: var(--serif); font-size: 28px; color: var(--blue); }
+.badge-green { background: var(--green-dim); padding: 6px 14px; border-radius: 40px; font-size: 12px; font-weight: 600; color: var(--green); }
+.servico-card .card-body { padding: 24px; }
+.preco { font-size: 38px; font-weight: 700; color: var(--green); margin: 16px 0 8px; }
+.preco-detalhe { font-size: 13px; color: var(--gray); margin-bottom: 20px; border-left: 2px solid var(--blue); padding-left: 12px; }
+.materiais-list {
+  list-style: none;
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
+}
+.materiais-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; }
+.materiais-list li .bullet { color: var(--blue); font-weight: bold; margin-right: 6px; content: '>'; }
+.total-box {
+  background: var(--blue-dim);
+  border: 1px solid var(--blue2);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 24px 0;
+  text-align: center;
+}
+.total-box .total-valor { font-size: 40px; font-weight: 700; color: var(--gold); }
+.pagamento-box {
+  background: var(--blue-dim);
+  border: 1px solid var(--blue2);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 24px 0;
+}
+.pagamento-opcoes {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.opcao-radio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg2);
+  border-radius: 12px;
+  padding: 12px 20px;
+  flex: 1;
+  min-width: 220px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.opcao-radio.selected { border-color: var(--blue); background: var(--blue-dim); }
+.opcao-radio input { accent-color: var(--blue); width: 18px; height: 18px; cursor: pointer; }
+.opcao-radio label { font-size: 14px; font-weight: 500; cursor: pointer; flex: 1; }
+.opcao-radio .valor { font-weight: 700; color: var(--gold); margin-left: auto; font-size: 14px; }
+.obs-pagamento { font-size: 12px; color: var(--gray); margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--gray2); }
+.cond-box {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 14px;
+  padding: 22px;
+  margin-top: 20px;
+}
+.cond-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.cond-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; }
+.cond-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 8px; }
+.cli-card {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 14px;
+  padding: 22px;
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.cf label { font-size: 10px; color: var(--gray); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.cf p { font-size: 14px; font-weight: 500; margin-top: 3px; }
+.cf.full { grid-column: 1/-1; }
+.btn-main {
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 16px 32px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  display: block;
+  box-shadow: 0 4px 24px rgba(24,201,122,0.3);
+  transition: all 0.2s;
+}
+.btn-main:hover { transform: translateY(-3px); background: #1eb86e; }
+.apv-box { display: none; background: rgba(24,201,122,0.08); border: 1px solid rgba(24,201,122,0.25); border-radius: 16px; padding: 24px; text-align: center; margin: 32px 0; }
+.apv-box.show { display: block; }
+.apv-title { font-family: var(--serif); font-size: 20px; color: var(--green); margin: 8px 0 4px; }
+.sig { text-align: center; margin: 32px 0 16px; }
+.sig-avatar { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--blue); object-fit: cover; margin-bottom: 16px; }
+.sig-line { width: 160px; height: 1px; background: var(--gray2); margin: 0 auto 14px; }
+.sig-name { font-size: 13px; font-weight: 600; }
+.sig-crea { display: inline-block; margin-top: 8px; background: var(--blue-dim); border: 1px solid var(--blue2); color: var(--blue); font-size: 10px; font-weight: 700; padding: 3px 12px; border-radius: 20px; }
+.footer { border-top: 1px solid var(--gray2); padding: 22px 24px; text-align: center; font-size: 11px; color: var(--gray); }
+.wa-btn {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: #25D366;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 13px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 99;
+  transition: all 0.2s;
+  animation: glow 2s infinite;
+}
+.wa-btn:hover { transform: translateY(-3px); background: #20b859; }
+@media (max-width: 768px) {
+  .cover-title { font-size: 36px; }
+  .materiais-list { grid-template-columns: 1fr; }
+  .pagamento-opcoes { flex-direction: column; }
+  .cli-card { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-accent"></div>
+  <div class="cover-dots"></div>
+  <div class="cover-logo">
+    <img src="https://cdn.phototourl.com/free/2026-04-01-bd1ea34f-46fa-4af7-8452-af7677dbb7e9.png" alt="Attive Tecnologia">
+  </div>
+  <div class="cover-body">
+    <div class="cover-badge">A/C Harlley Nogueira · Edifício Portal Residence Park · CNPJ 31.226.985/0001-00</div>
+    <div class="cover-kicker">Proposta Técnica · Orçamento 428-2026</div>
+    <div class="cover-title">Instalação CFTV (16 câmeras)<br><em>+ Fornecimento de Materiais</em></div>
+    <div class="cover-sub">Mão de obra especializada para instalação de 16 câmeras (8 por bloco) nos corredores dos apartamentos, utilizando equipamentos já adquiridos pelo cliente (gravadores, câmeras, HDs e cabos). A Attive fornece conectores, plugs, mini racks, fontes e protetores eletrônicos. Treinamento incluso.</div>
+  </div>
+  <div class="cover-footer">
+    <div class="cover-footer-left">
+      <p><strong>Hélio Crispim</strong> · Eng. Eletricista</p>
+      <p>CREA-PB 12290192025PB</p>
+      <p>(83) 99678-7788</p>
+    </div>
+    <div class="cover-scroll" onclick="document.querySelector('.main').scrollIntoView({behavior:'smooth'})"><span>↓</span><small>Rolar</small></div>
+  </div>
+</div>
+
+<div class="main">
+  <!-- Diagnóstico -->
+  <div class="animate-on-scroll" data-animation="fadeUp">
+    <div class="sk">Escopo do serviço</div>
+    <div class="st">Instalação profissional <em>com fornecimento de materiais</em></div>
+    <div class="sb">O Edifício Portal Residence Park já possui os equipamentos principais: dois Gravadores de Vídeo (DVR/NVR), 16 câmeras (8 por bloco), HDs para armazenamento e cabos. A Attive Tecnologia fornecerá todos os materiais de conexão, proteção e organização necessários para uma instalação completa e segura, além da mão de obra, configuração e treinamento.</div>
+    <div class="diag-grid">
+      <div class="diag-item">
+        <div class="dico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div><h4>16 câmeras (8 por bloco)</h4><p>Instalação estratégica nos corredores de cada bloco do condomínio, garantindo cobertura das áreas comuns e acesso aos apartamentos.</p></div>
+      </div>
+      <div class="diag-item">
+        <div class="dico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div><h4>Configuração completa</h4><p>Ajuste de parâmetros de gravação, acesso remoto (aplicativo no celular), organização do cabeamento e integração com os gravadores existentes.</p></div>
+      </div>
+      <div class="diag-item">
+        <div class="dico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><h4>Treinamento operacional</h4><p>Capacitação do síndico e responsáveis para utilizar o sistema, realizar playback, exportar imagens e manutenção básica.</p></div>
+      </div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- Detalhamento do serviço com materiais fornecidos pela Attive -->
+  <div class="animate-on-scroll" data-animation="scale">
+    <div class="sk">Serviços e Materiais Inclusos</div>
+    <div class="st">Mão de obra + fornecimento <em>de conectores, fontes, mini racks e protetores</em></div>
+    <div class="servico-card">
+      <div class="card-header">
+        <h3>Instalação (16 câmeras) + Fornecimento Attive</h3>
+        <span class="badge-green">Equipamentos principais do cliente</span>
+      </div>
+      <div class="card-body">
+        <div class="preco">R$ 3.899,00</div>
+        <div class="preco-detalhe">Valor único que inclui materiais, instalação, configuração e treinamento</div>
+        
+        <div style="margin-top: 12px; margin-bottom: 8px; font-weight: 600; color: var(--blue); display: flex; align-items: center; gap: 8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Materiais fornecidos pela Attive:
+        </div>
+        <ul class="materiais-list">
+          <li><span class="bullet">></span> CONECTOR BNC – 32 unidades</li>
+          <li><span class="bullet">></span> PLUG P4 – 18 unidades</li>
+          <li><span class="bullet">></span> MINI RACK – 2 unidades</li>
+          <li><span class="bullet">></span> FONTE (alimentação) – 2 unidades</li>
+          <li><span class="bullet">></span> PROTETOR ELETRÔNICO – 2 unidades</li>
+        </ul>
+        
+        <div style="margin-top: 16px; margin-bottom: 8px; font-weight: 600; color: var(--blue); display: flex; align-items: center; gap: 8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          Serviços executados:
+        </div>
+        <ul class="materiais-list">
+          <li><span class="bullet">></span> Instalação de 16 câmeras (8 por bloco) nos corredores</li>
+          <li><span class="bullet">></span> Passagem e instalação dos cabos existentes (roteamento e conexão)</li>
+          <li><span class="bullet">></span> Conexão aos dois Gravadores de Vídeo (já disponíveis)</li>
+          <li><span class="bullet">></span> Instalação dos mini racks e organização dos equipamentos</li>
+          <li><span class="bullet">></span> Instalação das fontes e protetores eletrônicos</li>
+          <li><span class="bullet">></span> Configuração dos HDs para gravação contínua</li>
+          <li><span class="bullet">></span> Ajuste de ângulo e foco das câmeras</li>
+          <li><span class="bullet">></span> Configuração de acesso remoto (aplicativo)</li>
+          <li><span class="bullet">></span> Teste completo de funcionamento</li>
+          <li><span class="bullet">></span> Treinamento presencial (até 2 horas) para síndico e responsáveis</li>
+          <li><span class="bullet">></span> Suporte pós-instalação por 7 dias</li>
+        </ul>
+        
+        <div style="font-size: 12px; color: var(--gray); background: rgba(31,168,224,0.05); padding: 10px; border-radius: 12px; margin-top: 12px;">
+          Observação 1: O cliente já possui Gravadores, Câmeras, HDs e Cabos. A Attive fornece os conectores, plugs, mini racks, fontes e protetores eletrônicos conforme lista acima.
+          <br><br>
+          Observação 2: Para a conectividade dos sistemas e acesso remoto, é necessária disponibilidade de internet no local onde serão instalados os gravadores de vídeo.
+        </div>
+      </div>
+    </div>
+
+    <div class="total-box">
+      <div style="font-size: 14px; color: var(--gray); margin-bottom: 8px;">Valor total do investimento</div>
+      <div class="total-valor">R$ 3.899,00</div>
+      <div style="font-size: 12px; margin-top: 8px;">Pagamento antecipado obrigatório para garantir o agendamento da equipe.</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- Condições de pagamento -->
+  <div class="animate-on-scroll" data-animation="fadeLeft">
+    <div class="sk">Condições Comerciais</div>
+    <div class="st">Pagamento <em>antecipado</em> para agendamento</div>
+
+    <div class="pagamento-box">
+      <h4>Escolha a forma de pagamento (antecipado)</h4>
+      <div class="pagamento-opcoes" id="pagamento-opcoes">
+        <div class="opcao-radio" data-texto="À vista (antecipado) – PIX">
+          <input type="radio" name="pagamento" id="opcao_vista" value="vista" checked>
+          <label for="opcao_vista">À vista (antecipado) – PIX</label>
+          <span class="valor">R$ 3.899,00</span>
+        </div>
+        <div class="opcao-radio" data-texto="Parcelamento no cartão de crédito – consulte condições">
+          <input type="radio" name="pagamento" id="opcao_parc" value="parcelado">
+          <label for="opcao_parc">Cartão de crédito (até 12x) – consulte condições</label>
+          <span class="valor">Consultar</span>
+        </div>
+      </div>
+      <div class="obs-pagamento">
+        - O pagamento deverá ser realizado antecipadamente (PIX ou autorização total no cartão) para que a data de instalação seja confirmada em nossa agenda.<br>
+        - Para pagamento parcelado no cartão, entre em contato conosco para verificarmos as condições (número de parcelas e eventuais taxas) junto à administradora.
+      </div>
+    </div>
+
+    <div class="cond-box">
+      <h4>Condições Gerais do Serviço</h4>
+      <ul class="cond-list">
+        <li><span class="cond-dot"></span><span><strong>Escopo completo:</strong> Fornecimento de conectores, plugs, mini racks, fontes e protetores eletrônicos (conforme lista) + instalação das 16 câmeras existentes (8 por bloco) + configuração + treinamento.</span></li>
+        <li><span class="cond-dot"></span><span><strong>Prazo de execução:</strong> A ser definido conforme disponibilidade de agenda, após confirmação do pagamento antecipado. Prazo estimado: 3 a 4 dias úteis.</span></li>
+        <li><span class="cond-dot"></span><span><strong>Garantia:</strong> 90 dias sobre a mão de obra executada e sobre os materiais fornecidos pela Attive. Equipamentos do cliente seguem garantia do fabricante.</span></li>
+        <li><span class="cond-dot"></span><span><strong>Não incluído:</strong> Obras civis, passagem de eletrodutos embutidos, fornecimento de DVR, câmeras, cabos, ou qualquer equipamento não listado como fornecido pela Attive.</span></li>
+        <li><span class="cond-dot"></span><span><strong>Treinamento:</strong> Será ministrado ao síndico e responsáveis no final da instalação.</span></li>
+        <li><span class="cond-dot"></span><span><strong>Requisito de internet:</strong> Para funcionamento do acesso remoto e integração dos sistemas, é indispensável que haja conexão de internet ativa no local onde os gravadores serão instalados.</span></li>
+      </ul>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- Dados do cliente e endereço -->
+  <div class="animate-on-scroll" data-animation="fadeRight">
+    <div class="sk">Dados da Proposta</div>
+    <div class="cli-card">
+      <div class="cf full"><label>Responsável / A/C</label><p>Harlley Nogueira · Edifício Portal Residence Park · CNPJ: 31.226.985/0001-00</p></div>
+      <div class="cf full"><label>Endereço de instalação</label><p>Rua Maria Jose Bezerra de Carvalho, 380 - Tres Irmas, Campina Grande - PB</p></div>
+      <div class="cf"><label>Data de emissão</label><p id="data-hoje"></p></div>
+      <div class="cf"><label>Validade da proposta</label><p>7 dias corridos</p></div>
+    </div>
+    <div class="sig">
+      <img class="sig-avatar" src="https://cdn.phototourl.com/free/2026-04-01-5ab8b26d-2d00-46e8-aa83-234b907db1c7.png" alt="Hélio Crispim">
+      <div class="sig-line"></div>
+      <div class="sig-name">Hélio Crispim · Engenheiro Eletricista</div>
+      <span class="sig-crea">CREA-PB 12290192025PB</span>
+      <div class="sig-info">attivetecnologia@gmail.com · (83) 99678-7788</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- Aprovação -->
+  <div class="animate-on-scroll" data-animation="scale">
+    <div class="sk">Próximos Passos</div>
+    <div class="st">Confirme e <em>agende</em> sua instalação</div>
+    <div style="background:var(--surface); border:1px solid var(--gray2); border-radius:16px; padding:28px 24px; text-align:center;">
+      <p style="margin-bottom:20px;">Após aprovar, você será redirecionado ao WhatsApp para concluir o agendamento. O pagamento antecipado é necessário para reservar a data.</p>
+      <div class="btn-wrap"><button class="btn-main" id="btn-aprovar" onclick="aprovar()">Aprovar Orçamento</button></div>
+      <p style="margin-top:20px; font-size:12px;">Ao clicar em aprovar, você declara estar ciente das condições e autoriza o contato da nossa equipe.</p>
+    </div>
+    <div class="apv-box" id="apv-box">
+      <div class="apv-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8"><polyline points="20 6 9 17 4 12" /></svg></div>
+      <div class="apv-title">Proposta Aprovada</div>
+      <div class="apv-sub" id="apv-sub">Em breve entraremos em contato para alinhar o agendamento. Lembre-se: o pagamento antecipado é necessário para confirmar a data.</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>Attive Tecnologia · Segurança Eletrônica & Integração Tecnológica · Campina Grande - PB</p>
+</div>
+<button class="wa-btn" onclick="abrirWA()">
+  <svg class="wa-icon" viewBox="0 0 24 24" width="19" height="19" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+  </svg> Falar com a Attive
+</button>
+
+<script>
+  // Notificação de abertura
+  function notificarAbertura() {
+    const agora = new Date().toLocaleString('pt-BR');
+    fetch('https://formsubmit.co/ajax/attivetecnologia@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        _subject: 'Proposta Aberta - Portal Residence Park (16 câmeras + materiais)',
+        message: `Proposta 428-2026 (Instalação 16 câmeras + fornecimento de conectores, plugs, racks, fontes, protetores) aberta em ${agora}.`,
+        _captcha: 'false'
+      })
+    }).catch(erro => console.error('Erro ao notificar:', erro));
+  }
+  document.addEventListener('DOMContentLoaded', notificarAbertura);
+
+  const totalFixo = 3899.00;
+
+  // Seleção de radios
+  const radios = document.querySelectorAll('input[name="pagamento"]');
+  const opcoesDiv = document.querySelectorAll('.opcao-radio');
+
+  function updateSelected() {
+    opcoesDiv.forEach(op => {
+      const r = op.querySelector('input');
+      if (r && r.checked) op.classList.add('selected');
+      else op.classList.remove('selected');
+    });
+  }
+  radios.forEach(r => r.addEventListener('change', updateSelected));
+  updateSelected();
+  opcoesDiv.forEach(op => op.addEventListener('click', () => {
+    const r = op.querySelector('input');
+    if (r && !r.checked) {
+      r.checked = true;
+      updateSelected();
+    }
+  }));
+
+  function getPagamentoSelecionado() {
+    const selected = document.querySelector('input[name="pagamento"]:checked');
+    if (!selected) return null;
+    if (selected.value === 'vista') return { texto: "À vista antecipado via PIX" };
+    return { texto: "Parcelamento no cartão de crédito (até 12x) – condições a consultar com a Attive" };
+  }
+
+  function aprovar() {
+    const pag = getPagamentoSelecionado();
+    if (!pag) {
+      alert('Selecione uma forma de pagamento.');
+      return;
+    }
+
+    const materiaisFornecidos = "CONECTOR BNC (32), PLUG P4 (18), MINI RACK (2), FONTE (2), PROTETOR ELETRÔNICO (2)";
+    const msg = `Olá! Aprovo a proposta 428-2026 para INSTALAÇÃO DE CFTV no Edifício Portal Residence Park. Serviço: fornecimento de materiais (${materiaisFornecidos}) + instalação/configuração de 16 câmeras (8 por bloco) + treinamento. Valor total: R$ ${totalFixo.toLocaleString('pt-BR')},00. Pagamento: ${pag.texto}. Estou ciente da necessidade de pagamento antecipado para agendamento e da exigência de internet no local dos gravadores. Aguardo contato.`;
+
+    fetch('https://formsubmit.co/ajax/attivetecnologia@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        _subject: 'Proposta Aprovada - Portal Residence Park (428-2026)',
+        message: msg,
+        _captcha: 'false'
+      })
+    }).catch(() => { });
+
+    window.open(`https://wa.me/5583996787788?text=${encodeURIComponent(msg)}`, '_blank');
+
+    const apvBox = document.getElementById('apv-box');
+    document.getElementById('apv-sub').innerHTML = `Proposta 428-2026 aprovada. Total: R$ ${totalFixo.toLocaleString('pt-BR')}. Pagamento: ${pag.texto}. Entraremos em contato para agendamento (exige pagamento antecipado).`;
+    apvBox.classList.add('show');
+    apvBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function abrirWA() {
+    window.open('https://wa.me/5583996787788?text=Olá! Gostaria de informações sobre a proposta de instalação CFTV de 16 câmeras + materiais (Portal Residence Park - proposta 428-2026).', '_blank');
+  }
+
+  // Data de hoje
+  const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  const hoje = new Date();
+  const dia = hoje.getDate();
+  const mesAtual = meses[hoje.getMonth()];
+  const anoAtual = hoje.getFullYear();
+  document.getElementById('data-hoje').innerHTML = `${dia} de ${mesAtual} de ${anoAtual}`;
+
+  // Animações scroll
+  const animated = document.querySelectorAll('.animate-on-scroll');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const anim = el.getAttribute('data-animation');
+        if (anim === 'fadeUp') el.classList.add('animate-fadeUp');
+        else if (anim === 'fadeLeft') el.classList.add('animate-fadeLeft');
+        else if (anim === 'fadeRight') el.classList.add('animate-fadeRight');
+        else if (anim === 'scale') el.classList.add('animate-scale');
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.2 });
+  animated.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
