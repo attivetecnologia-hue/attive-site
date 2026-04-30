@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <title>Hotel do Vale · Diagnóstico CFTV</title>
+  <meta name="description" content="Diagnóstico técnico colaborativo: selecione áreas prioritárias, responda o questionário e baseie a futura proposta de CFTV.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #0e121b;
+      color: #eef2ff;
+      overflow-x: hidden;
+    }
+    .presentation {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1rem 1rem 2rem 1rem;
+      position: relative;
+    }
+    .nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      margin: 2rem 0 1rem;
+    }
+    .dots { display: flex; gap: 0.5rem; }
+    .dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      background: #3a4052;
+      border-radius: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .dot.active { background: #6d8eff; width: 1.2rem; }
+    .slide-counter {
+      font-size: 0.75rem;
+      color: #7e84a3;
+      background: #181e2a;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2rem;
+    }
+    .slide {
+      display: none;
+      animation: fadeSlide 0.4s ease-out;
+      background: #11161f;
+      border-radius: 2rem;
+      padding: 2rem 1.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #252e3f;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+      position: relative;
+      max-height: 70vh;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+    .slide::-webkit-scrollbar { width: 4px; }
+    .slide::-webkit-scrollbar-track { background: #1a1f2e; border-radius: 4px; }
+    .slide::-webkit-scrollbar-thumb { background: #6d8eff; border-radius: 4px; }
+    .slide.active { display: block; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .scroll-indicator {
+      position: sticky;
+      bottom: 8px;
+      right: 8px;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -20px;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    .scroll-arrow {
+      background: #0f1420;
+      border-radius: 2rem;
+      padding: 0.3rem 0.6rem;
+      font-size: 0.7rem;
+      color: #6d8eff;
+      animation: bounceVertical 1.5s infinite;
+      border: 1px solid #6d8eff;
+    }
+    @keyframes bounceVertical {
+      0%, 100% { transform: translateY(0); opacity: 0.5; }
+      50% { transform: translateY(5px); opacity: 1; }
+    }
+    .swipe-indicator {
+      text-align: center;
+      margin: 0.5rem 0 0;
+      font-size: 0.7rem;
+      color: #6d8eff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      animation: pulseOpacity 1.5s infinite;
+    }
+    .swipe-arrow { font-size: 1.2rem; display: inline-block; }
+    .swipe-arrow.left { animation: slideRight 1s infinite; }
+    .swipe-arrow.right { animation: slideLeft 1s infinite; }
+    @keyframes slideRight {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(4px); }
+    }
+    @keyframes slideLeft {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(-4px); }
+    }
+    @keyframes pulseOpacity {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+    @media (min-width: 768px) { .swipe-indicator { display: none; } }
+    p, .card p, .message-area, .footer, .photo-label span { text-align: justify; }
+    h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.02em; }
+    h2 { font-size: 1.5rem; font-weight: 500; margin-bottom: 0.75rem; }
+    h3 { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.75rem; color: #cbd5ff; }
+    .tag {
+      display: inline-block;
+      background: #1e293b;
+      color: #8aa9ff;
+      padding: 0.2rem 0.8rem;
+      border-radius: 2rem;
+      font-size: 0.7rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .divider {
+      width: 3rem;
+      height: 2px;
+      background: #335;
+      margin: 1rem 0 1.5rem;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    @media (min-width: 640px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+      h1 { font-size: 2.5rem; }
+    }
+    .card {
+      background: #0f1420;
+      border: 1px solid #252e40;
+      border-radius: 1.5rem;
+      padding: 1.2rem;
+    }
+    .badge-positive {
+      background: #0a2a1a;
+      color: #7ee0a0;
+      border-radius: 2rem;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.7rem;
+      display: inline-block;
+    }
+    .badge-negative {
+      background: #2a1118;
+      color: #ff9a8b;
+      border-radius: 2rem;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.7rem;
+    }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .photo-card {
+      background: #0b0f18;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid #2a3245;
+    }
+    .photo-card img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      cursor: pointer;
+    }
+    .photo-label {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem;
+      font-size: 0.75rem;
+      background: #0a0e16;
+    }
+    button {
+      background: #2a3a6a;
+      border: none;
+      color: white;
+      font-weight: 500;
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.85rem;
+    }
+    button:hover { background: #3a4a7a; }
+    .wa-main-button {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 0.9rem 1.8rem;
+      border-radius: 3rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      margin: 0 auto;
+    }
+    .wa-main-button:hover {
+      transform: scale(1.02);
+      background: linear-gradient(135deg, #20b359, #0e6e62);
+    }
+    .wa-main-button svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+    .floating-wa {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      border: none;
+    }
+    .floating-wa:hover { transform: scale(1.05); background: #20b859; }
+    .floating-wa svg { width: 34px; height: 34px; fill: white; }
+    .message-area {
+      background: #1a1f2e;
+      padding: 0.7rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      margin-top: 1rem;
+    }
+    .avatar {
+      width: 80px;
+      height: 80px;
+      background: #28324e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.8rem;
+      overflow: hidden;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .contact-info { text-align: center; }
+    .contact-info p { text-align: center; }
+    .crea {
+      font-family: monospace;
+      background: #0b0f18;
+      padding: 0.2rem 0.8rem;
+      border-radius: 2rem;
+      display: inline-block;
+      font-size: 0.7rem;
+      margin-top: 0.3rem;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.7rem;
+      color: #6b7280;
+      border-top: 1px solid #252e40;
+      padding-top: 1rem;
+    }
+    .storage-option { display: flex; gap: 1rem; margin: 0.75rem 0; }
+    input[type="checkbox"], input[type="radio"] { accent-color: #6d8eff; margin-right: 0.4rem; }
+    textarea {
+      width: 100%;
+      background: #0b0f18;
+      border: 1px solid #2a3245;
+      border-radius: 1rem;
+      padding: 0.6rem;
+      color: #eef2ff;
+      font-family: inherit;
+      margin-top: 0.5rem;
+    }
+    .button-center { text-align: center; margin: 1.5rem 0; }
+    .estetica-img {
+      width: 100%;
+      max-width: 360px;
+      height: auto;
+      aspect-ratio: 360 / 240;
+      object-fit: cover;
+      border-radius: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .atencao { font-size: 0.7rem; color: #8aa9ff; margin-top: 0.25rem; text-align: center; }
+  </style>
+</head>
+<body>
+<div class="presentation">
+  <!-- SLIDE 1 - CAPA -->
+  <div class="slide active" id="slide1">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <img src="https://i.ibb.co/hJCHtty0/logobrancasemfundo.png" style="height: 36px;" alt="Attive">
+      <div style="background: #00000030; padding: 0.2rem 0.8rem; border-radius: 2rem; font-size: 0.7rem;">Hotel do Vale</div>
+    </div>
+    <div class="tag">Diagnóstico Técnico Colaborativo</div>
+    <h1>Hotel do Vale<br>Diagnóstico para CFTV</h1>
+    <div class="divider"></div>
+    <p style="color: #abbbdf; margin-bottom: 2rem; text-align: justify;">
+      <strong>Objetivo deste diagnóstico:</strong> levantar as necessidades reais do hotel, identificar áreas prioritárias e coletar preferências operacionais (como tempo de armazenamento e horários críticos).  
+      Com essas informações, será possível elaborar uma proposta técnica e comercial sob medida, sem pré-definições ou desperdícios.  
+      Você não precisa saber sobre equipamentos agora – apenas apontar o que é importante para a segurança do seu negócio.
+    </p>
+    <div class="grid-2" style="margin-top: 1rem;">
+      <div><span style="color:#8f9bb3;">Data</span><br><strong>30/04/2026</strong></div>
+      <div><span style="color:#8f9bb3;">Responsável Técnico</span><br><strong>Hélio Crispim · Eng. Eletricista</strong></div>
+      <div><span style="color:#8f9bb3;">A/C Nayara Jatobá</span><br><strong>Nayara Jatobá</strong></div>
+      <div><span style="color:#8f9bb3;">Próxima fase</span><br><strong>Proposta personalizada</strong></div>
+    </div>
+    <div class="footer">Attive Tecnologia · Diagnóstico participativo – sem compromisso</div>
+    <div class="scroll-indicator"><div class="scroll-arrow">↓ deslize para baixo ↓</div></div>
+  </div>
+
+  <!-- SLIDE 2 - ANÁLISE CRÍTICA -->
+  <div class="slide" id="slide2">
+    <div class="tag">Análise crítica</div>
+    <h2>Sistema existente</h2>
+    <div class="grid-2">
+      <div class="card"><span class="badge-positive">Pontos positivos</span><ul style="margin-top: 0.8rem; list-style: none;"><li>Instalação rápida (sem cabos)</li><li>Custo inicial reduzido</li></ul></div>
+      <div class="card"><span class="badge-negative">Pontos negativos / inviabilidade</span><ul style="margin-top: 0.8rem; list-style: none;"><li>Conexão instável</li><li>Armazenamento local (perda de provas)</li><li>Ângulo 75° → pontos cegos</li><li>Incompatível com hotel</li></ul></div>
+    </div>
+    <div class="message-area"><strong>Conclusão técnica:</strong> modelo atual totalmente inadequado. Necessária nova solução profissional.</div>
+    <div class="footer">Projeto do zero</div>
+    <div class="scroll-indicator"><div class="scroll-arrow">↓ deslize para baixo ↓</div></div>
+  </div>
+
+  <!-- SLIDE 3 - VANTAGENS NOVA SOLUÇÃO -->
+  <div class="slide" id="slide3">
+    <div class="tag">Vantagens da nova solução</div>
+    <h2>O que o novo sistema oferece</h2>
+    <div class="grid-3">
+      <div class="card">Armazenamento confiável (15 a 30 dias)</div>
+      <div class="card">Estabilidade total / conexão permanente</div>
+      <div class="card">Amplo campo de visão (elimina pontos cegos)</div>
+      <div class="card">Acesso remoto seguro (web / app)</div>
+      <div class="card">Alertas em tempo real</div>
+      <div class="card">Conformidade com a LGPD</div>
+      <div class="card">Redução de sinistros (40% estimado)</div>
+      <div class="card">Robustez 24/7</div>
+      <div class="card">Suporte técnico especializado</div>
+    </div>
+    <div class="footer">Benefícios objetivos · sem especificações de equipamento</div>
+    <div class="scroll-indicator"><div class="scroll-arrow">↓ deslize para baixo ↓</div></div>
+  </div>
+
+  <!-- SLIDE 4 - ESTÉTICA -->
+  <div class="slide" id="slide4">
+    <div class="tag">Estética e Integração</div>
+    <h2>Instalação discreta<br><span style="color: #6d8eff;">sem cabos aparentes</span></h2>
+    <div class="divider"></div>
+    <p style="margin-bottom: 1.5rem; color: #abbbdf; text-align: justify;">Sabemos que a aparência é fundamental em um ambiente acolhedor como o seu hotel. Por isso, utilizamos técnicas que priorizam o <strong>acabamento limpo e discreto</strong>, mantendo a segurança sem comprometer a estética.</p>
+    <div class="message-area" style="background: #0a2a3a; border-left: 4px solid #6d8eff; margin-bottom: 1.5rem;">
+      <strong>Importante:</strong> Em locais onde houver <strong>forro de gesso, rebaixamento ou dutos embutidos</strong>, os cabos serão passados <strong>internamente, 100% ocultos</strong>, sem qualquer eletroduto aparente.<br>
+      Os eletrodutos brancos mostrados nas imagens abaixo só serão utilizados <strong>em situações excepcionais</strong> onde não for possível a passagem interna (paredes maciças, concreto aparente, ausência de forro). Nestes cases, usamos perfil de PVC branco de pequena dimensão, alinhado com a decoração.
+    </div>
+    <div class="grid-3" style="margin-bottom: 1rem;">
+      <div class="card" style="text-align: center; padding: 1rem;">
+        <img class="estetica-img" src="https://i.postimg.cc/GmZxXLRH/Captura-de-tela-2026-04-30-163318.png" alt="Eletroduto branco discreto">
+        <p style="font-size: 0.8rem; color: #b9c8ff;">Exemplo de eletroduto branco (solução para paredes sem forro)</p>
+      </div>
+      <div class="card" style="text-align: center; padding: 1rem;">
+        <img class="estetica-img" src="https://i.postimg.cc/qq0mjk8G/smart-cctv-camera-on-the-wall-with-blue-lights-cameras-work-day-and-night-record-a-in-a-public-place.jpg" alt="Câmera moderna com fiação oculta">
+        <p style="font-size: 0.8rem; color: #b9c8ff;">Equipamento discreto, fiação totalmente oculta</p>
+      </div>
+      <div class="card" style="text-align: center; padding: 1rem;">
+        <img class="estetica-img" src="https://i.postimg.cc/VLK7WP5t/Gemini-Generated-Image-cextwvcextwvcext.png" alt="Acabamento profissional">
+        <p style="font-size: 0.8rem; color: #b9c8ff;">Acabamento limpo e profissional</p>
+      </div>
+    </div>
+    <div class="message-area" style="margin-top: 0.5rem;">
+      <strong>Como garantimos o melhor acabamento:</strong><br>
+      • Priorizamos a passagem de cabos por dentro de forros de gesso, paredes ou shafts existentes.<br>
+      • Eletrodutos aparentes (PVC branco) usados apenas como última alternativa, quando não há outra via técnica.<br>
+      • Equipamentos modernos com design discreto e integração harmoniosa ao ambiente.
+    </div>
+    <div class="footer">Sua segurança visual, sem comprometer a beleza do hotel.</div>
+    <div class="scroll-indicator"><div class="scroll-arrow">↓ deslize para baixo ↓</div></div>
+  </div>
+
+  <!-- SLIDE 5 - FOTOS / ÁREAS -->
+  <div class="slide" id="slide5">
+    <div class="tag">Selecione as áreas</div>
+    <h2>Quais locais precisam de monitoramento?</h2>
+    <div class="photo-grid" id="photoGrid"></div>
+    <button id="saveAreasBtn">Salvar áreas prioritárias</button>
+    <div id="areasFeedback" class="message-area" style="display: none;"></div>
+    <div class="footer">Clique na imagem para ampliar</div>
+    <div class="scroll-indicator"><div class="scroll-arrow">↓ deslize para baixo ↓</div></div>
+  </div>
+
+  <!-- SLIDE 6 - QUESTIONÁRIO -->
+  <div class="slide" id="slide6">
+    <div class="tag">Suas necessidades</div>
+    <h2>Preferências operacionais</h2>
+    <div class="card">
+      <h3>Principais preocupações</h3>
+      <label><input type="checkbox" id="w1"> Furto em apartamentos</label><br>
+      <label><input type="checkbox" id="w2"> Vandalismo estacionamento</label><br>
+      <label><input type="checkbox" id="w3"> Acesso não autorizado</label><br>
+      <label><input type="checkbox" id="w4"> Segurança áreas comuns</label><br>
+      <label><input type="checkbox" id="w5"> Controle de estoque/cozinha</label>
+    </div>
+    <div class="card">
+      <h3>Tempo de armazenamento das imagens</h3>
+      <div class="storage-option">
+        <label><input type="radio" name="storage" value="15dias"> 15 dias</label>
+        <label><input type="radio" name="storage" value="30dias" checked> 30 dias (recomendado)</label>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Horário de maior movimento</h3>
+      <label><input type="radio" name="rush" value="Manhã"> Manhã (check-out)</label><br>
+      <label><input type="radio" name="rush" value="Noite"> Noite (eventos)</label><br>
+      <label><input type="radio" name="rush" value="Fim de semana" checked> Fins de semana / feriados</label>
+    </div>
+    <div class="card">
+      <h3>Observações adicionais</h3>
+      <textarea id="obs" rows="2" placeholder="Ex: orçamento a definir, necessidade de acesso remoto..."></textarea>
+    </div>
+    <button id="savePreferencesBtn">Salvar preferências</button>
+    <div id="prefFeedback" class="message-area" style="display: none;"></div>
+    <div class="footer">Informações fundamentais para a proposta</div>
+    <div class="scroll-indicator"><div class="scroll-arrow">↓ deslize para baixo ↓</div></div>
+  </div>
+
+  <!-- SLIDE 7 - FINALIZAÇÃO COM BOTÃO PRINCIPAL -->
+  <div class="slide" id="slide7">
+    <div class="tag">Próxima etapa</div>
+    <h2>Como solicitar a proposta</h2>
+    <p style="margin-bottom: 1rem; text-align: justify;">Após salvar as áreas prioritárias e as preferências, utilize o botão abaixo para enviar um resumo via WhatsApp. Responderemos com o orçamento para elaboração da proposta técnica personalizada.</p>
+    <div class="button-center">
+      <button id="whatsappMainBtn" class="wa-main-button">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.032 2.001c-5.523 0-10 4.477-10 10 0 1.776.465 3.456 1.285 4.932l-1.285 4.932 5.032-1.233c1.476.82 3.156 1.285 4.932 1.285 5.523 0 10-4.477 10-10s-4.477-10-10-10zm0 18c-1.476 0-2.868-.428-4.054-1.163l-.293-.174-2.987.732.78-2.88-.191-.293c-.819-1.23-1.284-2.667-1.284-4.222 0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8zm4.975-6.377c-.273-.137-1.619-.8-1.87-.892-.251-.092-.434-.137-.617.137-.183.274-.708.892-.868 1.074-.16.183-.319.206-.593.069-.273-.137-1.152-.424-2.195-1.354-.811-.728-1.359-1.624-1.517-1.899-.16-.274-.017-.423.12-.559.123-.123.273-.32.41-.48.137-.16.183-.274.274-.457.091-.183.046-.343-.023-.48-.068-.137-.617-1.48-.845-2.027-.222-.538-.445-.46-.617-.468-.16-.008-.343-.009-.526-.009-.183 0-.48.069-.73.343-.251.274-.96.94-.96 2.29 0 1.35.983 2.654 1.12 2.837.137.183 1.945 2.956 4.697 4.145.658.274 1.164.438 1.576.558.662.21 1.262.18 1.738.114.534-.08 1.62-.668 1.848-1.312.229-.645.229-1.197.16-1.312-.069-.114-.251-.183-.524-.32z" fill="white"/>
+        </svg>
+        Enviar Seleções via WhatsApp
+      </button>
+    </div>
+    <div id="waMsg" class="message-area" style="display: none;"></div>
+    <div style="display: flex; justify-content: center; margin-top: 1rem;">
+      <div class="card" style="max-width: 280px; text-align: center;">
+        <div class="avatar"><img src="https://i.postimg.cc/qvv7bbZ4/perfil13.png" alt="Hélio Crispim"></div>
+        <div class="contact-info">
+          <h3>Hélio Crispim</h3>
+          <p>Engenheiro Eletricista</p>
+          <div class="crea">CREA 12290192025PB</div>
+          <p style="margin-top: 0.5rem;">(83) 99678-7788</p>
+          <p>attivetecnologia@gmail.com</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer">Attive Tecnologia – Diagnóstico concluído. Aguardamos seu contato.</div>
+    <div class="scroll-indicator"><div class="scroll-arrow">↓ deslize para baixo ↓</div></div>
+  </div>
+
+  <div class="nav">
+    <div class="dots" id="dots"></div>
+    <span class="slide-counter" id="slideCounter">1 / 7</span>
+  </div>
+  <div class="swipe-indicator">
+    <span class="swipe-arrow left">←</span> deslize para navegar entre as etapas <span class="swipe-arrow right">→</span>
+  </div>
+</div>
+
+<!-- Botão flutuante do WhatsApp -->
+<div id="floatingWaBtn" class="floating-wa">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12.032 2.001c-5.523 0-10 4.477-10 10 0 1.776.465 3.456 1.285 4.932l-1.285 4.932 5.032-1.233c1.476.82 3.156 1.285 4.932 1.285 5.523 0 10-4.477 10-10s-4.477-10-10-10zm0 18c-1.476 0-2.868-.428-4.054-1.163l-.293-.174-2.987.732.78-2.88-.191-.293c-.819-1.23-1.284-2.667-1.284-4.222 0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8zm4.975-6.377c-.273-.137-1.619-.8-1.87-.892-.251-.092-.434-.137-.617.137-.183.274-.708.892-.868 1.074-.16.183-.319.206-.593.069-.273-.137-1.152-.424-2.195-1.354-.811-.728-1.359-1.624-1.517-1.899-.16-.274-.017-.423.12-.559.123-.123.273-.32.41-.48.137-.16.183-.274.274-.457.091-.183.046-.343-.023-.48-.068-.137-.617-1.48-.845-2.027-.222-.538-.445-.46-.617-.468-.16-.008-.343-.009-.526-.009-.183 0-.48.069-.73.343-.251.274-.96.94-.96 2.29 0 1.35.983 2.654 1.12 2.837.137.183 1.945 2.956 4.697 4.145.658.274 1.164.438 1.576.558.662.21 1.262.18 1.738.114.534-.08 1.62-.668 1.848-1.312.229-.645.229-1.197.16-1.312-.069-.114-.251-.183-.524-.32z" fill="white"/>
+  </svg>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center;" onclick="this.style.display='none'">
+  <img id="lightboxImg" style="max-width: 90%; max-height: 90%; border-radius: 1rem;">
+  <span style="position: absolute; top: 1rem; right: 1.5rem; color: white; font-size: 2rem; cursor: pointer;">×</span>
+</div>
+
+<script>
+  // Lista das 30 imagens
+  const images = [
+    "https://i.postimg.cc/xd25Rpf1/hvale1.jpg","https://i.postimg.cc/pL8kKMHX/hvale10.jpg","https://i.postimg.cc/8zWwLgSk/hvale11.jpg",
+    "https://i.postimg.cc/0ymZ71sk/hvale12.jpg","https://i.postimg.cc/mgMV7Wsb/hvale13.jpg","https://i.postimg.cc/52vp8WVb/hvale14.jpg",
+    "https://i.postimg.cc/zGWpTYr5/hvale15.jpg","https://i.postimg.cc/nh7TqfJJ/hvale16.jpg","https://i.postimg.cc/pL8kKMHM/hvale17.jpg",
+    "https://i.postimg.cc/NjTbRvch/hvale18.jpg","https://i.postimg.cc/zGWpTY1s/hvale19.jpg","https://i.postimg.cc/g0WsDtzk/hvale2.jpg",
+    "https://i.postimg.cc/K8LQthyC/hvale20.jpg","https://i.postimg.cc/VL2DSL3P/hvale21.jpg","https://i.postimg.cc/Gh6qBhZ0/hvale22.jpg",
+    "https://i.postimg.cc/pX3q9X3w/hvale23.jpg","https://i.postimg.cc/c4PXK4PV/hvale24.jpg","https://i.postimg.cc/jdBZWdB9/hvale25.jpg",
+    "https://i.postimg.cc/Pr02Lr07/hvale26.jpg","https://i.postimg.cc/fT1B3T12/hvale27.jpg","https://i.postimg.cc/28g2q8gG/hvale28.jpg",
+    "https://i.postimg.cc/4NjBKNj1/hvale29.jpg","https://i.postimg.cc/R0BdRpSS/hvale3.jpg","https://i.postimg.cc/wTn0tTnQ/hvale30.jpg",
+    "https://i.postimg.cc/KvCJKvCN/hvale31.jpg","https://i.postimg.cc/t4PDFGjn/hvale4.jpg","https://i.postimg.cc/Qd5ScZ3F/hvale5.jpg",
+    "https://i.postimg.cc/Dws513Tm/hvale6.jpg","https://i.postimg.cc/T3mQnv61/hvale7.jpg","https://i.postimg.cc/7Z7XSrk6/hvale8.jpg",
+    "https://i.postimg.cc/mgMV7Wsr/hvale9.jpg"
+  ];
+
+  const photoGrid = document.getElementById('photoGrid');
+  images.forEach((url, i) => {
+    const card = document.createElement('div');
+    card.className = 'photo-card';
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = `Área ${i+1}`;
+    img.loading = 'lazy';
+    img.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('lightboxImg').src = url;
+      document.getElementById('lightbox').style.display = 'flex';
+    });
+    const labelDiv = document.createElement('div');
+    labelDiv.className = 'photo-label';
+    const span = document.createElement('span');
+    span.innerText = `Área ${i+1}`;
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.classList.add('area-cb');
+    cb.value = `Área ${i+1}`;
+    labelDiv.appendChild(span);
+    labelDiv.appendChild(cb);
+    card.appendChild(img);
+    card.appendChild(labelDiv);
+    photoGrid.appendChild(card);
+  });
+
+  let areasSalvas = false;
+  let preferenciasSalvas = false;
+  let areasSelecionadas = [];
+  let preferencias = {};
+
+  const saveAreasBtn = document.getElementById('saveAreasBtn');
+  const areasFeedback = document.getElementById('areasFeedback');
+  saveAreasBtn.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('.area-cb:checked');
+    areasSelecionadas = Array.from(checkboxes).map(cb => cb.value);
+    if (areasSelecionadas.length === 0) {
+      areasFeedback.innerHTML = 'Selecione pelo menos uma área prioritária.';
+      areasFeedback.style.display = 'block';
+      areasSalvas = false;
+    } else {
+      areasFeedback.innerHTML = areasSelecionadas.length + ' área(s) prioritária(s) salva(s).';
+      areasFeedback.style.display = 'block';
+      areasSalvas = true;
+    }
+  });
+
+  const savePrefBtn = document.getElementById('savePreferencesBtn');
+  const prefFeedback = document.getElementById('prefFeedback');
+  savePrefBtn.addEventListener('click', () => {
+    const worries = [];
+    if (document.getElementById('w1').checked) worries.push('Furto apartamentos');
+    if (document.getElementById('w2').checked) worries.push('Vandalismo estacionamento');
+    if (document.getElementById('w3').checked) worries.push('Acesso não autorizado');
+    if (document.getElementById('w4').checked) worries.push('Segurança áreas comuns');
+    if (document.getElementById('w5').checked) worries.push('Controle estoque');
+    const storage = document.querySelector('input[name="storage"]:checked')?.value || '30dias';
+    const rush = document.querySelector('input[name="rush"]:checked')?.value || 'Fim de semana';
+    const obs = document.getElementById('obs').value;
+    preferencias = { worries, storage, rush, obs };
+    prefFeedback.innerHTML = 'Preferências salvas. Armazenamento: ' + (storage === '30dias' ? '30 dias' : '15 dias');
+    prefFeedback.style.display = 'block';
+    preferenciasSalvas = true;
+  });
+
+  // Função para enviar WhatsApp com lista completa de áreas
+  function enviarWhatsApp() {
+    if (!areasSalvas) {
+      alert('Antes de enviar, salve as áreas prioritárias (primeiro botão).');
+      return;
+    }
+    if (!preferenciasSalvas) {
+      alert('Salve as preferências do questionário antes de continuar.');
+      return;
+    }
+
+    let texto = '*Hotel do Vale - Diagnóstico CFTV*%0A';
+    texto += '*Áreas prioritárias:*%0A';
+    // Lista todas as áreas selecionadas, uma por linha
+    areasSelecionadas.forEach(area => {
+      texto += '- ' + area + '%0A';
+    });
+    texto += '%0A*Preocupações:* ' + (preferencias.worries.join(', ') || 'nenhuma') + '%0A';
+    texto += '*Armazenamento desejado:* ' + (preferencias.storage === '30dias' ? '30 dias' : '15 dias') + '%0A';
+    texto += '*Horário crítico:* ' + preferencias.rush + '%0A';
+    if (preferencias.obs) texto += '*Observações:* ' + preferencias.obs + '%0A';
+    texto += '%0A*Solicito elaboração da proposta técnica.*';
+
+    const encoded = encodeURIComponent(texto);
+    const url = 'https://wa.me/5583996787788?text=' + encoded;
+    window.open(url, '_blank');
+  }
+
+  const mainBtn = document.getElementById('whatsappMainBtn');
+  const floatingBtn = document.getElementById('floatingWaBtn');
+  mainBtn.addEventListener('click', enviarWhatsApp);
+  floatingBtn.addEventListener('click', enviarWhatsApp);
+
+  // Navegação swipe e dots
+  const slides = document.querySelectorAll('.slide');
+  const dotsContainer = document.getElementById('dots');
+  const slideCounterSpan = document.getElementById('slideCounter');
+  let current = 0;
+  const total = slides.length;
+
+  function updateSlides() {
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    slideCounterSpan.innerText = (current+1) + ' / ' + total;
+  }
+
+  function createDots() {
+    dotsContainer.innerHTML = '';
+    for (let i = 0; i < total; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      if (i === current) dot.classList.add('active');
+      dot.addEventListener('click', () => { current = i; updateSlides(); });
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  let touchStartX = 0, touchMoved = false;
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchMoved = false;
+  });
+  document.addEventListener('touchmove', () => { touchMoved = true; });
+  document.addEventListener('touchend', (e) => {
+    if (!touchMoved) return;
+    const diff = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0 && current > 0) { current--; updateSlides(); }
+      else if (diff < 0 && current < total-1) { current++; updateSlides(); }
+    }
+  });
+
+  createDots();
+  updateSlides();
+</script>
+</body>
+</html>
