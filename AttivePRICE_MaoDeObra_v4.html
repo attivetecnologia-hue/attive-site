@@ -99,6 +99,30 @@
   .field select option { background: var(--bg3); }
   .hint { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; }
 
+  /* STEPPER +/- */
+  .stepper { display: flex; align-items: center; }
+  .stepper input {
+    flex: 1; text-align: center; border-radius: 0 !important;
+    border-left: none !important; border-right: none !important;
+    padding: 10px 4px !important;
+    -moz-appearance: textfield;
+  }
+  .stepper input::-webkit-outer-spin-button,
+  .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .stepper-btn {
+    width: 44px; min-width: 44px; height: 42px;
+    background: var(--bg3); border: 1px solid var(--border2);
+    color: var(--accent); font-size: 22px; font-weight: 300;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; user-select: none; line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .stepper-btn:hover { background: var(--border2); }
+  .stepper-btn:active { background: rgba(0,229,160,0.15); }
+  .stepper-btn.left { border-radius: var(--rsm) 0 0 var(--rsm); }
+  .stepper-btn.right { border-radius: 0 var(--rsm) var(--rsm) 0; }
+
+
   /* SLIDER */
   .slider-wrap { display: flex; flex-direction: column; gap: 6px; }
   input[type=range] {
@@ -277,7 +301,11 @@
     <div class="g3">
       <div class="field">
         <label>Custo/hora por técnico (R$)</label>
-        <input type="number" id="custo_h" value="38" oninput="render()">
+        <div class="stepper">
+              <button type="button" class="stepper-btn left" onclick="stepVal('custo_h',-1);render()">−</button>
+              <input type="number" id="custo_h" value="38" min="1" oninput="render()" step="1">
+              <button type="button" class="stepper-btn right" onclick="stepVal('custo_h',1);render()">+</button>
+            </div>
         <div class="hint">custo real interno</div>
       </div>
       <div class="field">
@@ -290,7 +318,11 @@
       </div>
       <div class="field">
         <label>Imposto s/ faturamento (%)</label>
-        <input type="number" id="imp" value="6" oninput="render()">
+        <div class="stepper">
+              <button type="button" class="stepper-btn left" onclick="stepVal('imp',-0.5);render()">−</button>
+              <input type="number" id="imp" value="6" min="0" oninput="render()" step="1">
+              <button type="button" class="stepper-btn right" onclick="stepVal('imp',0.5);render()">+</button>
+            </div>
         <div class="hint">simples nacional</div>
       </div>
     </div>
@@ -303,16 +335,28 @@
       <div class="g3">
         <div class="field">
           <label>Taxa — 1 técnico (R$)</label>
-          <input type="number" id="ex_1" value="200" oninput="render()">
+          <div class="stepper">
+              <button type="button" class="stepper-btn left" onclick="stepVal('ex_1',-1);render()">−</button>
+              <input type="number" id="ex_1" value="200" min="0" oninput="render()" step="5">
+              <button type="button" class="stepper-btn right" onclick="stepVal('ex_1',1);render()">+</button>
+            </div>
           <div class="hint">serviço simples até 2h</div>
         </div>
         <div class="field">
           <label>Taxa — 2 técnicos (R$)</label>
-          <input type="number" id="ex_2" value="260" oninput="render()">
+          <div class="stepper">
+              <button type="button" class="stepper-btn left" onclick="stepVal('ex_2',-1);render()">−</button>
+              <input type="number" id="ex_2" value="260" min="0" oninput="render()" step="5">
+              <button type="button" class="stepper-btn right" onclick="stepVal('ex_2',1);render()">+</button>
+            </div>
         </div>
         <div class="field">
           <label>Taxa — 3 técnicos (R$)</label>
-          <input type="number" id="ex_3" value="320" oninput="render()">
+          <div class="stepper">
+              <button type="button" class="stepper-btn left" onclick="stepVal('ex_3',-1);render()">−</button>
+              <input type="number" id="ex_3" value="320" min="0" oninput="render()" step="5">
+              <button type="button" class="stepper-btn right" onclick="stepVal('ex_3',1);render()">+</button>
+            </div>
         </div>
       </div>
       <div class="ex-grid" id="ex_cards"></div>
@@ -326,7 +370,11 @@
       <div class="g2">
         <div class="field">
           <label>Margem mínima desejada (%)</label>
-          <input type="number" id="mg_min" value="42" oninput="render()">
+          <div class="stepper">
+              <button type="button" class="stepper-btn left" onclick="stepVal('mg_min',-1);render()">−</button>
+              <input type="number" id="mg_min" value="42" min="1" oninput="render()" step="1">
+              <button type="button" class="stepper-btn right" onclick="stepVal('mg_min',1);render()">+</button>
+            </div>
           <div class="hint">define a 1ª hora automaticamente</div>
         </div>
         <div class="field">
@@ -373,7 +421,11 @@
       <div class="g2">
         <div class="field">
           <label>Margem mínima desejada (%)</label>
-          <input type="number" id="mg_d" value="42" oninput="render()">
+          <div class="stepper">
+              <button type="button" class="stepper-btn left" onclick="stepVal('mg_d',-1);render()">−</button>
+              <input type="number" id="mg_d" value="42" min="1" oninput="render()" step="1">
+              <button type="button" class="stepper-btn right" onclick="stepVal('mg_d',1);render()">+</button>
+            </div>
         </div>
         <div class="field">
           <label>Dias de trabalho</label>
@@ -419,6 +471,13 @@
 
 <script>
 let faixa = 'express';
+
+function stepVal(id, delta) {
+  const el = document.getElementById(id);
+  const cur = parseFloat(el.value) || 0;
+  const min = el.min !== '' ? parseFloat(el.min) : -Infinity;
+  el.value = Math.max(min, cur + delta);
+}
 
 const fmt = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const syncP = () => document.getElementById('lp').textContent = document.getElementById('h_pad').value + 'h';
