@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Proposta Interfonia | Adriana | Attive</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #08141C; --bg2: #0D1E28; --bg3: #061018; --surface: #112233;
+  --blue: #1FA8E0; --blue2: #0E6FA3; --blue-dim: rgba(31,168,224,0.12);
+  --white: #F0F8FF; --gray: #7FA8C0; --gray2: #1E3448;
+  --green: #18C97A; --green-dim: rgba(24,201,122,0.1);
+  --gold: #FFD966; --gold-dim: rgba(255,217,102,0.1);
+  --orange: #FF8C42; --orange-dim: rgba(255,140,66,0.1);
+  --font: 'DM Sans', sans-serif; --serif: 'DM Serif Display', serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--white); font-family: var(--font); font-size: 15px; line-height: 1.7; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+.animate-fadeUp { animation: fadeInUp 0.7s ease forwards; }
+.animate-fadeLeft { animation: fadeInLeft 0.7s ease forwards; }
+.animate-fadeRight { animation: fadeInRight 0.7s ease forwards; }
+.animate-scale { animation: scaleIn 0.5s ease forwards; }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-container {
+  background: var(--surface);
+  border: 1px solid var(--blue2);
+  border-radius: 20px;
+  max-width: 450px;
+  width: 90%;
+  padding: 28px 24px;
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-container { transform: scale(1); }
+.modal-icon { margin-bottom: 16px; }
+.modal-title { font-family: var(--serif); font-size: 24px; margin-bottom: 12px; color: var(--orange); }
+.modal-message { font-size: 14px; color: var(--gray); margin-bottom: 24px; line-height: 1.6; }
+.modal-btn { background: var(--blue); color: var(--white); border: none; border-radius: 50px; padding: 12px 28px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.modal-btn:hover { background: var(--blue2); transform: translateY(-2px); }
+.cover {
+  min-height: 100vh;
+  background: var(--bg3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 44px 32px;
+  position: relative;
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 110% 80%, rgba(31,168,224,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cover-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, var(--blue), transparent); }
+.cover-dots {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+  height: 200px;
+  background-image: radial-gradient(circle, rgba(31,168,224,0.18) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: radial-gradient(ellipse at bottom right, black 30%, transparent 70%);
+}
+.cover-logo img { height: 70px; width: auto; display: block; animation: fadeInLeft 0.6s ease forwards; }
+.cover-body { animation: fadeInUp 0.8s ease 0.2s forwards; opacity: 0; animation-fill-mode: forwards; }
+.cover-footer { animation: fadeInUp 0.6s ease 0.4s forwards; opacity: 0; animation-fill-mode: forwards; }
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--blue2);
+  color: var(--blue);
+  padding: 7px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 28px;
+  background: var(--blue-dim);
+}
+.cover-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); display: inline-block; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{ opacity: 0.4; transform: scale(0.8);} 50%{ opacity: 1; transform: scale(1.2);} }
+.cover-kicker { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+.cover-title { font-family: var(--serif); font-size: 52px; font-weight: 400; line-height: 1.1; margin-bottom: 16px; }
+.cover-title em { font-style: italic; color: var(--blue); }
+.cover-sub { font-size: 14px; color: var(--gray); max-width: 420px; line-height: 1.6; }
+.cover-footer { border-top: 1px solid var(--gray2); padding-top: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+.cover-footer-left p { font-size: 12px; color: var(--gray); line-height: 1.9; }
+.cover-footer-left strong { color: var(--white); font-weight: 500; }
+.cover-scroll { font-size: 11px; color: var(--gray); display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+.cover-scroll span { animation: bob 1.6s infinite; }
+@keyframes bob { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(5px); } }
+.main { max-width: 1200px; margin: 0 auto; padding: 0 24px 80px; }
+.sk { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+.sk::before { content: ''; width: 20px; height: 1px; background: var(--blue); }
+.st { font-family: var(--serif); font-size: 32px; font-weight: 400; line-height: 1.2; margin-bottom: 20px; }
+.st em { font-style: italic; color: var(--blue); }
+.sb { font-size: 14px; color: var(--gray); line-height: 1.8; }
+.divider { border: none; border-top: 1px solid var(--gray2); margin: 48px 0; }
+.diag-grid { display: grid; gap: 12px; margin-top: 20px; }
+.diag-item {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 12px 12px 0;
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+}
+.diag-item:hover { transform: translateX(5px); border-left-color: var(--green); }
+.dico { flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px; background: var(--blue-dim); border: 1px solid var(--blue2); display: flex; align-items: center; justify-content: center; }
+.servico-card {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  margin-bottom: 28px;
+}
+.servico-card:hover { transform: translateY(-3px); border-color: var(--blue); }
+.card-header {
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(31,168,224,0.05), transparent);
+  border-bottom: 1px solid var(--gray2);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.card-header input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--blue);
+  cursor: pointer;
+  margin: 0;
+}
+.card-header label {
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--gray);
+}
+.card-header h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--blue);
+  margin-left: auto;
+}
+.card-body { padding: 20px; }
+.preco {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gold);
+  margin: 0 0 8px;
+}
+.preco small {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--gray);
+}
+.divisoria-preco {
+  border-top: 1px solid var(--gray2);
+  margin: 12px 0 16px;
+  width: 100%;
+}
+.preco-detalhe { font-size: 13px; color: var(--gray); margin-bottom: 12px; border-left: 2px solid var(--blue); padding-left: 12px; }
+.materiais-list { list-style: none; margin: 16px 0; }
+.materiais-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; margin-bottom: 8px; }
+.materiais-list li .bullet { color: var(--blue); font-weight: bold; margin-right: 4px; }
+.total-box {
+  background: var(--blue-dim);
+  border: 1px solid var(--blue2);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 24px 0;
+  text-align: center;
+}
+.total-box .total-valor { font-size: 36px; font-weight: 700; color: var(--gold); }
+.total-subnote { font-size: 12px; color: var(--gray); margin-top: 8px; }
+.pagamento-box { background: var(--blue-dim); border: 1px solid var(--blue2); border-radius: 16px; padding: 20px; margin: 24px 0; }
+.pagamento-opcoes { display: flex; gap: 24px; flex-wrap: wrap; }
+.opcao-radio { display: flex; align-items: center; gap: 12px; background: var(--bg2); border-radius: 12px; padding: 12px 20px; flex: 1; min-width: 180px; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
+.opcao-radio.selected { border-color: var(--blue); background: var(--blue-dim); }
+.opcao-radio input { accent-color: var(--blue); width: 18px; height: 18px; cursor: pointer; }
+.opcao-radio label { font-size: 14px; font-weight: 500; cursor: pointer; flex: 1; }
+.opcao-radio .valor { font-weight: 700; color: var(--gold); margin-left: auto; }
+.cond-box {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: 14px;
+  padding: 22px;
+  margin-top: 32px;
+}
+.cond-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.cond-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; }
+.cond-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 8px; }
+.cli-card { background: var(--surface); border: 1px solid var(--gray2); border-radius: 14px; padding: 22px; margin: 20px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cf label { font-size: 10px; color: var(--gray); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.cf p { font-size: 14px; font-weight: 500; margin-top: 3px; }
+.cf.full { grid-column: 1/-1; }
+.btn-main {
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 16px 32px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  display: block;
+  box-shadow: 0 4px 24px rgba(24,201,122,0.3);
+  transition: all 0.2s;
+}
+.btn-main:hover { transform: translateY(-3px); background: #1eb86e; }
+.apv-box { display: none; background: rgba(24,201,122,0.08); border: 1px solid rgba(24,201,122,0.25); border-radius: 16px; padding: 24px; text-align: center; margin: 32px 0; }
+.apv-box.show { display: block; }
+.apv-title { font-family: var(--serif); font-size: 20px; color: var(--green); margin: 8px 0 4px; }
+.sig { text-align: center; margin: 32px 0 8px; }
+.sig-avatar { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--blue); object-fit: cover; margin-bottom: 16px; }
+.sig-line { width: 160px; height: 1px; background: var(--gray2); margin: 0 auto 14px; }
+.sig-name { font-size: 13px; font-weight: 600; }
+.sig-crea { display: inline-block; margin-top: 8px; background: var(--blue-dim); border: 1px solid var(--blue2); color: var(--blue); font-size: 10px; font-weight: 700; padding: 3px 12px; border-radius: 20px; }
+.footer { border-top: 1px solid var(--gray2); padding: 22px 24px; text-align: center; font-size: 11px; color: var(--gray); }
+.wa-btn {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: #25D366;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 13px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 99;
+  transition: all 0.2s;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+.wa-btn:hover { transform: translateY(-3px); background: #20b859; }
+@media (max-width: 768px) {
+  .cover-title { font-size: 36px; }
+  .card-header h3 { font-size: 18px; margin-left: 0; }
+  .preco { font-size: 24px; }
+  .pagamento-opcoes { flex-direction: column; }
+  .cli-card { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="customModal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+    <div class="modal-title" id="modalTitle">Atenção</div>
+    <div class="modal-message" id="modalMessage">Mensagem personalizada</div>
+    <button class="modal-btn" id="modalOkBtn">OK</button>
+  </div>
+</div>
+
+<div class="cover">
+  <div class="cover-accent"></div>
+  <div class="cover-dots"></div>
+  <div class="cover-logo">
+    <img src="https://cdn.phototourl.com/free/2026-04-01-bd1ea34f-46fa-4af7-8452-af7677dbb7e9.png" alt="Attive Tecnologia">
+  </div>
+  <div class="cover-body">
+    <div class="cover-badge">A/C Adriana · Campina Grande - PB</div>
+    <div class="cover-kicker">Proposta Técnica · Orçamento 097-2026</div>
+    <div class="cover-title">Substituição de <em>Interfone + Cabo externo</em></div>
+    <div class="cover-sub">Tubulação antiga obstruída, novo cabo aparente. Pagamento via link (PIX ou cartão). Agendamento após confirmação.</div>
+  </div>
+  <div class="cover-footer">
+    <div class="cover-footer-left">
+      <p><strong>Hélio Crispim</strong> · Eng. Eletricista</p>
+      <p>CREA-PB 12290192025PB</p>
+      <p>(83) 99678-7788</p>
+    </div>
+    <div class="cover-scroll" onclick="document.querySelector('.main').scrollIntoView({behavior:'smooth'})"><span>↓</span><small>Rolar</small></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="animate-on-scroll" data-animation="fadeUp">
+    <div class="sk">Análise da infraestrutura</div>
+    <div class="st">Diagnóstico: <em>tubulação obstruída</em></div>
+    <div class="sb">A tubulação existente está completamente obstruída, impossibilitando a passagem de novo cabo. Portanto, o cabeamento será instalado de forma externa (aparente), fixado com abraçadeiras ou canaletas. Caso seja necessária a colocação de eletroduto novo, isso será comunicado previamente com orçamento adicional.</div>
+    <div class="diag-grid">
+      <div class="diag-item"><div class="dico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div><div><h4>Novo interfone completo</h4><p>Substituição total (placa externa + monofone interno) com componentes novos e garantia.</p></div></div>
+      <div class="diag-item"><div class="dico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div><div><h4>Cabeamento externo aparente</h4><p>Fio novo instalado de forma segura na fachada e paredes internas, sem utilizar duto antigo.</p></div></div>
+      <div class="diag-item"><div class="dico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><h4>Comunicação áudio</h4><p>Chamada, conversação bidirecional e botão de abertura de portão.</p></div></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="animate-on-scroll" data-animation="fadeLeft">
+    <div class="sk">Solução definitiva</div>
+    <div class="st">Cabeamento externo <em>sem uso da tubulação antiga</em></div>
+    <div style="background:var(--surface); border:1px solid var(--gray2); border-radius:16px; padding:20px; margin:24px 0;">
+      <p style="color:var(--gray);">Devido à obstrução total da eletrocalha original, o novo cabo será instalado de forma aparente, utilizando presilhas e, se necessário, canaletas. O sistema permanecerá funcional e seguro. Se a cliente desejar proteção mecânica com eletroduto, faremos uma análise e apresentaremos um adicional antes da execução. O valor base já contempla a mão de obra e o cabeamento externo simples.</p>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="animate-on-scroll" data-animation="scale">
+    <div class="sk">Serviço completo</div>
+    <div class="st">Kit Interfonia Convencional <em>+ instalação externa</em></div>
+    <div class="sb">Preço fixo. Após a aprovação, enviaremos um link de pagamento (PIX ou cartão de crédito). O agendamento da instalação ocorrerá somente após a confirmação do pagamento.</div>
+
+    <div class="servico-card">
+      <div class="card-header">
+        <input type="checkbox" id="checkKitPrincipal" checked disabled style="opacity:0.7; cursor:default;">
+        <label style="opacity:0.7;">Serviço completo (obrigatório)</label>
+        <h3>Interfone + Cabo externo</h3>
+      </div>
+      <div class="card-body">
+        <div class="preco" id="precoBaseMostra">R$ 980,00</div>
+        <div class="divisoria-preco"></div>
+        <div class="preco-detalhe">Pagamento: <strong>R$ 980,00 à vista via link PIX</strong> ou <strong>R$ 1.060,00 parcelado em 3x no cartão de crédito via link</strong>.</div>
+        <ul class="materiais-list">
+          <li><span class="bullet">></span> 1 placa externa de áudio com botão de chamada (IP44)</li>
+          <li><span class="bullet">></span> 1 unidade interna (monofone) com gancho e fiação</li>
+          <li><span class="bullet">></span> Cabo de 2 vias instalado externamente (até 30m incluso)</li>
+          <li><span class="bullet">></span> Fonte de alimentação e fixadores para cabo aparente</li>
+          <li><span class="bullet">></span> Remoção do equipamento antigo e descarte</li>
+          <li><span class="bullet">></span> Instalação profissional, testes e treinamento</li>
+        </ul>
+        <div style="margin-top:12px; background:var(--bg2); border-radius:12px; padding:12px; font-size:12px; border-left:2px solid var(--gold);">
+          <strong>🔗 Pagamento:</strong> Após aprovar esta proposta, você receberá um link seguro para pagamento via PIX (R$ 980,00) ou parcelamento em 3x no cartão de crédito (R$ 1.060,00). O serviço será agendado somente após a confirmação do pagamento.
+        </div>
+      </div>
+    </div>
+
+    <div class="total-box">
+      <div style="font-size: 14px; color: var(--gray); margin-bottom: 8px;">Valor final do serviço (equipamentos + instalação + cabeamento externo)</div>
+      <div class="total-valor" id="totalValor">R$ 980,00</div>
+      <div class="total-subnote">* À vista no PIX = R$ 980,00 | Parcelado em 3x no cartão = R$ 1.060,00. Link de pagamento enviado após aprovação.</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="animate-on-scroll" data-animation="fadeLeft">
+    <div class="sk">Condições Comerciais</div>
+    <div class="st">Pagamento e <em>Garantias</em></div>
+    <div class="pagamento-box">
+      <h4>Escolha a forma de pagamento (link será gerado)</h4>
+      <div class="pagamento-opcoes" id="pagamento-opcoes">
+        <div class="opcao-radio" data-texto="À vista via link PIX - R$ 980,00">
+          <input type="radio" name="pagamentoInter" id="opcao_vista_inter" value="vista" checked>
+          <label for="opcao_vista_inter">À vista (PIX)</label>
+          <span class="valor" id="valorVistaInter">R$ 980,00</span>
+        </div>
+        <div class="opcao-radio" data-texto="Parcelado em 3x no cartão via link - R$ 1.060,00">
+          <input type="radio" name="pagamentoInter" id="opcao_parc_inter" value="parcelado">
+          <label for="opcao_parc_inter">Parcelado em 3x (cartão)</label>
+          <span class="valor" id="valorParcInter">3x R$ 353,33</span>
+        </div>
+      </div>
+      <div class="obs-pagamento" style="margin-top: 12px; font-size: 12px;">Após aprovar o orçamento, enviaremos um link de pagamento via WhatsApp ou e-mail. O agendamento da instalação será feito somente após a confirmação do pagamento.</div>
+    </div>
+
+    <div class="cond-box">
+      <h4>Condições Gerais</h4>
+      <ul class="cond-list">
+        <li><span class="cond-dot"></span><span><strong>Garantia:</strong> 90 dias sobre mão de obra; 12 meses sobre equipamentos.</span></li>
+        <li><span class="cond-dot"></span><span><strong>Prazo de instalação:</strong> Até 5 dias úteis após a confirmação do pagamento.</span></li>
+        <li><span class="cond-dot"></span><span><strong>Cabeamento externo:</strong> Instalação aparente devido à tubulação obstruída. Eletroduto adicional sob consulta.</span></li>
+        <li><span class="cond-dot"></span><span><strong>Pagamento:</strong> Link seguro enviado após aprovação. Não fazemos cobrança antecipada sem envio do link.</span></li>
+      </ul>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="animate-on-scroll" data-animation="fadeRight">
+    <div class="sk">Dados da Proposta</div>
+    <div class="cli-card">
+      <div class="cf full"><label>Cliente</label><p>Adriana</p></div>
+      <div class="cf full"><label>Endereço</label><p>R. Agrimensor José de Brito, 397 - Lauritzen, Campina Grande - PB, 58401-375</p></div>
+      <div class="cf"><label>Data de emissão</label><p id="data-hoje-inter"></p></div>
+      <div class="cf"><label>Validade</label><p>7 dias</p></div>
+    </div>
+    <div class="sig">
+      <img class="sig-avatar" src="https://cdn.phototourl.com/free/2026-04-01-5ab8b26d-2d00-46e8-aa83-234b907db1c7.png" alt="Hélio Crispim">
+      <div class="sig-line"></div>
+      <div class="sig-name">Hélio Crispim · Engenheiro Eletricista</div>
+      <span class="sig-crea">CREA-PB 12290192025PB</span>
+      <div class="sig-info">attivetecnologia@gmail.com · (83) 99678-7788</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="animate-on-scroll" data-animation="scale">
+    <div class="sk">Próximos Passos</div>
+    <div class="st">Vamos <em>modernizar</em> sua entrada?</div>
+    <div style="background:var(--surface); border:1px solid var(--gray2); border-radius:16px; padding:28px 24px; text-align:center;">
+      <p style="margin-bottom:20px;">Escolha a forma de pagamento (PIX à vista R$ 980 ou cartão 3x R$ 1.060), clique em "Aprovar Orçamento" e receberá um link para pagamento. Após a confirmação, agendamos a instalação.</p>
+      <div class="btn-wrap"><button class="btn-main" id="btn-aprovar-inter" onclick="aprovarInterfonia()">Aprovar Orçamento</button></div>
+      <p style="margin-top:20px; font-size:12px;">Ao aprovar, você concorda com a instalação de cabo aparente devido à tubulação obstruída e com o envio do link de pagamento. O agendamento será efetivado após a confirmação do pagamento.</p>
+    </div>
+    <div class="apv-box" id="apv-box-inter">
+      <div class="apv-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="apv-title">Proposta Aprovada!</div>
+      <div class="apv-sub" id="apv-sub-inter">Em breve enviaremos o link de pagamento. Após a confirmação, agendaremos a instalação.</div>
+    </div>
+  </div>
+</div>
+<div class="footer"><p>Attive Tecnologia · Segurança Eletrônica & Integração Tecnológica · Campina Grande - PB</p></div>
+<button class="wa-btn" onclick="abrirWAInter()"><svg viewBox="0 0 24 24" width="19" height="19" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Falar com a Attive</button>
+
+<script>
+const VALOR_VISTA = 980.00;
+const VALOR_PARCELADO = 1060.00;
+const PARCELA = VALOR_PARCELADO / 3;
+
+function formatarMoeda(valor) {
+  return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function atualizarTotais() {
+  document.getElementById('totalValor').innerText = `R$ ${formatarMoeda(VALOR_VISTA)}`;
+  document.getElementById('valorVistaInter').innerHTML = `R$ ${formatarMoeda(VALOR_VISTA)}`;
+  document.getElementById('valorParcInter').innerHTML = `3x R$ ${formatarMoeda(PARCELA)}`;
+  const opVista = document.querySelector('.opcao-radio[data-texto*="PIX"]');
+  const opParc = document.querySelector('.opcao-radio[data-texto*="cartão"]');
+  if(opVista) opVista.setAttribute('data-texto', `À vista via link PIX - R$ ${formatarMoeda(VALOR_VISTA)}`);
+  if(opParc) opParc.setAttribute('data-texto', `Parcelado em 3x no cartão via link - R$ ${formatarMoeda(VALOR_PARCELADO)}`);
+}
+atualizarTotais();
+
+const radiosPagamento = document.querySelectorAll('input[name="pagamentoInter"]');
+const opcoesDiv = document.querySelectorAll('.opcao-radio');
+function updateSelected() { opcoesDiv.forEach(op => { const r = op.querySelector('input'); if(r && r.checked) op.classList.add('selected'); else op.classList.remove('selected'); }); }
+radiosPagamento.forEach(r => r.addEventListener('change', updateSelected));
+updateSelected();
+opcoesDiv.forEach(op => op.addEventListener('click', () => { const r = op.querySelector('input'); if(r && !r.checked) { r.checked = true; updateSelected(); } }));
+
+function getPagamentoSelecionado() {
+  const selected = document.querySelector('input[name="pagamentoInter"]:checked');
+  if(!selected) return null;
+  const parent = selected.closest('.opcao-radio');
+  let texto = parent?.getAttribute('data-texto') || (selected.value === 'vista' ? 'À vista no PIX' : 'Parcelado em 3x');
+  let valor = selected.value === 'vista' ? VALOR_VISTA : VALOR_PARCELADO;
+  return { texto, valor, tipo: selected.value };
+}
+
+function showModal(title, message) {
+  const modal = document.getElementById('customModal');
+  document.getElementById('modalTitle').innerText = title;
+  document.getElementById('modalMessage').innerHTML = message;
+  modal.classList.add('active');
+  document.getElementById('modalOkBtn').onclick = () => modal.classList.remove('active');
+  modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
+}
+
+function notificarAbertura() {
+  fetch('https://formsubmit.co/ajax/attivetecnologia@gmail.com', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ _subject: '📢 PROPOSTA ABERTA - Adriana (Interfonia externa com link)', message: `Proposta 097-2026 aberta em ${new Date().toLocaleString('pt-BR')}.`, _captcha: 'false' })
+  }).catch(()=>{});
+}
+
+function aprovarInterfonia() {
+  const pag = getPagamentoSelecionado();
+  if(!pag) { showModal('Pagamento não selecionado', 'Escolha a forma de pagamento antes de aprovar.'); return; }
+  
+  const valorFormatado = formatarMoeda(pag.valor);
+  const servicosStr = 'Kit Interfone completo + instalação de cabo externo (aparente) devido à tubulação obstruída.';
+  const msg = `Olá! Aprovo a proposta 097-2026 para Adriana. Serviço: ${servicosStr} Valor: ${pag.tipo === 'vista' ? 'à vista via link PIX' : 'parcelado em 3x no cartão via link'} = R$ ${valorFormatado}. Aguardo o link de pagamento para confirmar e agendar a instalação.`;
+  
+  fetch('https://formsubmit.co/ajax/attivetecnologia@gmail.com', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ _subject:'Proposta 097-2026 Aprovada - Adriana (Interfonia externa)', message:msg, _captcha:'false' })
+  }).catch(()=>{});
+  
+  window.open(`https://wa.me/5583996787788?text=${encodeURIComponent(msg)}`, '_blank');
+  const apv = document.getElementById('apv-box-inter');
+  document.getElementById('apv-sub-inter').innerHTML = `Proposta aprovada! Valor: ${pag.tipo === 'vista' ? 'R$ 980,00 via PIX' : 'R$ 1.060,00 em 3x no cartão'}. Enviaremos o link de pagamento em breve. Após a confirmação, agendamos a instalação.`;
+  apv.classList.add('show');
+  apv.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function abrirWAInter() { window.open('https://wa.me/5583996787788?text=Olá! Recebi a proposta 097-2026 de Interfonia (cabo externo) e quero confirmar o serviço.', '_blank'); }
+
+const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const hoje = new Date();
+document.getElementById('data-hoje-inter').innerHTML = `${hoje.getDate()} de ${meses[hoje.getMonth()]} de ${hoje.getFullYear()}`;
+
+document.addEventListener('DOMContentLoaded', notificarAbertura);
+
+const animatedElements = document.querySelectorAll('.animate-on-scroll');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const anim = el.getAttribute('data-animation');
+      if (anim === 'fadeUp') el.classList.add('animate-fadeUp');
+      else if (anim === 'fadeLeft') el.classList.add('animate-fadeLeft');
+      else if (anim === 'fadeRight') el.classList.add('animate-fadeRight');
+      else if (anim === 'scale') el.classList.add('animate-scale');
+    } else {
+      entry.target.classList.remove('animate-fadeUp', 'animate-fadeLeft', 'animate-fadeRight', 'animate-scale');
+    }
+  });
+}, { threshold: 0.2 });
+animatedElements.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
