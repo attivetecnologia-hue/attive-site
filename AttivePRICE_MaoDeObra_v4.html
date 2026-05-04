@@ -218,10 +218,11 @@
     .g2 { grid-template-columns: 1fr; }
     .ref-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
     .kpi-grid { grid-template-columns: 1fr; gap: 8px; }
-    .ex-grid { grid-template-columns: 1fr; gap: 8px; }
-    .ex-card { display: flex; align-items: center; justify-content: space-between; text-align: left; padding: 14px; }
-    .ex-label { margin-bottom: 0; font-size: 11px; }
-    .ex-price { font-size: 22px; margin-bottom: 0; }
+    .ex-grid { grid-template-columns: 1fr !important; gap: 8px; width: 100%; }
+    .ex-card { display: flex !important; align-items: center; justify-content: space-between; text-align: left; padding: 14px; width: 100%; box-sizing: border-box; }
+    .ex-label { margin-bottom: 0; font-size: 11px; flex: 1; }
+    .ex-price { font-size: 22px; margin-bottom: 0; text-align: right; }
+    .ex-info { text-align: right; margin-left: 8px; }
     .card { padding: 1.25rem 1rem; }
     .resumo { padding: 1.25rem 1rem; }
     .btn-row { flex-direction: column; }
