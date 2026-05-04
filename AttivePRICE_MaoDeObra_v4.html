@@ -209,11 +209,33 @@
   @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
   @media (max-width: 600px) {
-    .faixas { grid-template-columns: 1fr; }
-    .g3 { grid-template-columns: 1fr 1fr; }
+    .app { padding: 1.25rem 1rem 3rem; }
+    .header { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .faixas { grid-template-columns: 1fr; gap: 8px; }
+    .faixa { padding: 1rem; display: flex; align-items: center; gap: 12px; text-align: left; }
+    .faixa-icon { font-size: 20px; margin-bottom: 0; min-width: 28px; }
+    .g3 { grid-template-columns: 1fr; }
     .g2 { grid-template-columns: 1fr; }
-    .ref-grid, .kpi-grid, .ex-grid { grid-template-columns: 1fr 1fr; }
-    .header { flex-direction: column; gap: 12px; }
+    .ref-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .kpi-grid { grid-template-columns: 1fr; gap: 8px; }
+    .ex-grid { grid-template-columns: 1fr; gap: 8px; }
+    .ex-card { display: flex; align-items: center; justify-content: space-between; text-align: left; padding: 14px; }
+    .ex-label { margin-bottom: 0; font-size: 11px; }
+    .ex-price { font-size: 22px; margin-bottom: 0; }
+    .card { padding: 1.25rem 1rem; }
+    .resumo { padding: 1.25rem 1rem; }
+    .btn-row { flex-direction: column; }
+    .btn { width: 100%; text-align: center; }
+    .bkr { font-size: 12px; }
+    .bkr span:last-child { font-size: 12px; }
+    .bkr:last-child span:last-child { font-size: 17px; }
+    .kv { font-size: 20px; }
+    table { font-size: 11px; }
+    th, td { padding: 7px 6px; }
+    .tbl-wrap { margin: 0 -4px; }
+    .slider-labels { font-size: 10px; }
+    .ref-card { padding: 10px 8px; }
+    .rv { font-size: 14px; }
   }
 </style>
 </head>
