@@ -124,10 +124,11 @@
 
 
   /* SLIDER */
-  .slider-wrap { display: flex; flex-direction: column; gap: 6px; }
+  .slider-wrap { display: flex; flex-direction: column; gap: 6px; min-height: 44px; }
   input[type=range] {
     -webkit-appearance: none; width: 100%; height: 3px;
     background: var(--border2); border-radius: 99px; outline: none; cursor: pointer; margin-top: 4px;
+    padding: 10px 0;
   }
   input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
@@ -286,7 +287,7 @@
     <div class="faixa" id="f_padrao" onclick="setFaixa('padrao')">
       <div class="faixa-icon">🔧</div>
       <div class="faixa-nome">Padrão</div>
-      <div class="faixa-desc">2h – 6h · escala progressiva</div>
+      <div class="faixa-desc">1h – 8h · escala progressiva</div>
     </div>
     <div class="faixa" id="f_diaria" onclick="setFaixa('diaria')">
       <div class="faixa-icon">📋</div>
@@ -388,10 +389,10 @@
       </div>
       <div class="g1">
         <div class="field">
-          <label>Horas do serviço (2h a 6h)</label>
+          <label>Horas do serviço (1h a 8h)</label>
           <div class="slider-wrap">
-            <input type="range" id="h_pad" min="2" max="6" value="4" oninput="syncP();render()">
-            <div class="slider-labels"><span>2h</span><span class="sv" id="lp">4h</span><span>6h</span></div>
+            <input type="range" id="h_pad" min="1" max="8" value="4" oninput="syncP();render()">
+            <div class="slider-labels"><span>1h</span><span class="sv" id="lp">4h</span><span>8h</span></div>
           </div>
         </div>
       </div>
@@ -435,6 +436,17 @@
           </div>
         </div>
       </div>
+      <div class="g1">
+        <div class="field">
+          <label>Horas produtivas por dia</label>
+          <div class="stepper">
+            <button type="button" class="stepper-btn left" onclick="stepVal('hpd',-1);render()">−</button>
+            <input type="number" id="hpd" value="6" min="1" max="12" oninput="render()" step="1">
+            <button type="button" class="stepper-btn right" onclick="stepVal('hpd',1);render()">+</button>
+          </div>
+          <div class="hint">padrão: 6h produtivas por dia</div>
+        </div>
+      </div>
       <div class="ref-grid">
         <div class="ref-card"><div class="rl">Custo/h equipe</div><div class="rv" id="d_ceq">—</div><div class="rs">interno</div></div>
         <div class="ref-card"><div class="rl">Diária 1 téc.</div><div class="rv" id="d_1">—</div><div class="rs">fechada</div></div>
@@ -456,7 +468,7 @@
     <div class="breakdown">
       <div class="bkr"><span>Receita mão de obra</span><span id="b_rec">—</span></div>
       <div class="bkr"><span>Custo total da equipe</span><span id="b_cus">—</span></div>
-      <div class="bkr"><span>Imposto ({{ imp }}%)</span><span id="b_imp">—</span></div>
+      <div class="bkr"><span id="lbl_imp">Imposto (6%)</span><span id="b_imp">—</span></div>
       <div class="bkr"><span>Lucro líquido</span><span id="b_luc">—</span></div>
       <div class="bkr"><span>Preço final ao cliente</span><span id="b_fin">—</span></div>
     </div>
@@ -499,7 +511,7 @@ function render() {
   const ceq = ch * nt;
 
   // Atualiza label imposto
-  document.querySelectorAll('.bkr span:first-child')[2].textContent = `Imposto (${(imp*100).toFixed(0)}%)`;
+  document.getElementById('lbl_imp').textContent = `Imposto (${(imp*100).toFixed(1)}%)`;
 
   let rec = 0, cus = 0;
 
@@ -510,10 +522,11 @@ function render() {
       parseFloat(document.getElementById('ex_2').value)||260,
       parseFloat(document.getElementById('ex_3').value)||320
     ];
+    const horas_ex = 2; // horas padrão do serviço express
     const wrap = document.getElementById('ex_cards');
     wrap.innerHTML = '';
     [1,2,3].forEach(i => {
-      const r = t[i], c = ch * i * 2;
+      const r = t[i], c = ch * i * horas_ex;
       const luc = r - c - r*imp;
       const mg = (luc/r*100).toFixed(1);
       const cor = luc/r>=0.38 ? '#00E5A0' : luc/r>=0.22 ? '#FFB800' : '#FF4D4D';
@@ -523,14 +536,14 @@ function render() {
         <div class="ex-info" style="color:${cor}">Lucro ${fmt(luc)} · ${mg}%</div>
       </div>`;
     });
-    rec = t[nt]; cus = ceq * 2;
+    rec = t[nt]; cus = ceq * horas_ex;
   }
 
   // ── PADRÃO ──
   else if (faixa === 'padrao') {
     const mg  = parseFloat(document.getElementById('mg_min').value)/100||0.42;
     const q   = parseFloat(document.getElementById('queda').value);
-    const hrs = parseInt(document.getElementById('h_pad').value)||4;
+    const hrs = parseInt(document.getElementById('h_pad').value)||1;
     const h1  = ceq / (1 - mg);
     const piso= ceq * 1.15;
     document.getElementById('r_ceq').textContent  = fmt(ceq);
@@ -568,7 +581,7 @@ function render() {
   else {
     const mg  = parseFloat(document.getElementById('mg_d').value)/100||0.42;
     const dias= parseInt(document.getElementById('h_dia').value)||1;
-    const hpd = 6;
+    const hpd = parseInt(document.getElementById('hpd').value)||6;
     const d1  = (ch*hpd)/(1-mg);
     const dn  = (ceq*hpd)/(1-mg);
     document.getElementById('d_ceq').textContent = fmt(ceq);
@@ -641,6 +654,7 @@ function resetar() {
   document.getElementById('h_pad').value   = 4;
   document.getElementById('mg_d').value    = 42;
   document.getElementById('h_dia').value   = 1;
+  document.getElementById('hpd').value      = 6;
   syncP(); syncD(); setFaixa('express');
 }
 
