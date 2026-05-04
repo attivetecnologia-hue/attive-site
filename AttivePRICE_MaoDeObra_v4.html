@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AttivePRICE — Mão de Obra</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #0A0C0F;
+    --bg2:     #111318;
+    --bg3:     #181C22;
+    --border:  #1F242D;
+    --border2: #2A3040;
+    --accent:  #00E5A0;
+    --blue:    #0090FF;
+    --amber:   #FFB800;
+    --red:     #FF4D4D;
+    --text:    #F0F2F5;
+    --text2:   #8A94A6;
+    --text3:   #4A5568;
+    --radius:  12px;
+    --rsm:     8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,160,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,160,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none; z-index: 0;
+  }
+  .app {
+    position: relative; z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+  .logo span { color: var(--accent); }
+  .logo-sub { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 4px; letter-spacing: 0.06em; }
+  .badge { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); background: var(--bg3); border: 1px solid var(--border); padding: 4px 12px; border-radius: 99px; white-space: nowrap; }
+
+  /* FAIXAS */
+  .faixas { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 2rem; }
+  .faixa {
+    background: var(--bg2); border: 1.5px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem 1rem;
+    cursor: pointer; text-align: center; transition: all 0.18s;
+  }
+  .faixa:hover { border-color: var(--border2); transform: translateY(-2px); }
+  .faixa.ativa { border-color: var(--accent); background: rgba(0,229,160,0.05); }
+  .faixa-icon { font-size: 24px; margin-bottom: 6px; }
+  .faixa-nome { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .faixa.ativa .faixa-nome { color: var(--accent); }
+  .faixa-desc { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+
+  /* CARD */
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; animation: fadeUp 0.25s ease both; }
+  .card-title {
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3);
+    margin-bottom: 1.25rem; display: flex; align-items: center; gap: 8px;
+  }
+  .card-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  /* GRID */
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .g1 { margin-bottom: 12px; }
+
+  /* FIELD */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text2); letter-spacing: 0.06em; text-transform: uppercase; }
+  .field input, .field select {
+    background: var(--bg3); border: 1px solid var(--border2);
+    border-radius: var(--rsm); padding: 10px 12px;
+    font-size: 14px; font-family: 'DM Sans', sans-serif;
+    color: var(--text); outline: none; width: 100%;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--accent); }
+  .field select option { background: var(--bg3); }
+  .hint { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; }
+
+  /* SLIDER */
+  .slider-wrap { display: flex; flex-direction: column; gap: 6px; }
+  input[type=range] {
+    -webkit-appearance: none; width: 100%; height: 3px;
+    background: var(--border2); border-radius: 99px; outline: none; cursor: pointer; margin-top: 4px;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 12px rgba(0,229,160,0.5);
+    cursor: pointer; transition: transform 0.15s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; }
+  .sv { color: var(--accent); font-weight: 600; }
+
+  /* REF MINI CARDS */
+  .ref-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-top: 14px; }
+  .ref-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--rsm); padding: 10px 12px; text-align: center; }
+  .rl { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; margin-bottom: 5px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .rv { font-size: 15px; font-weight: 700; color: var(--accent); font-family: 'Syne', sans-serif; }
+  .rs { font-size: 10px; color: var(--text3); margin-top: 2px; }
+
+  /* EXPRESS CARDS */
+  .ex-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 14px; }
+  .ex-card {
+    background: var(--bg3); border: 1.5px solid var(--border);
+    border-radius: var(--rsm); padding: 16px; text-align: center; transition: border-color 0.15s;
+  }
+  .ex-card.sel { border-color: var(--accent); background: rgba(0,229,160,0.04); }
+  .ex-label { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .ex-price { font-size: 28px; font-weight: 800; font-family: 'Syne', sans-serif; color: var(--text); margin-bottom: 6px; }
+  .ex-card.sel .ex-price { color: var(--accent); }
+  .ex-info { font-size: 11px; font-family: 'DM Mono', monospace; }
+
+  /* TABELA */
+  .tbl-wrap { overflow-x: auto; margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3);
+    padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap;
+  }
+  td { padding: 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr.dest td { background: rgba(0,229,160,0.04); }
+  tr.dest td:first-child { border-left: 2px solid var(--accent); padding-left: 8px; }
+  .pc { font-weight: 700; color: var(--accent); font-family: 'DM Mono', monospace; }
+  .bar-w { display: flex; align-items: center; gap: 8px; min-width: 90px; }
+  .bar-t { flex: 1; height: 4px; background: var(--bg3); border-radius: 99px; overflow: hidden; }
+  .bar-f { height: 4px; border-radius: 99px; transition: width 0.3s; }
+  .mga { color: #00E5A0; } .mgb { color: #0090FF; } .mgc { color: #FFB800; } .mgd { color: #FF4D4D; }
+
+  /* ALERTA */
+  .alerta { border-radius: var(--rsm); padding: 10px 14px; font-size: 12px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 8px; font-family: 'DM Mono', monospace; border-left: 3px solid; }
+  .al-info { background: rgba(0,144,255,0.08); color: #60B4FF; border-color: var(--blue); }
+
+  /* SEMÁFORO */
+  .semaforo {
+    border-radius: var(--rsm); padding: 13px 16px; font-size: 13px; font-weight: 500;
+    display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; border-left: 3px solid;
+  }
+  .sem-v { background: rgba(0,229,160,0.08); color: var(--accent); border-color: var(--accent); }
+  .sem-a { background: rgba(255,184,0,0.08); color: var(--amber); border-color: var(--amber); }
+  .sem-r { background: rgba(255,77,77,0.08); color: var(--red); border-color: var(--red); }
+
+  /* KPI */
+  .kpi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.25rem; }
+  .kpi { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--rsm); padding: 14px; }
+  .kl { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+  .kv { font-size: 22px; font-weight: 800; font-family: 'Syne', sans-serif; }
+  .kv-g { color: var(--accent); } .kv-b { color: var(--blue); } .kv-a { color: var(--amber); }
+
+  /* BREAKDOWN */
+  .breakdown { font-size: 13px; }
+  .bkr { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); color: var(--text2); }
+  .bkr:last-child { border-bottom: none; padding-top: 14px; font-size: 15px; font-weight: 600; color: var(--text); }
+  .bkr span:last-child { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text); font-weight: 500; }
+  .bkr:last-child span:last-child { color: var(--accent); font-size: 20px; font-family: 'Syne', sans-serif; font-weight: 800; }
+
+  /* RESUMO */
+  .resumo {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem; margin-top: 1rem;
+    position: relative; overflow: hidden; animation: fadeUp 0.3s ease both;
+  }
+  .resumo::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent),var(--blue)); }
+
+  /* BOTÕES */
+  .btn-row { display: flex; gap: 10px; margin-top: 1.25rem; }
+  .btn {
+    flex: 1; padding: 13px; font-size: 13px; font-weight: 600;
+    font-family: 'DM Sans', sans-serif; border-radius: var(--rsm);
+    border: 1px solid var(--border2); background: var(--bg3);
+    color: var(--text2); cursor: pointer; transition: all 0.15s; letter-spacing: 0.02em;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #0A0C0F; }
+  .btn.primary:hover { background: #00c988; }
+  .btn.ok { border-color: var(--accent); color: var(--accent); }
+
+  /* BLOCO */
+  .bloco { display: none; }
+  .bloco.show { display: block; }
+
+  /* FOOTER */
+  .footer { text-align: center; margin-top: 3rem; font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; letter-spacing: 0.06em; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  @media (max-width: 600px) {
+    .faixas { grid-template-columns: 1fr; }
+    .g3 { grid-template-columns: 1fr 1fr; }
+    .g2 { grid-template-columns: 1fr; }
+    .ref-grid, .kpi-grid, .ex-grid { grid-template-columns: 1fr 1fr; }
+    .header { flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="logo">Attive<span>PRICE</span></div>
+      <div class="logo-sub">PRECIFICAÇÃO DE MÃO DE OBRA · SEGURANÇA ELETRÔNICA · CG / PB</div>
+    </div>
+    <div class="badge">SOMENTE SERVIÇO · v4.0</div>
+  </div>
+
+  <!-- SELETOR -->
+  <div class="faixas">
+    <div class="faixa ativa" id="f_express" onclick="setFaixa('express')">
+      <div class="faixa-icon">⚡</div>
+      <div class="faixa-nome">Express</div>
+      <div class="faixa-desc">até 2h · taxa fixa</div>
+    </div>
+    <div class="faixa" id="f_padrao" onclick="setFaixa('padrao')">
+      <div class="faixa-icon">🔧</div>
+      <div class="faixa-nome">Padrão</div>
+      <div class="faixa-desc">2h – 6h · escala progressiva</div>
+    </div>
+    <div class="faixa" id="f_diaria" onclick="setFaixa('diaria')">
+      <div class="faixa-icon">📋</div>
+      <div class="faixa-nome">Projeto / Diária</div>
+      <div class="faixa-desc">6h+ · diária fechada</div>
+    </div>
+  </div>
+
+  <!-- CONFIG BASE -->
+  <div class="card">
+    <div class="card-title">Configuração base</div>
+    <div class="g3">
+      <div class="field">
+        <label>Custo/hora por técnico (R$)</label>
+        <input type="number" id="custo_h" value="38" oninput="render()">
+        <div class="hint">custo real interno</div>
+      </div>
+      <div class="field">
+        <label>Nº de técnicos</label>
+        <select id="n_tec" onchange="render()">
+          <option value="1" selected>1 técnico</option>
+          <option value="2">2 técnicos</option>
+          <option value="3">3 técnicos</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Imposto s/ faturamento (%)</label>
+        <input type="number" id="imp" value="6" oninput="render()">
+        <div class="hint">simples nacional</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO EXPRESS -->
+  <div class="bloco show" id="bloco_express">
+    <div class="card">
+      <div class="card-title">⚡ Express — taxa fixa por equipe</div>
+      <div class="g3">
+        <div class="field">
+          <label>Taxa — 1 técnico (R$)</label>
+          <input type="number" id="ex_1" value="200" oninput="render()">
+          <div class="hint">serviço simples até 2h</div>
+        </div>
+        <div class="field">
+          <label>Taxa — 2 técnicos (R$)</label>
+          <input type="number" id="ex_2" value="260" oninput="render()">
+        </div>
+        <div class="field">
+          <label>Taxa — 3 técnicos (R$)</label>
+          <input type="number" id="ex_3" value="320" oninput="render()">
+        </div>
+      </div>
+      <div class="ex-grid" id="ex_cards"></div>
+    </div>
+  </div>
+
+  <!-- BLOCO PADRÃO -->
+  <div class="bloco" id="bloco_padrao">
+    <div class="card">
+      <div class="card-title">🔧 Padrão — escala progressiva</div>
+      <div class="g2">
+        <div class="field">
+          <label>Margem mínima desejada (%)</label>
+          <input type="number" id="mg_min" value="42" oninput="render()">
+          <div class="hint">define a 1ª hora automaticamente</div>
+        </div>
+        <div class="field">
+          <label>Velocidade de queda</label>
+          <select id="queda" onchange="render()">
+            <option value="0.55">Suave — projetos longos</option>
+            <option value="0.72" selected>Moderada — padrão CG ✓</option>
+            <option value="0.88">Agressiva — muito competitivo</option>
+          </select>
+        </div>
+      </div>
+      <div class="g1">
+        <div class="field">
+          <label>Horas do serviço (2h a 6h)</label>
+          <div class="slider-wrap">
+            <input type="range" id="h_pad" min="2" max="6" value="4" oninput="syncP();render()">
+            <div class="slider-labels"><span>2h</span><span class="sv" id="lp">4h</span><span>6h</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="ref-grid">
+        <div class="ref-card"><div class="rl">Custo/h equipe</div><div class="rv" id="r_ceq">—</div><div class="rs">interno</div></div>
+        <div class="ref-card"><div class="rl">1ª hora</div><div class="rv" id="r_h1">—</div><div class="rs">ao cliente</div></div>
+        <div class="ref-card"><div class="rl">Piso mínimo</div><div class="rv" id="r_piso">—</div><div class="rs">última hora</div></div>
+        <div class="ref-card"><div class="rl">Total MO</div><div class="rv" id="r_mo">—</div><div class="rs">do serviço</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Escala de preço por hora</div>
+      <div id="alerta_p"></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Hora</th><th>Preço/hora</th><th>Margem</th><th>Execução</th><th>Acumulado</th></tr></thead>
+          <tbody id="tbody_p"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO DIÁRIA -->
+  <div class="bloco" id="bloco_diaria">
+    <div class="card">
+      <div class="card-title">📋 Projeto / Diária — valor fechado por dia</div>
+      <div class="g2">
+        <div class="field">
+          <label>Margem mínima desejada (%)</label>
+          <input type="number" id="mg_d" value="42" oninput="render()">
+        </div>
+        <div class="field">
+          <label>Dias de trabalho</label>
+          <div class="slider-wrap">
+            <input type="range" id="h_dia" min="1" max="30" value="1" oninput="syncD();render()">
+            <div class="slider-labels"><span>1d</span><span class="sv" id="ld">1 dia</span><span>30d</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="ref-grid">
+        <div class="ref-card"><div class="rl">Custo/h equipe</div><div class="rv" id="d_ceq">—</div><div class="rs">interno</div></div>
+        <div class="ref-card"><div class="rl">Diária 1 téc.</div><div class="rv" id="d_1">—</div><div class="rs">fechada</div></div>
+        <div class="ref-card"><div class="rl">Diária equipe</div><div class="rv" id="d_n">—</div><div class="rs">fechada</div></div>
+        <div class="ref-card"><div class="rl">Total MO</div><div class="rv" id="d_tot">—</div><div class="rs">todos os dias</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUMO -->
+  <div class="resumo">
+    <div class="card-title">Resultado — mão de obra</div>
+    <div class="semaforo sem-v" id="sem"><span id="sem_i">✅</span><span id="sem_t">Configure o serviço acima.</span></div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kl">Receita MO</div><div class="kv kv-b" id="k_rec">—</div></div>
+      <div class="kpi"><div class="kl">Lucro líquido</div><div class="kv kv-g" id="k_luc">—</div></div>
+      <div class="kpi"><div class="kl">Margem real</div><div class="kv kv-a" id="k_mg">—</div></div>
+    </div>
+    <div class="breakdown">
+      <div class="bkr"><span>Receita mão de obra</span><span id="b_rec">—</span></div>
+      <div class="bkr"><span>Custo total da equipe</span><span id="b_cus">—</span></div>
+      <div class="bkr"><span>Imposto ({{ imp }}%)</span><span id="b_imp">—</span></div>
+      <div class="bkr"><span>Lucro líquido</span><span id="b_luc">—</span></div>
+      <div class="bkr"><span>Preço final ao cliente</span><span id="b_fin">—</span></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn primary" onclick="copiar(this)">📋 Copiar para o ERP</button>
+      <button class="btn" onclick="resetar()">🔄 Limpar</button>
+    </div>
+  </div>
+
+  <div class="footer">AttivePRICE · Somente Serviço · Campina Grande / PB · 2025</div>
+</div>
+
+<script>
+let faixa = 'express';
+
+const fmt = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const syncP = () => document.getElementById('lp').textContent = document.getElementById('h_pad').value + 'h';
+const syncD = () => { const v = document.getElementById('h_dia').value; document.getElementById('ld').textContent = v + (v==1?' dia':' dias'); };
+
+function setFaixa(f) {
+  faixa = f;
+  ['express','padrao','diaria'].forEach(x => {
+    document.getElementById('f_'+x).classList.toggle('ativa', x===f);
+    document.getElementById('bloco_'+x).classList.toggle('show', x===f);
+  });
+  render();
+}
+
+function render() {
+  const ch  = parseFloat(document.getElementById('custo_h').value) || 38;
+  const nt  = parseInt(document.getElementById('n_tec').value) || 1;
+  const imp = parseFloat(document.getElementById('imp').value) / 100 || 0.06;
+  const ceq = ch * nt;
+
+  // Atualiza label imposto
+  document.querySelectorAll('.bkr span:first-child')[2].textContent = `Imposto (${(imp*100).toFixed(0)}%)`;
+
+  let rec = 0, cus = 0;
+
+  // ── EXPRESS ──
+  if (faixa === 'express') {
+    const t = [0,
+      parseFloat(document.getElementById('ex_1').value)||200,
+      parseFloat(document.getElementById('ex_2').value)||260,
+      parseFloat(document.getElementById('ex_3').value)||320
+    ];
+    const wrap = document.getElementById('ex_cards');
+    wrap.innerHTML = '';
+    [1,2,3].forEach(i => {
+      const r = t[i], c = ch * i * 2;
+      const luc = r - c - r*imp;
+      const mg = (luc/r*100).toFixed(1);
+      const cor = luc/r>=0.38 ? '#00E5A0' : luc/r>=0.22 ? '#FFB800' : '#FF4D4D';
+      wrap.innerHTML += `<div class="ex-card ${i===nt?'sel':''}">
+        <div class="ex-label">${i} TÉCNICO${i>1?'S':''} · ATÉ 2H</div>
+        <div class="ex-price">${fmt(r)}</div>
+        <div class="ex-info" style="color:${cor}">Lucro ${fmt(luc)} · ${mg}%</div>
+      </div>`;
+    });
+    rec = t[nt]; cus = ceq * 2;
+  }
+
+  // ── PADRÃO ──
+  else if (faixa === 'padrao') {
+    const mg  = parseFloat(document.getElementById('mg_min').value)/100||0.42;
+    const q   = parseFloat(document.getElementById('queda').value);
+    const hrs = parseInt(document.getElementById('h_pad').value)||4;
+    const h1  = ceq / (1 - mg);
+    const piso= ceq * 1.15;
+    document.getElementById('r_ceq').textContent  = fmt(ceq);
+    document.getElementById('r_h1').textContent   = fmt(h1);
+    document.getElementById('r_piso').textContent = fmt(piso);
+    const tb = document.getElementById('tbody_p');
+    tb.innerHTML = ''; rec = 0;
+    for (let h = 1; h <= hrs; h++) {
+      const ph = Math.max(piso, h1 * Math.pow(q, h-1));
+      rec += ph;
+      const m = ((ph-ceq)/ph*100);
+      let mc='mga', bc='#00E5A0';
+      if(m<40){mc='mgb';bc='#0090FF';}
+      if(m<20){mc='mgc';bc='#FFB800';}
+      if(m<0) {mc='mgd';bc='#FF4D4D';}
+      const tr = document.createElement('tr');
+      if(h===hrs) tr.classList.add('dest');
+      tr.innerHTML = `
+        <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text3)">${h}ª hora</td>
+        <td class="pc">${fmt(ph)}</td>
+        <td class="${mc}" style="font-family:'DM Mono',monospace;font-size:12px">${m.toFixed(1)}%</td>
+        <td><div class="bar-w"><div class="bar-t"><div class="bar-f" style="width:${Math.max(0,Math.min(100,m))}%;background:${bc}"></div></div></div></td>
+        <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text2)">${fmt(rec)}</td>`;
+      tb.appendChild(tr);
+    }
+    document.getElementById('r_mo').textContent = fmt(rec);
+    // alerta piso
+    const ab = document.getElementById('alerta_p');
+    const pisoOn = Math.max(piso, h1*Math.pow(q,hrs-1)) === piso && hrs>1;
+    ab.innerHTML = pisoOn ? `<div class="alerta al-info">⚡ Piso mínimo ativado. Para serviços mais longos considere usar a faixa Diária.</div>` : '';
+    cus = ceq * hrs;
+  }
+
+  // ── DIÁRIA ──
+  else {
+    const mg  = parseFloat(document.getElementById('mg_d').value)/100||0.42;
+    const dias= parseInt(document.getElementById('h_dia').value)||1;
+    const hpd = 6;
+    const d1  = (ch*hpd)/(1-mg);
+    const dn  = (ceq*hpd)/(1-mg);
+    document.getElementById('d_ceq').textContent = fmt(ceq);
+    document.getElementById('d_1').textContent   = fmt(d1);
+    document.getElementById('d_n').textContent   = fmt(dn);
+    document.getElementById('d_tot').textContent = fmt(dn*dias);
+    rec = dn*dias; cus = ceq*hpd*dias;
+  }
+
+  // ── RESUMO ──
+  const imp_v = rec * imp;
+  const luc   = rec - cus - imp_v;
+  const mgr   = rec>0 ? (luc/rec*100) : 0;
+
+  document.getElementById('k_rec').textContent = fmt(rec);
+  document.getElementById('k_luc').textContent = fmt(luc);
+  document.getElementById('k_mg').textContent  = mgr.toFixed(1)+'%';
+  document.getElementById('b_rec').textContent = fmt(rec);
+  document.getElementById('b_cus').textContent = fmt(cus);
+  document.getElementById('b_imp').textContent = fmt(imp_v);
+  document.getElementById('b_luc').textContent = fmt(luc);
+  document.getElementById('b_fin').textContent = fmt(rec);
+
+  const s  = document.getElementById('sem');
+  const nm = {express:'⚡ Express', padrao:'🔧 Padrão', diaria:'📋 Diária'};
+  s.className = 'semaforo';
+  if(mgr>=38){
+    s.classList.add('sem-v');
+    document.getElementById('sem_i').textContent='✅';
+    document.getElementById('sem_t').textContent=`${nm[faixa]} · Margem de ${mgr.toFixed(1)}% com ${nt} técnico${nt>1?'s':''} — saudável. Pode apresentar com confiança.`;
+  } else if(mgr>=22){
+    s.classList.add('sem-a');
+    document.getElementById('sem_i').textContent='⚠️';
+    document.getElementById('sem_t').textContent=`${nm[faixa]} · Margem de ${mgr.toFixed(1)}% — no limite. Revise os valores ou aumente a margem mínima.`;
+  } else {
+    s.classList.add('sem-r');
+    document.getElementById('sem_i').textContent='🚨';
+    document.getElementById('sem_t').textContent=`${nm[faixa]} · Margem de ${mgr.toFixed(1)}% — insustentável. Ajuste os parâmetros.`;
+  }
+}
+
+function copiar(btn) {
+  const nt = document.getElementById('n_tec').value;
+  const labels = {express:'EXPRESS',padrao:'PADRÃO',diaria:'DIÁRIA'};
+  const txt = [
+    `=== ATTIVEPRICE — MÃO DE OBRA · ${labels[faixa]} / ${nt} técnico(s) ===`,
+    'Receita MO: '   + document.getElementById('b_rec').textContent,
+    'Custo equipe: ' + document.getElementById('b_cus').textContent,
+    'Imposto: '      + document.getElementById('b_imp').textContent,
+    'Lucro líquido: '+ document.getElementById('b_luc').textContent,
+    'Margem: '       + document.getElementById('k_mg').textContent,
+    '---',
+    'PREÇO FINAL AO CLIENTE: ' + document.getElementById('b_fin').textContent,
+  ].join('\n');
+  navigator.clipboard.writeText(txt).then(()=>{
+    btn.textContent='✅ Copiado!'; btn.classList.add('ok');
+    setTimeout(()=>{ btn.textContent='📋 Copiar para o ERP'; btn.classList.remove('ok'); },2000);
+  });
+}
+
+function resetar() {
+  document.getElementById('custo_h').value = 38;
+  document.getElementById('n_tec').value   = 1;
+  document.getElementById('imp').value     = 6;
+  document.getElementById('ex_1').value    = 200;
+  document.getElementById('ex_2').value    = 260;
+  document.getElementById('ex_3').value    = 320;
+  document.getElementById('mg_min').value  = 42;
+  document.getElementById('queda').value   = 0.72;
+  document.getElementById('h_pad').value   = 4;
+  document.getElementById('mg_d').value    = 42;
+  document.getElementById('h_dia').value   = 1;
+  syncP(); syncD(); setFaixa('express');
+}
+
+syncP(); syncD(); render();
+</script>
+</body>
+</html>
