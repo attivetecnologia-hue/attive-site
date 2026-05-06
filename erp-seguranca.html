@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShieldERP — Segurança Eletrônica</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c0f;
+  --bg2: #111418;
+  --bg3: #181c22;
+  --bg4: #1e242c;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --accent: #00e5a0;
+  --accent2: #00b87a;
+  --accent-dim: rgba(0,229,160,0.1);
+  --accent-dim2: rgba(0,229,160,0.05);
+  --text: #e8ecf0;
+  --text2: #8a9bb0;
+  --text3: #4a5568;
+  --red: #ff4d4d;
+  --red-dim: rgba(255,77,77,0.1);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245,158,11,0.1);
+  --blue: #3b82f6;
+  --blue-dim: rgba(59,130,246,0.1);
+  --purple: #8b5cf6;
+  --purple-dim: rgba(139,92,246,0.1);
+  --sidebar-w: 220px;
+  --header-h: 56px;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 14px; line-height: 1.6; overflow-x: hidden; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
+
+/* LAYOUT */
+#app { display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+#sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+  overflow-y: auto;
+}
+.sidebar-logo {
+  padding: 18px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.logo-mark {
+  display: flex; align-items: center; gap: 10px;
+}
+.logo-icon {
+  width: 30px; height: 30px;
+  background: var(--accent);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-icon svg { width: 16px; height: 16px; }
+.logo-text { font-family: var(--font-display); font-weight: 700; font-size: 16px; letter-spacing: -0.3px; }
+.logo-sub { font-size: 10px; color: var(--text3); letter-spacing: 0.8px; text-transform: uppercase; font-family: var(--font-mono); margin-top: 1px; }
+.nav-section { padding: 12px 0; }
+.nav-label { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; padding: 4px 20px 8px; font-family: var(--font-mono); }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  font-size: 13px;
+  color: var(--text2);
+  border-left: 2px solid transparent;
+  margin: 1px 0;
+}
+.nav-item:hover { background: var(--accent-dim2); color: var(--text); border-left-color: var(--border2); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); border-left-color: var(--accent); font-weight: 500; }
+.nav-item .icon { width: 16px; height: 16px; opacity: 0.7; flex-shrink: 0; }
+.nav-item.active .icon { opacity: 1; }
+.nav-badge { margin-left: auto; background: var(--accent); color: var(--bg); font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 10px; font-family: var(--font-mono); }
+.nav-badge.red { background: var(--red); }
+.nav-badge.amber { background: var(--amber); color: var(--bg); }
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+}
+.user-chip {
+  display: flex; align-items: center; gap: 10px;
+}
+.user-avatar {
+  width: 30px; height: 30px;
+  background: var(--purple-dim);
+  border: 1px solid var(--purple);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: var(--purple);
+  font-family: var(--font-mono);
+}
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-role { font-size: 10px; color: var(--text3); font-family: var(--font-mono); }
+
+/* MAIN */
+#main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+#header {
+  height: var(--header-h);
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 28px;
+  gap: 16px;
+  position: sticky; top: 0; z-index: 50;
+}
+.header-breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.header-breadcrumb .crumb-sep { color: var(--text3); }
+.header-breadcrumb .crumb-active { color: var(--text); font-weight: 500; }
+.header-breadcrumb .crumb-main { color: var(--text3); }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.header-btn {
+  width: 32px; height: 32px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s;
+  position: relative;
+}
+.header-btn:hover { background: var(--bg4); border-color: var(--border2); }
+.header-btn svg { width: 15px; height: 15px; color: var(--text2); }
+.notif-dot {
+  position: absolute; top: 5px; right: 5px;
+  width: 6px; height: 6px;
+  background: var(--red); border-radius: 50%;
+  border: 1px solid var(--bg2);
+}
+.status-badge {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 10px;
+  background: rgba(0,229,160,0.08);
+  border: 1px solid rgba(0,229,160,0.2);
+  border-radius: 20px;
+  font-size: 11px; color: var(--accent); font-family: var(--font-mono);
+}
+.status-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+#content { flex: 1; padding: 28px; overflow-y: auto; }
+
+/* PAGE HEADER */
+.page-header { margin-bottom: 28px; }
+.page-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
+.page-subtitle { color: var(--text2); font-size: 13px; margin-top: 4px; }
+.page-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+
+/* CARDS GRID */
+.cards-grid { display: grid; gap: 16px; }
+.cards-4 { grid-template-columns: repeat(4, 1fr); }
+.cards-3 { grid-template-columns: repeat(3, 1fr); }
+.cards-2 { grid-template-columns: repeat(2, 1fr); }
+
+/* STAT CARD */
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.stat-card:hover { border-color: var(--border2); }
+.stat-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.stat-card.green::before { background: var(--accent); }
+.stat-card.red::before { background: var(--red); }
+.stat-card.blue::before { background: var(--blue); }
+.stat-card.amber::before { background: var(--amber); }
+.stat-card.purple::before { background: var(--purple); }
+.stat-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; font-family: var(--font-mono); margin-bottom: 8px; }
+.stat-value { font-family: var(--font-display); font-size: 26px; font-weight: 700; letter-spacing: -1px; line-height: 1; }
+.stat-value.sm { font-size: 20px; }
+.stat-change { display: flex; align-items: center; gap: 4px; margin-top: 8px; font-size: 11px; font-family: var(--font-mono); }
+.stat-change.up { color: var(--accent); }
+.stat-change.down { color: var(--red); }
+.stat-icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); opacity: 0.06; }
+.stat-icon svg { width: 48px; height: 48px; }
+
+/* DATA TABLE */
+.table-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.table-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+}
+.table-title { font-weight: 600; font-size: 14px; font-family: var(--font-display); }
+.table-count { font-size: 11px; color: var(--text3); font-family: var(--font-mono); background: var(--bg3); padding: 2px 8px; border-radius: 10px; }
+.table-actions { margin-left: auto; display: flex; gap: 8px; }
+table { width: 100%; border-collapse: collapse; }
+th {
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg3); }
+.td-mono { font-family: var(--font-mono); font-size: 12px; color: var(--text2); }
+.td-name { font-weight: 500; }
+.td-sub { font-size: 11px; color: var(--text3); }
+
+/* BADGES */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.badge.green { background: rgba(0,229,160,0.1); color: var(--accent); border: 1px solid rgba(0,229,160,0.2); }
+.badge.red { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,77,77,0.2); }
+.badge.amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+.badge.blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
+.badge.purple { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(139,92,246,0.2); }
+.badge.gray { background: rgba(255,255,255,0.04); color: var(--text2); border: 1px solid var(--border); }
+.badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.btn-primary:hover { background: var(--accent2); border-color: var(--accent2); }
+.btn-ghost { background: transparent; color: var(--text2); border-color: var(--border); }
+.btn-ghost:hover { background: var(--bg3); color: var(--text); border-color: var(--border2); }
+.btn-danger { background: var(--red-dim); color: var(--red); border-color: rgba(255,77,77,0.2); }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn svg { width: 14px; height: 14px; }
+
+/* CARD */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.card-title { font-family: var(--font-display); font-size: 15px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.card-title-sm { font-size: 13px; font-weight: 600; margin-bottom: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; font-family: var(--font-mono); font-size: 11px; }
+
+/* PROGRESS */
+.progress-bar { background: var(--bg4); border-radius: 4px; height: 4px; overflow: hidden; margin-top: 8px; }
+.progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+.progress-fill.green { background: var(--accent); }
+.progress-fill.amber { background: var(--amber); }
+.progress-fill.red { background: var(--red); }
+.progress-fill.blue { background: var(--blue); }
+
+/* PIPELINE */
+.pipeline { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; }
+.pipeline-col {
+  min-width: 200px;
+  background: var(--bg3);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+}
+.pipeline-col-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.pipeline-col-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-family: var(--font-mono); }
+.pipeline-col-count { font-size: 10px; font-family: var(--font-mono); color: var(--text3); background: var(--bg4); padding: 2px 6px; border-radius: 8px; }
+.pipeline-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.pipeline-card:hover { border-color: var(--border2); }
+.pipeline-card-title { font-size: 12px; font-weight: 500; margin-bottom: 4px; }
+.pipeline-card-sub { font-size: 11px; color: var(--text3); }
+.pipeline-card-value { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-top: 8px; }
+
+/* KPI ROW */
+.kpi-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.kpi-item { flex: 1; min-width: 120px; background: var(--bg3); border-radius: var(--radius); padding: 12px; }
+.kpi-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; font-family: var(--font-mono); }
+.kpi-val { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-top: 2px; }
+
+/* TIMELINE */
+.timeline { padding-left: 16px; border-left: 1px solid var(--border); }
+.timeline-item { position: relative; padding: 0 0 16px 20px; }
+.timeline-item::before {
+  content: '';
+  position: absolute; left: -5px; top: 4px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+}
+.timeline-item.active::before { background: var(--accent); border-color: var(--accent); }
+.timeline-time { font-size: 10px; color: var(--text3); font-family: var(--font-mono); }
+.timeline-text { font-size: 13px; margin-top: 2px; }
+.timeline-sub { font-size: 11px; color: var(--text3); }
+
+/* FORM */
+.form-row { display: grid; gap: 16px; margin-bottom: 16px; }
+.form-2 { grid-template-columns: 1fr 1fr; }
+.form-3 { grid-template-columns: 1fr 1fr 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; font-family: var(--font-mono); }
+.form-input {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: var(--font-body);
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+.form-input:focus { border-color: var(--accent); }
+.form-input::placeholder { color: var(--text3); }
+select.form-input option { background: var(--bg3); }
+
+/* CHART BARS */
+.chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 80px; margin: 12px 0; }
+.chart-bar { flex: 1; background: var(--accent); border-radius: 3px 3px 0 0; opacity: 0.7; transition: opacity 0.2s; min-width: 8px; }
+.chart-bar:hover { opacity: 1; }
+.chart-bar.blue { background: var(--blue); }
+.chart-bar.amber { background: var(--amber); }
+.chart-bar.red { background: var(--red); }
+
+/* ALERT BOX */
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  font-size: 13px;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.alert.red { background: var(--red-dim); border: 1px solid rgba(255,77,77,0.2); color: var(--red); }
+.alert.amber { background: var(--amber-dim); border: 1px solid rgba(245,158,11,0.2); color: var(--amber); }
+.alert.green { background: var(--accent-dim); border: 1px solid rgba(0,229,160,0.2); color: var(--accent); }
+.alert.blue { background: var(--blue-dim); border: 1px solid rgba(59,130,246,0.2); color: var(--blue); }
+.alert svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* MAP PLACEHOLDER */
+.map-placeholder {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  height: 220px;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 8px;
+  position: relative; overflow: hidden;
+}
+.map-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+.map-pin { position: absolute; }
+.map-pin::before {
+  content: '';
+  display: block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+}
+.map-pin-pulse::after {
+  content: '';
+  position: absolute; top: -4px; left: -4px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.15;
+  animation: pulse 2s infinite;
+}
+
+/* SEPARATOR */
+.sep { height: 1px; background: var(--border); margin: 20px 0; }
+
+/* SCROLLABLE */
+.scroll-x { overflow-x: auto; }
+
+/* PAGE VIEWS */
+.page-view { display: none; }
+.page-view.active { display: block; }
+
+/* MONITOR */
+.monitor-grid { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+.event-feed { display: flex; flex-direction: column; gap: 1px; max-height: 400px; overflow-y: auto; }
+.event-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.event-row:hover { background: var(--bg3); }
+.event-row.critical { border-left: 3px solid var(--red); }
+.event-row.warning { border-left: 3px solid var(--amber); }
+.event-row.info { border-left: 3px solid var(--blue); }
+.event-row.ok { border-left: 3px solid var(--accent); }
+.event-type { font-size: 11px; font-family: var(--font-mono); font-weight: 500; min-width: 100px; }
+.event-client { font-size: 12px; font-weight: 500; flex: 1; }
+.event-time { font-size: 11px; color: var(--text3); font-family: var(--font-mono); }
+.event-status { font-size: 11px; }
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .cards-4 { grid-template-columns: repeat(2, 1fr); }
+  .monitor-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .cards-3, .cards-4 { grid-template-columns: 1fr 1fr; }
+  .form-2, .form-3 { grid-template-columns: 1fr; }
+}
+
+/* FADE IN */
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.page-view.active { animation: fadeIn 0.2s ease; }
+
+/* CHIPS */
+.chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.chip {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text2);
+  background: transparent;
+  font-family: var(--font-body);
+}
+.chip:hover, .chip.active { background: var(--accent-dim); color: var(--accent); border-color: rgba(0,229,160,0.3); }
+
+/* DONUT */
+.donut-wrap { display: flex; align-items: center; gap: 16px; }
+.donut-legend { display: flex; flex-direction: column; gap: 8px; }
+.legend-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-icon">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 1L14 4V8C14 11.31 11.31 14.5 8 15C4.69 14.5 2 11.31 2 8V4L8 1Z" fill="#0a0c0f"/>
+          <path d="M6 8L7.5 9.5L10 7" stroke="#0a0c0f" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-text">ShieldERP</div>
+        <div class="logo-sub">Seg. Eletrônica</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Principal</div>
+    <div class="nav-item active" data-page="dashboard" onclick="navigate(this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" data-page="monitor" onclick="navigate(this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Central de Monitoramento
+      <span class="nav-badge red">3</span>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Operacional</div>
+    <div class="nav-item" data-page="crm" onclick="navigate(this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      CRM & Vendas
+      <span class="nav-badge">12</span>
+    </div>
+    <div class="nav-item" data-page="os" onclick="navigate(this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      Ordens de Servico
+      <span class="nav-badge amber">7</span>
+    </div>
+    <div class="nav-item" data-page="estoque" onclick="navigate(this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      Estoque
+    </div>
+    <div class="nav-item" data-page="manutencao" onclick="navigate(this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M4.34 19.07l1.41-1.41"/><path d="M6.34 6.34L4.93 4.93"/><path d="M20 12h2M2 12h2M12 20v2M12 2v2"/></svg>
+      Manutencao & Garantia
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Financeiro</div>
+    <div class="nav-item" data-page="financeiro" onclick="navigate(this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Financeiro
+    </div>
+    <div class="nav-item" data-page="fiscal" onclick="navigate(this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Fiscal & Tributario
+    </div>
+    <div class="nav-item" data-page="compras" onclick="navigate(this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      Compras & Fornecedores
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Gestao</div>
+    <div class="nav-item" data-page="rh" onclick="navigate(this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      RH & Equipe Tecnica
+    </div>
+    <div class="nav-item" data-page="bi" onclick="navigate(this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      BI & Relatorios
+    </div>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="user-chip">
+      <div class="user-avatar">RN</div>
+      <div class="user-info">
+        <div class="user-name">Ricardo Nunes</div>
+        <div class="user-role">Administrador</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+  <header id="header">
+    <div class="header-breadcrumb">
+      <span class="crumb-main">ShieldERP</span>
+      <span class="crumb-sep">/</span>
+      <span class="crumb-active" id="breadcrumb-current">Dashboard</span>
+    </div>
+    <div class="header-right">
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        Central Online
+      </div>
+      <div class="header-btn" title="Notificacoes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="notif-dot"></div>
+      </div>
+      <div class="header-btn" title="Configuracoes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M4.34 19.07l1.41-1.41"/><path d="M6.34 6.34L4.93 4.93"/><path d="M20 12h2M2 12h2M12 20v2M12 2v2"/></svg>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+
+    <!-- DASHBOARD -->
+    <div class="page-view active" id="page-dashboard">
+      <div class="page-header">
+        <div class="page-title">Visao Geral</div>
+        <div class="page-subtitle">Maio de 2025 — atualizado agora mesmo</div>
+      </div>
+
+      <div class="alert amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div><strong>3 eventos criticos</strong> na central de monitoramento aguardando acionamento. <span style="text-decoration:underline;cursor:pointer;" onclick="navigate(document.querySelector('[data-page=monitor]'))">Ver agora</span></div>
+      </div>
+
+      <div class="cards-grid cards-4" style="margin-bottom:20px;">
+        <div class="stat-card green">
+          <div class="stat-label">MRR — Monitoramento</div>
+          <div class="stat-value">R$48.750</div>
+          <div class="stat-change up">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+            +R$2.100 vs mês anterior
+          </div>
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">OS Abertas Hoje</div>
+          <div class="stat-value">24</div>
+          <div class="stat-change up">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+            7 em execucao agora
+          </div>
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-label">Contratos Ativos</div>
+          <div class="stat-value">312</div>
+          <div class="stat-change down">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 9 12 15 6 9"/></svg>
+            8 em risco de churn
+          </div>
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-label">Inadimplencia</div>
+          <div class="stat-value sm">R$6.840</div>
+          <div class="stat-change down">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 9 12 15 6 9"/></svg>
+            14 clientes em atraso
+          </div>
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-2" style="margin-bottom:20px;">
+        <div class="card">
+          <div class="card-title">Receita por Segmento — Mai/2025</div>
+          <div style="display:flex;gap:20px;align-items:flex-end;">
+            <div style="flex:1;">
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                    <span style="color:var(--text2)">Monitoramento</span>
+                    <span style="font-family:var(--font-mono);color:var(--accent)">R$48.750</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill green" style="width:85%"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                    <span style="color:var(--text2)">Instalacoes</span>
+                    <span style="font-family:var(--font-mono);color:var(--blue)">R$32.100</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill blue" style="width:56%"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                    <span style="color:var(--text2)">Venda de Equipamentos</span>
+                    <span style="font-family:var(--font-mono);color:var(--amber)">R$22.430</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill amber" style="width:39%"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                    <span style="color:var(--text2)">Manutencao Preventiva</span>
+                    <span style="font-family:var(--font-mono)">R$9.800</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill" style="width:17%;background:var(--purple)"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">OS por Tecnico — Hoje</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--accent-dim);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent);font-family:var(--font-mono);flex-shrink:0;">MS</div>
+              <div style="flex:1;">
+                <div style="font-size:12px;font-weight:500;">Marcos Silva</div>
+                <div class="progress-bar" style="margin-top:4px;"><div class="progress-fill green" style="width:80%"></div></div>
+              </div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);">4/5 OS</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--blue-dim);border:1px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--blue);font-family:var(--font-mono);flex-shrink:0;">JP</div>
+              <div style="flex:1;">
+                <div style="font-size:12px;font-weight:500;">Joao Pedro</div>
+                <div class="progress-bar" style="margin-top:4px;"><div class="progress-fill blue" style="width:60%"></div></div>
+              </div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--blue);">3/5 OS</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--amber-dim);border:1px solid var(--amber);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--amber);font-family:var(--font-mono);flex-shrink:0;">CA</div>
+              <div style="flex:1;">
+                <div style="font-size:12px;font-weight:500;">Carlos Andrade</div>
+                <div class="progress-bar" style="margin-top:4px;"><div class="progress-fill amber" style="width:40%"></div></div>
+              </div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--amber);">2/5 OS</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--red-dim);border:1px solid var(--red);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--red);font-family:var(--font-mono);flex-shrink:0;">LF</div>
+              <div style="flex:1;">
+                <div style="font-size:12px;font-weight:500;">Lucas Ferreira</div>
+                <div class="progress-bar" style="margin-top:4px;"><div class="progress-fill red" style="width:20%"></div></div>
+              </div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--red);">1/5 OS</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-2">
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="table-title">Ultimas OS</div>
+            <div class="table-count">24 hoje</div>
+            <div class="table-actions"><button class="btn btn-ghost btn-sm" onclick="navigate(document.querySelector('[data-page=os]'))">Ver todas</button></div>
+          </div>
+          <table>
+            <thead><tr><th>OS</th><th>Cliente</th><th>Tipo</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="td-mono">#OS-2847</td><td><div class="td-name">Condominio Park Sul</div><div class="td-sub">CFTV</div></td><td><span class="badge blue">Instalacao</span></td><td><span class="badge amber">Em execucao</span></td></tr>
+              <tr><td class="td-mono">#OS-2846</td><td><div class="td-name">Banco Meridional</div><div class="td-sub">Controle de Acesso</div></td><td><span class="badge purple">Manutencao</span></td><td><span class="badge green">Concluida</span></td></tr>
+              <tr><td class="td-mono">#OS-2845</td><td><div class="td-name">Supermercado Mais</div><div class="td-sub">Alarme</div></td><td><span class="badge gray">Corretiva</span></td><td><span class="badge red">Atrasada</span></td></tr>
+              <tr><td class="td-mono">#OS-2844</td><td><div class="td-name">Residencia Alves</div><div class="td-sub">Automatizador</div></td><td><span class="badge blue">Instalacao</span></td><td><span class="badge green">Concluida</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="table-title">Propostas Recentes</div>
+            <div class="table-count">8 este mes</div>
+            <div class="table-actions"><button class="btn btn-ghost btn-sm" onclick="navigate(document.querySelector('[data-page=crm]'))">Ver todas</button></div>
+          </div>
+          <table>
+            <thead><tr><th>Proposta</th><th>Cliente</th><th>Valor</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="td-mono">#P-0891</td><td><div class="td-name">Shoping Nortao</div><div class="td-sub">CFTV + Controle</div></td><td style="font-family:var(--font-mono);color:var(--accent)">R$42.800</td><td><span class="badge amber">Negociacao</span></td></tr>
+              <tr><td class="td-mono">#P-0890</td><td><div class="td-name">Hospital Vitallis</div><div class="td-sub">Alarme + CFTV</div></td><td style="font-family:var(--font-mono);color:var(--accent)">R$28.500</td><td><span class="badge blue">Proposta Enviada</span></td></tr>
+              <tr><td class="td-mono">#P-0889</td><td><div class="td-name">Escola Luminar</div><div class="td-sub">Cerca Eletrica</div></td><td style="font-family:var(--font-mono);color:var(--accent)">R$8.200</td><td><span class="badge green">Aprovada</span></td></tr>
+              <tr><td class="td-mono">#P-0888</td><td><div class="td-name">Farmacia Popular</div><div class="td-sub">Alarme</div></td><td style="font-family:var(--font-mono);color:var(--accent)">R$3.900</td><td><span class="badge red">Perdida</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTRAL DE MONITORAMENTO -->
+    <div class="page-view" id="page-monitor">
+      <div class="page-header">
+        <div class="page-title">Central de Monitoramento</div>
+        <div class="page-subtitle">312 contratos ativos — 24/7</div>
+        <div class="page-actions">
+          <div class="status-badge"><div class="status-dot"></div>Receptora Online</div>
+          <button class="btn btn-ghost">Relatorio do Turno</button>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-4" style="margin-bottom:20px;">
+        <div class="stat-card red">
+          <div class="stat-label">Criticos</div>
+          <div class="stat-value" style="color:var(--red)">3</div>
+          <div class="stat-change down">Aguardando acionamento</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-label">Advertencias</div>
+          <div class="stat-value" style="color:var(--amber)">8</div>
+          <div class="stat-change">Em atendimento</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">Eventos Hoje</div>
+          <div class="stat-value">147</div>
+          <div class="stat-change up">Normal</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">SLA Medio</div>
+          <div class="stat-value">1m42s</div>
+          <div class="stat-change up">Meta: 3min</div>
+        </div>
+      </div>
+
+      <div class="monitor-grid">
+        <div>
+          <div class="table-wrap">
+            <div class="table-header">
+              <div class="table-title">Feed de Eventos — Tempo Real</div>
+              <div class="table-count" id="event-count">147 hoje</div>
+            </div>
+            <div class="event-feed" id="event-feed">
+              <div class="event-row critical">
+                <div><div class="event-type" style="color:var(--red)">ALARME DISPARO</div><div class="event-time">09:41:23</div></div>
+                <div class="event-client">Supermercado Mais — Zona 3 (Fundo)</div>
+                <span class="badge red">Critico</span>
+                <span class="badge amber">Acionando PM</span>
+              </div>
+              <div class="event-row critical">
+                <div><div class="event-type" style="color:var(--red)">ALARME DISPARO</div><div class="event-time">09:38:55</div></div>
+                <div class="event-client">Condominio Park Sul — Portaria</div>
+                <span class="badge red">Critico</span>
+                <span class="badge gray">Aguardando</span>
+              </div>
+              <div class="event-row critical">
+                <div><div class="event-type" style="color:var(--red)">PANE NO SISTEMA</div><div class="event-time">09:35:10</div></div>
+                <div class="event-client">Banco Meridional — Agencia Centro</div>
+                <span class="badge red">Critico</span>
+                <span class="badge gray">Aguardando</span>
+              </div>
+              <div class="event-row warning">
+                <div><div class="event-type" style="color:var(--amber)">BATERIA BAIXA</div><div class="event-time">09:28:00</div></div>
+                <div class="event-client">Residencia Alves — Central</div>
+                <span class="badge amber">Aviso</span>
+                <span class="badge blue">OS Gerada</span>
+              </div>
+              <div class="event-row warning">
+                <div><div class="event-type" style="color:var(--amber)">FALHA COMUNICACAO</div><div class="event-time">09:15:42</div></div>
+                <div class="event-client">Farmacia Popular — Central Alarme</div>
+                <span class="badge amber">Aviso</span>
+                <span class="badge blue">Ligando Cliente</span>
+              </div>
+              <div class="event-row info">
+                <div><div class="event-type" style="color:var(--blue)">TESTE PERIODICO</div><div class="event-time">09:00:00</div></div>
+                <div class="event-client">Hospital Vitallis — Sistema Geral</div>
+                <span class="badge gray">Info</span>
+                <span class="badge green">OK</span>
+              </div>
+              <div class="event-row ok">
+                <div><div class="event-type" style="color:var(--accent)">ARMADO</div><div class="event-time">08:47:30</div></div>
+                <div class="event-client">Escola Luminar — Ala Principal</div>
+                <span class="badge gray">Normal</span>
+                <span class="badge green">OK</span>
+              </div>
+              <div class="event-row ok">
+                <div><div class="event-type" style="color:var(--accent)">DESARMADO</div><div class="event-time">07:58:12</div></div>
+                <div class="event-client">Shoping Nortao — Loja 214</div>
+                <span class="badge gray">Normal</span>
+                <span class="badge green">OK</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title">Acionamento Critico</div>
+            <div class="alert red" style="margin-bottom:12px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <div>Alarme ativo em Supermercado Mais ha 2min18s</div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-bottom:12px;">Script de acionamento:</div>
+            <div class="timeline">
+              <div class="timeline-item active">
+                <div class="timeline-time">09:41:23</div>
+                <div class="timeline-text">Evento recebido — Zona 3</div>
+              </div>
+              <div class="timeline-item active">
+                <div class="timeline-time">09:41:45</div>
+                <div class="timeline-text">Ligacao para responsavel</div>
+                <div class="timeline-sub">Joao Moreira — (84) 99xxx-xxxx</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-time">—</div>
+                <div class="timeline-text" style="color:var(--text3)">Aguardando resposta</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-time">—</div>
+                <div class="timeline-text" style="color:var(--text3)">Acionar Policia Militar</div>
+              </div>
+            </div>
+            <div style="margin-top:12px;display:flex;gap:8px;">
+              <button class="btn btn-primary" style="flex:1;">Acionar PM</button>
+              <button class="btn btn-ghost">Cancelar</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Operadores on-line</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);"></div>
+                <span style="font-size:13px;">Ana Carolina</span>
+                <span class="badge green" style="margin-left:auto;">Turno A</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);"></div>
+                <span style="font-size:13px;">Roberto Lima</span>
+                <span class="badge green" style="margin-left:auto;">Turno A</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:8px;height:8px;border-radius:50%;background:var(--text3);"></div>
+                <span style="font-size:13px;color:var(--text2);">Patricia Sousa</span>
+                <span class="badge gray" style="margin-left:auto;">Turno B — 14h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRM -->
+    <div class="page-view" id="page-crm">
+      <div class="page-header">
+        <div class="page-title">CRM & Forca de Vendas</div>
+        <div class="page-subtitle">Gestao de leads, propostas e contratos</div>
+        <div class="page-actions">
+          <button class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nova Proposta
+          </button>
+          <button class="btn btn-ghost">Importar Leads</button>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-4" style="margin-bottom:20px;">
+        <div class="stat-card blue"><div class="stat-label">Leads Ativos</div><div class="stat-value">47</div><div class="stat-change up">+8 esta semana</div></div>
+        <div class="stat-card amber"><div class="stat-label">Propostas Abertas</div><div class="stat-value">12</div><div class="stat-change">R$198.400 total</div></div>
+        <div class="stat-card green"><div class="stat-label">Taxa de Conversao</div><div class="stat-value">38%</div><div class="stat-change up">+3% vs mes anterior</div></div>
+        <div class="stat-card purple"><div class="stat-label">Ticket Medio</div><div class="stat-value sm">R$16.200</div><div class="stat-change up">+R$800</div></div>
+      </div>
+
+      <div class="chip-row">
+        <div class="chip active">Todos os Segmentos</div>
+        <div class="chip">CFTV</div>
+        <div class="chip">Alarme</div>
+        <div class="chip">Controle de Acesso</div>
+        <div class="chip">Automatizadores</div>
+        <div class="chip">Redes</div>
+        <div class="chip">Rastreamento</div>
+        <div class="chip">Eletrica</div>
+        <div class="chip">Automacao Residencial</div>
+        <div class="chip">Cerca Eletrica</div>
+      </div>
+
+      <div style="margin-bottom:16px;font-size:12px;color:var(--text3);font-family:var(--font-mono);">PIPELINE DE VENDAS</div>
+      <div class="pipeline" style="margin-bottom:24px;">
+        <div class="pipeline-col">
+          <div class="pipeline-col-header"><span class="pipeline-col-title" style="color:var(--text2)">Lead</span><span class="pipeline-col-count">15</span></div>
+          <div class="pipeline-card"><div class="pipeline-card-title">Condominio Alto Mar</div><div class="pipeline-card-sub">CFTV — Indicacao</div><div class="pipeline-card-value">R$ —</div></div>
+          <div class="pipeline-card"><div class="pipeline-card-title">Clinica Ortopedica</div><div class="pipeline-card-sub">Alarme + CFTV</div><div class="pipeline-card-value">R$ —</div></div>
+          <div class="pipeline-card"><div class="pipeline-card-title">Padaria Central</div><div class="pipeline-card-sub">Cerca Eletrica</div><div class="pipeline-card-value">R$ —</div></div>
+        </div>
+        <div class="pipeline-col">
+          <div class="pipeline-col-header"><span class="pipeline-col-title" style="color:var(--blue)">Visita Tecnica</span><span class="pipeline-col-count">9</span></div>
+          <div class="pipeline-card"><div class="pipeline-card-title">Shoping Nortao</div><div class="pipeline-card-sub">CFTV + Controle — Visita 12/05</div><div class="pipeline-card-value">R$42.800 (est.)</div></div>
+          <div class="pipeline-card"><div class="pipeline-card-title">Colegio Estadual</div><div class="pipeline-card-sub">Controle de Acesso</div><div class="pipeline-card-value">R$18.000 (est.)</div></div>
+        </div>
+        <div class="pipeline-col">
+          <div class="pipeline-col-header"><span class="pipeline-col-title" style="color:var(--amber)">Proposta Enviada</span><span class="pipeline-col-count">7</span></div>
+          <div class="pipeline-card"><div class="pipeline-card-title">Hospital Vitallis</div><div class="pipeline-card-sub">Alarme + CFTV — Proposta #P-0890</div><div class="pipeline-card-value">R$28.500</div></div>
+          <div class="pipeline-card"><div class="pipeline-card-title">Supermercado Mais</div><div class="pipeline-card-sub">Upgrade CFTV</div><div class="pipeline-card-value">R$14.200</div></div>
+        </div>
+        <div class="pipeline-col">
+          <div class="pipeline-col-header"><span class="pipeline-col-title" style="color:var(--accent)">Fechado</span><span class="pipeline-col-count">14</span></div>
+          <div class="pipeline-card"><div class="pipeline-card-title">Escola Luminar</div><div class="pipeline-card-sub">Cerca Eletrica — #P-0889</div><div class="pipeline-card-value">R$8.200</div></div>
+          <div class="pipeline-card"><div class="pipeline-card-title">Residencia Alves</div><div class="pipeline-card-sub">Automatizador + Alarme</div><div class="pipeline-card-value">R$6.700</div></div>
+          <div class="pipeline-card"><div class="pipeline-card-title">Banco Meridional</div><div class="pipeline-card-sub">Controle de Acesso</div><div class="pipeline-card-value">R$55.000</div></div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header"><div class="table-title">Clientes Ativos</div><div class="table-count">284 clientes</div><div class="table-actions"><button class="btn btn-ghost btn-sm">+ Novo Cliente</button></div></div>
+        <table>
+          <thead><tr><th>Cliente</th><th>Segmento</th><th>Contratos</th><th>MRR</th><th>Ultimo Contato</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><div class="td-name">Condominio Park Sul</div><div class="td-sub">CNPJ 12.345.678/0001-90</div></td><td><span class="badge blue">CFTV</span></td><td class="td-mono">2 ativos</td><td style="font-family:var(--font-mono);color:var(--accent)">R$680/mes</td><td class="td-mono">02/05/2025</td><td><span class="badge green">Ativo</span></td></tr>
+            <tr><td><div class="td-name">Banco Meridional</div><div class="td-sub">CNPJ 98.765.432/0001-10</div></td><td><span class="badge purple">Controle Acesso</span></td><td class="td-mono">3 ativos</td><td style="font-family:var(--font-mono);color:var(--accent)">R$1.200/mes</td><td class="td-mono">01/05/2025</td><td><span class="badge green">Ativo</span></td></tr>
+            <tr><td><div class="td-name">Farmacia Popular</div><div class="td-sub">CPF 123.456.789-00</div></td><td><span class="badge amber">Alarme</span></td><td class="td-mono">1 ativo</td><td style="font-family:var(--font-mono);color:var(--accent)">R$180/mes</td><td class="td-mono">28/04/2025</td><td><span class="badge red">Inadimplente</span></td></tr>
+            <tr><td><div class="td-name">Hospital Vitallis</div><div class="td-sub">CNPJ 45.678.901/0001-23</div></td><td><span class="badge blue">CFTV + Alarme</span></td><td class="td-mono">Proposta</td><td style="font-family:var(--font-mono);color:var(--text3)">—</td><td class="td-mono">30/04/2025</td><td><span class="badge blue">Prospecto</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ORDENS DE SERVICO -->
+    <div class="page-view" id="page-os">
+      <div class="page-header">
+        <div class="page-title">Ordens de Servico</div>
+        <div class="page-subtitle">Instalacoes, manutencoes e visitas tecnicas</div>
+        <div class="page-actions">
+          <button class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Abrir OS
+          </button>
+          <button class="btn btn-ghost">Exportar</button>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-4" style="margin-bottom:20px;">
+        <div class="stat-card blue"><div class="stat-label">Abertas Hoje</div><div class="stat-value">24</div></div>
+        <div class="stat-card amber"><div class="stat-label">Em Execucao</div><div class="stat-value" style="color:var(--amber)">7</div></div>
+        <div class="stat-card red"><div class="stat-label">Atrasadas</div><div class="stat-value" style="color:var(--red)">3</div></div>
+        <div class="stat-card green"><div class="stat-label">Concluidas Hoje</div><div class="stat-value">11</div></div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">Ordens de Servico</div>
+          <div class="table-count">24 hoje</div>
+          <div class="table-actions">
+            <select class="form-input" style="width:160px;padding:4px 8px;font-size:12px;height:28px;">
+              <option>Todos os status</option>
+              <option>Em execucao</option>
+              <option>Agendada</option>
+              <option>Concluida</option>
+              <option>Atrasada</option>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>OS</th><th>Cliente / Endereco</th><th>Tipo</th><th>Tecnico</th><th>Agendamento</th><th>Status</th><th>Acao</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="td-mono">#OS-2847</td>
+              <td><div class="td-name">Condominio Park Sul</div><div class="td-sub">Rua das Flores, 100 — CFTV</div></td>
+              <td><span class="badge blue">Instalacao</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--accent-dim);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--accent);font-family:var(--font-mono)">MS</div>
+                  <span style="font-size:12px">Marcos Silva</span>
+                </div>
+              </td>
+              <td class="td-mono">05/05 09:00</td>
+              <td><span class="badge amber"><div class="badge-dot"></div>Em execucao</span></td>
+              <td><button class="btn btn-ghost btn-sm">Detalhes</button></td>
+            </tr>
+            <tr>
+              <td class="td-mono">#OS-2846</td>
+              <td><div class="td-name">Banco Meridional</div><div class="td-sub">Av. Principal, 500 — Controle Acesso</div></td>
+              <td><span class="badge purple">Manutencao</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--blue-dim);border:1px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--blue);font-family:var(--font-mono)">JP</div>
+                  <span style="font-size:12px">Joao Pedro</span>
+                </div>
+              </td>
+              <td class="td-mono">05/05 10:30</td>
+              <td><span class="badge green"><div class="badge-dot"></div>Concluida</span></td>
+              <td><button class="btn btn-ghost btn-sm">Detalhes</button></td>
+            </tr>
+            <tr>
+              <td class="td-mono">#OS-2845</td>
+              <td><div class="td-name">Supermercado Mais</div><div class="td-sub">Rua Comercio, 22 — Alarme</div></td>
+              <td><span class="badge gray">Corretiva</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--red-dim);border:1px solid var(--red);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--red);font-family:var(--font-mono)">LF</div>
+                  <span style="font-size:12px">Lucas Ferreira</span>
+                </div>
+              </td>
+              <td class="td-mono">05/05 08:00</td>
+              <td><span class="badge red"><div class="badge-dot"></div>Atrasada</span></td>
+              <td><button class="btn btn-ghost btn-sm">Detalhes</button></td>
+            </tr>
+            <tr>
+              <td class="td-mono">#OS-2844</td>
+              <td><div class="td-name">Residencia Alves</div><div class="td-sub">Rua das Acaias, 45 — Automatizador</div></td>
+              <td><span class="badge blue">Instalacao</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--amber-dim);border:1px solid var(--amber);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--amber);font-family:var(--font-mono)">CA</div>
+                  <span style="font-size:12px">Carlos Andrade</span>
+                </div>
+              </td>
+              <td class="td-mono">05/05 14:00</td>
+              <td><span class="badge blue"><div class="badge-dot"></div>Agendada</span></td>
+              <td><button class="btn btn-ghost btn-sm">Detalhes</button></td>
+            </tr>
+            <tr>
+              <td class="td-mono">#OS-2843</td>
+              <td><div class="td-name">Escola Luminar</div><div class="td-sub">Av. Educacao, 300 — Cerca Eletrica</div></td>
+              <td><span class="badge blue">Instalacao</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--accent-dim);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--accent);font-family:var(--font-mono)">MS</div>
+                  <span style="font-size:12px">Marcos Silva</span>
+                </div>
+              </td>
+              <td class="td-mono">06/05 08:00</td>
+              <td><span class="badge gray"><div class="badge-dot"></div>Aberta</span></td>
+              <td><button class="btn btn-ghost btn-sm">Detalhes</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ESTOQUE -->
+    <div class="page-view" id="page-estoque">
+      <div class="page-header">
+        <div class="page-title">Estoque & Almoxarifado</div>
+        <div class="page-subtitle">Equipamentos, materiais e rastreabilidade por numero de serie</div>
+        <div class="page-actions">
+          <button class="btn btn-primary">Entrada de NF</button>
+          <button class="btn btn-ghost">Inventario</button>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-4" style="margin-bottom:20px;">
+        <div class="stat-card green"><div class="stat-label">Total em Estoque</div><div class="stat-value">1.248</div><div class="stat-change">itens ativos</div></div>
+        <div class="stat-card red"><div class="stat-label">Estoque Critico</div><div class="stat-value" style="color:var(--red)">7</div><div class="stat-change down">abaixo do minimo</div></div>
+        <div class="stat-card blue"><div class="stat-label">No Veiculos</div><div class="stat-value">94</div><div class="stat-change">4 tecnicos</div></div>
+        <div class="stat-card amber"><div class="stat-label">Valor Total</div><div class="stat-value sm">R$284k</div><div class="stat-change">custo medio</div></div>
+      </div>
+
+      <div class="alert red" style="margin-bottom:16px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div>Estoque critico: <strong>Camera IP 4MP Bullet</strong> (2 unid), <strong>Central de Alarme 16 zonas</strong> (1 unid), <strong>Controladora Acesso 2 portas</strong> (0 unid). Solicitar compra imediatamente.</div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header"><div class="table-title">Produtos em Estoque</div><div class="table-count">342 itens</div><div class="table-actions"><input class="form-input" placeholder="Buscar por nome, SKU ou serie..." style="width:240px;height:28px;padding:4px 10px;font-size:12px;"></div></div>
+        <table>
+          <thead><tr><th>Produto</th><th>NCM</th><th>Almoxarifado</th><th>Veiculos</th><th>Instalado</th><th>Minimo</th><th>Custo Medio</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><div class="td-name">Camera IP 4MP Bullet</div><div class="td-sub">SKU: CAM-IP4-BLT</div></td><td class="td-mono">8525.80</td><td class="td-mono">2</td><td class="td-mono">8</td><td class="td-mono">234</td><td class="td-mono">10</td><td style="font-family:var(--font-mono)">R$320,00</td><td><span class="badge red">Critico</span></td></tr>
+            <tr><td><div class="td-name">DVR 16 Canais Full HD</div><div class="td-sub">SKU: DVR-16CH-FHD</div></td><td class="td-mono">8521.90</td><td class="td-mono">12</td><td class="td-mono">4</td><td class="td-mono">89</td><td class="td-mono">5</td><td style="font-family:var(--font-mono)">R$890,00</td><td><span class="badge green">Normal</span></td></tr>
+            <tr><td><div class="td-name">Central Alarme 16 Zonas</div><div class="td-sub">SKU: ALM-CTR-16Z</div></td><td class="td-mono">8531.10</td><td class="td-mono">1</td><td class="td-mono">3</td><td class="td-mono">156</td><td class="td-mono">5</td><td style="font-family:var(--font-mono)">R$480,00</td><td><span class="badge red">Critico</span></td></tr>
+            <tr><td><div class="td-name">Controladora Acesso 2 Portas</div><div class="td-sub">SKU: ACC-CTRL-2P</div></td><td class="td-mono">8543.70</td><td class="td-mono">0</td><td class="td-mono">0</td><td class="td-mono">67</td><td class="td-mono">3</td><td style="font-family:var(--font-mono)">R$1.240,00</td><td><span class="badge red">Zerado</span></td></tr>
+            <tr><td><div class="td-name">Automatizador Portao Deslizante</div><div class="td-sub">SKU: AUTO-PORT-DSL</div></td><td class="td-mono">8543.70</td><td class="td-mono">8</td><td class="td-mono">12</td><td class="td-mono">203</td><td class="td-mono">5</td><td style="font-family:var(--font-mono)">R$650,00</td><td><span class="badge green">Normal</span></td></tr>
+            <tr><td><div class="td-name">Nobreak 1400VA</div><div class="td-sub">SKU: UPS-1400VA</div></td><td class="td-mono">8504.40</td><td class="td-mono">14</td><td class="td-mono">6</td><td class="td-mono">178</td><td class="td-mono">8</td><td style="font-family:var(--font-mono)">R$420,00</td><td><span class="badge amber">Atencao</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FINANCEIRO -->
+    <div class="page-view" id="page-financeiro">
+      <div class="page-header">
+        <div class="page-title">Financeiro & Contabilidade</div>
+        <div class="page-subtitle">Faturamento, recorrencias, caixa e integracao bancaria</div>
+        <div class="page-actions">
+          <button class="btn btn-primary">Faturar Mensalidades</button>
+          <button class="btn btn-ghost">DRE do Mes</button>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-4" style="margin-bottom:20px;">
+        <div class="stat-card green"><div class="stat-label">Receita — Mai/2025</div><div class="stat-value sm">R$113.080</div><div class="stat-change up">+12% vs abr</div></div>
+        <div class="stat-card blue"><div class="stat-label">A Receber</div><div class="stat-value sm">R$38.400</div><div class="stat-change">este mes</div></div>
+        <div class="stat-card amber"><div class="stat-label">A Pagar</div><div class="stat-value sm">R$22.100</div><div class="stat-change">este mes</div></div>
+        <div class="stat-card red"><div class="stat-label">Inadimplencia</div><div class="stat-value sm">R$6.840</div><div class="stat-change down">14 clientes</div></div>
+      </div>
+
+      <div class="cards-grid cards-2" style="margin-bottom:20px;">
+        <div class="card">
+          <div class="card-title">Fluxo de Caixa — Mai/2025</div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <div><div style="font-size:11px;color:var(--text3);font-family:var(--font-mono)">ENTRADAS</div><div style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--accent)">R$113.080</div></div>
+            <div style="text-align:right"><div style="font-size:11px;color:var(--text3);font-family:var(--font-mono)">SAIDAS</div><div style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--red)">R$72.340</div></div>
+          </div>
+          <div style="height:3px;background:var(--bg4);border-radius:2px;margin-bottom:4px;overflow:hidden;"><div style="height:100%;width:61%;background:var(--accent);border-radius:2px;"></div></div>
+          <div style="font-size:11px;color:var(--text3);font-family:var(--font-mono);text-align:center">Margem: <span style="color:var(--accent)">R$40.740 (36%)</span></div>
+          <div class="sep"></div>
+          <div style="display:flex;gap:8px;font-size:12px;">
+            <div style="flex:1;"><div style="color:var(--text3);margin-bottom:4px;">Monitoramento</div><div style="color:var(--accent);font-family:var(--font-mono)">R$48.750</div></div>
+            <div style="flex:1;"><div style="color:var(--text3);margin-bottom:4px;">Instalacoes</div><div style="color:var(--blue);font-family:var(--font-mono)">R$32.100</div></div>
+            <div style="flex:1;"><div style="color:var(--text3);margin-bottom:4px;">Equipamentos</div><div style="color:var(--amber);font-family:var(--font-mono)">R$22.430</div></div>
+            <div style="flex:1;"><div style="color:var(--text3);margin-bottom:4px;">Manutencao</div><div style="font-family:var(--font-mono)">R$9.800</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Mensalidades — Lote de Cobranca</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div style="font-size:13px;color:var(--text2)">312 contratos</div>
+            <span class="badge green">Emissao em 3 dias</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;">
+            <div style="display:flex;justify-content:space-between;"><span style="color:var(--text2)">Boletos a emitir</span><span style="font-family:var(--font-mono)">187 — R$34.122</span></div>
+            <div style="display:flex;justify-content:space-between;"><span style="color:var(--text2)">Cartao recorrente</span><span style="font-family:var(--font-mono)">89 — R$9.140</span></div>
+            <div style="display:flex;justify-content:space-between;"><span style="color:var(--text2)">Pix automatico</span><span style="font-family:var(--font-mono)">36 — R$5.488</span></div>
+          </div>
+          <div class="sep"></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;">
+            <span style="font-weight:500;">Total a faturar</span>
+            <span style="font-family:var(--font-mono);color:var(--accent);font-size:15px;">R$48.750</span>
+          </div>
+          <div style="margin-top:12px;"><button class="btn btn-primary" style="width:100%">Processar Lote de Cobranca</button></div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header"><div class="table-title">Contas a Receber</div><div class="table-count">38 titulos</div><div class="table-actions"><button class="btn btn-ghost btn-sm">Régua de Cobranca</button></div></div>
+        <table>
+          <thead><tr><th>Titulo</th><th>Cliente</th><th>Tipo</th><th>Vencimento</th><th>Valor</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="td-mono">#REC-8842</td><td class="td-name">Banco Meridional</td><td><span class="badge purple">Monitoramento</span></td><td class="td-mono">08/05/2025</td><td style="font-family:var(--font-mono);color:var(--accent)">R$1.200,00</td><td><span class="badge amber">A vencer</span></td></tr>
+            <tr><td class="td-mono">#REC-8841</td><td class="td-name">Condominio Park Sul</td><td><span class="badge blue">Monitoramento</span></td><td class="td-mono">08/05/2025</td><td style="font-family:var(--font-mono);color:var(--accent)">R$680,00</td><td><span class="badge amber">A vencer</span></td></tr>
+            <tr><td class="td-mono">#REC-8830</td><td class="td-name">Farmacia Popular</td><td><span class="badge gray">Monitoramento</span></td><td class="td-mono">01/05/2025</td><td style="font-family:var(--font-mono);color:var(--red)">R$180,00</td><td><span class="badge red">Atrasado 4d</span></td></tr>
+            <tr><td class="td-mono">#REC-8828</td><td class="td-name">Escola Luminar</td><td><span class="badge blue">Instalacao</span></td><td class="td-mono">30/04/2025</td><td style="font-family:var(--font-mono);color:var(--red)">R$8.200,00</td><td><span class="badge red">Atrasado 5d</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FISCAL -->
+    <div class="page-view" id="page-fiscal">
+      <div class="page-header">
+        <div class="page-title">Fiscal & Tributario</div>
+        <div class="page-subtitle">NF-e, NFS-e, SPED e obrigacoes acessorias</div>
+        <div class="page-actions">
+          <button class="btn btn-primary">Emitir NF-e</button>
+          <button class="btn btn-ghost">Emitir NFS-e</button>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-4" style="margin-bottom:20px;">
+        <div class="stat-card green"><div class="stat-label">NF-e Emitidas — Mai</div><div class="stat-value">42</div><div class="stat-change up">Todas autorizadas</div></div>
+        <div class="stat-card blue"><div class="stat-label">NFS-e Emitidas — Mai</div><div class="stat-value">38</div><div class="stat-change up">ISS recolhido</div></div>
+        <div class="stat-card amber"><div class="stat-label">SPED — Prazo</div><div class="stat-value sm">26 dias</div><div class="stat-change">Entrega em 31/05</div></div>
+        <div class="stat-card purple"><div class="stat-label">Certificado Digital</div><div class="stat-value sm">A1 — OK</div><div class="stat-change up">Vence em 287 dias</div></div>
+      </div>
+
+      <div class="alert green" style="margin-bottom:16px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <div>SEFAZ RS: Servico normalizado. Transmissao de NF-e operando sem intercorrencias.</div>
+      </div>
+
+      <div class="cards-grid cards-2" style="margin-bottom:20px;">
+        <div class="card">
+          <div class="card-title">Calendario Fiscal — Maio/2025</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--bg3);border-radius:var(--radius);">
+              <div><div style="font-size:12px;font-weight:500;">DAS — Simples Nacional</div><div style="font-size:11px;color:var(--text3)">Competencia: Abril/2025</div></div>
+              <div style="text-align:right;"><div class="td-mono" style="color:var(--red);">20/05/2025</div><span class="badge amber">Pendente</span></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--bg3);border-radius:var(--radius);">
+              <div><div style="font-size:12px;font-weight:500;">ISS Municipal</div><div style="font-size:11px;color:var(--text3)">Prefeitura local — Abril/2025</div></div>
+              <div style="text-align:right;"><div class="td-mono" style="color:var(--amber);">15/05/2025</div><span class="badge amber">Pendente</span></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--bg3);border-radius:var(--radius);">
+              <div><div style="font-size:12px;font-weight:500;">eSocial — Folha Abril</div><div style="font-size:11px;color:var(--text3)">Evento S-1200</div></div>
+              <div style="text-align:right;"><div class="td-mono" style="color:var(--accent);">07/05/2025</div><span class="badge green">Enviado</span></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--bg3);border-radius:var(--radius);">
+              <div><div style="font-size:12px;font-weight:500;">SPED EFD-ICMS/IPI</div><div style="font-size:11px;color:var(--text3)">Competencia: Abril/2025</div></div>
+              <div style="text-align:right;"><div class="td-mono" style="color:var(--text3);">25/05/2025</div><span class="badge gray">Aguardando</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Ultimos Documentos Fiscais</div>
+          <div style="font-size:11px;color:var(--text3);font-family:var(--font-mono);margin-bottom:8px;">NOTAS EMITIDAS RECENTEMENTE</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:8px;padding:6px;background:var(--bg3);border-radius:var(--radius);">
+              <span class="badge blue">NF-e</span>
+              <div style="flex:1;"><div style="font-size:12px;">Venda Cameras IP — Banco Meridional</div><div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">Chave: 4325...0001 — R$4.800</div></div>
+              <span class="badge green">Autorizada</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;padding:6px;background:var(--bg3);border-radius:var(--radius);">
+              <span class="badge purple">NFS-e</span>
+              <div style="flex:1;"><div style="font-size:12px;">Servico Instalacao — Escola Luminar</div><div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">ISS: 5% — R$8.200</div></div>
+              <span class="badge green">Autorizada</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;padding:6px;background:var(--bg3);border-radius:var(--radius);">
+              <span class="badge blue">NF-e</span>
+              <div style="flex:1;"><div style="font-size:12px;">Remessa Conserto — DVR Defeito</div><div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">CFOP 5915 — R$890</div></div>
+              <span class="badge green">Autorizada</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;padding:6px;background:var(--bg3);border-radius:var(--radius);">
+              <span class="badge purple">NFS-e</span>
+              <div style="flex:1;"><div style="font-size:12px;">Monitoramento Mensal — Park Sul</div><div style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">ISS: 2% — R$680</div></div>
+              <span class="badge amber">Pendente</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPRAS -->
+    <div class="page-view" id="page-compras">
+      <div class="page-header">
+        <div class="page-title">Compras & Fornecedores</div>
+        <div class="page-subtitle">Cotacoes, pedidos de compra e recebimento</div>
+        <div class="page-actions">
+          <button class="btn btn-primary">Nova Cotacao</button>
+          <button class="btn btn-ghost">Novo Pedido</button>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-3" style="margin-bottom:20px;">
+        <div class="stat-card amber"><div class="stat-label">Pedidos em Aberto</div><div class="stat-value">8</div><div class="stat-change">R$48.200 total</div></div>
+        <div class="stat-card blue"><div class="stat-label">Cotacoes Ativas</div><div class="stat-value">3</div><div class="stat-change">aguardando resposta</div></div>
+        <div class="stat-card green"><div class="stat-label">Entregues — Mai</div><div class="stat-value">12</div><div class="stat-change up">R$62.800 recebido</div></div>
+      </div>
+
+      <div class="table-wrap" style="margin-bottom:16px;">
+        <div class="table-header"><div class="table-title">Pedidos de Compra</div><div class="table-count">8 em aberto</div></div>
+        <table>
+          <thead><tr><th>PO</th><th>Fornecedor</th><th>Itens</th><th>Valor Total</th><th>Prazo</th><th>Status</th><th>Acao</th></tr></thead>
+          <tbody>
+            <tr><td class="td-mono">#PO-0441</td><td><div class="td-name">Intelbras Distribuidora</div><div class="td-sub">CNPJ 82.901.000/0001</div></td><td class="td-mono">12 itens</td><td style="font-family:var(--font-mono);color:var(--accent)">R$18.400</td><td class="td-mono">10/05/2025</td><td><span class="badge blue">Em Transito</span></td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+            <tr><td class="td-mono">#PO-0440</td><td><div class="td-name">Hikvision Brasil</div><div class="td-sub">CNPJ 14.222.000/0001</div></td><td class="td-mono">24 itens</td><td style="font-family:var(--font-mono);color:var(--accent)">R$22.800</td><td class="td-mono">15/05/2025</td><td><span class="badge amber">Aguardando NF</span></td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+            <tr><td class="td-mono">#PO-0439</td><td><div class="td-name">JFL Alarmes</div><div class="td-sub">CNPJ 11.332.000/0001</div></td><td class="td-mono">6 itens</td><td style="font-family:var(--font-mono);color:var(--accent)">R$7.000</td><td class="td-mono">08/05/2025</td><td><span class="badge red">Atrasado</span></td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Cotacao Comparativa — Camera IP 4MP Bullet (50 unidades)</div>
+        <div class="scroll-x">
+          <table>
+            <thead><tr><th>Fornecedor</th><th>Preco Unit.</th><th>Preco Total</th><th>Prazo Entrega</th><th>Condicao</th><th>Avaliacao</th><th>Acao</th></tr></thead>
+            <tbody>
+              <tr style="background:rgba(0,229,160,0.04);">
+                <td><div class="td-name">Intelbras Distribuidora</div></td>
+                <td style="font-family:var(--font-mono);color:var(--accent);font-weight:500">R$298,00</td>
+                <td style="font-family:var(--font-mono);color:var(--accent)">R$14.900</td>
+                <td class="td-mono">5 dias uteis</td>
+                <td class="td-mono">30/60d</td>
+                <td><span class="badge green">4.8/5</span></td>
+                <td><button class="btn btn-primary btn-sm">Selecionar</button></td>
+              </tr>
+              <tr>
+                <td><div class="td-name">Hikvision Brasil</div></td>
+                <td style="font-family:var(--font-mono)">R$315,00</td>
+                <td style="font-family:var(--font-mono)">R$15.750</td>
+                <td class="td-mono">7 dias uteis</td>
+                <td class="td-mono">28d</td>
+                <td><span class="badge blue">4.5/5</span></td>
+                <td><button class="btn btn-ghost btn-sm">Selecionar</button></td>
+              </tr>
+              <tr>
+                <td><div class="td-name">TechSeg Importados</div></td>
+                <td style="font-family:var(--font-mono)">R$278,00</td>
+                <td style="font-family:var(--font-mono)">R$13.900</td>
+                <td class="td-mono">15 dias uteis</td>
+                <td class="td-mono">A vista</td>
+                <td><span class="badge amber">3.8/5</span></td>
+                <td><button class="btn btn-ghost btn-sm">Selecionar</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RH -->
+    <div class="page-view" id="page-rh">
+      <div class="page-header">
+        <div class="page-title">RH & Equipe Tecnica</div>
+        <div class="page-subtitle">Colaboradores, folha de pagamento e certificacoes</div>
+        <div class="page-actions">
+          <button class="btn btn-primary">Nova Admissao</button>
+          <button class="btn btn-ghost">Processar Folha</button>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-4" style="margin-bottom:20px;">
+        <div class="stat-card blue"><div class="stat-label">Colaboradores Ativos</div><div class="stat-value">18</div><div class="stat-change">12 tecnicos de campo</div></div>
+        <div class="stat-card green"><div class="stat-label">Folha — Abril/2025</div><div class="stat-value sm">R$64.800</div><div class="stat-change up">Processada e paga</div></div>
+        <div class="stat-card amber"><div class="stat-label">Horas Extras — Abr</div><div class="stat-value">142h</div><div class="stat-change">6 colaboradores</div></div>
+        <div class="stat-card red"><div class="stat-label">Cert. Vencendo</div><div class="stat-value" style="color:var(--red)">2</div><div class="stat-change down">NR10 — 30 dias</div></div>
+      </div>
+
+      <div class="alert amber" style="margin-bottom:16px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div>Certificacao NR10 de <strong>Marcos Silva</strong> e <strong>Carlos Andrade</strong> vencem em 28 dias. Agendar renovacao com urgencia.</div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header"><div class="table-title">Equipe Tecnica</div><div class="table-count">12 tecnicos</div></div>
+        <table>
+          <thead><tr><th>Colaborador</th><th>Especialidade</th><th>Status Campo</th><th>OS — Mes</th><th>Avaliacao</th><th>NR10</th><th>CNH</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:28px;height:28px;border-radius:50%;background:var(--accent-dim);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent);font-family:var(--font-mono)">MS</div>
+                  <div><div class="td-name">Marcos Silva</div><div class="td-sub">Tec. Senior CFTV</div></div>
+                </div>
+              </td>
+              <td><span class="badge blue">CFTV</span> <span class="badge gray">Redes</span></td>
+              <td><span class="badge amber">Em OS</span></td>
+              <td class="td-mono">22 OS</td>
+              <td style="font-family:var(--font-mono);color:var(--accent)">4.9/5</td>
+              <td><span class="badge red">28 dias</span></td>
+              <td><span class="badge green">B — OK</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:28px;height:28px;border-radius:50%;background:var(--blue-dim);border:1px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--blue);font-family:var(--font-mono)">JP</div>
+                  <div><div class="td-name">Joao Pedro</div><div class="td-sub">Tec. Controle Acesso</div></div>
+                </div>
+              </td>
+              <td><span class="badge purple">Controle Acesso</span></td>
+              <td><span class="badge amber">Em OS</span></td>
+              <td class="td-mono">18 OS</td>
+              <td style="font-family:var(--font-mono);color:var(--accent)">4.7/5</td>
+              <td><span class="badge green">OK — 280d</span></td>
+              <td><span class="badge green">B — OK</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:28px;height:28px;border-radius:50%;background:var(--amber-dim);border:1px solid var(--amber);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--amber);font-family:var(--font-mono)">CA</div>
+                  <div><div class="td-name">Carlos Andrade</div><div class="td-sub">Eletricista CREA</div></div>
+                </div>
+              </td>
+              <td><span class="badge amber">Eletrica</span> <span class="badge gray">Cerca</span></td>
+              <td><span class="badge green">Livre</span></td>
+              <td class="td-mono">15 OS</td>
+              <td style="font-family:var(--font-mono);color:var(--accent)">4.8/5</td>
+              <td><span class="badge red">28 dias</span></td>
+              <td><span class="badge green">B — OK</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:28px;height:28px;border-radius:50%;background:var(--red-dim);border:1px solid var(--red);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--red);font-family:var(--font-mono)">LF</div>
+                  <div><div class="td-name">Lucas Ferreira</div><div class="td-sub">Instalador Junior</div></div>
+                </div>
+              </td>
+              <td><span class="badge gray">Alarme</span> <span class="badge gray">Auto.</span></td>
+              <td><span class="badge red">Atrasado</span></td>
+              <td class="td-mono">11 OS</td>
+              <td style="font-family:var(--font-mono);color:var(--amber)">3.9/5</td>
+              <td><span class="badge green">OK — 180d</span></td>
+              <td><span class="badge green">B — OK</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MANUTENCAO -->
+    <div class="page-view" id="page-manutencao">
+      <div class="page-header">
+        <div class="page-title">Manutencao & Garantia</div>
+        <div class="page-subtitle">Preventivas programadas, garantias e chamados tecnicos</div>
+        <div class="page-actions">
+          <button class="btn btn-primary">Abrir Chamado</button>
+          <button class="btn btn-ghost">Ver Calendario</button>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-4" style="margin-bottom:20px;">
+        <div class="stat-card blue"><div class="stat-label">PM Programadas — Mai</div><div class="stat-value">34</div><div class="stat-change">12 concluidas</div></div>
+        <div class="stat-card amber"><div class="stat-label">Chamados Abertos</div><div class="stat-value">9</div><div class="stat-change">2 fora do SLA</div></div>
+        <div class="stat-card red"><div class="stat-label">Garantias Ativas</div><div class="stat-value">423</div><div class="stat-change">equipamentos</div></div>
+        <div class="stat-card green"><div class="stat-label">SLA Atendimento</div><div class="stat-value">94%</div><div class="stat-change up">Meta: 90%</div></div>
+      </div>
+
+      <div class="cards-grid cards-2" style="margin-bottom:16px;">
+        <div class="table-wrap">
+          <div class="table-header"><div class="table-title">Preventivas Agendadas</div><div class="table-count">22 pendentes</div></div>
+          <table>
+            <thead><tr><th>Cliente</th><th>Sistema</th><th>Data</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="td-name">Banco Meridional</td><td><span class="badge purple">Controle Acesso</span></td><td class="td-mono">08/05/2025</td><td><span class="badge amber">Agendada</span></td></tr>
+              <tr><td class="td-name">Hospital Vitallis</td><td><span class="badge blue">CFTV</span></td><td class="td-mono">12/05/2025</td><td><span class="badge gray">Aberta</span></td></tr>
+              <tr><td class="td-name">Condominio Park Sul</td><td><span class="badge amber">Alarme</span></td><td class="td-mono">15/05/2025</td><td><span class="badge gray">Aberta</span></td></tr>
+              <tr><td class="td-name">Shoping Nortao</td><td><span class="badge blue">CFTV</span></td><td class="td-mono">18/05/2025</td><td><span class="badge gray">Aberta</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <div class="table-header"><div class="table-title">Chamados Tecnicos</div><div class="table-count">9 abertos</div></div>
+          <table>
+            <thead><tr><th>Chamado</th><th>Cliente</th><th>Urgencia</th><th>SLA</th></tr></thead>
+            <tbody>
+              <tr><td class="td-mono">#CHM-441</td><td class="td-name">Supermercado Mais</td><td><span class="badge red">Critico</span></td><td><span class="badge red">Fora SLA</span></td></tr>
+              <tr><td class="td-mono">#CHM-440</td><td class="td-name">Farmacia Popular</td><td><span class="badge amber">Medio</span></td><td><span class="badge amber">2h restantes</span></td></tr>
+              <tr><td class="td-mono">#CHM-439</td><td class="td-name">Residencia Alves</td><td><span class="badge gray">Baixo</span></td><td><span class="badge green">18h restantes</span></td></tr>
+              <tr><td class="td-mono">#CHM-438</td><td class="td-name">Escola Luminar</td><td><span class="badge gray">Baixo</span></td><td><span class="badge green">Dentro do SLA</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- BI -->
+    <div class="page-view" id="page-bi">
+      <div class="page-header">
+        <div class="page-title">BI & Relatorios Gerenciais</div>
+        <div class="page-subtitle">Dashboards executivos, KPIs e analise de desempenho</div>
+        <div class="page-actions">
+          <button class="btn btn-ghost">Exportar Excel</button>
+          <button class="btn btn-ghost">Exportar PDF</button>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-4" style="margin-bottom:20px;">
+        <div class="stat-card green"><div class="stat-label">MRR</div><div class="stat-value sm">R$48.750</div><div class="stat-change up">+R$2.100 MoM</div></div>
+        <div class="stat-card blue"><div class="stat-label">Churn Rate</div><div class="stat-value">2.4%</div><div class="stat-change down">Meta: &lt;3%</div></div>
+        <div class="stat-card amber"><div class="stat-label">Ticket Medio</div><div class="stat-value sm">R$16.200</div><div class="stat-change up">+R$800</div></div>
+        <div class="stat-card purple"><div class="stat-label">LTV Medio</div><div class="stat-value sm">R$84.600</div><div class="stat-change up">+8% aa</div></div>
+      </div>
+
+      <div class="cards-grid cards-2" style="margin-bottom:20px;">
+        <div class="card">
+          <div class="card-title">Evolucao MRR — Ultimos 6 meses</div>
+          <div class="chart-bars" style="height:100px;">
+            <div class="chart-bar" style="height:62%;" title="Nov/24: R$42.100"></div>
+            <div class="chart-bar" style="height:65%;" title="Dez/24: R$43.800"></div>
+            <div class="chart-bar" style="height:68%;" title="Jan/25: R$44.900"></div>
+            <div class="chart-bar" style="height:72%;" title="Fev/25: R$45.500"></div>
+            <div class="chart-bar" style="height:78%;" title="Mar/25: R$46.650"></div>
+            <div class="chart-bar" style="height:82%;" title="Abr/25: R$46.650"></div>
+            <div class="chart-bar" style="height:100%;opacity:1;" title="Mai/25: R$48.750"></div>
+          </div>
+          <div style="display:flex;justify-content:space-around;font-size:10px;color:var(--text3);font-family:var(--font-mono);">
+            <span>Nov</span><span>Dez</span><span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span style="color:var(--accent)">Mai</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Receita por Segmento — Acumulado 2025</div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text2)">Monitoramento</span><span style="font-family:var(--font-mono)">43%</span></div><div class="progress-bar" style="height:6px;"><div class="progress-fill green" style="width:43%"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text2)">Instalacoes</span><span style="font-family:var(--font-mono)">28%</span></div><div class="progress-bar" style="height:6px;"><div class="progress-fill blue" style="width:28%"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text2)">Equipamentos</span><span style="font-family:var(--font-mono)">20%</span></div><div class="progress-bar" style="height:6px;"><div class="progress-fill amber" style="width:20%"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text2)">Manutencao</span><span style="font-family:var(--font-mono)">9%</span></div><div class="progress-bar" style="height:6px;"><div class="progress-fill" style="width:9%;background:var(--purple)"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-grid cards-3" style="margin-bottom:20px;">
+        <div class="card">
+          <div class="card-title">Top Tecnicos — OS/Mes</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;color:var(--text3);font-family:var(--font-mono);min-width:16px">1</span><span style="font-size:13px">Marcos Silva</span></div>
+              <div style="display:flex;align-items:center;gap:8px;"><span style="font-family:var(--font-mono);font-size:12px;color:var(--accent)">22 OS</span><span class="badge green">4.9</span></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;color:var(--text3);font-family:var(--font-mono);min-width:16px">2</span><span style="font-size:13px">Joao Pedro</span></div>
+              <div style="display:flex;align-items:center;gap:8px;"><span style="font-family:var(--font-mono);font-size:12px;color:var(--accent)">18 OS</span><span class="badge green">4.7</span></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;color:var(--text3);font-family:var(--font-mono);min-width:16px">3</span><span style="font-size:13px">Carlos Andrade</span></div>
+              <div style="display:flex;align-items:center;gap:8px;"><span style="font-family:var(--font-mono);font-size:12px;color:var(--accent)">15 OS</span><span class="badge blue">4.8</span></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;color:var(--text3);font-family:var(--font-mono);min-width:16px">4</span><span style="font-size:13px">Lucas Ferreira</span></div>
+              <div style="display:flex;align-items:center;gap:8px;"><span style="font-family:var(--font-mono);font-size:12px">11 OS</span><span class="badge amber">3.9</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Contratos em Risco de Churn</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="padding:8px;background:var(--red-dim);border:1px solid rgba(255,77,77,0.15);border-radius:var(--radius);">
+              <div style="font-size:12px;font-weight:500;">Farmacia Popular</div>
+              <div style="font-size:11px;color:var(--red);">Inadimplente 4 dias + 2 chamados abertos</div>
+            </div>
+            <div style="padding:8px;background:var(--amber-dim);border:1px solid rgba(245,158,11,0.15);border-radius:var(--radius);">
+              <div style="font-size:12px;font-weight:500;">Padaria Central</div>
+              <div style="font-size:11px;color:var(--amber);">Renovacao vence em 12 dias sem proposta</div>
+            </div>
+            <div style="padding:8px;background:var(--amber-dim);border:1px solid rgba(245,158,11,0.15);border-radius:var(--radius);">
+              <div style="font-size:12px;font-weight:500;">Clinica Ortopedica</div>
+              <div style="font-size:11px;color:var(--amber);">3 chamados sem resolucao + NPS baixo</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Conversao de Propostas</div>
+          <div style="text-align:center;padding:12px 0;">
+            <div style="font-family:var(--font-display);font-size:42px;font-weight:700;color:var(--accent);letter-spacing:-2px;">38%</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:4px;">taxa de conversao — Mai/2025</div>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+            <div style="text-align:center;"><div style="font-size:20px;font-weight:700;font-family:var(--font-display)">12</div><div style="font-size:10px;color:var(--text3)">Abertas</div></div>
+            <div style="color:var(--text3);align-self:center;font-size:18px;">→</div>
+            <div style="text-align:center;"><div style="font-size:20px;font-weight:700;font-family:var(--font-display);color:var(--accent)">8</div><div style="font-size:10px;color:var(--text3)">Ganhas</div></div>
+            <div style="color:var(--text3);align-self:center;font-size:18px;">+</div>
+            <div style="text-align:center;"><div style="font-size:20px;font-weight:700;font-family:var(--font-display);color:var(--red)">4</div><div style="font-size:10px;color:var(--text3)">Perdidas</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+</div>
+
+<script>
+const breadcrumbs = {
+  dashboard: 'Dashboard',
+  monitor: 'Central de Monitoramento',
+  crm: 'CRM & Vendas',
+  os: 'Ordens de Servico',
+  estoque: 'Estoque',
+  financeiro: 'Financeiro',
+  fiscal: 'Fiscal & Tributario',
+  compras: 'Compras & Fornecedores',
+  rh: 'RH & Equipe Tecnica',
+  manutencao: 'Manutencao & Garantia',
+  bi: 'BI & Relatorios'
+};
+
+function navigate(el) {
+  const page = el.dataset.page;
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('breadcrumb-current').textContent = breadcrumbs[page] || page;
+}
+
+// Simula novos eventos na central de monitoramento
+const eventTypes = [
+  {type: 'TESTE PERIODICO', client: 'Residencia Alves — Zona 1', cls: 'info', badge: '<span class="badge gray">Info</span>', status: '<span class="badge green">OK</span>'},
+  {type: 'ARMADO', client: 'Padaria Central — Ala Comercial', cls: 'ok', badge: '<span class="badge gray">Normal</span>', status: '<span class="badge green">OK</span>'},
+  {type: 'BATERIA BAIXA', client: 'Hospital Vitallis — Bloco B', cls: 'warning', badge: '<span class="badge amber">Aviso</span>', status: '<span class="badge blue">Ligando</span>'},
+  {type: 'DESARMADO', client: 'Banco Meridional — Agencia Norte', cls: 'ok', badge: '<span class="badge gray">Normal</span>', status: '<span class="badge green">OK</span>'},
+];
+
+let eventCount = 147;
+function addEvent() {
+  const ev = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+  const feed = document.getElementById('event-feed');
+  if (!feed) return;
+  const now = new Date();
+  const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0') + ':' + now.getSeconds().toString().padStart(2,'0');
+  const row = document.createElement('div');
+  row.className = 'event-row ' + ev.cls;
+  row.style.opacity = '0';
+  row.style.transition = 'opacity 0.3s';
+  row.innerHTML = `<div><div class="event-type" style="color:var(--text2)">${ev.type}</div><div class="event-time">${time}</div></div><div class="event-client">${ev.client}</div>${ev.badge}${ev.status}`;
+  feed.insertBefore(row, feed.firstChild);
+  setTimeout(() => { row.style.opacity = '1'; }, 10);
+  eventCount++;
+  const counter = document.getElementById('event-count');
+  if (counter) counter.textContent = eventCount + ' hoje';
+  while (feed.children.length > 12) feed.removeChild(feed.lastChild);
+}
+setInterval(addEvent, 8000);
+</script>
+</body>
+</html>
