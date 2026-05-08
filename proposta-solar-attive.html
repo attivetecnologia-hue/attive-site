@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Solar – &lt;Nome_cliente&gt; | Attive Tecnologia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --pri:#0B1929; --sec:#F5A623; --acc:#E8762A;
+  --lgt:#F7F5F0; --sur:#FFFFFF; --txt:#1A1A2E;
+  --mut:#6B7280; --bdr:#E4E0D8; --grn:#1A7A4A;
+  --red:#C0392B;
+  --fD:'Cormorant Garamond',Georgia,serif;
+  --fB:'DM Sans',sans-serif;
+  --fM:'DM Mono',monospace;
+  --r1:6px; --r2:12px; --r3:20px;
+  --sh1:0 2px 20px rgba(11,25,41,.08);
+  --sh2:0 8px 40px rgba(11,25,41,.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fB);background:var(--sur);color:var(--txt);font-size:16px;line-height:1.7;overflow-x:hidden;}
+img{max-width:100%;height:auto;display:block;}
+a{color:var(--sec);text-decoration:none;}
+a:hover{text-decoration:underline;}
+:focus-visible{outline:3px solid var(--sec);outline-offset:3px;}
+
+/* ============================================================
+   ICON SYSTEM
+   ============================================================ */
+.ic{display:inline-block;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:middle;}
+.ic--sm{width:14px;height:14px;stroke-width:2;}
+.ic--md{width:20px;height:20px;stroke-width:1.8;}
+.ic--lg{width:26px;height:26px;stroke-width:1.6;}
+.ib{display:flex;align-items:center;justify-content:center;border-radius:var(--r1);flex-shrink:0;}
+.ib--amber{width:46px;height:46px;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);color:var(--sec);margin-bottom:1.1rem;}
+.ib--orange{width:52px;height:52px;background:rgba(232,118,42,.08);border:1px solid rgba(232,118,42,.14);border-radius:var(--r2);color:var(--acc);margin:0 auto 1.1rem;}
+.ib--green{width:46px;height:46px;background:rgba(26,122,74,.08);border:1px solid rgba(26,122,74,.18);color:var(--grn);flex-shrink:0;}
+
+/* ============================================================
+   TYPOGRAPHY & LAYOUT
+   ============================================================ */
+h1,h2,h3,h4{font-family:var(--fD);line-height:1.15;}
+h1{font-size:clamp(2.8rem,6vw,5rem);font-weight:300;letter-spacing:-.02em;}
+h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;}
+h4{font-size:1rem;font-weight:600;font-family:var(--fB);}
+.lbl{font-family:var(--fM);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--sec);}
+.secn{font-family:var(--fM);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);display:block;margin-bottom:.5rem;}
+.w{max-width:1100px;margin:0 auto;padding:0 2rem;}
+.sec{padding:6rem 0;} .dk{background:var(--pri);color:#fff;} .lt{background:var(--lgt);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
+@media(max-width:900px){.g2{grid-template-columns:1fr;}.g3{grid-template-columns:1fr 1fr;}.g4{grid-template-columns:1fr 1fr;}}
+@media(max-width:580px){.g3,.g4{grid-template-columns:1fr;}.sec{padding:4rem 0;}}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease;}
+.rv.on{opacity:1;transform:none;}
+.rv.d1{transition-delay:.1s;}.rv.d2{transition-delay:.2s;}.rv.d3{transition-delay:.3s;}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;transition:background .3s,box-shadow .3s;}
+#nav.sc{background:rgba(11,25,41,.96);backdrop-filter:blur(14px);box-shadow:0 1px 24px rgba(0,0,0,.3);}
+.nlogo{font-family:var(--fD);font-size:1.45rem;font-weight:600;color:#fff;}
+.nlogo span{color:var(--sec);}
+.nlinks{display:flex;gap:2rem;list-style:none;}
+.nlinks a{color:rgba(255,255,255,.7);font-size:.8rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:color .2s;}
+.nlinks a:hover{color:var(--sec);}
+@media(max-width:700px){.nlinks{display:none;}}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero{min-height:100vh;background:var(--pri);position:relative;display:flex;align-items:center;overflow:hidden;}
+.hbg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 72% 58%,rgba(245,166,35,.17) 0%,transparent 70%),radial-gradient(ellipse 38% 28% at 76% 54%,rgba(232,118,42,.11) 0%,transparent 60%),linear-gradient(165deg,#0B1929 0%,#112540 60%,#0E1E35 100%);animation:hpulse 8s ease-in-out infinite alternate;}
+@keyframes hpulse{0%{filter:brightness(1);}100%{filter:brightness(1.07);}}
+.hgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(245,166,35,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(245,166,35,.04) 1px,transparent 1px);background-size:60px 60px;animation:gm 22s linear infinite;}
+@keyframes gm{to{background-position:60px 60px;}}
+.horb{position:absolute;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,.2) 0%,transparent 70%);top:50%;right:6%;transform:translateY(-50%);animation:of 6s ease-in-out infinite alternate;}
+@keyframes of{0%{transform:translateY(-50%) scale(1);}100%{transform:translateY(-52%) scale(1.05);}}
+.hrays{position:absolute;width:520px;height:520px;top:50%;right:3%;transform:translateY(-50%);animation:rr 32s linear infinite;}
+.hrays::before{content:'';position:absolute;inset:0;background:repeating-conic-gradient(rgba(245,166,35,.035) 0deg,rgba(245,166,35,.035) 10deg,transparent 10deg,transparent 20deg);border-radius:50%;}
+@keyframes rr{to{transform:translateY(-50%) rotate(360deg);}}
+.hcont{position:relative;z-index:2;padding:8rem 0 4rem;}
+.hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.28);border-radius:100px;padding:5px 16px;font-size:.72rem;font-weight:500;color:var(--sec);letter-spacing:.12em;text-transform:uppercase;margin-bottom:2rem;}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--sec);animation:bl 2s ease-in-out infinite;}
+@keyframes bl{0%,100%{opacity:1;}50%{opacity:.2;}}
+.htitle{font-family:var(--fD);font-size:clamp(2.8rem,6vw,5rem);font-weight:300;color:#fff;line-height:1.07;margin-bottom:1.5rem;}
+.htitle strong{font-weight:700;color:var(--sec);display:block;}
+.hsub{font-size:1.05rem;color:rgba(255,255,255,.6);max-width:520px;margin-bottom:3rem;line-height:1.8;}
+.hkpis{display:flex;gap:2.5rem;flex-wrap:wrap;}
+.knum{font-family:var(--fD);font-size:2.2rem;font-weight:600;color:var(--sec);line-height:1;}
+.kcap{font-size:.75rem;color:rgba(255,255,255,.45);letter-spacing:.04em;margin-top:4px;}
+.hlogos{position:absolute;bottom:3rem;right:0;display:flex;align-items:center;gap:1.5rem;opacity:.38;}
+.lpill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:var(--r1);padding:7px 14px;font-size:.76rem;color:rgba(255,255,255,.55);font-family:var(--fM);}
+.hdate{position:absolute;bottom:1.5rem;right:2rem;font-family:var(--fM);font-size:.65rem;color:rgba(255,255,255,.22);letter-spacing:.12em;}
+.schint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.28);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;animation:sb 2.6s ease-in-out infinite;}
+@keyframes sb{0%,100%{transform:translateX(-50%) translateY(0);opacity:.28;}50%{transform:translateX(-50%) translateY(7px);opacity:.55;}}
+.sarr{width:18px;height:18px;border-right:2px solid;border-bottom:2px solid;transform:rotate(45deg);}
+
+/* ============================================================
+   SUMÁRIO
+   ============================================================ */
+.execp{font-family:var(--fD);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:300;line-height:1.55;max-width:780px;margin-bottom:3rem;}
+.execp strong{color:var(--acc);font-weight:600;}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:var(--bdr);border:1px solid var(--bdr);border-radius:var(--r2);overflow:hidden;}
+.pillar{background:var(--sur);padding:2rem;transition:background .22s;}
+.pillar:hover{background:var(--lgt);}
+.pillar h4{margin:.75rem 0 .4rem;}
+.pillar p{font-size:.88rem;color:var(--mut);line-height:1.6;}
+@media(max-width:700px){.pillars{grid-template-columns:1fr;}}
+
+/* ============================================================
+   ESCOPO
+   ============================================================ */
+.stbl{width:100%;border-collapse:collapse;font-size:.9rem;}
+.stbl th{text-align:left;font-family:var(--fM);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);}
+.stbl td{padding:.85rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.82);}
+.stbl td:first-child{color:rgba(255,255,255,.38);font-family:var(--fM);font-size:.78rem;}
+.sbadge{display:inline-block;padding:2px 10px;border-radius:100px;font-size:.72rem;font-weight:500;background:rgba(245,166,35,.13);color:var(--sec);border:1px solid rgba(245,166,35,.24);}
+.sbadge--ok{background:rgba(26,122,74,.15);color:var(--grn);border-color:rgba(26,122,74,.25);}
+.tcard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:var(--r2);padding:1.6rem;}
+.tcard h4{color:var(--sec);margin-bottom:.75rem;font-family:var(--fB);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;}
+.tcard li{color:rgba(255,255,255,.62);font-size:.88rem;list-style:none;padding:.15rem 0;}
+.tcard li::before{content:'→ ';color:rgba(245,166,35,.6);}
+
+/* ============================================================
+   ENTREGÁVEIS
+   ============================================================ */
+.plist{display:grid;gap:1px;background:var(--bdr);border-radius:var(--r2);overflow:hidden;}
+.prow{background:var(--sur);display:grid;grid-template-columns:60px 1fr auto;align-items:center;gap:1.5rem;padding:1.4rem 2rem;transition:background .2s;}
+.prow:hover{background:var(--lgt);}
+.pn{width:44px;height:44px;border-radius:50%;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--fD);font-size:1.25rem;font-weight:600;flex-shrink:0;}
+.ptit{font-weight:600;margin-bottom:3px;} .pdsc{font-size:.86rem;color:var(--mut);}
+.pdur{font-family:var(--fM);font-size:.72rem;color:var(--acc);white-space:nowrap;background:rgba(232,118,42,.07);padding:3px 10px;border-radius:100px;border:1px solid rgba(232,118,42,.18);}
+@media(max-width:600px){.prow{grid-template-columns:44px 1fr;}.pdur{display:none;}}
+
+/* ============================================================
+   CRONOGRAMA
+   ============================================================ */
+.tl{position:relative;}
+.tl::before{content:'';position:absolute;left:80px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--sec) 0%,rgba(245,166,35,.08) 100%);}
+.tli{display:grid;grid-template-columns:80px 1fr;gap:2rem;padding-bottom:2.5rem;position:relative;}
+.tldt{text-align:right;font-family:var(--fM);font-size:.7rem;letter-spacing:.06em;color:var(--mut);padding-top:3px;}
+.tldot{position:absolute;left:72px;top:4px;width:16px;height:16px;border-radius:50%;background:var(--sec);border:3px solid var(--sur);box-shadow:0 0 0 3px rgba(245,166,35,.28);}
+.tldot--ok{background:var(--grn);box-shadow:0 0 0 3px rgba(26,122,74,.28);}
+.tlb{padding-left:2rem;} .tlb h4{margin-bottom:3px;} .tlb p{font-size:.86rem;color:var(--mut);}
+.tlbdg{display:inline-flex;align-items:center;background:rgba(245,166,35,.09);color:var(--acc);border:1px solid rgba(245,166,35,.22);border-radius:100px;padding:2px 10px;font-size:.7rem;font-weight:600;margin-top:6px;}
+.tlbdg--ok{color:var(--grn);border-color:rgba(26,122,74,.28);background:rgba(26,122,74,.07);}
+.note{display:flex;align-items:flex-start;gap:.6rem;font-size:.82rem;color:var(--mut);}
+.note .ic{margin-top:2px;}
+
+/* ============================================================
+   INVESTIMENTO — 3 OPÇÕES
+   ============================================================ */
+.opt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:3rem;}
+@media(max-width:900px){.opt-grid{grid-template-columns:1fr;}}
+
+.opt-card{border:2px solid var(--bdr);border-radius:var(--r3);overflow:hidden;transition:box-shadow .25s;}
+.opt-card:hover{box-shadow:var(--sh2);}
+.opt-card--rec{border-color:var(--sec);}
+.opt-card--nr {border-color:var(--bdr);opacity:.85;}
+
+.opt-head{padding:1.75rem 1.75rem 1.25rem;background:var(--pri);color:#fff;position:relative;}
+.opt-card--rec .opt-head{background:linear-gradient(135deg,#1a3a5c 0%,#0b1929 100%);}
+.opt-card--nr  .opt-head{background:#1c1c1c;}
+
+.opt-tag{position:absolute;top:.9rem;right:.9rem;font-size:.65rem;font-weight:600;padding:3px 10px;border-radius:100px;letter-spacing:.08em;}
+.tag--rec{background:var(--sec);color:#fff;}
+.tag--ok {background:rgba(245,166,35,.18);color:var(--sec);border:1px solid rgba(245,166,35,.3);}
+.tag--nr {background:rgba(192,57,43,.15);color:#e05040;border:1px solid rgba(192,57,43,.25);}
+
+.opt-head .lbl{color:rgba(245,166,35,.65);margin-bottom:.5rem;}
+.opt-kw{font-family:var(--fD);font-size:2.4rem;font-weight:300;color:#fff;line-height:1;}
+.opt-kw sup{font-size:1rem;vertical-align:top;margin-top:.45rem;display:inline-block;}
+.opt-sub{font-size:.78rem;color:rgba(255,255,255,.45);margin-top:.3rem;}
+
+.opt-body{padding:1.5rem 1.75rem;}
+.opt-row{display:flex;justify-content:space-between;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--bdr);font-size:.86rem;gap:.5rem;}
+.opt-row:last-child{border:none;}
+.opt-row .k{color:var(--mut);flex-shrink:0;}
+.opt-row .v{font-weight:600;text-align:right;}
+
+.opt-price{margin-top:1.25rem;padding:1.1rem;background:var(--lgt);border-radius:var(--r1);}
+.opt-vista{font-family:var(--fD);font-size:1.6rem;font-weight:600;color:var(--txt);}
+.opt-fin{font-size:.8rem;color:var(--mut);margin-top:.25rem;}
+.opt-fin strong{color:var(--acc);}
+
+.nr-warn{display:flex;align-items:flex-start;gap:.5rem;margin-top:.85rem;padding:.7rem .9rem;background:rgba(192,57,43,.06);border:1px solid rgba(192,57,43,.18);border-radius:var(--r1);font-size:.78rem;color:#a03020;}
+.nr-warn .ic{color:#c0392b;flex-shrink:0;margin-top:1px;}
+
+/* Tabela financiamento */
+.fin-wrap{background:var(--lgt);border-radius:var(--r2);padding:2rem;}
+.fin-wrap h4{margin-bottom:1.25rem;}
+.ftbl{width:100%;border-collapse:collapse;font-size:.88rem;}
+.ftbl th{background:#fff;padding:.7rem 1rem;text-align:left;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-family:var(--fM);}
+.ftbl td{padding:.7rem 1rem;border-bottom:1px solid var(--bdr);}
+.ftbl tr:hover td{background:#fff;}
+.ftbl .hi td{background:rgba(245,166,35,.05)!important;}
+.ftbl .hi td:first-child{font-weight:600;}
+
+/* Condbox / ilist */
+.condbox{margin-top:1rem;padding:.85rem 1rem;background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.18);border-radius:var(--r1);display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:var(--mut);}
+.condbox .ic{color:var(--sec);flex-shrink:0;}
+.ilist{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+.iitem{display:flex;align-items:center;gap:.65rem;font-size:.9rem;}
+.iitem .ic{color:var(--grn);flex-shrink:0;}
+
+/* ============================================================
+   BENEFÍCIOS
+   ============================================================ */
+.bhero{text-align:center;padding:3rem 2rem;background:linear-gradient(135deg,rgba(245,166,35,.07) 0%,transparent 60%);border:1px solid rgba(245,166,35,.18);border-radius:var(--r3);margin-bottom:2.5rem;}
+.bnum{font-family:var(--fD);font-size:clamp(4rem,10vw,7rem);font-weight:300;color:var(--sec);line-height:.9;}
+.bunit{font-size:1.4rem;color:var(--mut);margin-top:.5rem;}
+.bcard{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r2);padding:1.75rem;text-align:center;box-shadow:var(--sh1);transition:transform .25s,box-shadow .25s;}
+.bcard:hover{transform:translateY(-4px);box-shadow:var(--sh2);}
+.bval{font-family:var(--fD);font-size:2.2rem;font-weight:600;color:var(--acc);margin-top:.25rem;}
+.blbl{font-size:.82rem;color:var(--mut);margin-top:3px;}
+.pbwrap{margin-top:3rem;padding:2rem;background:var(--lgt);border-radius:var(--r2);}
+.pbtrack{height:10px;background:var(--bdr);border-radius:100px;overflow:hidden;margin:1rem 0;}
+.pbfill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--sec),var(--acc));width:0;transition:width 1.5s cubic-bezier(.4,0,.2,1);}
+.pblbls{display:flex;justify-content:space-between;font-size:.72rem;color:var(--mut);font-family:var(--fM);}
+.co2box{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.5rem;background:rgba(26,122,74,.06);border:1px solid rgba(26,122,74,.18);border-radius:var(--r2);margin-top:1.5rem;}
+.co2box p{font-size:.9rem;} .co2box strong{color:var(--grn);}
+
+/* ============================================================
+   TERMOS
+   ============================================================ */
+.tgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+.tc{border:1px solid var(--bdr);border-radius:var(--r2);padding:1.5rem;position:relative;overflow:hidden;}
+.tc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sec),var(--acc));}
+.tc h4{margin-bottom:.4rem;font-size:.82rem;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;font-family:var(--fM);}
+.tval{font-family:var(--fD);font-size:1.65rem;font-weight:600;color:var(--pri);}
+.tc p{font-size:.84rem;color:var(--mut);margin-top:.4rem;}
+@media(max-width:600px){.tgrid{grid-template-columns:1fr;}}
+.divr{display:flex;align-items:center;gap:1rem;margin:3rem 0;}
+.divr::before,.divr::after{content:'';flex:1;height:1px;background:var(--bdr);}
+.divr span{font-family:var(--fM);font-size:.68rem;letter-spacing:.16em;color:var(--mut);text-transform:uppercase;white-space:nowrap;}
+
+/* ============================================================
+   CASE / CTA / FOOTER
+   ============================================================ */
+.ccard{background:var(--pri);border-radius:var(--r3);padding:3rem;color:#fff;position:relative;overflow:hidden;}
+.ccard::before{content:'"';position:absolute;top:-1.5rem;left:2rem;font-family:var(--fD);font-size:12rem;font-weight:700;color:rgba(245,166,35,.07);line-height:1;pointer-events:none;}
+.cq{font-family:var(--fD);font-size:clamp(1.15rem,2.5vw,1.55rem);font-weight:300;line-height:1.55;color:rgba(255,255,255,.9);margin-bottom:2rem;}
+.cq strong{color:var(--sec);font-weight:600;}
+.cauth{display:flex;align-items:center;gap:1rem;}
+.cav{width:48px;height:48px;border-radius:50%;background:rgba(245,166,35,.18);border:2px solid rgba(245,166,35,.38);display:flex;align-items:center;justify-content:center;font-family:var(--fD);font-size:1.1rem;font-weight:600;color:var(--sec);flex-shrink:0;}
+.cnm{font-weight:600;font-size:.95rem;} .crl{font-size:.8rem;color:rgba(255,255,255,.45);}
+.cstats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:2.5rem;background:rgba(255,255,255,.08);border-radius:var(--r2);overflow:hidden;}
+.cst{background:rgba(255,255,255,.04);padding:1.25rem;text-align:center;}
+.cstn{font-family:var(--fD);font-size:2rem;font-weight:600;color:var(--sec);}
+.cstc{font-size:.73rem;color:rgba(255,255,255,.42);margin-top:2px;}
+@media(max-width:600px){.cstats{grid-template-columns:1fr;}.ccard{padding:2rem;}}
+
+#cta{background:linear-gradient(135deg,var(--sec) 0%,var(--acc) 100%);padding:5rem 0;text-align:center;position:relative;overflow:hidden;}
+#cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 18% 80%,rgba(255,255,255,.07) 0%,transparent 50%),radial-gradient(circle at 82% 20%,rgba(255,255,255,.07) 0%,transparent 50%);}
+.ctaT{font-family:var(--fD);font-size:clamp(2rem,5vw,3.5rem);font-weight:300;color:#fff;margin-bottom:1rem;position:relative;}
+.ctaS{color:rgba(255,255,255,.8);max-width:460px;margin:0 auto 2.5rem;font-size:1.05rem;position:relative;}
+.btnC{display:inline-flex;align-items:center;gap:12px;background:var(--pri);color:#fff;padding:1rem 2.5rem;border-radius:100px;font-size:1rem;font-weight:600;letter-spacing:.02em;border:none;cursor:pointer;transition:all .3s;text-decoration:none;position:relative;}
+.btnC:hover{background:#0a2240;transform:translateY(-2px);box-shadow:0 14px 32px rgba(11,25,41,.35);text-decoration:none;color:#fff;}
+.bico{width:28px;height:28px;border-radius:50%;background:var(--sec);display:flex;align-items:center;justify-content:center;color:#fff;transition:transform .3s;}
+.btnC:hover .bico{transform:rotate(45deg);}
+.ctaI{margin-top:1.4rem;font-size:.82rem;color:rgba(255,255,255,.6);position:relative;}
+.ctaV{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:5px 14px;font-size:.78rem;color:rgba(255,255,255,.88);margin-top:1rem;}
+.ctaV .ic{color:rgba(255,255,255,.75);}
+footer{background:var(--pri);color:rgba(255,255,255,.38);padding:2.5rem 0;font-size:.8rem;}
+.fin2{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.fbrand{color:rgba(255,255,255,.7);font-family:var(--fD);font-size:1.1rem;}
+.fbrand span{color:var(--sec);}
+@media print{#nav,.schint,#cta,footer{display:none!important;}#hero{min-height:auto;page-break-after:always;}.sec{padding:2rem 0;}.rv{opacity:1!important;transform:none!important;}}
+</style>
+</head>
+<body>
+
+<!-- SVG SPRITE -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <defs>
+    <symbol id="i-bolt"     viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+    <symbol id="i-leaf"     viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+    <symbol id="i-home"     viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+    <symbol id="i-wallet"   viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></symbol>
+    <symbol id="i-trend"    viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></symbol>
+    <symbol id="i-clock"    viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-tree"     viewBox="0 0 24 24"><path d="M12 22v-8"/><path d="M12 14c0 0-5-3-5-8a5 5 0 0 1 10 0c0 5-5 8-5 8z"/><line x1="9" y1="21" x2="15" y2="21"/></symbol>
+    <symbol id="i-check"    viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></symbol>
+    <symbol id="i-clip"     viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></symbol>
+    <symbol id="i-warn"     viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+    <symbol id="i-hourglass"viewBox="0 0 24 24"><path d="M5 22h14M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/></symbol>
+    <symbol id="i-arr"      viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></symbol>
+    <symbol id="i-shield"   viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
+    <symbol id="i-sun"      viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></symbol>
+  </defs>
+</svg>
+
+
+<!-- NAV -->
+<nav id="nav" role="navigation" aria-label="Navegação principal">
+  <span class="nlogo">Attive <span>·</span> Solar</span>
+  <ul class="nlinks">
+    <li><a href="#sumario">Sumário</a></li>
+    <li><a href="#escopo">Escopo</a></li>
+    <li><a href="#investimento">Investimento</a></li>
+    <li><a href="#beneficios">Benefícios</a></li>
+    <li><a href="#cta">Contato</a></li>
+  </ul>
+</nav>
+
+
+<!-- ============================================================
+     01 HERO / CAPA
+     ============================================================ -->
+<section id="hero" aria-labelledby="htitle">
+  <div class="hbg"   aria-hidden="true"></div>
+  <div class="hgrid" aria-hidden="true"></div>
+  <div class="horb"  aria-hidden="true"></div>
+  <div class="hrays" aria-hidden="true"></div>
+  <div class="w hcont">
+    <div class="hbadge"><span class="bdot" aria-hidden="true"></span>Proposta Comercial Confidencial</div>
+    <h1 class="htitle" id="htitle">
+      Proposta Solar
+      <strong>&lt;Nome_cliente&gt;</strong>
+    </h1>
+    <p class="hsub">
+      Sistema fotovoltaico Solplanet de alta performance com painéis bifaciais
+      N-Type TopCon, projetado para maximizar geração, reduzir custos e garantir
+      retorno seguro do seu investimento.
+    </p>
+    <div class="hkpis">
+      <div><div class="knum">21,08 kWp</div><div class="kcap">potência instalada</div></div>
+      <div><div class="knum">34 un.</div><div class="kcap">módulos Leapton 620W</div></div>
+      <div><div class="knum">Solplanet</div><div class="kcap">inversor 20 kW trifásico</div></div>
+    </div>
+    <div class="hlogos" aria-label="Logotipos">
+      <span class="lpill">Attive Tecnologia</span>
+      <span style="color:rgba(255,255,255,.2)">×</span>
+      <span class="lpill">&lt;Logo_cliente&gt;</span>
+    </div>
+    <div class="hdate">DATA: &lt;Data_emissao&gt; · REF: AT-SOLAR-2025</div>
+  </div>
+  <div class="schint" aria-hidden="true"><span>Scroll</span><div class="sarr"></div></div>
+</section>
+
+
+<!-- ============================================================
+     02 SUMÁRIO EXECUTIVO
+     ============================================================ -->
+<section id="sumario" class="sec" aria-labelledby="sh">
+  <div class="w">
+    <span class="secn">01 — Sumário Executivo</span>
+    <h2 class="rv" id="sh">Por que energia solar<br>faz sentido para você</h2>
+    <p class="execp rv d1">
+      Esta proposta foi desenvolvida exclusivamente para <strong>&lt;Nome_cliente&gt;</strong>,
+      com base em análise técnica detalhada do perfil de consumo e características
+      da instalação. O sistema dimensionado com inversor Solplanet 20 kW e
+      <strong>34 painéis bifaciais de 620W</strong> garante alto desempenho,
+      segurança operacional e retorno financeiro sólido.
+    </p>
+    <div class="pillars rv d2">
+      <div class="pillar">
+        <div class="ib ib--amber"><svg class="ic ic--md" aria-hidden="true"><use href="#i-bolt"/></svg></div>
+        <h4>Redução de Custos</h4>
+        <p>Sistema de <strong>21,08 kWp</strong> com fator de dimensionamento ideal de 111,6%, gerando economia significativa na conta de energia desde o primeiro mês.</p>
+      </div>
+      <div class="pillar">
+        <div class="ib ib--amber"><svg class="ic ic--md" aria-hidden="true"><use href="#i-leaf"/></svg></div>
+        <h4>Sustentabilidade</h4>
+        <p>Tecnologia bifacial N-Type TopCon de última geração com maior eficiência e menor degradação ao longo de <strong>25 anos de operação</strong>.</p>
+      </div>
+      <div class="pillar">
+        <div class="ib ib--amber"><svg class="ic ic--md" aria-hidden="true"><use href="#i-home"/></svg></div>
+        <h4>Valorização</h4>
+        <p>Investimento a partir de <strong>R$ 24.587,02</strong> com retorno comprovado e valorização imobiliária de 3% a 8% no mercado nacional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     03 ESCOPO TÉCNICO — OPÇÃO RECOMENDADA
+     ============================================================ -->
+<section id="escopo" class="sec dk" aria-labelledby="eh">
+  <div class="w">
+    <span class="secn" style="color:rgba(245,166,35,.65)">02 — Escopo Técnico</span>
+    <h2 class="rv" id="eh" style="color:#fff;margin-bottom:2.5rem">
+      Especificações do sistema<br>
+      <small style="font-size:.55em;font-weight:300;color:rgba(255,255,255,.45)">Opção Recomendada — Inversor 20 kW</small>
+    </h2>
+    <div class="g2 rv">
+      <div>
+        <table class="stbl" role="table" aria-label="Especificações técnicas do sistema">
+          <thead><tr><th scope="col">Componente</th><th scope="col">Especificação</th><th scope="col">Status</th></tr></thead>
+          <tbody>
+            <tr><td>Potência do gerador</td>    <td>21,08 kWp</td>                                    <td><span class="sbadge sbadge--ok">Dimensionado</span></td></tr>
+            <tr><td>Inversor</td>               <td>Solplanet ASW20K-LT-G2-PRO — 20 kW / 380V</td>   <td><span class="sbadge sbadge--ok">Aprovado</span></td></tr>
+            <tr><td>MPPT / Proteção</td>        <td>2 MPPT · AFCI integrado</td>                      <td><span class="sbadge">Verificado</span></td></tr>
+            <tr><td>Fator dimensionamento</td>  <td>111,6% — faixa ideal</td>                          <td><span class="sbadge sbadge--ok">Ideal</span></td></tr>
+            <tr><td>Módulo fotovoltaico</td>    <td>Leapton LP182*210-M-66-NB — 620W Bifacial</td>    <td><span class="sbadge sbadge--ok">Aprovado</span></td></tr>
+            <tr><td>Tecnologia</td>             <td>N-Type TopCon · PRFV · 30 mm</td>                 <td><span class="sbadge">Verificado</span></td></tr>
+            <tr><td>Quantidade de módulos</td>  <td>34 painéis</td>                                    <td><span class="sbadge sbadge--ok">Calculado</span></td></tr>
+            <tr><td>Proteção CA</td>            <td>Quadro trifásico 380V — Modelo S22-T40-380</td>   <td><span class="sbadge">Incluído</span></td></tr>
+            <tr><td>Conectores</td>             <td>4 pares MC4 1500V (macho + fêmea)</td>            <td><span class="sbadge">Incluído</span></td></tr>
+            <tr><td>Cabos solares</td>          <td>100m preto + 100m vermelho · 4 mm²</td>           <td><span class="sbadge">Incluído</span></td></tr>
+            <tr><td>Fixação</td>                <td>9× Minitrilho PRFV 25cm — Sou Energy 45 m/s</td>  <td><span class="sbadge">Incluído</span></td></tr>
+            <tr><td>Tensão da rede</td>         <td>380V / Trifásico</td>                              <td><span class="sbadge sbadge--ok">Compatível</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="tcard rv d1">
+          <h4>Análise Técnica — Inversor 20 kW</h4>
+          <ul>
+            <li>Fator de dimensionamento: <strong>111,6%</strong> (faixa ideal)</li>
+            <li>Potência máx. entrada CC: <strong>30 kW</strong></li>
+            <li>Gerador fotovoltaico: <strong>22,32 kWp</strong> (potência de pico)</li>
+            <li>Corrente de entrada dentro dos limites do fabricante</li>
+            <li>Maior margem operacional e segurança do sistema</li>
+          </ul>
+        </div>
+        <div class="tcard rv d2">
+          <h4>Perfil de Consumo a Analisar</h4>
+          <ul>
+            <li>Consumo médio mensal: <strong>&lt;kWh_consumo&gt; kWh</strong></li>
+            <li>Tarifa média ENERGISA: R$ &lt;tarifa&gt;/kWh</li>
+            <li>Gasto mensal atual: R$ &lt;gasto_mes&gt;</li>
+            <li>Cobertura estimada: <strong>&lt;%_cobertura&gt;%</strong></li>
+          </ul>
+        </div>
+        <div class="tcard rv d3">
+          <h4>Licenças &amp; Documentação</h4>
+          <ul>
+            <li>Projeto elétrico assinado — CREA-PB</li>
+            <li>Solicitação de conexão à ENERGISA</li>
+            <li>Laudo de vistoria e aprovação</li>
+            <li>ART do responsável técnico</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     04 ENTREGÁVEIS
+     ============================================================ -->
+<section id="entregaveis" class="sec lt" aria-labelledby="evh">
+  <div class="w">
+    <span class="secn">03 — Entregáveis</span>
+    <h2 class="rv" id="evh" style="margin-bottom:2.5rem">Fases do projeto</h2>
+    <div class="plist rv">
+      <div class="prow"><div class="pn" aria-hidden="true">1</div><div><div class="ptit">Projeto &amp; Engenharia</div><div class="pdsc">Elaboração do projeto elétrico, memorial descritivo, diagrama unifilar, ART e estudo de sombreamento (PVGIS/SolarEdge).</div></div><div class="pdur">≈ 5 dias</div></div>
+      <div class="prow"><div class="pn" aria-hidden="true">2</div><div><div class="ptit">Aprovação &amp; Licenciamento</div><div class="pdsc">Protocolo junto à ENERGISA Paraíba, acompanhamento do processo de conexão à rede e vistoria técnica.</div></div><div class="pdur">≈ 30 dias</div></div>
+      <div class="prow"><div class="pn" aria-hidden="true">3</div><div><div class="ptit">Entrega de Material</div><div class="pdsc">34× Leapton 620W, inversor Solplanet 20kW, quadro CA S22-T40-380, cabos 4mm², conectores MC4, minitrilhos Sou Energy.</div></div><div class="pdur">≈ 7 dias</div></div>
+      <div class="prow"><div class="pn" aria-hidden="true">4</div><div><div class="ptit">Instalação &amp; Montagem</div><div class="pdsc">Fixação dos minitrilhos PRFV, instalação dos painéis bifaciais, cabeamento CC, inversor e quadro de proteção CA trifásico.</div></div><div class="pdur">≈ 3 dias</div></div>
+      <div class="prow"><div class="pn" aria-hidden="true">5</div><div><div class="ptit">Comissionamento &amp; Entrega</div><div class="pdsc">Testes elétricos, energização supervisionada, configuração do monitoramento Solplanet e treinamento do cliente.</div></div><div class="pdur">≈ 1 dia</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     05 CRONOGRAMA
+     ============================================================ -->
+<section id="cronograma" class="sec" aria-labelledby="crh">
+  <div class="w">
+    <span class="secn">04 — Cronograma</span>
+    <h2 class="rv" id="crh" style="margin-bottom:3rem">Linha do tempo do projeto</h2>
+    <div class="g2 rv">
+      <div class="tl" role="list">
+        <div class="tli" role="listitem"><div class="tldt">&lt;Data_inicio&gt;</div><div class="tldot" aria-hidden="true"></div><div class="tlb"><h4>Assinatura do Contrato</h4><p>Formalização e pagamento da entrada (30%).</p><span class="tlbdg">Marco 01</span></div></div>
+        <div class="tli" role="listitem"><div class="tldt">Semana 1–2</div><div class="tldot" aria-hidden="true"></div><div class="tlb"><h4>Projeto Elétrico e ART</h4><p>Elaboração do projeto e protocolo junto à ENERGISA.</p></div></div>
+        <div class="tli" role="listitem"><div class="tldt">Semana 2–6</div><div class="tldot" aria-hidden="true"></div><div class="tlb"><h4>Aprovação da Distribuidora</h4><p>Acompanhamento junto à ENERGISA Paraíba.</p><span class="tlbdg">Marco 02</span></div></div>
+        <div class="tli" role="listitem"><div class="tldt">Semana 6–7</div><div class="tldot" aria-hidden="true"></div><div class="tlb"><h4>Instalação &amp; Montagem</h4><p>Execução completa da obra fotovoltaica.</p></div></div>
+        <div class="tli" role="listitem"><div class="tldt">&lt;Data_fim&gt;</div><div class="tldot tldot--ok" aria-hidden="true"></div><div class="tlb"><h4>Sistema em Operação</h4><p>Comissionamento e início da geração solar.</p><span class="tlbdg tlbdg--ok">Entrega Final</span></div></div>
+      </div>
+      <div>
+        <div style="background:var(--lgt);border-radius:var(--r2);padding:2rem">
+          <p class="lbl" style="margin-bottom:1.25rem">Duração Total Estimada</p>
+          <div style="font-family:var(--fD);font-size:3.5rem;font-weight:300;color:var(--pri);line-height:1">≈ 45 <span style="font-size:1.5rem;color:var(--mut)">dias</span></div>
+          <div style="height:1px;background:var(--bdr);margin:1.5rem 0"></div>
+          <div style="display:flex;flex-direction:column;gap:.75rem">
+            <div style="display:flex;align-items:center;gap:.75rem"><div style="width:80px;height:7px;background:var(--pri);border-radius:4px;flex-shrink:0"></div><span style="font-size:.82rem;color:var(--mut)">Projeto &amp; Aprovação — 30 dias</span></div>
+            <div style="display:flex;align-items:center;gap:.75rem"><div style="width:40px;height:7px;background:var(--sec);border-radius:4px;flex-shrink:0"></div><span style="font-size:.82rem;color:var(--mut)">Compra de material — 7 dias</span></div>
+            <div style="display:flex;align-items:center;gap:.75rem"><div style="width:22px;height:7px;background:var(--acc);border-radius:4px;flex-shrink:0"></div><span style="font-size:.82rem;color:var(--mut)">Instalação — 3 dias</span></div>
+            <div style="display:flex;align-items:center;gap:.75rem"><div style="width:9px;height:7px;background:var(--grn);border-radius:4px;flex-shrink:0"></div><span style="font-size:.82rem;color:var(--mut)">Comissionamento — 1 dia</span></div>
+          </div>
+          <div style="height:1px;background:var(--bdr);margin:1.5rem 0"></div>
+          <div class="note">
+            <svg class="ic ic--sm" aria-hidden="true" style="color:var(--mut)"><use href="#i-warn"/></svg>
+            <span>O prazo de aprovação da distribuidora pode variar. O cronograma será atualizado após o protocolo junto à ENERGISA.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     06 INVESTIMENTO — 3 OPÇÕES COMPARATIVAS
+     ============================================================ -->
+<section id="investimento" class="sec lt" aria-labelledby="ivh">
+  <div class="w">
+    <span class="secn">05 — Investimento</span>
+    <h2 class="rv" id="ivh" style="margin-bottom:.75rem">Opções de configuração</h2>
+    <p class="rv d1" style="color:var(--mut);margin-bottom:2.5rem;font-size:.95rem">
+      Três configurações analisadas para o mesmo painel Leapton 620W — diferenciadas pelo inversor.
+      A análise técnica recomenda a <strong>Opção 1</strong> para melhor desempenho e longevidade.
+    </p>
+
+    <!-- 3 CARDS DE OPÇÃO -->
+    <div class="opt-grid rv">
+
+      <!-- OPÇÃO 1 — RECOMENDADA -->
+      <div class="opt-card opt-card--rec">
+        <div class="opt-head">
+          <span class="opt-tag tag--rec">Recomendada</span>
+          <p class="lbl" style="color:rgba(245,166,35,.65)">Opção 1 · Inversor 20 kW</p>
+          <div class="opt-kw"><sup>21,08 </sup>kWp</div>
+          <p class="opt-sub">Fator dimensionamento: 111,6% — faixa ideal</p>
+        </div>
+        <div class="opt-body">
+          <div class="opt-row"><span class="k">Inversor</span>       <span class="v">Solplanet ASW20K-LT-G2-PRO</span></div>
+          <div class="opt-row"><span class="k">Potência</span>       <span class="v">20 kW · 380V · 2 MPPT · AFCI</span></div>
+          <div class="opt-row"><span class="k">Módulos</span>        <span class="v">34× Leapton LP182*210-M-66-NB</span></div>
+          <div class="opt-row"><span class="k">Quadro CA</span>      <span class="v">S22-T40-380 (incluso)</span></div>
+          <div class="opt-row"><span class="k">Margem CC</span>      <span class="v">30 kW máx. entrada</span></div>
+          <div class="opt-price">
+            <div class="opt-vista">R$ 25.671,51</div>
+            <div style="font-size:.72rem;color:var(--mut);margin-top:2px">à vista no Pix</div>
+            <div class="opt-fin" style="margin-top:.5rem">ou <strong>12× de R$ 2.390,97</strong> sem juros<br><span style="font-size:.72rem">Total parcelado: R$ 28.691,69</span></div>
+          </div>
+          <div class="condbox" style="margin-top:.85rem">
+            <svg class="ic ic--sm" aria-hidden="true"><use href="#i-clip"/></svg>
+            <span><strong>30% sinal</strong> = R$ 7.701,45 &nbsp;|&nbsp; <strong>70% entrega</strong> = R$ 17.970,06</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPÇÃO 2 — VIÁVEL -->
+      <div class="opt-card">
+        <div class="opt-head">
+          <span class="opt-tag tag--ok">Tecnicamente Viável</span>
+          <p class="lbl" style="color:rgba(245,166,35,.65)">Opção 2 · Inversor 17 kW</p>
+          <div class="opt-kw"><sup>21,08 </sup>kWp</div>
+          <p class="opt-sub">Fator dimensionamento: 131,3% — faixa tolerada</p>
+        </div>
+        <div class="opt-body">
+          <div class="opt-row"><span class="k">Inversor</span>  <span class="v">Solplanet ASW17K-LT-G2-PRO</span></div>
+          <div class="opt-row"><span class="k">Potência</span>  <span class="v">17 kW · 380V · AFCI</span></div>
+          <div class="opt-row"><span class="k">Módulos</span>   <span class="v">34× Leapton LP182*210-M-66-NB</span></div>
+          <div class="opt-row"><span class="k">Quadro CA</span> <span class="v">Não incluso nesta opção</span></div>
+          <div class="opt-row"><span class="k">Margem CC</span> <span class="v">25,5 kW máx. entrada</span></div>
+          <div class="opt-price">
+            <div class="opt-vista">R$ 24.615,47</div>
+            <div style="font-size:.72rem;color:var(--mut);margin-top:2px">à vista no Pix</div>
+            <div class="opt-fin" style="margin-top:.5rem">ou <strong>12× de R$ 2.292,62</strong> sem juros<br><span style="font-size:.72rem">Total parcelado: R$ 27.511,41</span></div>
+          </div>
+          <div class="condbox" style="margin-top:.85rem">
+            <svg class="ic ic--sm" aria-hidden="true"><use href="#i-clip"/></svg>
+            <span><strong>30% sinal</strong> = R$ 7.384,64 &nbsp;|&nbsp; <strong>70% entrega</strong> = R$ 17.230,83</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPÇÃO 3 — NÃO RECOMENDADA -->
+      <div class="opt-card opt-card--nr">
+        <div class="opt-head">
+          <span class="opt-tag tag--nr">Não Recomendada</span>
+          <p class="lbl" style="color:rgba(245,166,35,.65)">Opção 3 · Inversor 15 kW</p>
+          <div class="opt-kw"><sup>22,32 </sup>kWp</div>
+          <p class="opt-sub">Fator dimensionamento: 148,8% — acima do recomendado</p>
+        </div>
+        <div class="opt-body">
+          <div class="opt-row"><span class="k">Inversor</span>  <span class="v">Solplanet ASW15K-LT-G2-PRO</span></div>
+          <div class="opt-row"><span class="k">Potência</span>  <span class="v">15 kW · 380V · 2 MPPT · AFCI</span></div>
+          <div class="opt-row"><span class="k">Módulos</span>   <span class="v">36× Leapton LP182*210-M-66-NB</span></div>
+          <div class="opt-row"><span class="k">Quadro CA</span> <span class="v">S16.5-T32-380 (incluso)</span></div>
+          <div class="opt-row"><span class="k">Limitação</span> <span class="v">Sobredimensionamento elevado</span></div>
+          <div class="opt-price" style="background:rgba(192,57,43,.04);border:1px solid rgba(192,57,43,.12)">
+            <div class="opt-vista" style="color:var(--mut)">R$ 24.587,02</div>
+            <div style="font-size:.72rem;color:var(--mut);margin-top:2px">à vista no Pix</div>
+            <div class="opt-fin" style="margin-top:.5rem">ou <strong>12× de R$ 2.289,97</strong> sem juros<br><span style="font-size:.72rem">Total parcelado: R$ 27.479,61</span></div>
+          </div>
+          <div class="nr-warn">
+            <svg class="ic ic--sm" aria-hidden="true"><use href="#i-warn"/></svg>
+            <span>Fator de 148,8% ultrapassa a faixa recomendada pelo fabricante. Pode comprometer desempenho e longevidade do inversor.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TABELA DE FINANCIAMENTO — Opção 1 (Recomendada) -->
+    <div class="fin-wrap rv">
+      <h4 style="font-family:var(--fD);font-size:1.4rem;font-weight:400;margin-bottom:.4rem">Simulação de parcelamento — Opção 1</h4>
+      <p style="font-size:.86rem;color:var(--mut);margin-bottom:1.25rem">Sobre o valor à vista de R$ 25.671,51 · Sujeito a análise de crédito</p>
+      <table class="ftbl" role="table" aria-label="Simulação de parcelamento">
+        <thead><tr><th>Prazo</th><th>Entrada (30%)</th><th>Parcela</th><th>Juros</th><th>Total pago</th></tr></thead>
+        <tbody>
+          <tr class="hi"><td>12×</td>  <td>R$ 7.701,45</td>  <td><strong>R$ 2.390,97</strong></td><td>0% a.m.</td><td>R$ 28.691,69</td></tr>
+          <tr><td>24×</td>  <td>R$ 7.701,45</td>  <td><strong>R$ &lt;parc_24&gt;</strong></td> <td>&lt;tx&gt;%</td><td>R$ &lt;tot_24&gt;</td></tr>
+          <tr><td>36×</td>  <td>R$ 7.701,45</td>  <td><strong>R$ &lt;parc_36&gt;</strong></td> <td>&lt;tx&gt;%</td><td>R$ &lt;tot_36&gt;</td></tr>
+          <tr><td>48×</td>  <td>R$ 7.701,45</td>  <td><strong>R$ &lt;parc_48&gt;</strong></td> <td>&lt;tx&gt;%</td><td>R$ &lt;tot_48&gt;</td></tr>
+          <tr><td>60×</td>  <td>R$ 7.701,45</td>  <td><strong>R$ &lt;parc_60&gt;</strong></td> <td>&lt;tx&gt;%</td><td>R$ &lt;tot_60&gt;</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:.75rem;font-size:.75rem;color:var(--mut)">* As 12× sem juros correspondem ao parcelamento direto Attive Tecnologia. Demais prazos via financiamento bancário (BB Casa Solar, Santander Solar, BNDES), sujeitos a aprovação. Linha destacada = condição incluída na proposta.</p>
+    </div>
+
+    <!-- O QUE ESTÁ INCLUSO -->
+    <div class="rv" style="margin-top:2rem;background:#fff;border:1px solid var(--bdr);border-radius:var(--r2);padding:2rem">
+      <p class="lbl" style="margin-bottom:1rem">O que está incluso em todas as opções</p>
+      <ul class="ilist" style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem 2rem">
+        <li class="iitem"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Todos os equipamentos listados</li>
+        <li class="iitem"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Projeto elétrico e ART (CREA-PB)</li>
+        <li class="iitem"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Instalação e mão de obra completa</li>
+        <li class="iitem"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Regularização junto à ENERGISA</li>
+        <li class="iitem"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Monitoramento online 24/7</li>
+        <li class="iitem"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Treinamento e manual do usuário</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     07 BENEFÍCIOS / ROI
+     ============================================================ -->
+<section id="beneficios" class="sec" aria-labelledby="bh">
+  <div class="w">
+    <span class="secn">06 — Benefícios &amp; Retorno</span>
+    <h2 class="rv" id="bh" style="margin-bottom:2.5rem">Seu dinheiro trabalhando<br>para você</h2>
+    <div class="bhero rv">
+      <p class="lbl" style="margin-bottom:1rem">Economia total projetada em 25 anos (sistema Opção 1)</p>
+      <div class="bnum">R$ &lt;economia_25anos&gt;</div>
+      <div class="bunit">economizados ao longo da vida útil garantida</div>
+    </div>
+    <div class="g4 rv">
+      <div class="bcard">
+        <div class="ib ib--orange"><svg class="ic ic--lg" aria-hidden="true"><use href="#i-wallet"/></svg></div>
+        <div class="bval">R$ &lt;eco_anual&gt;</div><div class="blbl">Economia/ano estimada</div>
+      </div>
+      <div class="bcard">
+        <div class="ib ib--orange"><svg class="ic ic--lg" aria-hidden="true"><use href="#i-sun"/></svg></div>
+        <div class="bval">≈ &lt;kWh_mes&gt; kWh</div><div class="blbl">Geração mensal estimada</div>
+      </div>
+      <div class="bcard">
+        <div class="ib ib--orange"><svg class="ic ic--lg" aria-hidden="true"><use href="#i-trend"/></svg></div>
+        <div class="bval">&lt;ROI&gt;%</div><div class="blbl">ROI ao longo de 25 anos</div>
+      </div>
+      <div class="bcard">
+        <div class="ib ib--orange"><svg class="ic ic--lg" aria-hidden="true"><use href="#i-clock"/></svg></div>
+        <div class="bval">&lt;payback&gt; anos</div><div class="blbl">Payback simples</div>
+      </div>
+    </div>
+    <div class="pbwrap rv">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+        <p style="font-weight:600;font-size:.9rem">Período de retorno do investimento</p>
+        <span style="font-family:var(--fM);font-size:.78rem;color:var(--acc)">&lt;payback&gt; / 25 anos</span>
+      </div>
+      <div class="pbtrack"><div class="pbfill" id="pb"></div></div>
+      <div class="pblbls"><span>Hoje</span><span>Payback</span><span>25 anos (garantia)</span></div>
+    </div>
+    <div class="co2box rv">
+      <div class="ib ib--green"><svg class="ic ic--md" aria-hidden="true"><use href="#i-tree"/></svg></div>
+      <p><strong>Impacto ambiental:</strong> Ao longo de 25 anos, o sistema evitará aproximadamente <strong>&lt;CO2_25anos&gt; toneladas de CO₂</strong>, equivalente ao plantio de &lt;num_arvores&gt; árvores. Comprometimento com suas metas ESG.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     08 TERMOS & GARANTIAS
+     ============================================================ -->
+<section id="termos" class="sec lt" aria-labelledby="th">
+  <div class="w">
+    <span class="secn">07 — Termos &amp; Garantias</span>
+    <h2 class="rv" id="th" style="margin-bottom:2.5rem">Nossas garantias e condições</h2>
+    <div class="tgrid rv">
+      <div class="tc"><h4>Validade da Proposta</h4><div class="tval">15 dias</div><p>A partir da data de emissão. Após o vencimento, preços e disponibilidade de equipamentos poderão ser revisados.</p></div>
+      <div class="tc"><h4>Garantia dos Módulos</h4><div class="tval">25 anos</div><p>Garantia de performance linear Leapton — mínimo 80% da potência nominal ao final do período. Produto: LP182*210-M-66-NB.</p></div>
+      <div class="tc"><h4>Garantia do Inversor</h4><div class="tval">10 anos</div><p>Garantia Solplanet mediante cadastro no portal do fabricante, sem custo adicional. Modelos ASW-LT-G2-PRO.</p></div>
+      <div class="tc"><h4>Garantia do Serviço</h4><div class="tval">5 anos</div><p>Garantia total da instalação elétrica e civil pela Attive Tecnologia, conforme ABNT NBR 16690.</p></div>
+      <div class="tc"><h4>Condições de Pagamento</h4><div class="tval">30% + 70%</div><p>30% de sinal na assinatura do contrato. 70% na conclusão e entrega do sistema em plena operação.</p></div>
+      <div class="tc"><h4>Parcelamento Direto</h4><div class="tval">12× sem juros</div><p>Até 12 parcelas sem juros disponíveis diretamente pela Attive Tecnologia. Opção 1: 12× R$ 2.390,97.</p></div>
+    </div>
+    <div class="divr"><span>Responsabilidade Técnica</span></div>
+    <p class="rv" style="font-size:.9rem;color:var(--mut);max-width:700px">
+      Todos os projetos são elaborados e assinados por <strong>Hélio Crispim</strong>, Engenheiro
+      Eletricista registrado no <strong>CREA-PB</strong>, assegurando conformidade com as normas
+      ABNT NBR 16274, NBR 16690 e resolução ANEEL nº 482/2012 e atualizações.
+      Fator de dimensionamento da Opção 1 (111,6%) dentro da faixa ideal recomendada pelo fabricante Solplanet.
+    </p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     09 CASE / DEPOIMENTO
+     ============================================================ -->
+<section id="case" class="sec dk" aria-labelledby="csh">
+  <div class="w">
+    <span class="secn" style="color:rgba(245,166,35,.65)">08 — Case de Sucesso</span>
+    <h2 class="rv" id="csh" style="color:#fff;margin-bottom:2.5rem">Quem já confia na Attive</h2>
+    <div class="ccard rv">
+      <blockquote>
+        <p class="cq">"Depois de instalar o sistema solar da Attive, a conta de energia do nosso estabelecimento despencou. A equipe foi extremamente profissional, cumpriu o prazo à risca e o monitoramento online é excelente — vejo a geração em tempo real pelo celular. <strong>A decisão de investir em energia solar foi a melhor que tomamos em anos.</strong>"</p>
+        <div class="cauth">
+          <div class="cav" aria-hidden="true">JS</div>
+          <div>
+            <div class="cnm">&lt;Nome_cliente_case&gt;</div>
+            <div class="crl">&lt;Cargo&gt; — &lt;Nome_empresa_case&gt;, Campina Grande/PB</div>
+          </div>
+        </div>
+      </blockquote>
+      <div class="cstats" aria-label="Resultados do cliente">
+        <div class="cst"><div class="cstn">&lt;%&gt;%</div><div class="cstc">Redução na conta de energia</div></div>
+        <div class="cst"><div class="cstn">R$ &lt;eco&gt;</div><div class="cstc">Economizados no 1º ano</div></div>
+        <div class="cst"><div class="cstn">&lt;anos&gt; anos</div><div class="cstc">Payback alcançado</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     10 CTA
+     ============================================================ -->
+<section id="cta" aria-labelledby="ctah">
+  <div class="w">
+    <h2 class="ctaT" id="ctah">Pronto para começar<br>sua jornada solar?</h2>
+    <p class="ctaS">Fale com nosso especialista hoje mesmo. Sem compromisso — apenas soluções que fazem sentido para o seu bolso.</p>
+    <a href="https://wa.me/55&lt;seu_numero&gt;?text=Olá,%20vim%20pela%20proposta%20solar%20Solplanet%2021kWp"
+       class="btnC" aria-label="Solicitar contato via WhatsApp" id="btnW">
+      <span>Solicitar Contato via WhatsApp</span>
+      <span class="bico" aria-hidden="true">
+        <svg class="ic ic--sm" style="stroke:#fff"><use href="#i-arr"/></svg>
+      </span>
+    </a>
+    <p class="ctaI">Ou envie um e-mail para <strong>&lt;email_attive&gt;</strong></p>
+    <div class="ctaV">
+      <svg class="ic ic--sm" aria-hidden="true"><use href="#i-hourglass"/></svg>
+      Proposta válida por <strong>15 dias</strong> a partir de &lt;Data_emissao&gt;
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <div class="w fin2">
+    <span class="fbrand">Attive <span>Tecnologia</span></span>
+    <span>Campina Grande, Paraíba · CREA-PB · &lt;CNPJ&gt;</span>
+    <span>© 2025 Attive Tecnologia — Todos os direitos reservados</span>
+  </div>
+</footer>
+
+
+<script>
+/* NAV */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>60),{passive:true});
+
+/* REVEAL */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    e.target.classList.add('on');
+    const bar=e.target.querySelector('#pb');
+    if(bar)setTimeout(()=>{bar.style.width=(5/25*100)+'%';},200); /* <- troque 5 pelo payback real */
+  });
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* SMOOTH SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();window.scrollTo({top:t.getBoundingClientRect().top+scrollY-72,behavior:'smooth'});}
+  });
+});
+
+/* CTA FALLBACK */
+document.getElementById('btnW').addEventListener('click',function(e){
+  if(this.href.includes('<seu_numero>')){e.preventDefault();alert('Configure o número do WhatsApp no href deste botão.');}
+});
+</script>
+</body>
+</html>
