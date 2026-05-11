@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+<title>+2 Câmeras CFTV | Francisca | Attive</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #07131C;
+  --bg2: #0C1D28;
+  --surface: #0F2030;
+  --blue: #1FA8E0;
+  --blue-dim: rgba(31,168,224,0.12);
+  --white: #EEF6FF;
+  --gray: #B8D0E8;
+  --gray2: #1A3248;
+  --green: #18C97A;
+  --green-dim: rgba(24,201,122,0.1);
+  --amber: #FF9B42;
+  --amber-dim: rgba(255,155,66,0.12);
+  --font: 'DM Sans', sans-serif;
+  --serif: 'DM Serif Display', serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 18px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  padding: 0 16px 48px;
+}
+
+/* Cards lado a lado */
+.comparativo {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 32px 0 48px;
+}
+.card-opcao {
+  flex: 1;
+  min-width: 280px;
+  background: var(--surface);
+  border-radius: 32px;
+  border: 1px solid var(--gray2);
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+.card-opcao:hover {
+  transform: translateY(-4px);
+  border-color: var(--blue);
+}
+.card-header {
+  padding: 24px 20px 16px;
+  text-align: center;
+  border-bottom: 1px solid var(--gray2);
+}
+.card-header h2 {
+  font-family: var(--serif);
+  font-size: 32px;
+  margin: 8px 0 4px;
+}
+.card-header .preco-destaque {
+  font-size: 44px;
+  font-weight: 700;
+  font-family: monospace;
+  letter-spacing: -1px;
+  margin: 16px 0 8px;
+}
+.card-header .preco-destaque small {
+  font-size: 18px;
+  font-weight: 400;
+}
+.tag {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.tag-ir {
+  background: var(--blue-dim);
+  color: var(--blue);
+  border: 1px solid var(--blue);
+}
+.tag-fc {
+  background: var(--amber-dim);
+  color: var(--amber);
+  border: 1px solid var(--amber);
+}
+.desc-curta {
+  font-size: 16px;
+  color: var(--gray);
+  margin: 12px 0;
+}
+.card-body {
+  padding: 20px;
+}
+.lista-simples {
+  list-style: none;
+  margin: 16px 0 24px;
+}
+.lista-simples li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  background: var(--bg2);
+  padding: 12px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--gray2);
+}
+.lista-simples li .emoji {
+  font-size: 24px;
+  min-width: 32px;
+  text-align: center;
+}
+.opcoes-pagamento {
+  background: var(--bg);
+  border-radius: 24px;
+  padding: 16px;
+  margin-top: 8px;
+}
+.opcao-pag {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray2);
+  cursor: pointer;
+}
+.opcao-pag:last-child {
+  border-bottom: none;
+}
+.opcao-pag input {
+  width: 22px;
+  height: 22px;
+  margin-right: 12px;
+  accent-color: var(--blue);
+  transform: scale(1.1);
+}
+.opcao-pag label {
+  flex: 1;
+  font-weight: 500;
+  font-size: 16px;
+}
+.valor-pag {
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 18px;
+}
+.btn-escolher {
+  width: 100%;
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 60px;
+  padding: 18px 12px;
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 24px;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 6px 14px rgba(24,201,122,0.3);
+  font-family: var(--font);
+}
+.btn-escolher:active {
+  transform: scale(0.97);
+}
+.btn-escolher:disabled {
+  opacity: 0.5;
+  transform: none;
+}
+.obs-clara {
+  background: rgba(31,168,224,0.08);
+  border-left: 5px solid var(--blue);
+  padding: 18px;
+  border-radius: 20px;
+  font-size: 15px;
+  margin: 24px 0;
+  color: var(--gray);
+}
+.obs-clara strong {
+  color: var(--white);
+}
+
+/* Cabeçalho e rodapé */
+.cover-mini {
+  text-align: center;
+  padding: 24px 0 16px;
+}
+.logo-img {
+  max-width: 140px;
+  margin-bottom: 16px;
+}
+.badge-cliente {
+  background: var(--bg2);
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 60px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blue);
+}
+.titulo {
+  font-family: var(--serif);
+  font-size: 38px;
+  margin: 20px 0 8px;
+  line-height: 1.2;
+}
+.sub {
+  color: var(--gray);
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+.dados-cliente {
+  background: var(--surface);
+  border-radius: 28px;
+  padding: 20px;
+  margin: 32px 0;
+  border: 1px solid var(--gray2);
+}
+.linha-dado {
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+.linha-dado span {
+  color: var(--gray);
+  display: inline-block;
+  width: 100px;
+}
+.assinatura {
+  text-align: center;
+  margin: 48px 0 24px;
+}
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--blue);
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+.wa-fixo {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  border-radius: 60px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  font-size: 16px;
+  z-index: 99;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+.aprovado-box {
+  display: none;
+  background: var(--green-dim);
+  border: 1px solid var(--green);
+  border-radius: 28px;
+  padding: 24px;
+  text-align: center;
+  margin: 32px 0;
+}
+.aprovado-box.show {
+  display: block;
+}
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s;
+}
+.modal-overlay.active {
+  visibility: visible;
+  opacity: 1;
+}
+.modal-box {
+  background: var(--surface);
+  max-width: 340px;
+  width: 80%;
+  padding: 28px 20px;
+  border-radius: 40px;
+  text-align: center;
+  border: 1px solid var(--blue);
+}
+@media (max-width: 680px) {
+  body {
+    font-size: 16px;
+    padding: 0 12px 48px;
+  }
+  .titulo {
+    font-size: 32px;
+  }
+  .card-header h2 {
+    font-size: 28px;
+  }
+  .card-header .preco-destaque {
+    font-size: 38px;
+  }
+  .btn-escolher {
+    font-size: 18px;
+    padding: 16px;
+  }
+  .lista-simples li {
+    font-size: 15px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Modal simples de aviso -->
+<div id="modalAviso" class="modal-overlay">
+  <div class="modal-box">
+    <div style="font-size: 48px; margin-bottom: 8px;">📌</div>
+    <h3 id="modalTitulo" style="font-family: var(--serif); margin-bottom: 12px;">Atenção</h3>
+    <p id="modalMsg" style="margin-bottom: 24px; color: var(--gray);"></p>
+    <button id="fecharModal" style="background: var(--blue); border: none; padding: 12px 24px; border-radius: 50px; color: white; font-weight: bold; font-size: 16px;">Entendi</button>
+  </div>
+</div>
+
+<!-- Cabeçalho simplificado -->
+<div class="cover-mini">
+  <img class="logo-img" src="https://cdn.phototourl.com/free/2026-04-01-bd1ea34f-46fa-4af7-8452-af7677dbb7e9.png" alt="Attive">
+  <div class="badge-cliente">📋 PROPOSTA PARA: FRANCISCA</div>
+  <h1 class="titulo">+2 Câmeras de Segurança</h1>
+  <div class="sub">Acréscimo ao sistema existente · Cabo UTP + conversor de vídeo (balun)</div>
+</div>
+
+<!-- Explicação clara para idoso com os novos itens: Cabo UTP e Conversores -->
+<div class="obs-clara">
+  <strong>✅ O que está incluso nesta proposta?</strong><br>
+  ✔️ Fornecimento e instalação de <strong>2 câmeras</strong> (escolha o tipo abaixo)<br>
+  ✔️ <strong>Cabo UTP (cabo de rede)</strong> – mais moderno e organizado<br>
+  ✔️ <strong>Conversores de vídeo (balun)</strong> – transformam o sinal da câmera para o cabo de rede<br>
+  ✔️ Conexão no <strong>seu DVR atual</strong> (já existente) para gravar e ver pelo celular<br>
+  ✔️ Treinamento para usar o aplicativo no celular<br><br>
+  <strong>❌ Não inclui:</strong> DVR novo, fonte externa, suportes adicionais (as câmeras já vêm com suporte de parede).
+</div>
+
+<!-- DUAS OPÇÕES LADO A LADO (comparação direta) -->
+<div class="comparativo">
+  
+  <!-- CARTAO INFRARED (IR) -->
+  <div class="card-opcao" id="cardIR">
+    <div class="card-header">
+      <span class="tag tag-ir">🌙 INFRAVERMELHO (IR)</span>
+      <h2>Câmera Infrared</h2>
+      <div class="preco-destaque" style="color: var(--blue);">
+        R$ 739,00 <small>à vista</small>
+      </div>
+      <div class="desc-curta">Visão noturna em <strong>preto e branco</strong> · LED invisível · Ótimo custo-benefício</div>
+    </div>
+    <div class="card-body">
+      <ul class="lista-simples">
+        <li><span class="emoji">📷</span> 2 câmeras 1080p com infravermelho</li>
+        <li><span class="emoji">🌙</span> Enxerga no escuro (preto e branco)</li>
+        <li><span class="emoji">🔌</span> Cabo UTP + conversores de vídeo (balun)</li>
+        <li><span class="emoji">📱</span> Acesso pelo celular (configurado)</li>
+        <li><span class="emoji">🧑‍🏫</span> Treinamento simples e garantia</li>
+      </ul>
+      
+      <!-- Opções de pagamento dentro do card -->
+      <div class="opcoes-pagamento" id="pag-IR">
+        <div class="opcao-pag" data-tipo="ir" data-op="vista">
+          <div style="display: flex; align-items: center;"><input type="radio" name="pagIR" value="vista" checked> <label>💳 À vista (PIX / transferência)</label></div>
+          <span class="valor-pag" style="color: var(--blue);">R$ 739,00</span>
+        </div>
+        <div class="opcao-pag" data-tipo="ir" data-op="parc">
+          <div style="display: flex; align-items: center;"><input type="radio" name="pagIR" value="parc"> <label>💸 Parcelado 3× no cartão</label></div>
+          <span class="valor-pag" style="color: var(--blue);">3× R$ 265,00 <span style="font-size: 14px;">(total R$ 795,00)</span></span>
+        </div>
+      </div>
+      
+      <button class="btn-escolher" data-opcao="ir">✅ APROVAR ESTA OPÇÃO</button>
+    </div>
+  </div>
+
+  <!-- CARTAO FULLCOLOR (FC) -->
+  <div class="card-opcao" id="cardFC">
+    <div class="card-header">
+      <span class="tag tag-fc">🌈 FULLCOLOR (COR)</span>
+      <h2>Câmera Fullcolor</h2>
+      <div class="preco-destaque" style="color: var(--amber);">
+        R$ 1.039,00 <small>à vista</small>
+      </div>
+      <div class="desc-curta">Imagem <strong>colorida também à noite</strong> · LED branco · Detalhes nítidos</div>
+    </div>
+    <div class="card-body">
+      <ul class="lista-simples">
+        <li><span class="emoji">📷🌈</span> 2 câmeras Fullcolor 1080p</li>
+        <li><span class="emoji">🌟</span> Cores reais mesmo no escuro</li>
+        <li><span class="emoji">🔌</span> Cabo UTP + conversores de vídeo (balun)</li>
+        <li><span class="emoji">📱</span> Ver ao vivo e gravações pelo celular</li>
+        <li><span class="emoji">🧑‍🏫</span> Treinamento e suporte inicial</li>
+      </ul>
+      
+      <div class="opcoes-pagamento" id="pag-FC">
+        <div class="opcao-pag" data-tipo="fc" data-op="vista">
+          <div style="display: flex; align-items: center;"><input type="radio" name="pagFC" value="vista" checked> <label>💳 À vista (PIX / transferência)</label></div>
+          <span class="valor-pag" style="color: var(--amber);">R$ 1.039,00</span>
+        </div>
+        <div class="opcao-pag" data-tipo="fc" data-op="parc">
+          <div style="display: flex; align-items: center;"><input type="radio" name="pagFC" value="parc"> <label>💸 Parcelado 3× no cartão</label></div>
+          <span class="valor-pag" style="color: var(--amber);">3× R$ 373,00 <span style="font-size: 14px;">(total R$ 1.119,00)</span></span>
+        </div>
+      </div>
+      
+      <button class="btn-escolher" data-opcao="fc">✅ APROVAR ESTA OPÇÃO</button>
+    </div>
+  </div>
+</div>
+
+<!-- DADOS DO CLIENTE E RESPONSÁVEL -->
+<div class="dados-cliente">
+  <div class="linha-dado"><span>👤 Cliente:</span> <strong>Francisca</strong></div>
+  <div class="linha-dado"><span>📍 Endereço:</span> R. Arruda Câmara, 449 – Santo Antônio, Campina Grande – PB</div>
+  <div class="linha-dado"><span>📅 Emissão:</span> <span id="dataHoje"></span></div>
+  <div class="linha-dado"><span>⏳ Validade:</span> 7 dias</div>
+  <div class="linha-dado"><span>🔧 Instalação:</span> Até 4 dias úteis após confirmação do pagamento</div>
+  <div class="linha-dado"><span>🔌 Infraestrutura:</span> Cabo UTP (rede) + conversores passivos</div>
+</div>
+
+<div class="assinatura">
+  <img class="avatar" src="https://cdn.phototourl.com/free/2026-04-01-5ab8b26d-2d00-46e8-aa83-234b907db1c7.png" alt="Hélio Crispim">
+  <div><strong>Hélio Crispim</strong> · Engenheiro Eletricista</div>
+  <div style="font-size: 14px; color: var(--gray);">CREA-PB 12290192025PB</div>
+  <div style="font-size: 15px; margin-top: 8px;">📞 (83) 99678-7788 · attivetecnologia@gmail.com</div>
+</div>
+
+<!-- Área de confirmação de aprovação -->
+<div id="aprovadoBox" class="aprovado-box">
+  <div style="font-size: 48px;">✅</div>
+  <h3 style="font-family: var(--serif); color: var(--green);">Proposta aprovada!</h3>
+  <p id="msgAprovado" style="margin-top: 12px;">Obrigado! Você será redirecionado ao WhatsApp. Enviaremos o link de pagamento e agendaremos a instalação.</p>
+</div>
+
+<!-- Botão flutuante WhatsApp (apoio) -->
+<button class="wa-fixo" id="waFlutuante">
+  💬 Falar com a Attive
+</button>
+
+<script>
+  // Preços exatos conforme solicitado
+  const precos = {
+    ir: { vista: 739.00, parcela: 265.00, totalParc: 795.00 },
+    fc: { vista: 1039.00, parcela: 373.00, totalParc: 1119.00 }
+  };
+  
+  // Estado de seleção por card
+  let pagamentoIR = 'vista';
+  let pagamentoFC = 'vista';
+  let aprovando = false;
+  
+  // Formatação com duas casas decimais sempre
+  function formatarMoeda(valor) {
+    return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  
+  // Atualizar texto dos botões conforme pagamento selecionado
+  function atualizarBotoesTexto() {
+    const btnIR = document.querySelector('#cardIR .btn-escolher');
+    const valorIR = pagamentoIR === 'vista' ? precos.ir.vista : precos.ir.totalParc;
+    btnIR.innerHTML = `✅ APROVAR ESTA OPÇÃO (R$ ${formatarMoeda(valorIR)})`;
+    
+    const btnFC = document.querySelector('#cardFC .btn-escolher');
+    const valorFC = pagamentoFC === 'vista' ? precos.fc.vista : precos.fc.totalParc;
+    btnFC.innerHTML = `✅ APROVAR ESTA OPÇÃO (R$ ${formatarMoeda(valorFC)})`;
+  }
+  
+  // Inicializar listeners dos radios
+  function initPagamentos() {
+    // Infrared
+    const radiosIR = document.querySelectorAll('#pag-IR input[name="pagIR"]');
+    radiosIR.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        pagamentoIR = e.target.value;
+        atualizarBotoesTexto();
+      });
+      if ((radio.value === 'vista' && pagamentoIR === 'vista') || (radio.value === 'parc' && pagamentoIR === 'parc')) {
+        radio.checked = true;
+      }
+    });
+    
+    // Fullcolor
+    const radiosFC = document.querySelectorAll('#pag-FC input[name="pagFC"]');
+    radiosFC.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        pagamentoFC = e.target.value;
+        atualizarBotoesTexto();
+      });
+      if ((radio.value === 'vista' && pagamentoFC === 'vista') || (radio.value === 'parc' && pagamentoFC === 'parc')) {
+        radio.checked = true;
+      }
+    });
+    
+    atualizarBotoesTexto();
+  }
+  
+  // Modal de aviso
+  function mostrarModal(titulo, mensagem) {
+    const modal = document.getElementById('modalAviso');
+    document.getElementById('modalTitulo').innerText = titulo;
+    document.getElementById('modalMsg').innerHTML = mensagem;
+    modal.classList.add('active');
+    document.getElementById('fecharModal').onclick = () => modal.classList.remove('active');
+    modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
+  }
+  
+  // Função de aprovar
+  async function aprovarOpcao(tipo) {
+    if (aprovando) {
+      mostrarModal("Aguarde", "Já estamos processando sua aprovação. Não clique duas vezes.");
+      return;
+    }
+    
+    let pagamento = tipo === 'ir' ? pagamentoIR : pagamentoFC;
+    let valorTotal = 0;
+    let formaPagTexto = '';
+    let valorExibido = '';
+    let nomeCam = tipo === 'ir' ? 'Câmeras Infrared (preto e branco noturno)' : 'Câmeras Fullcolor (imagem colorida à noite)';
+    
+    if (tipo === 'ir') {
+      if (pagamento === 'vista') {
+        valorTotal = precos.ir.vista;
+        formaPagTexto = 'à vista via PIX/transferência';
+        valorExibido = `R$ ${formatarMoeda(valorTotal)}`;
+      } else {
+        valorTotal = precos.ir.totalParc;
+        formaPagTexto = 'parcelado em 3× no cartão (R$ 265,00 cada)';
+        valorExibido = `R$ ${formatarMoeda(valorTotal)} (3× R$ 265,00)`;
+      }
+    } else {
+      if (pagamento === 'vista') {
+        valorTotal = precos.fc.vista;
+        formaPagTexto = 'à vista via PIX/transferência';
+        valorExibido = `R$ ${formatarMoeda(valorTotal)}`;
+      } else {
+        valorTotal = precos.fc.totalParc;
+        formaPagTexto = 'parcelado em 3× no cartão (R$ 373,00 cada)';
+        valorExibido = `R$ ${formatarMoeda(valorTotal)} (3× R$ 373,00)`;
+      }
+    }
+    
+    const msg = `Olá! Aprovo a proposta para instalação de +2 câmeras CFTV (${nomeCam}) na R. Arruda Câmara, 449 – Santo Antônio, Campina Grande – PB. Infraestrutura com cabo UTP e conversores de vídeo. Valor: ${valorExibido} (${formaPagTexto}). Aguardo o link de pagamento e agendamento da instalação.`;
+    
+    aprovando = true;
+    const botoes = document.querySelectorAll('.btn-escolher');
+    botoes.forEach(btn => btn.disabled = true);
+    
+    // Envio de e-mail (silencioso)
+    try {
+      await fetch('https://formsubmit.co/ajax/attivetecnologia@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          _subject: `Proposta APROVADA - Francisca (+2 câmeras ${tipo === 'ir' ? 'Infrared' : 'Fullcolor'} | UTP + conversor)`,
+          message: msg,
+          _captcha: 'false'
+        })
+      });
+    } catch(e) { /* ignora erro */ }
+    
+    // Redirecionar WhatsApp
+    window.open(`https://wa.me/5583996787788?text=${encodeURIComponent(msg)}`, '_blank');
+    
+    // Mostrar caixa de confirmação
+    const box = document.getElementById('aprovadoBox');
+    const msgBox = document.getElementById('msgAprovado');
+    msgBox.innerHTML = `Opção escolhida: <strong>${nomeCam}</strong><br>Valor: ${valorExibido} (${formaPagTexto})<br><br>📲 Você foi redirecionado ao WhatsApp. Enviaremos o link de pagamento e confirmaremos a data da instalação.<br><br>🔌 Sistema com cabo UTP + conversores de vídeo.`;
+    box.classList.add('show');
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
+    setTimeout(() => {
+      aprovando = false;
+      botoes.forEach(btn => btn.disabled = false);
+    }, 3000);
+  }
+  
+  // Adicionar eventos aos botões
+  document.querySelector('#cardIR .btn-escolher').addEventListener('click', () => aprovarOpcao('ir'));
+  document.querySelector('#cardFC .btn-escolher').addEventListener('click', () => aprovarOpcao('fc'));
+  
+  // Data atual
+  const hoje = new Date();
+  const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  document.getElementById('dataHoje').innerText = `${hoje.getDate()} de ${meses[hoje.getMonth()]} de ${hoje.getFullYear()}`;
+  
+  // Botão WhatsApp fixo
+  document.getElementById('waFlutuante').addEventListener('click', () => {
+    window.open('https://wa.me/5583996787788?text=Olá! Gostaria de tirar dúvidas sobre a proposta das 2 câmeras CFTV com cabo UTP e conversores.', '_blank');
+  });
+  
+  // Inicializar
+  initPagamentos();
+</script>
+</body>
+</html>
