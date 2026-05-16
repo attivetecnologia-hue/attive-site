@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Orçamento | CFTV Wi-Fi + Alarme | Laércio | Attive</title>
+
+    <!-- Meta tags essenciais para compartilhamento -->
+    <meta property="og:title" content="Orçamento | CFTV Wi-Fi + Alarme | Laércio | Attive">
+    <meta property="og:description" content="Solução completa Intelbras: 4 câmeras Wi-Fi (32GB), 2 sensores de presença e 2 sensores de abertura. Tudo no mesmo app. Ideal para apto térreo.">
+    <meta property="og:url" content="https://seusite.com/orcamento-attive-laercio.html">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://i.postimg.cc/4xb9f1dS/logobrancasemfundo-Copia.png">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="400">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Attive Tecnologia">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Orçamento | CFTV Wi-Fi + Alarme | Laércio | Attive">
+    <meta name="twitter:description" content="Kit Intelbras completo: câmeras Wi-Fi + alarme com sensores PIR e abertura. Desconto à vista ou 6x sem juros.">
+    <meta name="twitter:image" content="https://i.postimg.cc/4xb9f1dS/logobrancasemfundo-Copia.png">
+
+    <meta name="description" content="Orçamento Attive para Laércio: sistema Intelbras de CFTV Wi-Fi (4 câmeras 32GB) + alarme com 2 sensores de presença e 2 de abertura. App único, instalação garantida.">
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg:        #08141C;
+            --bg3:       #061018;
+            --surface:   #112233;
+            --blue:      #1FA8E0;
+            --blue2:     #0E6FA3;
+            --blue-dim:  rgba(31,168,224,0.12);
+            --white:     #F0F8FF;
+            --gray:      #7FA8C0;
+            --gray2:     #1E3448;
+            --green:     #18C97A;
+            --green-dim: rgba(24,201,122,0.10);
+            --gold:      #FFD966;
+            --amber:     #F59E0B;
+            --amber-dim: rgba(245,158,11,0.10);
+            --font:      'DM Sans', sans-serif;
+            --serif:     'DM Serif Display', serif;
+        }
+
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg); color: var(--white); font-family: var(--font); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+        @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+        .animate-on-scroll { opacity: 0; animation: fadeInUp 0.7s ease forwards; }
+
+        .cover {
+            min-height: 100vh;
+            background: var(--bg3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 32px 20px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .cover::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 110% 80%, rgba(31,168,224,0.08) 0%, transparent 70%); pointer-events: none; }
+        .cover-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, var(--blue), transparent); }
+        .cover-dots { position: absolute; right: 0; bottom: 0; width: 180px; height: 180px; background-image: radial-gradient(circle, rgba(31,168,224,0.15) 1px, transparent 1px); background-size: 16px 16px; mask-image: radial-gradient(ellipse at bottom right, black 30%, transparent 70%); pointer-events: none; }
+        .cover-logo img { height: 55px; width: auto; display: block; margin-bottom: 20px; background: transparent; }
+        .cover-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--blue2); color: var(--blue); padding: 6px 14px; border-radius: 40px; font-size: 11px; font-weight: 600; margin-bottom: 24px; background: var(--blue-dim); backdrop-filter: blur(2px); }
+        .cover-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); display: inline-block; animation: pulse 2s infinite; }
+        .cover-kicker { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+        .cover-title { font-family: var(--serif); font-size: 36px; font-weight: 400; line-height: 1.15; margin-bottom: 16px; }
+        .cover-title em { font-style: italic; color: var(--blue); }
+        .cover-sub { font-size: 14px; color: var(--gray); max-width: 100%; line-height: 1.6; }
+        .cover-foot { border-top: 1px solid var(--gray2); padding-top: 20px; margin-top: 32px; display: flex; flex-direction: column; gap: 16px; }
+        .cover-foot p { font-size: 12px; color: var(--gray); line-height: 1.8; }
+        .cover-foot strong { color: var(--white); font-weight: 500; }
+        .cover-scroll { font-size: 11px; color: var(--gray); display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; margin-top: 8px; }
+        .cover-scroll span { animation: bob 1.6s infinite; display: block; }
+
+        .main { max-width: 100%; padding: 0 20px 60px; }
+        .section { padding: 48px 0 0; }
+        .st { font-family: var(--serif); font-size: 28px; font-weight: 400; line-height: 1.2; margin-bottom: 16px; }
+        .st em { font-style: italic; color: var(--blue); }
+        .sb { font-size: 14px; color: var(--gray); line-height: 1.7; }
+        .divider { border: none; border-top: 1px solid var(--gray2); margin: 40px 0; }
+
+        .stat-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 24px 0; }
+        .stat-card { background: var(--surface); border: 1px solid var(--gray2); border-radius: 16px; padding: 16px 12px; text-align: center; }
+        .stat-num { font-family: var(--serif); font-size: 32px; color: var(--amber); }
+        .stat-lbl { font-size: 10px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+        .diag-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .diag-item { background: var(--surface); border: 1px solid var(--gray2); border-left: 3px solid var(--blue); border-radius: 0 12px 12px 0; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+        .dico { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: var(--amber-dim); border: 1px solid var(--amber); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--amber); }
+        .diag-item h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+        .diag-item p { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+        .servico-card { background: var(--surface); border: 1px solid var(--gray2); border-radius: 20px; margin: 32px 0; overflow: hidden; }
+        .card-header { padding: 18px; background: linear-gradient(135deg, rgba(31,168,224,0.08), transparent); border-bottom: 1px solid var(--gray2); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .card-header h3 { font-family: var(--serif); font-size: 22px; color: var(--blue); }
+        .badge-green { background: var(--green-dim); padding: 4px 12px; border-radius: 40px; font-size: 11px; font-weight: 600; color: var(--green); }
+        .card-body { padding: 20px; }
+        .checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .checklist li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--gray); }
+        .checklist li::before { content: '–'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+        .systems-grid { display: flex; flex-direction: column; gap: 20px; margin: 32px 0; }
+        .system-card { background: var(--surface); border: 1px solid var(--gray2); border-radius: 20px; padding: 20px; transition: all 0.2s ease; }
+        .system-card:has(input:checked) { border-color: var(--blue); background: rgba(31,168,224,0.05); }
+        .system-check { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; cursor: pointer; }
+        .system-check input { width: 22px; height: 22px; cursor: pointer; accent-color: var(--blue); }
+        .system-check label { font-family: var(--serif); font-size: 20px; font-weight: 500; color: var(--blue); cursor: pointer; }
+        .system-price { font-size: 26px; font-weight: 700; color: var(--green); margin: 12px 0 8px; }
+        .system-price span { font-size: 13px; font-weight: 400; color: var(--gray); }
+        .system-desc { font-size: 13px; color: var(--gray); line-height: 1.5; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gray2); }
+        .system-desc ul { list-style: none; margin-top: 8px; }
+        .system-desc li { font-size: 12px; padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+        .system-desc li::before { content: '✓'; color: var(--green); font-weight: bold; }
+
+        .payment-area { background: var(--bg3); border: 1px solid var(--gray2); border-radius: 24px; padding: 20px; margin: 20px 0 30px; transition: all 0.3s ease; }
+        .payment-title { font-size: 18px; font-weight: 600; margin-bottom: 18px; color: var(--blue); text-align: center; }
+        .payment-options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+        .radio-option { display: flex; align-items: center; gap: 12px; cursor: pointer; background: var(--surface); padding: 14px 18px; border-radius: 60px; border: 1px solid var(--gray2); transition: all 0.2s; width: 100%; }
+        .radio-option.selected { border-color: var(--green); background: var(--green-dim); }
+        .radio-option input { width: 20px; height: 20px; cursor: pointer; accent-color: var(--green); }
+        .radio-option label { cursor: pointer; font-weight: 600; font-size: 15px; flex: 1; }
+        .radio-option small { font-size: 11px; color: var(--gray); }
+        .total-display { background: var(--blue-dim); border-radius: 20px; padding: 18px; margin: 16px 0; text-align: center; }
+        .total-display .total-label { font-size: 12px; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; }
+        .total-display .total-value { font-family: var(--serif); font-size: 38px; color: var(--green); line-height: 1.2; }
+        .total-display .total-detail { font-size: 11px; color: var(--gray); margin-top: 6px; }
+        .whatsapp-btn { background: #25D366; color: white; padding: 16px 20px; border-radius: 60px; font-weight: 700; font-size: 16px; border: none; cursor: pointer; width: 100%; text-align: center; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 12px rgba(37,211,102,0.3); margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .whatsapp-btn:active { transform: scale(0.98); }
+        .whatsapp-btn.disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .aviso-pagamento { background: rgba(31,168,224,0.08); border-left: 3px solid var(--blue); border-radius: 12px; padding: 14px 16px; margin: 20px 0; font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+        .rec-card { background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(31,168,224,0.05)); border: 1px solid var(--amber); border-radius: 20px; padding: 24px; margin: 32px 0; }
+        .rec-title { font-family: var(--serif); font-size: 20px; color: var(--amber); margin-bottom: 12px; }
+        .rec-body { font-size: 13px; color: var(--gray); line-height: 1.6; }
+
+        .planos-grid { display: flex; flex-direction: column; gap: 18px; margin: 20px 0; }
+        .plano-card { background: var(--surface); border: 1px solid var(--gray2); border-radius: 24px; overflow: hidden; }
+        .plano-header { padding: 20px; border-bottom: 1px solid var(--gray2); }
+        .plano-tag { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); margin-bottom: 6px; }
+        .plano-preco { font-family: var(--serif); font-size: 32px; color: var(--white); line-height: 1; }
+        .plano-preco span { font-size: 13px; color: var(--gray); }
+        .plano-lista { list-style: none; padding: 18px 20px 20px; }
+        .plano-lista li { display: flex; flex-direction: column; gap: 2px; padding: 10px 0; border-bottom: 1px solid rgba(30,52,72,0.7); }
+        .plano-lista li:last-child { border-bottom: none; padding-bottom: 0; }
+        .pl-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; color: var(--gray); }
+        .pl-val { font-size: 13px; font-weight: 500; color: var(--white); }
+        .pl-ok { color: var(--green); }
+        .planos-regras { background: var(--surface); border: 1px solid var(--gray2); border-left: 3px solid var(--gray2); border-radius: 0 12px 12px 0; padding: 16px 18px; margin-top: 20px; }
+        .regras-titulo { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gray); margin-bottom: 10px; }
+        .regras-lista { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+        .regras-lista li { font-size: 12px; color: var(--gray); padding-left: 16px; position: relative; }
+        .regras-lista li::before { content: '—'; position: absolute; left: 0; }
+
+        .about-box { background: var(--surface); border: 1px solid var(--gray2); border-radius: 20px; padding: 22px; margin-top: 20px; }
+        .assinatura-row { margin-top: 32px; }
+        .ass-box { border-top: 1px solid var(--gray2); padding-top: 20px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+        .avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--blue); background: var(--surface); display: block; }
+        .assinatura-info { flex: 1; }
+        .ass-box strong { display: block; font-size: 15px; color: var(--white); font-weight: 600; margin-bottom: 4px; }
+        .crea-badge { display: inline-block; margin-top: 8px; background: var(--blue-dim); border: 1px solid var(--blue2); color: var(--blue); font-size: 9px; font-weight: 700; padding: 4px 12px; border-radius: 30px; }
+        footer { border-top: 1px solid var(--gray2); padding: 24px 20px; display: flex; flex-direction: column; gap: 12px; background: var(--bg); }
+        .footer-brand { font-size: 12px; color: var(--gray); line-height: 1.7; }
+        .footer-cta a { color: var(--blue); text-decoration: none; font-weight: 500; }
+        .wa-btn { position: fixed; bottom: 24px; right: 20px; z-index: 999; width: 52px; height: 52px; border-radius: 50%; background: #25D366; box-shadow: 0 4px 14px rgba(37,211,102,0.5); display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
+        .wa-btn:hover { transform: scale(1.08); }
+
+        @media (min-width: 768px) {
+            .cover { padding: 48px 40px; }
+            .main { max-width: 900px; margin: 0 auto; padding: 0 32px 80px; }
+            .cover-title { font-size: 48px; }
+            .st { font-size: 36px; }
+            .systems-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+            .payment-options { flex-direction: row; gap: 20px; }
+            .planos-grid { max-width: 550px; margin-left: auto; margin-right: auto; }
+            .cover-foot { flex-direction: row; justify-content: space-between; align-items: flex-end; }
+            .cover-scroll { display: flex; }
+            .stat-row { grid-template-columns: repeat(4, 1fr); }
+            .checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="cover-accent"></div>
+    <div class="cover-dots"></div>
+    <div class="cover-logo">
+        <img src="https://i.postimg.cc/4xb9f1dS/logobrancasemfundo-Copia.png" alt="Attive Tecnologia" loading="eager">
+    </div>
+    <div class="cover-body">
+        <div class="cover-badge">ORÇAMENTO · 16/05/2026</div>
+        <div class="cover-kicker">Sistema Integrado de Segurança</div>
+        <h1 class="cover-title">CFTV Wi‑Fi + Alarme sem Fio<br><em>controle total</em> pelo mesmo app</h1>
+        <p class="cover-sub">4 câmeras Wi‑Fi Intelbras com 32GB, 2 sensores de presença PIR e 2 sensores de abertura, central de alarme e tudo gerenciado em um único aplicativo. Proteção inteligente para apartamentos térreos.</p>
+    </div>
+    <div class="cover-foot">
+        <p><strong>Cliente:</strong> Laércio<br><strong>Responsável técnico:</strong> Hélio Crispim · Attive Tecnologia<br><strong>Instalação:</strong> 100% sem fio · Intelbras</p>
+        <div class="cover-scroll" onclick="document.querySelector('.main').scrollIntoView({behavior:'smooth'})">
+            <span>↓</span><small>ver orçamento</small>
+        </div>
+    </div>
+</div>
+
+<div class="main">
+
+    <hr class="divider">
+    <div class="section animate-on-scroll">
+        <h2 class="st">Sobre a <em>Attive</em></h2>
+        <div class="about-box">
+            <p style="color:var(--gray); font-size:14px;">A Attive Tecnologia é especialista em segurança eletrônica, automação e infraestrutura de rede, com mais de 25 anos de mercado. Projetamos soluções personalizadas com equipamentos certificados (Intelbras) e equipe altamente capacitada. Unimos o melhor do CFTV Wi-Fi e alarme sem fio em uma plataforma única.</p>
+        </div>
+    </div>
+    <hr class="divider">
+
+    <div class="section animate-on-scroll">
+        <div class="rec-card" style="border-color:var(--blue); background:linear-gradient(135deg,rgba(31,168,224,.08),rgba(24,201,122,.02));">
+            <div class="rec-title">Segurança para apartamento térreo</div>
+            <p class="rec-body">Apartamentos no térreo têm maior vulnerabilidade a invasões por portas, janelas e varandas. Um sistema integrado de câmeras Wi-Fi com sensores de presença e abertura permite monitorar em tempo real, receber alertas e acionar o alarme antes mesmo da intrusão. Controle via app único: veja as câmeras, arme/desarme o alarme e verifique histórico de qualquer lugar. Invista na prevenção – proteja sua família e patrimônio.</p>
+        </div>
+    </div>
+    <hr class="divider">
+
+    <div class="section animate-on-scroll">
+        <h2 class="st">Solução <em>proposta</em> (Intelbras)</h2>
+        <p class="sb">Kit completo com integração total via app Intelbras — mesmo aplicativo para câmeras e alarme.</p>
+        <div class="stat-row">
+            <div class="stat-card"><div class="stat-num">4</div><div class="stat-lbl">Câmeras Wi-Fi</div></div>
+            <div class="stat-card"><div class="stat-num">2+2</div><div class="stat-lbl">PIR + Abertura</div></div>
+            <div class="stat-card"><div class="stat-num">1</div><div class="stat-lbl">App único</div></div>
+            <div class="stat-card"><div class="stat-num">32GB</div><div class="stat-lbl">Armazen. por câmera</div></div>
+        </div>
+        <div class="diag-grid">
+            <div class="diag-item"><div class="dico">CAM</div><div><h4>Câmeras Wi-Fi (4 pontos)</h4><p>Duas na sala (ângulos complementares), uma na área de serviço/cozinha e uma no hall. 32GB cada, gravação em loop.</p></div></div>
+            <div class="diag-item"><div class="dico">PIR</div><div><h4>Sensores de presença (2 PIR)</h4><p>Um na sala e um na varanda – detectam movimento de pessoas.</p></div></div>
+            <div class="diag-item"><div class="dico">ABR</div><div><h4>Sensores de abertura (2 contatos)</h4><p>Um na porta de entrada principal e outro na porta da cozinha. Disparam ao abrir.</p></div></div>
+            <div class="diag-item"><div class="dico">APP</div><div><h4>Integração no mesmo app</h4><p>Visualize câmeras, arme/desarme o alarme e receba notificações pelo app Intelbras Residencial.</p></div></div>
+            <div class="diag-item"><div class="dico">WIFI</div><div><h4>Rede Wi-Fi 2.4GHz</h4><p>Verificamos o roteador existente; se necessário, sugerimos upgrade ou extensor (opcional).</p></div></div>
+        </div>
+    </div>
+    <hr class="divider">
+
+    <div class="section animate-on-scroll">
+        <h2 class="st">Serviços <em>incluídos</em></h2>
+        <div class="servico-card">
+            <div class="card-header"><h3>Instalação e configuração</h3><span class="badge-green">Garantia 12 meses</span></div>
+            <div class="card-body">
+                <ul class="checklist">
+                    <li>Posicionamento estratégico das câmeras</li>
+                    <li>Configuração de rede e app Intelbras</li>
+                    <li>Ativação do microSD 32GB (loop)</li>
+                    <li>Instalação dos sensores (2 PIR + 2 abertura) e central</li>
+                    <li>Pareamento e testes de comunicação</li>
+                    <li>Configuração do app único (câmeras + alarme)</li>
+                    <li>Notificações push, zonas e armar/desarmar</li>
+                    <li>Treinamento completo do usuário</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <hr class="divider">
+
+    <!-- SEÇÃO DE FECHAMENTO -->
+    <div class="section animate-on-scroll" id="checkout">
+        <h2 class="st">Escolha os <em>sistemas desejados</em></h2>
+        <p class="sb">Selecione um ou ambos os sistemas. Imediatamente você verá as opções de pagamento e o valor total. Depois, é só clicar em <strong>"Fechar pedido – ir para o WhatsApp"</strong> e finalizar com a gente.</p>
+
+        <div class="systems-grid">
+            <div class="system-card" data-id="alarme" data-price="1500">
+                <div class="system-check">
+                    <input type="checkbox" id="chkAlarme" value="alarme">
+                    <label for="chkAlarme">Sistema de Alarme Intelbras</label>
+                </div>
+                <div class="system-price">R$ 1.500,00 <span>à vista ou parcelado</span></div>
+                <div class="system-desc">
+                    Central sem fio + 2 sensores de presença PIR + 2 sensores de abertura + sirene + bateria reserva.
+                    <ul><li>App Intelbras</li><li>Notificações em tempo real</li><li>Armar/desarmar remoto</li></ul>
+                </div>
+            </div>
+            <div class="system-card" data-id="cftv" data-price="2500">
+                <div class="system-check">
+                    <input type="checkbox" id="chkCftv" value="cftv">
+                    <label for="chkCftv">Sistema de CFTV Wi-Fi Intelbras</label>
+                </div>
+                <div class="system-price">R$ 2.500,00 <span>à vista ou parcelado</span></div>
+                <div class="system-desc">
+                    4 câmeras Full HD, visão noturna, microSD 32GB cada.
+                    <ul><li>Gravação contínua/por detecção</li><li>Visualização ao vivo e replay</li><li>Compatível com o mesmo app do alarme</li></ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="paymentArea" class="payment-area" style="display: none;">
+            <div class="payment-title">Escolha a forma de pagamento</div>
+            <div class="payment-options">
+                <div class="radio-option" data-method="pix">
+                    <input type="radio" name="paymentMethod" id="pix" value="pix" checked>
+                    <label for="pix">À vista com 10% de desconto</label>
+                    <small>PIX ou transferência</small>
+                </div>
+                <div class="radio-option" data-method="card">
+                    <input type="radio" name="paymentMethod" id="card" value="card">
+                    <label for="card">Parcelado em 6x sem juros</label>
+                    <small>cartão de crédito (link de pagamento)</small>
+                </div>
+            </div>
+            <div id="totalDisplay" class="total-display">
+                <div class="total-label">VALOR TOTAL</div>
+                <div class="total-value" id="totalValue">R$ 0,00</div>
+                <div class="total-detail" id="totalDetail">Selecione pelo menos um sistema</div>
+            </div>
+            <button id="whatsappBtn" class="whatsapp-btn" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Fechar pedido – ir para o WhatsApp
+            </button>
+        </div>
+
+        <div class="aviso-pagamento">
+            🔒 O agendamento da instalação será confirmado após o pagamento via <strong>PIX (à vista com desconto)</strong> ou via <strong>link de pagamento parcelado no cartão de crédito</strong>. Você será direcionado ao WhatsApp para finalizar com um atendente.
+        </div>
+    </div>
+    <hr class="divider">
+
+    <div class="section animate-on-scroll">
+        <h2 class="st">Mesmo app, <em>total integração</em></h2>
+        <div class="rec-card">
+            <div class="rec-title">Praticidade e segurança num só lugar</div>
+            <p class="rec-body">Com o ecossistema Intelbras (app Intelbras Residencial), você controla as câmeras e o alarme no mesmo aplicativo: vê ao vivo, reproduz gravações, arma/desarma o alarme, recebe alertas de movimento e de abertura. Sem complicação, sem apps separados. Ideal para quem busca simplicidade.</p>
+        </div>
+    </div>
+    <hr class="divider">
+
+    <div class="section animate-on-scroll">
+        <h2 class="st">Plano de <em>Suporte Técnico</em> (opcional)</h2>
+        <p class="sb" style="margin-bottom:24px;">Mantenha seu sistema sempre operante com atendimento contínuo. Contratação à parte, após a instalação.</p>
+        <div class="planos-grid">
+            <div class="plano-card">
+                <div class="plano-header">
+                    <div class="plano-tag">Plano Attive Protect</div>
+                    <div class="plano-preco">R$ 79,90<span>/mês</span></div>
+                </div>
+                <ul class="plano-lista">
+                    <li><span class="pl-label">Preventiva in loco</span><span class="pl-val">1 a cada 3 meses</span></li>
+                    <li><span class="pl-label">Corretiva in loco</span><span class="pl-val">1 por mês</span></li>
+                    <li><span class="pl-label">Tempo de resposta</span><span class="pl-val">até 24h úteis</span></li>
+                    <li><span class="pl-label">Desconto em peças</span><span class="pl-val pl-ok">10%</span></li>
+                    <li><span class="pl-label">Atendimento remoto</span><span class="pl-val pl-ok">ilimitado</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="planos-regras">
+            <div class="regras-titulo">Regras</div>
+            <ul class="regras-lista">
+                <li>Horário comercial: segunda a sexta, 8h às 18h (exceto feriados)</li>
+                <li>Visitas não utilizadas não acumulam</li>
+                <li>Peças adicionais com 10% de desconto</li>
+                <li>Contrato mínimo de 12 meses</li>
+            </ul>
+        </div>
+    </div>
+    <hr class="divider">
+
+    <div class="section animate-on-scroll">
+        <h2 class="st">Campina Grande, <em>16 de maio de 2026</em></h2>
+        <div class="assinatura-row">
+            <div class="ass-box">
+                <img class="avatar" src="https://i.postimg.cc/qvv7bbZ4/perfil13.png" alt="Hélio Crispim" loading="eager">
+                <div class="assinatura-info">
+                    <strong>Hélio Crispim dos Santos Lima</strong>
+                    <p>Engenheiro Eletricista<br>Attive Tecnologia · CNPJ: 48.979.364/0001-91</p>
+                    <span class="crea-badge">CREA-PB 12290192025PB</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-brand"><strong>Attive Tecnologia</strong> CNPJ 48.979.364/0001-91 · Campina Grande-PB<br>attivesistemas@gmail.com · (83) 9678-7788</div>
+    <div class="footer-cta">Dúvidas ou agendamento? <a href="https://wa.me/5583996787788">Fale pelo WhatsApp</a></div>
+</footer>
+
+<a class="wa-btn" href="https://wa.me/5583996787788" target="_blank" aria-label="Chamar no WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+    const chkAlarme = document.getElementById('chkAlarme');
+    const chkCftv = document.getElementById('chkCftv');
+    const paymentArea = document.getElementById('paymentArea');
+    const radioPix = document.getElementById('pix');
+    const radioCard = document.getElementById('card');
+    const totalValueSpan = document.getElementById('totalValue');
+    const totalDetailSpan = document.getElementById('totalDetail');
+    const whatsappBtn = document.getElementById('whatsappBtn');
+
+    const PRICES = { alarme: 1500, cftv: 2500 };
+
+    function formatCurrency(value) {
+        return value.toFixed(2).replace('.', ',');
+    }
+
+    function updateTotal() {
+        let total = 0;
+        let selectedSystems = [];
+        if (chkAlarme.checked) {
+            total += PRICES.alarme;
+            selectedSystems.push('Sistema de Alarme Intelbras (R$ 1.500,00)');
+        }
+        if (chkCftv.checked) {
+            total += PRICES.cftv;
+            selectedSystems.push('Sistema de CFTV Wi-Fi Intelbras (R$ 2.500,00)');
+        }
+
+        const hasSelection = selectedSystems.length > 0;
+        
+        if (hasSelection) {
+            paymentArea.style.display = 'block';
+            const isPix = radioPix.checked;
+            let finalTotal = total;
+            let detailText = '';
+            
+            if (isPix) {
+                finalTotal = total * 0.9;
+                detailText = `À vista com 10% de desconto: R$ ${formatCurrency(finalTotal)} (economia de R$ ${formatCurrency(total * 0.1)})`;
+            } else {
+                const parcelValue = total / 6;
+                detailText = `Parcelado em 6x de R$ ${formatCurrency(parcelValue)} sem juros - Total: R$ ${formatCurrency(total)}`;
+            }
+            
+            totalValueSpan.innerText = `R$ ${formatCurrency(finalTotal)}`;
+            totalDetailSpan.innerText = detailText;
+            whatsappBtn.disabled = false;
+            whatsappBtn.classList.remove('disabled');
+        } else {
+            paymentArea.style.display = 'none';
+            totalValueSpan.innerText = 'R$ 0,00';
+            totalDetailSpan.innerText = 'Selecione pelo menos um sistema';
+            whatsappBtn.disabled = true;
+            whatsappBtn.classList.add('disabled');
+        }
+    }
+
+    chkAlarme.addEventListener('change', updateTotal);
+    chkCftv.addEventListener('change', updateTotal);
+    radioPix.addEventListener('change', updateTotal);
+    radioCard.addEventListener('change', updateTotal);
+
+    // Estilização dos radio buttons
+    const radioOptions = document.querySelectorAll('.radio-option');
+    radioOptions.forEach(opt => {
+        const radio = opt.querySelector('input[type="radio"]');
+        radio.addEventListener('change', () => {
+            radioOptions.forEach(o => o.classList.remove('selected'));
+            if (radio.checked) opt.classList.add('selected');
+        });
+        if (radio.checked) opt.classList.add('selected');
+    });
+
+    // Ação de fechamento com mensagem corrigida
+    whatsappBtn.addEventListener('click', () => {
+        let selectedSystems = [];
+        let total = 0;
+        if (chkAlarme.checked) {
+            total += PRICES.alarme;
+            selectedSystems.push('🔔 Sistema de Alarme Intelbras (2 PIR + 2 abertura)');
+        }
+        if (chkCftv.checked) {
+            total += PRICES.cftv;
+            selectedSystems.push('📹 Sistema de CFTV Wi-Fi Intelbras (4 câmeras)');
+        }
+        if (selectedSystems.length === 0) return;
+        
+        const isPix = radioPix.checked;
+        let finalTotal = total;
+        let paymentDesc = '';
+        let installmentInfo = '';
+        if (isPix) {
+            finalTotal = total * 0.9;
+            paymentDesc = `✅ À vista com 10% de desconto: R$ ${finalTotal.toFixed(2)} (economia de R$ ${(total*0.1).toFixed(2)}) – Pagamento via PIX.`;
+        } else {
+            const parcelValue = total / 6;
+            paymentDesc = `✅ Parcelado em 6x de R$ ${parcelValue.toFixed(2)} sem juros - Total: R$ ${total.toFixed(2)} – Pagamento via link de cartão de crédito.`;
+            installmentInfo = `\n🟢 Valor das parcelas: 6x de R$ ${parcelValue.toFixed(2)} no cartão de crédito.`;
+        }
+        
+        const systemsList = selectedSystems.map(s => `• ${s}`).join('\n');
+        
+        const message = `*🔥 FECHAMENTO DE PEDIDO - Attive Tecnologia*
+
+Olá, Laércio! Recebemos sua solicitação de fechamento do sistema integrado de segurança. Seguem os detalhes para confirmação:
+
+*Sistemas escolhidos:*
+${systemsList}
+
+*💰 Condição selecionada:*
+${paymentDesc}
+${installmentInfo}
+
+*🔧 O que está incluso (já no valor):*
+✔️ Instalação completa e configuração profissional
+✔️ Garantia de 12 meses em equipamentos e serviços
+✔️ Treinamento para usar o app Intelbras (câmeras + alarme juntos)
+✔️ Suporte remoto ilimitado nos primeiros 30 dias
+
+*📅 Próximos passos:*
+Assim que você confirmar esta mensagem, nosso atendente enviará os dados para pagamento via **PIX** ou **link de cartão de crédito**. Após a confirmação do pagamento, agendamos a instalação em até 48h úteis.
+
+*👉 Para finalizar, basta responder com:* 
+"Confirmo o pedido. Vou pagar via [PIX / cartão em 6x]."
+
+Fico à disposição para qualquer ajuste.
+
+Hélio Crispim - Attive Tecnologia
+(83) 9678-7788`;
+        
+        const encodedMsg = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/5583996787788?text=${encodedMsg}`;
+        window.open(whatsappUrl, '_blank');
+    });
+
+    // Animações
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        el.style.animation = 'fadeInUp 0.7s ease forwards';
+    });
+</script>
+</body>
+</html>
