@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>OS 116-2026 | Reestruturação CFTV | EQUIPSOM | Attive</title>
+
+<!-- Open Graph / WhatsApp / Telegram / redes sociais -->
+<meta property="og:type"        content="website">
+<meta property="og:title"       content="OS 116-2026 — Reestruturação CFTV · EQUIPSOM">
+<meta property="og:description" content="Proposta técnica da Attive Tecnologia para modernização do sistema de câmeras da EQUIPSOM. Diagnóstico, serviços executados, materiais e planos de suporte.">
+<meta property="og:image"       content="https://cdn.phototourl.com/free/2026-04-01-5ab8b26d-2d00-46e8-aa83-234b907db1c7.png">
+<meta property="og:image:width"  content="800">
+<meta property="og:image:height" content="400">
+<meta property="og:locale"      content="pt_BR">
+
+<!-- Twitter / X card -->
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="OS 116-2026 — Reestruturação CFTV · EQUIPSOM">
+<meta name="twitter:description" content="Proposta técnica da Attive Tecnologia para modernização do sistema de câmeras da EQUIPSOM.">
+<meta name="twitter:image"       content="https://cdn.phototourl.com/free/2026-04-01-5ab8b26d-2d00-46e8-aa83-234b907db1c7.png">
+
+<!-- Descrição para buscadores -->
+<meta name="description" content="Proposta técnica da Attive Tecnologia — OS 116-2026, reestruturação do sistema CFTV da EQUIPSOM. Diagnóstico, execução, materiais e planos de suporte.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg:        #08141C;
+  --bg3:       #061018;
+  --surface:   #112233;
+  --blue:      #1FA8E0;
+  --blue2:     #0E6FA3;
+  --blue-dim:  rgba(31,168,224,0.12);
+  --white:     #F0F8FF;
+  --gray:      #7FA8C0;
+  --gray2:     #1E3448;
+  --green:     #18C97A;
+  --green-dim: rgba(24,201,122,0.10);
+  --gold:      #FFD966;
+  --amber:     #F59E0B;
+  --amber-dim: rgba(245,158,11,0.10);
+  --font:      'DM Sans', sans-serif;
+  --serif:     'DM Serif Display', serif;
+}
+
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--white); font-family:var(--font); font-size:15px; line-height:1.7; }
+
+@keyframes fadeInUp   { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeInLeft { from{opacity:0;transform:translateX(-40px)} to{opacity:1;transform:translateX(0)} }
+@keyframes pulse      { 0%,100%{opacity:1} 50%{opacity:.45} }
+@keyframes bob        { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+.animate-on-scroll { opacity:0; }
+
+/* ════ CAPA ════ */
+.cover {
+  min-height:95vh; background:var(--bg3);
+  display:flex; flex-direction:column; justify-content:space-between;
+  padding:44px 32px; position:relative; overflow:hidden;
+  max-width:1200px; margin:0 auto;
+}
+.cover::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse 70% 60% at 110% 80%,rgba(31,168,224,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cover-accent { position:absolute; left:0; top:0; bottom:0; width:4px; background:linear-gradient(to bottom,var(--blue),transparent); }
+.cover-dots {
+  position:absolute; right:0; bottom:0; width:220px; height:220px;
+  background-image:radial-gradient(circle,rgba(31,168,224,.18) 1px,transparent 1px);
+  background-size:18px 18px;
+  mask-image:radial-gradient(ellipse at bottom right,black 30%,transparent 70%);
+}
+.cover-logo { animation:fadeInLeft .6s ease forwards; }
+.cover-body  { animation:fadeInUp .8s ease .2s both; }
+.cover-foot  { animation:fadeInUp .6s ease .4s both; border-top:1px solid var(--gray2); padding-top:20px; display:flex; justify-content:space-between; align-items:flex-end; gap:16px; }
+.cover-foot p { font-size:12px; color:var(--gray); line-height:2; }
+.cover-foot strong { color:var(--white); font-weight:500; }
+
+.cover-badge { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--blue2); color:var(--blue); padding:7px 16px; border-radius:4px; font-size:12px; font-weight:600; margin-bottom:28px; background:var(--blue-dim); }
+.cover-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--blue); display:inline-block; animation:pulse 2s infinite; }
+.cover-kicker { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--blue); margin-bottom:12px; }
+.cover-title  { font-family:var(--serif); font-size:clamp(34px,6vw,56px); font-weight:400; line-height:1.1; margin-bottom:16px; }
+.cover-title em { font-style:italic; color:var(--blue); }
+.cover-sub { font-size:14px; color:var(--gray); max-width:500px; line-height:1.7; }
+.cover-scroll { font-size:11px; color:var(--gray); display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; flex-shrink:0; }
+.cover-scroll span { animation:bob 1.6s infinite; display:block; }
+
+/* ════ LAYOUT ════ */
+.main { max-width:1200px; margin:0 auto; padding:0 24px 80px; }
+.section { padding:56px 0 0; }
+.st { font-family:var(--serif); font-size:32px; font-weight:400; line-height:1.2; margin-bottom:20px; }
+.st em { font-style:italic; color:var(--blue); }
+.sb { font-size:14px; color:var(--gray); line-height:1.8; }
+.divider { border:none; border-top:1px solid var(--gray2); margin:48px 0; }
+
+/* ════ STAT CARDS ════ */
+.stat-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px; margin:24px 0; }
+.stat-card { background:var(--surface); border:1px solid var(--gray2); border-radius:16px; padding:20px 18px; text-align:center; transition:all .3s ease; }
+.stat-card:hover { border-color:var(--blue); transform:translateY(-4px); }
+.stat-num { font-family:var(--serif); font-size:36px; color:var(--amber); }
+.stat-lbl { font-size:11px; color:var(--gray); text-transform:uppercase; letter-spacing:.5px; margin-top:4px; }
+
+/* ════ DIAGNÓSTICO ════ */
+.diag-grid { display:grid; gap:10px; margin-top:20px; }
+.diag-item { background:var(--surface); border:1px solid var(--gray2); border-left:3px solid var(--blue); border-radius:0 12px 12px 0; padding:16px 20px; display:flex; gap:14px; align-items:flex-start; transition:all .3s ease; }
+.diag-item:hover { transform:translateX(5px); border-left-color:var(--amber); }
+.dico { flex-shrink:0; width:36px; height:36px; border-radius:8px; background:var(--amber-dim); border:1px solid var(--amber); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--amber); }
+.diag-item h4 { font-size:13px; font-weight:600; color:var(--white); margin-bottom:2px; }
+.diag-item p  { font-size:12px; color:var(--gray); line-height:1.6; }
+
+/* ════ SERVICO CARD ════ */
+.servico-card { background:var(--surface); border:1px solid var(--gray2); border-radius:20px; margin:32px 0; overflow:hidden; transition:all .3s ease; }
+.servico-card:hover { transform:translateY(-3px); border-color:var(--blue); }
+.card-header { padding:20px; background:linear-gradient(135deg,rgba(31,168,224,.08),transparent); border-bottom:1px solid var(--gray2); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+.card-header h3 { font-family:var(--serif); font-size:26px; color:var(--blue); }
+.badge-green { background:var(--green-dim); padding:6px 14px; border-radius:40px; font-size:12px; font-weight:600; color:var(--green); }
+.card-body { padding:24px; }
+.preco { font-size:38px; font-weight:700; color:var(--green); margin:16px 0 8px; }
+.preco-detalhe { font-size:13px; color:var(--gray); margin-bottom:20px; border-left:2px solid var(--blue); padding-left:12px; }
+
+.checklist { list-style:none; margin:16px 0; display:grid; grid-template-columns:1fr 1fr; gap:8px 24px; }
+.checklist li { display:flex; align-items:flex-start; gap:8px; font-size:13px; color:var(--gray); }
+.checklist li::before { content:'–'; color:var(--green); font-weight:700; flex-shrink:0; }
+
+/* ════ TABELA ════ */
+.produtos-table { width:100%; border-collapse:collapse; margin-top:16px; font-size:13px; }
+.produtos-table th { text-align:left; font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gray); padding:10px 12px; border-bottom:1px solid var(--gray2); }
+.produtos-table td { padding:13px 12px; border-bottom:1px solid rgba(30,52,72,.6); color:var(--white); }
+.produtos-table tr:last-child td { border-bottom:none; }
+.produtos-table tr:hover td { background:rgba(31,168,224,.04); }
+.td-right { text-align:right; }
+.td-total { color:var(--green); font-weight:600; }
+.produtos-table tfoot td { padding:14px 12px; font-weight:600; font-size:13px; border-top:1px solid var(--gray2); }
+
+/* ════ FINANCEIRO ════ */
+.total-box { background:var(--blue-dim); border:1px solid var(--blue2); border-radius:16px; padding:28px; margin:28px 0; }
+.total-line { display:flex; justify-content:space-between; align-items:center; font-size:14px; color:var(--gray); padding:8px 0; }
+.total-line + .total-line { border-top:1px solid rgba(30,52,72,.8); }
+.total-line.grand { border-top:2px solid var(--blue2); margin-top:8px; padding-top:16px; }
+.total-line.grand .label { font-size:16px; color:var(--white); font-weight:600; }
+.total-line.grand .val   { font-family:var(--serif); font-size:32px; color:var(--green); }
+
+.parcelamento-card { background:var(--green-dim); border:1px solid var(--green); border-radius:16px; padding:22px 28px; margin-top:16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+.p-label { font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--green); margin-bottom:6px; }
+.p-valor { font-family:var(--serif); font-size:28px; color:var(--white); }
+.p-valor span { color:var(--green); }
+.p-sub { font-size:12px; color:var(--gray); margin-top:4px; }
+.p-total { font-size:12px; color:var(--gray); line-height:1.9; text-align:right; }
+.p-total strong { color:var(--white); font-size:15px; display:block; }
+
+/* ════ RECOMENDAÇÃO ════ */
+.rec-card { background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(31,168,224,.05)); border:1px solid var(--amber); border-radius:20px; padding:28px; margin:32px 0; position:relative; overflow:hidden; }
+.rec-card::after { content:''; position:absolute; right:-40px; top:-40px; width:140px; height:140px; border-radius:50%; background:radial-gradient(circle,rgba(245,158,11,.15),transparent 70%); pointer-events:none; }
+.rec-title { font-family:var(--serif); font-size:22px; color:var(--amber); margin-bottom:10px; }
+.rec-body  { font-size:13px; color:var(--gray); line-height:1.8; }
+
+/* ════ PLANOS ════ */
+.planos-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; align-items:start; margin-top:8px; }
+
+.plano-card { background:var(--surface); border:1px solid var(--gray2); border-radius:20px; overflow:hidden; transition:transform .3s ease, border-color .3s ease; display:flex; flex-direction:column; }
+.plano-card:hover { transform:translateY(-4px); border-color:var(--blue); }
+
+.plano-destaque { border-color:var(--blue); box-shadow:0 0 0 1px var(--blue2), 0 12px 40px rgba(31,168,224,.12); transform:translateY(-6px); }
+.plano-destaque:hover { transform:translateY(-10px); }
+.plano-premium { border-color:var(--gold); }
+.plano-premium:hover { box-shadow:0 12px 40px rgba(255,217,102,.08); }
+
+.plano-recomendado { background:var(--blue); color:var(--bg); text-align:center; font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:6px; }
+
+.plano-header { padding:24px 22px 16px; border-bottom:1px solid var(--gray2); }
+.plano-tag { font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gray); margin-bottom:8px; }
+.plano-destaque .plano-tag { color:var(--blue); }
+.plano-premium  .plano-tag { color:var(--gold); }
+.plano-preco { font-family:var(--serif); font-size:36px; color:var(--white); line-height:1; }
+.plano-destaque .plano-preco { color:var(--blue); }
+.plano-premium  .plano-preco { color:var(--gold); }
+.plano-preco span { font-family:var(--font); font-size:13px; color:var(--gray); font-weight:400; margin-left:2px; }
+
+.plano-lista { list-style:none; padding:18px 22px 22px; display:flex; flex-direction:column; flex:1; }
+.plano-lista li { display:flex; flex-direction:column; gap:2px; padding:11px 0; border-bottom:1px solid rgba(30,52,72,.7); }
+.plano-lista li:last-child { border-bottom:none; padding-bottom:0; }
+.pl-label { font-size:10px; text-transform:uppercase; letter-spacing:.8px; font-weight:600; color:var(--gray); }
+.pl-val   { font-size:13px; font-weight:500; color:var(--white); }
+.pl-ok    { color:var(--green); }
+.pl-none  { color:var(--gray); font-style:italic; }
+
+.planos-regras { background:var(--surface); border:1px solid var(--gray2); border-left:3px solid var(--gray2); border-radius:0 12px 12px 0; padding:18px 22px; margin-top:24px; }
+.regras-titulo { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gray); margin-bottom:10px; }
+.regras-lista { list-style:none; display:flex; flex-direction:column; gap:6px; }
+.regras-lista li { font-size:12px; color:var(--gray); padding-left:16px; position:relative; line-height:1.6; }
+.regras-lista li::before { content:'—'; position:absolute; left:0; }
+
+/* ════ SOBRE / NÚMEROS / SERVIÇOS / DIFERENCIAIS (do portfólio) ════ */
+.sk { display:inline-flex; align-items:center; gap:8px; font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--blue); margin-bottom:10px; }
+.sk::before { content:''; width:20px; height:1px; background:var(--blue); }
+
+.about-box { background:var(--surface); border:1px solid var(--gray2); border-radius:16px; padding:28px 24px; margin-top:20px; position:relative; overflow:hidden; }
+.about-box::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--blue),transparent); }
+.about-text { font-size:14px; color:var(--gray); line-height:1.8; }
+.about-text p+p { margin-top:16px; }
+
+.stats-grid-port { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin:32px 0; }
+.stat-card-port { background:var(--surface); border:1px solid var(--gray2); border-radius:20px; padding:32px 20px; text-align:center; position:relative; overflow:hidden; transition:all .3s ease; }
+.stat-card-port::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--blue),var(--green)); }
+.stat-card-port:hover { transform:translateY(-5px); border-color:var(--blue); }
+.stat-icon-port { width:64px; height:64px; margin:0 auto 16px; background:var(--blue-dim); border:1px solid var(--blue2); border-radius:50%; display:flex; align-items:center; justify-content:center; }
+.stat-number-port { font-family:var(--serif); font-size:48px; color:var(--blue); margin-bottom:8px; }
+.stat-label-port { font-size:13px; color:var(--gray); text-transform:uppercase; letter-spacing:1px; }
+
+.services-grid-port { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin:32px 0; }
+.service-card-port { background:var(--surface); border:1px solid var(--gray2); border-radius:20px; padding:28px 24px; transition:all .3s ease; }
+.service-card-port:hover { transform:translateY(-5px); border-color:var(--blue); }
+.service-icon-port { width:56px; height:56px; border-radius:16px; background:var(--blue-dim); border:1px solid var(--blue2); display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
+.service-card-port h3 { font-family:var(--serif); font-size:20px; margin-bottom:16px; color:var(--blue); }
+.service-list-port { list-style:none; }
+.service-list-port li { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:13px; color:var(--gray); }
+.service-list-port li::before { content:'✦'; color:var(--blue); font-size:10px; margin-top:2px; flex-shrink:0; }
+
+.diff-grid-port { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin:32px 0; }
+.diff-card-port { background:var(--surface); border:1px solid var(--gray2); border-left:3px solid var(--blue); border-radius:0 12px 12px 0; padding:20px; display:flex; gap:14px; align-items:flex-start; transition:all .3s ease; }
+.diff-card-port:hover { transform:translateX(5px); border-left-color:var(--green); }
+.diff-icon-port { flex-shrink:0; width:40px; height:40px; border-radius:10px; background:var(--blue-dim); border:1px solid var(--blue2); display:flex; align-items:center; justify-content:center; }
+.diff-card-port h4 { font-size:14px; font-weight:600; margin-bottom:6px; }
+.diff-card-port p { font-size:12px; color:var(--gray); line-height:1.5; }
+
+/* ════ ASSINATURAS ════ */
+.assinatura-row { display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-top:40px; }
+.ass-box { border-top:1px solid var(--gray2); padding-top:16px; }
+.ass-box img { width:72px; height:72px; border-radius:50%; border:2px solid var(--blue); object-fit:cover; margin-bottom:14px; display:block; }
+.ass-box strong { display:block; font-size:15px; color:var(--white); font-weight:600; margin-bottom:4px; }
+.ass-box p { font-size:13px; color:var(--gray); line-height:1.8; }
+.crea-badge { display:inline-block; margin-top:8px; background:var(--blue-dim); border:1px solid var(--blue2); color:var(--blue); font-size:10px; font-weight:700; padding:3px 12px; border-radius:20px; }
+
+/* ════ RODAPÉ ════ */
+footer { border-top:1px solid var(--gray2); max-width:1200px; margin:0 auto; padding:28px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+.footer-brand { font-size:12px; color:var(--gray); line-height:1.9; }
+.footer-brand strong { color:var(--white); display:block; font-weight:600; }
+.footer-cta { font-size:11px; color:var(--gray); text-align:right; }
+.footer-cta a { color:var(--blue); text-decoration:none; }
+
+/* ════ MOBILE ════ */
+@media (max-width:600px) {
+  .cover { min-height:100svh; padding:28px 20px 32px; }
+  .cover-logo img { height:52px; }
+  .cover-badge { font-size:11px; padding:6px 12px; margin-bottom:20px; }
+  .cover-kicker { font-size:10px; }
+  .cover-title { font-size:32px; margin-bottom:14px; }
+  .cover-sub { font-size:13px; }
+  .cover-foot { flex-direction:column; align-items:flex-start; gap:16px; }
+  .cover-foot p { font-size:11px; line-height:1.9; }
+  .cover-scroll { display:none; }
+
+  .main { padding:0 16px 72px; }
+  .section { padding:40px 0 0; }
+  .st { font-size:24px; margin-bottom:14px; }
+  .sb { font-size:13px; }
+  .divider { margin:36px 0; }
+
+  .stat-row { grid-template-columns:1fr 1fr; gap:10px; }
+  .stat-card { padding:16px 12px; border-radius:12px; }
+  .stat-num { font-size:28px; }
+  .stat-lbl { font-size:10px; }
+
+  .diag-item { padding:14px; gap:10px; }
+  .diag-item h4 { font-size:12px; }
+  .diag-item p  { font-size:11px; }
+  .dico { width:32px; height:32px; font-size:9px; }
+
+  .card-header { padding:16px; }
+  .card-header h3 { font-size:20px; }
+  .card-body { padding:16px; }
+  .preco { font-size:30px; }
+  .preco-detalhe { font-size:12px; }
+  .checklist { grid-template-columns:1fr; gap:8px; }
+  .checklist li { font-size:12px; }
+
+  .produtos-table { font-size:12px; }
+  .produtos-table th { font-size:9px; padding:8px; }
+  .produtos-table td { padding:10px 8px; }
+  .produtos-table tfoot td { padding:11px 8px; }
+
+  .total-box { padding:20px 18px; border-radius:12px; }
+  .total-line { font-size:13px; }
+  .total-line.grand .label { font-size:14px; }
+  .total-line.grand .val   { font-size:26px; }
+  .parcelamento-card { flex-direction:column; align-items:flex-start; padding:18px; border-radius:12px; }
+  .p-total { text-align:left; }
+  .p-valor { font-size:24px; }
+
+  .rec-card { padding:20px 18px; border-radius:14px; }
+  .rec-title { font-size:18px; }
+  .rec-body { font-size:12px; }
+
+  /* ── Planos lado a lado no mobile com linhas perfeitamente paralelas ── */
+
+  /* O grid pai define as linhas: spacer/banner + header + 5 itens */
+  .planos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto repeat(5, 1fr);
+    gap: 0 8px;
+    align-items: stretch;
+  }
+
+  /* Cada card ocupa 1 coluna e herda todas as linhas via subgrid */
+  .plano-card {
+    display: grid;
+    grid-row: 1 / -1;
+    grid-template-rows: subgrid;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .plano-destaque { transform: none; }
+  .plano-destaque:hover { transform: translateY(-4px); }
+
+  /* Spacer invisível para cards sem banner — ocupa a linha 1 */
+  .plano-spacer {
+    display: block;
+    min-height: 0;
+    background: transparent;
+  }
+
+  /* Cabeçalho ocupa a linha 2 */
+  .plano-header { padding: 10px 8px 10px; }
+  .plano-tag { font-size: 8px; letter-spacing: .8px; margin-bottom: 4px; }
+  .plano-preco { font-size: 18px; line-height: 1.1; }
+  .plano-preco span { font-size: 10px; }
+  .plano-recomendado { font-size: 8px; letter-spacing: 1px; padding: 4px; }
+
+  /* A lista usa display:contents para que os <li> entrem diretamente no subgrid */
+  .plano-lista {
+    display: contents;
+    padding: 0;
+  }
+  .plano-lista li {
+    padding: 7px 8px;
+    border-bottom: 1px solid rgba(30,52,72,.7);
+    gap: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .plano-lista li:last-child { border-bottom: none; }
+  .pl-label { font-size: 8px; letter-spacing: .4px; }
+  .pl-val   { font-size: 11px; }
+
+  .planos-regras { padding: 14px 16px; margin-top: 16px; }
+
+  .stats-grid-port { grid-template-columns:1fr; gap:16px; }
+  .stat-number-port { font-size:36px; }
+  .services-grid-port { grid-template-columns:1fr; gap:16px; }
+  .diff-grid-port { grid-template-columns:1fr; gap:12px; }
+
+  .assinatura-row { grid-template-columns:1fr; gap:28px; }
+  .ass-box img { width:60px; height:60px; }
+
+  footer { flex-direction:column; align-items:flex-start; gap:16px; padding:24px 16px; }
+  .footer-cta { text-align:left; }
+
+  .wa-btn { width:50px !important; height:50px !important; bottom:20px !important; right:20px !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="cover">
+  <div class="cover-accent"></div>
+  <div class="cover-dots"></div>
+
+  <div class="cover-logo">
+    <img src="https://cdn.phototourl.com/free/2026-04-01-bd1ea34f-46fa-4af7-8452-af7677dbb7e9.png" alt="Attive Tecnologia" style="height:70px;width:auto;display:block;">
+  </div>
+
+  <div class="cover-body">
+    <div class="cover-badge">OS 116-2026 &nbsp;·&nbsp; 12/05/2026</div>
+    <div class="cover-kicker">Ordem de Serviço Executado</div>
+    <h1 class="cover-title">Reestruturação<br><em>Completa do Sistema</em><br>de CFTV</h1>
+    <p class="cover-sub">Diagnóstico, correção de falhas, substituição de componentes, reorganização de rack e cabeamento, e manutenção preventiva das câmeras — restaurando plena confiabilidade ao sistema de monitoramento.</p>
+  </div>
+
+  <div class="cover-foot">
+    <p>
+      <strong>Cliente</strong> EQUIPSOM — JOSEILSON ROQUE DA SILVA<br>
+      <strong>CNPJ</strong> 12.919.692/0001-55<br>
+      <strong>Endereço</strong> R. João da Silva Pimentel, 182 — Centro, Campina Grande-PB<br>
+      <strong>Executado por</strong> Hélio Crispim · Attive Tecnologia
+    </p>
+    <div class="cover-scroll" onclick="document.querySelector('.main').scrollIntoView({behavior:'smooth'})">
+      <span>↓</span><small>ver detalhes</small>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <hr class="divider">
+
+  <!-- SOBRE A ATTIVE -->
+  <div class="section animate-on-scroll">
+    <h2 class="st">Sobre a <em>Attive</em></h2>
+    <p class="sb">Conheça nossa história e compromisso com a segurança.</p>
+    <div class="about-box">
+      <div class="about-text">
+        <p>A Attive Tecnologia é uma empresa especializada em segurança eletrônica, automação e infraestrutura de rede, com mais de 25 anos de experiência no mercado. Atendemos residências, comércios, indústrias e condomínios em todo o Brasil, oferecendo soluções personalizadas e de alta qualidade.</p>
+        <p>Nosso compromisso é proporcionar tranquilidade aos nossos clientes através de projetos bem executados, equipamentos certificados e uma equipe técnica altamente capacitada.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ATTIVE EM NÚMEROS -->
+  <div class="section animate-on-scroll">
+    <h2 class="st">Attive em <em>números</em></h2>
+    <p class="sb">Nossa trajetória comprovada por resultados.</p>
+    <div class="stats-grid-port">
+      <div class="stat-card-port">
+        <div class="stat-icon-port">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="stat-number-port"><span id="countAnos">0</span><span>+</span></div>
+        <div class="stat-label-port">Anos de Experiência</div>
+      </div>
+      <div class="stat-card-port">
+        <div class="stat-icon-port">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="stat-number-port"><span id="countClientes">0</span><span>+</span></div>
+        <div class="stat-label-port">Clientes Atendidos</div>
+      </div>
+      <div class="stat-card-port">
+        <div class="stat-icon-port">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M16 11l5-3v8l-5-3"/></svg>
+        </div>
+        <div class="stat-number-port"><span id="countCameras">0</span><span>+</span></div>
+        <div class="stat-label-port">Câmeras Instaladas</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- O QUE OFERECEMOS -->
+  <div class="section animate-on-scroll">
+    <h2 class="st">O que <em>oferecemos</em></h2>
+    <p class="sb">Soluções completas em segurança eletrônica, automação e infraestrutura.</p>
+    <div class="services-grid-port">
+      <div class="service-card-port">
+        <div class="service-icon-port">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <h3>Segurança Eletrônica</h3>
+        <ul class="service-list-port">
+          <li>CFTV — Câmeras de Segurança</li>
+          <li>Alarmes residenciais e comerciais</li>
+          <li>Cerca Elétrica</li>
+          <li>Sensores de presença e abertura</li>
+        </ul>
+      </div>
+      <div class="service-card-port">
+        <div class="service-icon-port">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <h3>Automação</h3>
+        <ul class="service-list-port">
+          <li>Automatizadores de portão</li>
+          <li>Barreiras veiculares</li>
+          <li>Controles de acesso</li>
+          <li>Sistemas integrados</li>
+        </ul>
+      </div>
+      <div class="service-card-port">
+        <div class="service-icon-port">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
+        </div>
+        <h3>Infraestrutura de Rede</h3>
+        <ul class="service-list-port">
+          <li>Cabeamento estruturado CAT5e/CAT6</li>
+          <li>Access Point e redes Wi-Fi</li>
+          <li>Projetos de rede corporativa</li>
+          <li>Teste de conectividade</li>
+        </ul>
+      </div>
+      <div class="service-card-port">
+        <div class="service-icon-port">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h3>Rastreadores Veiculares</h3>
+        <ul class="service-list-port">
+          <li>Rastreadores veiculares</li>
+          <li>Monitoramento de frotas</li>
+          <li>Instalação e manutenção</li>
+          <li>Suporte 24 horas</li>
+        </ul>
+      </div>
+      <div class="service-card-port">
+        <div class="service-icon-port">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h3>Suporte e Manutenção</h3>
+        <ul class="service-list-port">
+          <li>Manutenção preventiva e corretiva</li>
+          <li>Suporte técnico especializado</li>
+          <li>Emergência 24 horas</li>
+          <li>Planos de suporte personalizados</li>
+        </ul>
+      </div>
+      <div class="service-card-port">
+        <div class="service-icon-port">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        </div>
+        <h3>Projetos Elétricos</h3>
+        <ul class="service-list-port">
+          <li>Instalações elétricas residenciais</li>
+          <li>Quadros de distribuição</li>
+          <li>Laudos e projetos elétricos</li>
+          <li>Responsabilidade técnica (CREA)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- POR QUE ESCOLHER A ATTIVE -->
+  <div class="section animate-on-scroll">
+    <h2 class="st">Por que escolher a <em>Attive</em></h2>
+    <p class="sb">Motivos que fazem da Attive a escolha certa para sua segurança.</p>
+    <div class="diff-grid-port">
+      <div class="diff-card-port">
+        <div class="diff-icon-port">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <div><h4>+25 anos de experiência</h4><p>Centenas de projetos executados com excelência</p></div>
+      </div>
+      <div class="diff-card-port">
+        <div class="diff-icon-port">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+        </div>
+        <div><h4>Equipe especializada</h4><p>Técnicos treinados e capacitados</p></div>
+      </div>
+      <div class="diff-card-port">
+        <div class="diff-icon-port">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <div><h4>Equipamentos certificados</h4><p>Materiais homologados e fornecedores confiáveis</p></div>
+      </div>
+      <div class="diff-card-port">
+        <div class="diff-icon-port">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div><h4>Suporte pós-atendimento</h4><p>Assistência técnica contínua</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIAGNÓSTICO -->
+  <div class="section animate-on-scroll">
+    <h2 class="st">Falhas <em>identificadas</em> no sistema</h2>
+    <p class="sb">Inspeção técnica detectou múltiplos pontos críticos que comprometiam o funcionamento, a organização e a confiabilidade da instalação.</p>
+
+    <div class="stat-row" style="margin-bottom:32px;">
+      <div class="stat-card"><div class="stat-num">5</div><div class="stat-lbl">Câmeras sem sinal</div></div>
+      <div class="stat-card"><div class="stat-num">37</div><div class="stat-lbl">Conectores oxidados</div></div>
+      <div class="stat-card"><div class="stat-num">5</div><div class="stat-lbl">Plugs oxidados</div></div>
+      <div class="stat-card"><div class="stat-num">9</div><div class="stat-lbl">Câmeras c/ conectores expostos</div></div>
+      <div class="stat-card"><div class="stat-num">32</div><div class="stat-lbl">Lentes com acúmulo de poeira</div></div>
+      <div class="stat-card"><div class="stat-num" style="font-size:20px;line-height:1.5;">Rack</div><div class="stat-lbl">Cabos soltos, equip. no chão</div></div>
+    </div>
+
+    <div class="diag-grid">
+      <div class="diag-item"><div class="dico">CAM</div><div><h4>Câmeras inoperantes</h4><p>5 câmeras completamente sem sinal, comprometendo zonas de monitoramento críticas.</p></div></div>
+      <div class="diag-item"><div class="dico">CON</div><div><h4>Conectorização degradada</h4><p>37 conectores e 5 plugs com oxidação avançada, causando falhas intermitentes de imagem e sinal.</p></div></div>
+      <div class="diag-item"><div class="dico">EXP</div><div><h4>Conexões aparentes</h4><p>9 câmeras com conectores expostos ao ambiente, sujeitos a umidade, poeira e danos mecânicos.</p></div></div>
+      <div class="diag-item"><div class="dico">RCK</div><div><h4>Rack em condições inadequadas</h4><p>Cabos soltos sem organização, fontes e protetor eletrônico posicionados diretamente no chão.</p></div></div>
+      <div class="diag-item"><div class="dico">LNT</div><div><h4>Lentes com acúmulo de poeira</h4><p>32 câmeras com imagens degradadas por poeira — reduzindo significativamente a qualidade do monitoramento.</p></div></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SERVIÇOS -->
+  <div class="section animate-on-scroll">
+    <h2 class="st">O que foi <em>executado</em></h2>
+    <div class="servico-card">
+      <div class="card-header">
+        <h3>Reestruturação do Sistema de CFTV</h3>
+        <span class="badge-green">Concluído</span>
+      </div>
+      <div class="card-body">
+        <p style="font-size:14px;color:var(--gray);line-height:1.8;margin-bottom:20px;">Reestruturação completa do sistema, corrigindo todas as falhas identificadas na inspeção. O sistema foi restaurado à plena operabilidade, com melhorias na organização da infraestrutura e na qualidade das imagens.</p>
+        <ul class="checklist">
+          <li>Substituição de 37 conectores danificados</li>
+          <li>Substituição de 5 plugs oxidados</li>
+          <li>Reorganização completa do cabeamento</li>
+          <li>Reorganização e adequação do rack</li>
+          <li>Fixação adequada de todos os equipamentos</li>
+          <li>Correção das 9 conexões expostas</li>
+          <li>Revisão dos pontos de alimentação</li>
+          <li>Testes de funcionamento completos</li>
+          <li>Restabelecimento das 5 câmeras inoperantes</li>
+          <li>Limpeza técnica das lentes de 32 câmeras</li>
+          <li><strong>Lançamento de 40m de cabo coaxial para câmera inoperante</strong> (recuperação de sinal)</li>
+        </ul>
+        <div class="preco">R$ 2.223,00</div>
+        <p class="preco-detalhe">Mão de obra técnica especializada (inclui serviço adicional de lançamento de cabo)</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- MATERIAIS -->
+  <div class="section animate-on-scroll">
+    <h2 class="st">Componentes <em>utilizados</em></h2>
+    <p class="sb">Materiais de linha profissional, garantindo durabilidade e confiabilidade à instalação.</p>
+    <div class="servico-card" style="margin-top:24px;">
+      <div class="card-body" style="padding:0;">
+        <table class="produtos-table">
+          <thead>
+            <tr><th>Descrição</th><th class="td-right">Qtd.</th><th class="td-right">Unit.</th><th class="td-right">Total</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Conector</td><td class="td-right">37</td><td class="td-right">R$ 6,50</td><td class="td-right td-total">R$ 240,50</td></tr>
+            <tr><td>Plug</td><td class="td-right">5</td><td class="td-right">R$ 6,00</td><td class="td-right td-total">R$ 30,00</td></tr>
+            <tr><td>Caixa Organizadora</td><td class="td-right">10</td><td class="td-right">R$ 9,50</td><td class="td-right td-total">R$ 95,00</td></tr>
+            <tr><td>Canaleta Semi Aberta</td><td class="td-right">2</td><td class="td-right">R$ 78,70</td><td class="td-right td-total">R$ 157,40</td></tr>
+            <tr><td>Canaleta Fechada</td><td class="td-right">2</td><td class="td-right">R$ 11,00</td><td class="td-right td-total">R$ 22,00</td></tr>
+            <tr><td>Cabo Coaxial (40 metros)</td><td class="td-right">40</td><td class="td-right">R$ 2,30</td><td class="td-right td-total">R$ 92,00</td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="3" style="color:var(--gray);">Subtotal Materiais</td><td class="td-right td-total">R$ 636,90</td></tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- FINANCEIRO -->
+  <div class="section animate-on-scroll">
+    <h2 class="st">Resumo <em>de valores</em></h2>
+    <div class="total-box">
+      <div class="total-line"><span class="label">Mão de obra técnica</span><span class="val">R$ 2.223,00</span></div>
+      <div class="total-line"><span class="label">Materiais e componentes</span><span class="val">R$ 636,90</span></div>
+      <div class="total-line grand"><span class="label">Total geral</span><span class="val">R$ 2.859,90</span></div>
+    </div>
+    <div class="parcelamento-card">
+      <div>
+        <div class="p-label">Parcelamento disponível</div>
+        <div class="p-valor">6x de <span>R$ 476,65</span></div>
+        <div class="p-sub">sem juros</div>
+      </div>
+      <div class="p-total">Total parcelado<strong>R$ 2.859,90</strong></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- RECOMENDAÇÃO -->
+  <div class="section animate-on-scroll">
+    <h2 class="st">Melhoria <em>futura sugerida</em></h2>
+    <div class="rec-card">
+      <div class="rec-title">Reestruturação completa do cabeamento</div>
+      <p class="rec-body">Parte do cabeamento existente apresenta <strong style="color:var(--amber);">diversas emendas ao longo da instalação</strong>, o que pode comprometer a durabilidade e a estabilidade do sistema a longo prazo.<br><br>Recomendamos a reestruturação completa do cabeamento seguindo um <strong style="color:var(--white);">padrão técnico adequado</strong>, com infraestrutura em eletrodutos para maior proteção, organização e confiabilidade — garantindo a longevidade do investimento.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- PLANOS DE SUPORTE -->
+  <div class="section animate-on-scroll">
+    <h2 class="st">Planos de <em>Suporte Técnico</em></h2>
+    <p class="sb" style="margin-bottom:32px;">Mantenha seu sistema sempre operante com atendimento contínuo. Os planos abaixo são opcionais e independentes desta OS.</p>
+
+    <div class="planos-grid">
+
+      <div class="plano-card">
+        <div class="plano-spacer"></div>
+        <div class="plano-header">
+          <div class="plano-tag">Básico</div>
+          <div class="plano-preco">R$ 200<span>/mês</span></div>
+        </div>
+        <ul class="plano-lista">
+          <li><span class="pl-label">Preventiva in loco</span><span class="pl-val">1 a cada 3 meses</span></li>
+          <li><span class="pl-label">Corretiva in loco</span><span class="pl-val">1 por mês</span></li>
+          <li><span class="pl-label">Tempo de resposta</span><span class="pl-val">até 72h úteis</span></li>
+          <li><span class="pl-label">Desconto em peças</span><span class="pl-val pl-none">nenhum</span></li>
+          <li><span class="pl-label">Atendimento remoto</span><span class="pl-val pl-ok">ilimitado</span></li>
+        </ul>
+      </div>
+
+      <div class="plano-card plano-destaque">
+        <div class="plano-recomendado">mais contratado</div>
+        <div class="plano-header">
+          <div class="plano-tag">Avançado</div>
+          <div class="plano-preco">R$ 300<span>/mês</span></div>
+        </div>
+        <ul class="plano-lista">
+          <li><span class="pl-label">Preventiva in loco</span><span class="pl-val">1 a cada 2 meses</span></li>
+          <li><span class="pl-label">Corretiva in loco</span><span class="pl-val">2 por mês</span></li>
+          <li><span class="pl-label">Tempo de resposta</span><span class="pl-val">até 48h úteis</span></li>
+          <li><span class="pl-label">Desconto em peças</span><span class="pl-val pl-ok">10%</span></li>
+          <li><span class="pl-label">Atendimento remoto</span><span class="pl-val pl-ok">ilimitado</span></li>
+        </ul>
+      </div>
+
+      <div class="plano-card plano-premium">
+        <div class="plano-spacer"></div>
+        <div class="plano-header">
+          <div class="plano-tag">Premium</div>
+          <div class="plano-preco">R$ 600<span>/mês</span></div>
+        </div>
+        <ul class="plano-lista">
+          <li><span class="pl-label">Preventiva in loco</span><span class="pl-val">1 por mês</span></li>
+          <li><span class="pl-label">Corretiva in loco</span><span class="pl-val">4 por mês</span></li>
+          <li><span class="pl-label">Tempo de resposta</span><span class="pl-val">até 24h úteis</span></li>
+          <li><span class="pl-label">Desconto em peças</span><span class="pl-val pl-ok">15%</span></li>
+          <li><span class="pl-label">Atendimento remoto</span><span class="pl-val pl-ok">ilimitado c/ prioridade</span></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="planos-regras">
+      <div class="regras-titulo">Regras comuns a todos os planos</div>
+      <ul class="regras-lista">
+        <li>Horário comercial: segunda a sexta, 8h às 18h — exceto feriados nacionais</li>
+        <li>Visitas não utilizadas no mês não se acumulam para o mês seguinte</li>
+        <li>Peças e equipamentos são cobrados à parte, com desconto conforme o plano contratado</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ASSINATURAS -->
+  <div class="section animate-on-scroll">
+    <h2 class="st">Campina Grande, <em>12 de maio de 2026</em></h2>
+    <div class="assinatura-row">
+      <div class="ass-box">
+        <img src="https://cdn.phototourl.com/free/2026-04-01-5ab8b26d-2d00-46e8-aa83-234b907db1c7.png" alt="Hélio Crispim">
+        <strong>Hélio Crispim dos Santos Lima</strong>
+        <p>Engenheiro Eletricista<br>Attive Tecnologia · CNPJ: 48.979.364/0001-91</p>
+        <span class="crea-badge">CREA-PB 12290192025PB</span>
+      </div>
+      <div class="ass-box">
+        <strong>EQUIPSOM — Joseilson Roque da Silva</strong>
+        <p>CNPJ: 12.919.692/0001-55<br>Campina Grande-PB</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-brand">
+    <strong>Attive Tecnologia</strong>
+    CNPJ 48.979.364/0001-91 · Campina Grande-PB<br>
+    attivesistemas@gmail.com · (83) 9678-7788
+  </div>
+  <div class="footer-cta">
+    Dúvidas ou orçamentos?<br>
+    <a href="https://wa.me/5583996787788">Fale pelo WhatsApp</a>
+  </div>
+</footer>
+
+<a class="wa-btn" href="https://wa.me/5583996787788" target="_blank" aria-label="Chamar no WhatsApp"
+   style="position:fixed;bottom:28px;right:28px;z-index:9999;width:56px;height:56px;border-radius:50%;background:#25D366;box-shadow:0 4px 18px rgba(37,211,102,.45);display:flex;align-items:center;justify-content:center;transition:transform .2s ease,box-shadow .2s ease;text-decoration:none;"
+   onmouseover="this.style.transform='scale(1.12)';this.style.boxShadow='0 6px 26px rgba(37,211,102,.65)'"
+   onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 18px rgba(37,211,102,.45)'">
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#fff">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+function animateNumber(elementId, targetValue) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  let current = 0;
+  const duration = 2000;
+  const stepTime = 16;
+  const steps = duration / stepTime;
+  const increment = targetValue / steps;
+  function updateCount() {
+    current += increment;
+    if (current >= targetValue) { element.textContent = Math.floor(targetValue); return; }
+    element.textContent = Math.floor(current);
+    requestAnimationFrame(updateCount);
+  }
+  updateCount();
+}
+
+let statsAnimatedOS = false;
+const obsStats = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !statsAnimatedOS) {
+      statsAnimatedOS = true;
+      setTimeout(() => {
+        animateNumber('countAnos', 25);
+        animateNumber('countClientes', 1500);
+        animateNumber('countCameras', 10000);
+      }, 300);
+    } else if (!e.isIntersecting) {
+      statsAnimatedOS = false;
+      ['countAnos','countClientes','countCameras'].forEach(id => {
+        const el = document.getElementById(id); if(el) el.textContent='0';
+      });
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.stat-card-port').forEach(el => obsStats.observe(el));
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.animation = 'fadeInUp .7s ease forwards';
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.animate-on-scroll').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
