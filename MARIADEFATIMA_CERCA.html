@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Proposta Técnica | Cerca Elétrica | Attive Tecnologia</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #08141C;
+    --bg2: #0D1E28;
+    --bg3: #061018;
+    --surface: #112233;
+    --blue: #1FA8E0;
+    --blue2: #0E6FA3;
+    --blue-dim: rgba(31, 168, 224, 0.10);
+    --blue-mid: rgba(31, 168, 224, 0.20);
+    --white: #F0F8FF;
+    --gray: #7FA8C0;
+    --gray2: #1E3448;
+    --green: #18C97A;
+    --green-dark: #0fa85f;
+    --green-dim: rgba(24, 201, 122, 0.10);
+    --font: 'DM Sans', sans-serif;
+    --serif: 'DM Serif Display', serif;
+    --mono: 'IBM Plex Mono', 'Courier New', monospace;
+    --radius: 18px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .container { max-width: 980px; margin: 0 auto; padding: 44px 24px 60px; }
+
+  /* ── REVEAL ANIMATIONS ─────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1), transform 0.65s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-left {
+    opacity: 0; transform: translateX(-28px);
+    transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1), transform 0.65s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+  .reveal-right {
+    opacity: 0; transform: translateX(28px);
+    transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1), transform 0.65s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(0.88); }
+  }
+  @keyframes glowLine {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 0 rgba(31,168,224,0); }
+    50% { box-shadow: 0 0 22px rgba(31,168,224,0.35); }
+  }
+  @keyframes flowPulse {
+    from { stroke-dashoffset: 800; }
+    to   { stroke-dashoffset: 0; }
+  }
+  @keyframes zapFlicker {
+    0%, 88%, 100% { opacity: 1; }
+    90%, 94% { opacity: 0.2; }
+    92%, 96% { opacity: 0.85; }
+  }
+  @keyframes headerIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes btnGlow {
+    0% { box-shadow: 0 0 0 0 rgba(24, 201, 122, 0.4); }
+    70% { box-shadow: 0 0 0 12px rgba(24, 201, 122, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(24, 201, 122, 0); }
+  }
+  @keyframes btnPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+
+  /* ── HEADER ──────────────────────────────── */
+  .proposal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--gray2);
+    animation: headerIn 0.7s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .logo-area img {
+    height: 70px;
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+    opacity: 0.85;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .logo-area img:hover { opacity: 1; transform: scale(1.02); }
+
+  .proposal-info { text-align: right; }
+  .proposal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--blue-dim);
+    border: 1px solid var(--blue2);
+    padding: 6px 16px;
+    border-radius: 40px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    animation: glowPulse 3.5s ease-in-out infinite;
+  }
+  .proposal-badge-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--blue);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  .proposal-number {
+    font-size: 13px; color: var(--gray);
+    margin-bottom: 4px;
+    font-family: var(--mono);
+    letter-spacing: 0.5px;
+  }
+  .proposal-date { font-size: 12px; color: var(--gray); }
+  .proposal-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    margin-top: 10px;
+  }
+  .contact-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    color: var(--gray);
+    font-family: var(--mono);
+    transition: all 0.2s ease;
+  }
+  .contact-line:hover { color: var(--white); transform: translateX(-2px); }
+  .contact-line a { color: var(--blue); text-decoration: none; transition: color 0.2s; }
+  .contact-line a:hover { color: var(--white); }
+  .contact-icon {
+    width: 14px; height: 14px;
+    fill: none; stroke: var(--blue);
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
+    transition: stroke 0.2s, transform 0.2s;
+  }
+  .contact-line:hover .contact-icon { stroke: var(--white); transform: scale(1.1); }
+
+  /* ── CLIENT BLOCK ────────────────────────── */
+  .client-info {
+    background: var(--surface);
+    border: 1px solid var(--gray2);
+    border-radius: var(--radius);
+    padding: 22px 28px;
+    margin-bottom: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .client-info::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--blue);
+    border-radius: 3px 0 0 3px;
+  }
+  .client-info:hover { border-color: var(--blue); box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
+  .client-details h2 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+  .client-details p { color: var(--gray); font-size: 13px; margin-top: 5px; }
+
+  /* ── SECTION TITLES ──────────────────────── */
+  .section-title {
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .section-title em { color: var(--blue); font-style: italic; }
+  .section-sub {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 28px;
+    padding-left: 14px;
+    border-left: 2px solid var(--blue);
+  }
+
+  /* ── SELOS DE BENEFÍCIO ──────────────────── */
+  .badge-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .badge {
+    background: var(--bg2);
+    border: 1px solid var(--blue2);
+    border-radius: 40px;
+    padding: 6px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+  }
+  .badge:hover {
+    background: var(--blue-mid);
+    transform: translateY(-2px);
+  }
+
+  /* ── OPÇÕES DE SERVIÇO (RADIO BUTTONS) ───────────────── */
+  .options-container {
+    background: var(--surface);
+    border: 1px solid var(--gray2);
+    border-radius: var(--radius);
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .options-title {
+    background: var(--bg2);
+    padding: 14px 20px;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--gray2);
+  }
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 24px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s;
+    border-bottom: 1px solid var(--gray2);
+  }
+  .option-item:last-child {
+    border-bottom: none;
+  }
+  .option-item:hover {
+    background: var(--blue-dim);
+  }
+  .option-item.selected {
+    background: var(--blue-mid);
+    border-left: 3px solid var(--green);
+  }
+  .option-radio {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--green);
+    cursor: pointer;
+  }
+  .option-info {
+    flex: 1;
+  }
+  .option-name {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  .option-desc {
+    font-size: 12px;
+    color: var(--gray);
+  }
+  .option-price {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .option-price small {
+    font-size: 11px;
+    font-weight: normal;
+    color: var(--gray);
+  }
+
+  /* ── WIREFRAME (DIAGRAMA) ──────────────────── */
+  .fence-wireframe-container {
+    background: transparent;
+    margin-bottom: 36px;
+    overflow-x: auto;
+    position: relative;
+  }
+  .fence-wireframe-container svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .wireframe-label {
+    text-align: center;
+    font-size: 10px;
+    color: var(--gray);
+    margin-top: 14px;
+    font-family: var(--mono);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  /* ── SERVICE CARD ────────────────────────── */
+  .service-card {
+    background: var(--surface);
+    border: 1px solid var(--gray2);
+    border-radius: 22px;
+    padding: 28px;
+    transition: border-color 0.35s ease, box-shadow 0.35s ease;
+    position: relative;
+    margin-bottom: 32px;
+  }
+  .service-card:hover {
+    border-color: rgba(31,168,224,0.5);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  }
+  .service-header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 22px; flex-wrap: wrap;
+  }
+  .fence-icon {
+    width: 64px; height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--blue-dim);
+    border: 1px solid var(--blue2);
+    border-radius: 14px;
+    transition: all 0.3s;
+  }
+  .service-card:hover .fence-icon { border-color: var(--blue); background: var(--blue-mid); }
+  .service-card h3 {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 1px;
+  }
+
+  .service-description {
+    font-size: 14px; color: var(--gray);
+    margin-bottom: 20px; line-height: 1.7;
+  }
+  .service-features { list-style: none; margin: 16px 0 22px; }
+  .service-features li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; color: var(--gray);
+    margin-bottom: 11px;
+    transition: color 0.2s ease, transform 0.2s ease;
+    line-height: 1.5;
+  }
+  .service-features li:hover { transform: translateX(4px); color: var(--white); }
+  .service-features li::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .observations-box {
+    background: var(--blue-dim);
+    border-left: 2px solid var(--blue);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+  .observations-box p {
+    font-size: 13px; color: var(--gray);
+    line-height: 1.65; margin-bottom: 8px;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .observations-box p:last-child { margin-bottom: 0; }
+  .observations-box strong { color: var(--blue); }
+  .check-mark {
+    width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px;
+    fill: none; stroke: var(--green);
+    stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .highlight-box {
+    background: linear-gradient(135deg, var(--blue-dim) 0%, rgba(14,111,163,0.08) 100%);
+    border: 1px solid rgba(31,168,224,0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 13px; color: var(--gray);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .tech-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 22px 0;
+  }
+  @media (max-width: 600px) { .tech-specs-grid { grid-template-columns: 1fr 1fr; } }
+  .spec-item {
+    background: var(--bg2);
+    border: 1px solid var(--gray2);
+    border-radius: 10px;
+    padding: 14px 12px;
+    transition: all 0.3s ease;
+  }
+  .spec-item:hover { 
+    border-color: var(--blue); 
+    transform: translateY(-3px); 
+    background: var(--surface);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  .spec-label {
+    font-size: 9px; color: var(--blue);
+    text-transform: uppercase; letter-spacing: 1.2px;
+    margin-bottom: 6px; font-family: var(--mono);
+  }
+  .spec-value { font-size: 14px; font-weight: 600; }
+
+  .service-price {
+    border-top: 1px solid var(--gray2);
+    padding-top: 18px; margin-top: 10px;
+  }
+  .price-container {
+    display: flex; justify-content: space-between;
+    align-items: baseline; flex-wrap: wrap; gap: 12px;
+  }
+  .price-full {
+    font-family: var(--mono);
+    font-size: 26px; font-weight: 700;
+    color: var(--white);
+  }
+  .price-pix {
+    font-family: var(--mono);
+    font-size: 17px; font-weight: 600;
+    color: var(--green);
+    background: var(--green-dim);
+    padding: 4px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(24,201,122,0.25);
+    transition: all 0.2s;
+  }
+  .price-pix:hover { transform: scale(1.02); border-color: var(--green); }
+  .installment-note { font-size: 11px; color: var(--gray); margin-top: 8px; opacity: 0.75; }
+
+  /* ── DIFERENCIAIS COMPARATIVOS (NOVA SEÇÃO) ── */
+  .differentiators {
+    background: linear-gradient(135deg, var(--surface), var(--bg2));
+    border: 1px solid var(--blue2);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin: 32px 0;
+  }
+  .differentiators h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--blue);
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+  .differentiators h3 em {
+    color: var(--green);
+    font-style: italic;
+  }
+  .diff-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 20px;
+    margin-top: 8px;
+  }
+  @media (max-width: 600px) {
+    .diff-list { grid-template-columns: 1fr; }
+  }
+  .diff-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+  .diff-item::before {
+    content: "✓";
+    color: var(--green);
+    font-weight: bold;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .differentiators p {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--gray);
+    border-top: 1px solid var(--gray2);
+    padding-top: 16px;
+    font-style: italic;
+  }
+
+  /* ── DEPOIMENTO (texto alterado) ─────────── */
+  .testimonial {
+    background: var(--bg2);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 28px 0;
+    border-left: 3px solid var(--green);
+  }
+  .testimonial p {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gray);
+  }
+  .testimonial .author {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--blue);
+    font-weight: 600;
+  }
+
+  /* ── PAYMENT ────────────────────────────── */
+  .payment-section {
+    background: var(--surface);
+    border: 1px solid var(--gray2);
+    border-radius: var(--radius);
+    padding: 26px;
+    margin: 32px 0;
+    transition: all 0.3s;
+  }
+  .payment-section:focus-within { 
+    border-color: var(--blue); 
+    box-shadow: 0 0 0 2px rgba(31,168,224,0.1);
+  }
+  .payment-title {
+    font-family: var(--serif);
+    font-size: 20px; margin-bottom: 16px;
+  }
+  .payment-title em { color: var(--blue); font-style: italic; }
+  .payment-select {
+    width: 100%; padding: 12px 16px;
+    background: var(--bg);
+    border: 1px solid var(--blue2);
+    border-radius: 10px;
+    color: var(--white);
+    font-family: var(--mono); font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+    outline: none;
+  }
+  .payment-select:hover,
+  .payment-select:focus { border-color: var(--blue); background: var(--surface); }
+  .payment-select option { background: var(--surface); color: var(--white); }
+  .installment-info {
+    background: var(--bg2);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-top: 14px;
+    text-align: center;
+    border: 1px solid var(--gray2);
+    line-height: 1.8;
+    font-size: 13px;
+    color: var(--gray);
+  }
+  .installment-value {
+    font-family: var(--mono);
+    font-size: 22px; font-weight: 700;
+    color: var(--green);
+    display: block;
+    margin: 4px 0;
+  }
+  .pix-discount { color: var(--green); font-weight: 700; }
+
+  /* ── DIFERENCIAIS (Equipe especializada) ── */
+  .differentials-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 28px 0 36px;
+  }
+  @media (max-width: 900px) { .differentials-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px)  { .differentials-grid { grid-template-columns: 1fr; } }
+  .diff-card {
+    background: var(--surface);
+    border: 1px solid var(--gray2);
+    border-top: 2px solid var(--blue);
+    border-radius: 0 0 14px 14px;
+    padding: 18px 16px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    cursor: default;
+    text-align: center;
+  }
+  .diff-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .diff-card:hover { 
+    border-top-color: var(--green); 
+    transform: translateY(-4px) scale(1.02); 
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    border-color: var(--blue);
+  }
+  .diff-card .diff-icon {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--blue);
+  }
+  .diff-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 7px; }
+  .diff-card p  { font-size: 12px; color: var(--gray); line-height: 1.55; }
+
+  /* ── LEGISLAÇÃO ────────────────────────────── */
+  .legislation {
+    background: var(--surface);
+    border: 1px solid var(--blue2);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 12px;
+    color: var(--gray);
+  }
+  .legislation strong {
+    color: var(--blue);
+  }
+
+  .proposal-footer {
+    background: var(--surface);
+    border: 1px solid var(--gray2);
+    border-radius: var(--radius);
+    padding: 22px;
+    margin: 28px 0;
+    transition: all 0.3s;
+  }
+  .proposal-footer:hover { border-color: var(--blue); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 500px) { .info-grid { grid-template-columns: 1fr; } }
+  .info-item h4 {
+    font-size: 10px; color: var(--blue);
+    text-transform: uppercase; letter-spacing: 1.2px;
+    margin-bottom: 6px; font-family: var(--mono);
+  }
+  .info-item p { font-size: 12px; color: var(--gray); line-height: 1.6; }
+
+  /* ── BOTÃO APROVAR ─────────────────────── */
+  .approve-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%; max-width: 380px;
+    margin: 24px auto;
+    background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+    color: var(--bg);
+    text-align: center;
+    padding: 18px 28px;
+    border-radius: 60px;
+    font-weight: 800; 
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    font-family: var(--mono);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(24, 201, 122, 0.3);
+  }
+  .approve-btn::before {
+    content: "✓";
+    font-size: 18px;
+    font-weight: bold;
+    transition: transform 0.2s;
+  }
+  .approve-btn:not(:disabled) {
+    animation: btnGlow 2s infinite, btnPulse 1.5s ease-in-out infinite;
+  }
+  .approve-btn:not(:disabled):hover {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+    transform: scale(1.04);
+    box-shadow: 0 12px 28px rgba(24, 201, 122, 0.5);
+    letter-spacing: 2.5px;
+  }
+  .approve-btn:not(:disabled):hover::before {
+    transform: scale(1.2);
+  }
+  .approve-btn:disabled { 
+    opacity: 0.4; 
+    cursor: not-allowed;
+    animation: none;
+    background: linear-gradient(135deg, #555, #333);
+    box-shadow: none;
+  }
+
+  .wa-float {
+    position: fixed; bottom: 24px; right: 24px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    border-radius: 60px;
+    padding: 14px 24px;
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+    color: white;
+    font-weight: 800; 
+    font-size: 13px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    font-family: var(--mono);
+    letter-spacing: 1px;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .wa-float:hover {
+    transform: scale(1.08);
+    background: linear-gradient(135deg, #20b859 0%, #0e6b5e 100%);
+    box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
+    gap: 14px;
+  }
+  .wa-float svg {
+    transition: transform 0.2s;
+  }
+  .wa-float:hover svg {
+    transform: scale(1.1);
+  }
+
+  /* ── ASSINATURA ── */
+  .signature {
+    text-align: center;
+    margin: 44px 0 20px;
+    padding-top: 28px;
+    border-top: 1px solid var(--gray2);
+  }
+  .signature-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid var(--blue);
+    object-fit: cover;
+    margin-bottom: 12px;
+    transition: all 0.3s;
+    display: block;
+    margin: 0 auto 12px;
+    background: var(--surface);
+  }
+  .signature-avatar:hover { 
+    border-color: var(--green); 
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(24,201,122,0.3);
+  }
+  .signature-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .signature-crea {
+    display: inline-block;
+    background: var(--blue-dim);
+    border: 1px solid var(--blue2);
+    color: var(--blue);
+    font-size: 9px; font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    font-family: var(--mono);
+    letter-spacing: 0.8px;
+  }
+  .signature-info { font-size: 11px; color: var(--gray); margin-top: 5px; }
+
+  .footer {
+    text-align: center;
+    padding: 20px 0 10px;
+    border-top: 1px solid var(--gray2);
+    margin-top: 32px;
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+    opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="proposal-header">
+    <div class="logo-area">
+      <img src="https://i.postimg.cc/xX8CgMLv/logobrancasemfundo-Copia.png" alt="Attive Tecnologia">
+    </div>
+    <div class="proposal-info">
+      <div class="proposal-badge">
+        <span class="proposal-badge-dot"></span>
+        Proposta Técnica
+      </div>
+      <div class="proposal-number">Orçamento 088-2026</div>
+      <div class="proposal-date">Emissão: 20 de maio de 2026</div>
+      <div class="proposal-contact">
+        <span class="contact-line">
+          <svg class="contact-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.22 1.19 2 2 0 012.22 0H5.22A2 2 0 017.2 1.72a12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.22v2.7z"/></svg>
+          <a href="https://wa.me/5583996787788" target="_blank">(83) 99678-7788</a>
+        </span>
+        <span class="contact-line">
+          <svg class="contact-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          attivetecnologia@gmail.com
+        </span>
+        <span class="contact-line">
+          <svg class="contact-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          CREA-PB 12290192025PB
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENT INFO -->
+  <div class="client-info reveal-left">
+    <div class="client-details">
+      <h2>A/C Maria de Fátima</h2>
+      <p>Severino Veronica, 50</p>
+      <p>Proposta de instalação de cerca elétrica de segurança</p>
+    </div>
+  </div>
+
+  <div class="section-title reveal">Segurança <em>inteligente</em></div>
+  <div class="section-sub reveal">Proteção perimetral profissional para sua propriedade</div>
+
+  <!-- SELOS DE BENEFÍCIO -->
+  <div class="badge-grid reveal">
+    <div class="badge">+25 anos de experiência</div>
+    <div class="badge">Garantia estendida 12 meses</div>
+    <div class="badge">Instalação em até 48h</div>
+    <div class="badge">Conforme Lei Estadual nº 7.613/2004</div>
+  </div>
+
+  <!-- OPÇÕES DE SERVIÇO (RADIO) -->
+  <div class="options-container reveal">
+    <div class="options-title">ESCOLHA A OPÇÃO DESEJADA</div>
+    <div class="option-item" data-option="frente">
+      <input type="radio" name="opcao" value="frente" id="optFrente" class="option-radio" checked>
+      <div class="option-info">
+        <div class="option-name">Cerca Elétrica – Frente da casa</div>
+        <div class="option-desc">Proteção da fachada principal com 6 fios de aço INOX, eletrificador digital e placas de sinalização</div>
+      </div>
+      <div class="option-price">R$ 2.450<small>,00</small></div>
+    </div>
+    <div class="option-item" data-option="completa">
+      <input type="radio" name="opcao" value="completa" id="optCompleta" class="option-radio">
+      <div class="option-info">
+        <div class="option-name">Cerca Elétrica – Frente + Fundos (lado esquerdo)</div>
+        <div class="option-desc">Proteção da fachada principal + muro dos fundos (lado esquerdo da casa). 6 fios INOX, eletrificador de alta potência e placas adicionais.</div>
+      </div>
+      <div class="option-price">R$ 3.350<small>,00</small></div>
+    </div>
+  </div>
+
+  <!-- DIAGRAMA TÉCNICO (mesmo SVG animado) -->
+  <div class="fence-wireframe-container reveal">
+    <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="glow-strong" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="glow-pulse" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <style>
+          @keyframes flowPulse { from { stroke-dashoffset: 800; } to { stroke-dashoffset: 0; } }
+          @keyframes zapFlicker { 0%,88%,100% { opacity: 1; } 90%,94% { opacity: 0.2; } 92%,96% { opacity: 0.85; } }
+          @keyframes movePulse1 { 0% { transform: translateX(-20px); } 100% { transform: translateX(620px); } }
+          @keyframes movePulse2 { 0% { transform: translateX(-20px); } 100% { transform: translateX(620px); } }
+          @keyframes movePulse3 { 0% { transform: translateX(-20px); } 100% { transform: translateX(620px); } }
+          @keyframes movePulse4 { 0% { transform: translateX(-20px); } 100% { transform: translateX(620px); } }
+          @keyframes movePulse5 { 0% { transform: translateX(-20px); } 100% { transform: translateX(620px); } }
+          @keyframes movePulse6 { 0% { transform: translateX(-20px); } 100% { transform: translateX(620px); } }
+          .wire-base { stroke: #1FA8E0; stroke-width: 2.8; fill: none; opacity: 0.95; }
+          .wire-pulse { stroke: #5DCBF5; stroke-width: 4; fill: none; stroke-dasharray: 100 700; stroke-dashoffset: 800; animation: flowPulse 3s linear infinite; filter: url(#glow-strong); }
+          .pulse1 { animation-delay: 0s; }.pulse2 { animation-delay: 0.5s; }.pulse3 { animation-delay: 1.0s; }.pulse4 { animation-delay: 1.5s; }.pulse5 { animation-delay: 2.0s; }.pulse6 { animation-delay: 2.5s; }
+          .pulse-circle { fill: #FFE55C; filter: url(#glow-pulse); }
+          .circle1 { animation: movePulse1 2s linear infinite; }.circle2 { animation: movePulse2 2.3s linear infinite; }.circle3 { animation: movePulse3 1.9s linear infinite; }
+          .circle4 { animation: movePulse4 2.6s linear infinite; }.circle5 { animation: movePulse5 2.1s linear infinite; }.circle6 { animation: movePulse6 2.8s linear infinite; }
+          .struct-line { stroke: #1FA8E0; stroke-width: 1.8; fill: none; opacity: 0.8; }
+          .label-mono { fill: #7FA8C0; font-family: 'IBM Plex Mono', monospace; font-size: 9px; }
+          .label-blue { fill: #1FA8E0; font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; }
+          .label-sm { fill: #7FA8C0; font-family: 'IBM Plex Mono', monospace; font-size: 8px; }
+          .wall-fill { fill: #0D1E28; stroke: #1E3448; stroke-width: 1.5; }
+          .wall-line { fill: #0D1E28; stroke: #1FA8E0; stroke-width: 1; opacity: 0.4; }
+          .device-fill { fill: #112233; stroke: #1FA8E0; stroke-width: 1.8; }
+          .insulator-fill { fill: #0D1E28; stroke: #1FA8E0; stroke-width: 1.5; }
+          .post-fill { fill: #0A1820; stroke: #1FA8E0; stroke-width: 1.8; }
+          .ground-fill { fill: #0A1820; stroke: #1E3448; stroke-width: 1; }
+        </style>
+      </defs>
+      <rect x="0" y="360" width="900" height="40" class="ground-fill"/>
+      <line x1="0" y1="368" x2="900" y2="368" stroke="#1E3448" stroke-width="1.2" opacity="0.7"/>
+      <rect x="100" y="300" width="780" height="60" class="wall-fill"/>
+      <g stroke="#1FA8E0" stroke-width="1.8" fill="#0A1820">
+        <rect x="191" y="100" width="10" height="200"/><rect x="186" y="96" width="20" height="8" rx="2"/>
+        <rect x="391" y="100" width="10" height="200"/><rect x="386" y="96" width="20" height="8" rx="2"/>
+        <rect x="591" y="100" width="10" height="200"/><rect x="586" y="96" width="20" height="8" rx="2"/>
+        <rect x="791" y="100" width="10" height="200"/><rect x="786" y="96" width="20" height="8" rx="2"/>
+      </g>
+      <g fill="#0D1E28" stroke="#1FA8E0" stroke-width="1.3">
+        <circle cx="196" cy="122" r="5"/><circle cx="196" cy="154" r="5"/><circle cx="196" cy="186" r="5"/><circle cx="196" cy="218" r="5"/><circle cx="196" cy="250" r="5"/><circle cx="196" cy="278" r="5"/>
+        <circle cx="396" cy="122" r="5"/><circle cx="396" cy="154" r="5"/><circle cx="396" cy="186" r="5"/><circle cx="396" cy="218" r="5"/><circle cx="396" cy="250" r="5"/><circle cx="396" cy="278" r="5"/>
+        <circle cx="596" cy="122" r="5"/><circle cx="596" cy="154" r="5"/><circle cx="596" cy="186" r="5"/><circle cx="596" cy="218" r="5"/><circle cx="596" cy="250" r="5"/><circle cx="596" cy="278" r="5"/>
+        <circle cx="796" cy="122" r="5"/><circle cx="796" cy="154" r="5"/><circle cx="796" cy="186" r="5"/><circle cx="796" cy="218" r="5"/><circle cx="796" cy="250" r="5"/><circle cx="796" cy="278" r="5"/>
+      </g>
+      <g filter="url(#glow)">
+        <line x1="196" y1="122" x2="796" y2="122" class="wire-base"/><line x1="196" y1="154" x2="796" y2="154" class="wire-base"/>
+        <line x1="196" y1="186" x2="796" y2="186" class="wire-base"/><line x1="196" y1="218" x2="796" y2="218" class="wire-base"/>
+        <line x1="196" y1="250" x2="796" y2="250" class="wire-base"/><line x1="196" y1="278" x2="796" y2="278" class="wire-base"/>
+      </g>
+      <g>
+        <line x1="196" y1="122" x2="796" y2="122" class="wire-pulse pulse1"/><line x1="196" y1="154" x2="796" y2="154" class="wire-pulse pulse2"/>
+        <line x1="196" y1="186" x2="796" y2="186" class="wire-pulse pulse3"/><line x1="196" y1="218" x2="796" y2="218" class="wire-pulse pulse4"/>
+        <line x1="196" y1="250" x2="796" y2="250" class="wire-pulse pulse5"/><line x1="196" y1="278" x2="796" y2="278" class="wire-pulse pulse6"/>
+      </g>
+      <g transform="translate(196, 122)"><circle cx="0" cy="0" r="6" class="pulse-circle circle1"/></g>
+      <g transform="translate(196, 154)"><circle cx="0" cy="0" r="6" class="pulse-circle circle2"/></g>
+      <g transform="translate(196, 186)"><circle cx="0" cy="0" r="6" class="pulse-circle circle3"/></g>
+      <g transform="translate(196, 218)"><circle cx="0" cy="0" r="6" class="pulse-circle circle4"/></g>
+      <g transform="translate(196, 250)"><circle cx="0" cy="0" r="6" class="pulse-circle circle5"/></g>
+      <g transform="translate(196, 278)"><circle cx="0" cy="0" r="6" class="pulse-circle circle6"/></g>
+      <rect x="28" y="168" width="78" height="72" rx="6" class="device-fill"/>
+      <text x="67" y="185" text-anchor="middle" class="label-sm">ELETRIFI-</text><text x="67" y="195" text-anchor="middle" class="label-sm">CADOR</text>
+      <g style="animation: zapFlicker 4s ease-in-out infinite;" filter="url(#glow-strong)"><polygon points="71,205 65,216 70,216 64,228 76,214 70,214" fill="#1FA8E0"/></g>
+      <line x1="106" y1="183" x2="196" y2="122" class="struct-line"/><line x1="106" y1="225" x2="196" y2="278" class="struct-line"/>
+      <line x1="67" y1="240" x2="67" y2="300" class="struct-line"/>
+      <line x1="67" y1="300" x2="67" y2="362" stroke="#1FA8E0" stroke-width="2" opacity="0.8"/>
+      <text x="52" y="258" class="label-sm">TERRA</text>
+      <rect x="456" y="189" width="80" height="26" rx="3" class="device-fill"/>
+      <text x="496" y="200" text-anchor="middle" class="label-sm">CERCA</text><text x="496" y="210" text-anchor="middle" class="label-sm">ELÉTRICA</text>
+      <text x="22" y="164" class="label-blue" style="font-size:8px;">ELETRIFICADOR</text><text x="22" y="157" class="label-sm">127V / 220V</text>
+      <rect x="810" y="180" width="58" height="22" rx="4" fill="#112233" stroke="#1FA8E0" stroke-width="1.5"/>
+      <text x="839" y="195" text-anchor="middle" class="label-blue" style="font-size:10px;">6 FIOS</text>
+      <text x="155" y="202" text-anchor="middle" class="label-mono" transform="rotate(-90,155,202)" style="font-size:8px;">HASTE</text>
+    </svg>
+    <p class="wireframe-label">Energia pulsando nos 6 fios de aço INOX — tecnologia de ponta</p>
+  </div>
+
+  <!-- DETALHES DO SERVIÇO (dinâmico) -->
+  <div class="service-card reveal" id="serviceCard">
+    <div class="service-header">
+      <div class="fence-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1FA8E0" stroke-width="1.5"><path d="M3 12h18M3 7h18M3 17h18M7 5v14M12 5v14M17 5v14"/><path d="M9 12l1-1 2 2 1-1" stroke="#18C97A" stroke-width="1.2"/></svg></div>
+      <h3>CERCA ELÉTRICA</h3>
+    </div>
+    <div class="tech-specs-grid">
+      <div class="spec-item"><div class="spec-label">Fios</div><div class="spec-value">6 linhas (INOX)</div></div>
+      <div class="spec-item"><div class="spec-label">Tensão</div><div class="spec-value">20.000V</div></div>
+      <div class="spec-item"><div class="spec-label">Isoladores</div><div class="spec-value">Plásticos</div></div>
+      <div class="spec-item"><div class="spec-label">Eletrificador</div><div class="spec-value">Digital</div></div>
+      <div class="spec-item"><div class="spec-label">Aterramento</div><div class="spec-value">Incluso</div></div>
+      <div class="spec-item"><div class="spec-label">Placas</div><div class="spec-value">Sinalização</div></div>
+    </div>
+    <div class="service-description" id="descricaoDinamica">Proteção apenas na fachada principal da residência.</div>
+    <ul class="service-features">
+      <li>Eletrificador digital com alarme sonoro integrado</li>
+      <li>6 fios de aço INOX (resistência à corrosão e alta durabilidade)</li>
+      <li>Isoladores plásticos de alta performance</li>
+      <li>Sistema de aterramento com haste e conectores de cobre</li>
+      <li>Placas de sinalização "Cerca Elétrica" incluídas</li>
+      <li>Compatível com 127V e 220V (bivolt automático)</li>
+      <li>Manutenção preventiva orientada após instalação</li>
+    </ul>
+    <div class="observations-box">
+      <p><svg class="check-mark" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Instalação 100% profissional e com garantia.</strong></span></p>
+      <p><svg class="check-mark" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Projeto entregue pronto para uso com todos os testes de tensão realizados.</span></p>
+      <p><svg class="check-mark" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Hastes fixadas com base adequada sobre muro ou solo conforme levantamento técnico.</span></p>
+      <p><svg class="check-mark" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Cabeamento de alimentação, régua de bornes e proteção contra surto incluídos.</span></p>
+    </div>
+    <div class="highlight-box">Uma cerca elétrica bem instalada não precisa agir para proteger — a presença dela já é suficiente para inibir qualquer tentativa de invasão. É prevenção, não reação.</div>
+    <div class="service-price">
+      <div class="price-container">
+        <span class="price-full" id="valorTotal">R$ 0,00</span>
+        <span class="price-pix" id="valorPix">PIX: R$ 0,00</span>
+      </div>
+      <div class="installment-note">ou em até 6x sem juros no cartão</div>
+    </div>
+  </div>
+
+  <!-- NOVA SEÇÃO: POR QUE NOS DIFERENCIAMOS -->
+  <div class="differentiators reveal">
+    <h3>Por que nos <em>diferenciamos</em></h3>
+    <div class="diff-list">
+      <div class="diff-item">Bateria de reserva – sua cerca fica ativa mesmo sem energia elétrica.</div>
+      <div class="diff-item">Haste de aterramento devidamente instalada – segurança e funcionamento garantidos.</div>
+      <div class="diff-item">Placas de sinalização conforme a Lei Estadual nº 7.613/2004 – nada de multas ou irregularidades.</div>
+      <div class="diff-item">Fio de aço INOX 0,70 mm – mais grosso, resistente à corrosão e ao vento.</div>
+      <div class="diff-item">Hastes reforçadas – estrutura robusta que não entorta com o tempo.</div>
+      <div class="diff-item">Cabos elétricos protegidos com eletroduto – durabilidade e segurança contra curtos.</div>
+      <div class="diff-item">Respeito às normas técnicas e à legislação municipal e estadual.</div>
+      <div class="diff-item">Responsável técnico habilitado no CREA-PB – engenheiro eletricista registrado.</div>
+    </div>
+    <p>O menor preço, sozinho, não protege sua família nem seu patrimônio. Nossa instalação é feita para durar, com materiais corretos e garantia de verdade.</p>
+  </div>
+
+  <!-- LEGISLAÇÃO ESTADUAL -->
+  <div class="legislation reveal">
+    <strong>Instalação em conformidade com a Lei Estadual nº 7.613 de 30/06/2004</strong> — que regulamenta a instalação de cercas elétricas, garantindo segurança e respeito às normas vigentes.
+  </div>
+
+  <!-- DEPOIMENTO (texto alterado para "deu dicas de segurança") -->
+  <div class="testimonial reveal">
+    <p>“Contratei a Attive para instalar a cerca elétrica na minha casa. Fiquei impressionado com o capricho, a equipe foi pontual e ainda me deu dicas de segurança. Já indiquei para três vizinhos!”</p>
+    <div class="author">— Carlos Eduardo (cliente desde 2022)</div>
+  </div>
+
+  <!-- PAGAMENTO com dropdown atualizado dinamicamente -->
+  <div class="payment-section reveal">
+    <div class="payment-title">Formas de <em>Pagamento</em></div>
+    <select id="paymentSelect" class="payment-select"></select>
+    <div id="installmentInfo" class="installment-info"><span>Selecione uma forma de pagamento</span></div>
+  </div>
+
+  <!-- DIFERENCIAIS (Equipe especializada) -->
+  <div class="section-title reveal">Por que escolher a <em>Attive</em></div>
+  <div class="section-sub reveal">Experiência e confiança para proteger o que é seu</div>
+  <div class="differentials-grid">
+    <div class="diff-card"><div class="diff-icon">+25</div><h4>+25 anos de experiência</h4><p>Centenas de residências e empresas já protegidas em toda a região</p></div>
+    <div class="diff-card"><div class="diff-icon">Equipe</div><h4>Equipe especializada</h4><p>Técnicos capacitados, acabamento caprichado e testes de tensão completos</p></div>
+    <div class="diff-card"><div class="diff-icon">Garantia</div><h4>Garantia estendida</h4><p>12 meses no equipamento + 90 dias na instalação. Suporte técnico incluso.</p></div>
+    <div class="diff-card"><div class="diff-icon">Lei</div><h4>Conformidade legal</h4><p>Instalação seguindo a Lei Estadual nº 7.613/2004, total segurança jurídica.</p></div>
+  </div>
+
+  <!-- INFO FOOTER -->
+  <div class="proposal-footer reveal">
+    <div class="info-grid">
+      <div class="info-item"><h4>Garantias</h4><p>Equipamento: 12 meses<br>Instalação: 90 dias</p></div>
+      <div class="info-item"><h4>Validade</h4><p>7 dias a partir da emissão</p></div>
+      <div class="info-item"><h4>Atendimento</h4><p>Ordem de aprovação define o agendamento</p></div>
+      <div class="info-item"><h4>Vagas limitadas</h4><p>Agenda com poucos horários disponíveis neste período</p></div>
+    </div>
+  </div>
+
+  <button class="approve-btn" id="approveBtn" disabled>APROVAR PROPOSTA</button>
+
+  <!-- ASSINATURA -->
+  <div class="signature reveal">
+    <img class="signature-avatar" src="https://i.postimg.cc/jLBKCXbF/perfil13.png" alt="Hélio Crispim">
+    <div class="signature-name">Hélio Crispim · Engenheiro Eletricista</div>
+    <span class="signature-crea">CREA-PB 12290192025PB</span>
+    <div class="signature-info">attivetecnologia@gmail.com · (83) 99678-7788</div>
+    <div class="signature-info">@attivetecnologia</div>
+  </div>
+
+  <div class="footer reveal">
+    <p>Attive Tecnologia · Cuidado e tecnologia para quem você ama</p>
+  </div>
+
+</div>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/5583996787788" target="_blank" class="wa-float">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  Falar com a Attive
+</a>
+
+<script>
+(function() {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .diff-card').forEach(el => io.observe(el));
+
+  const precos = { frente: 2450.00, completa: 3350.00 };
+  let valorOriginal = precos.frente;
+  let vPix = valorOriginal * 0.90;
+  
+  const radioFrente = document.getElementById('optFrente');
+  const radioCompleta = document.getElementById('optCompleta');
+  const totalSpan = document.getElementById('valorTotal');
+  const pixSpan = document.getElementById('valorPix');
+  const approveBtn = document.getElementById('approveBtn');
+  const descricaoSpan = document.getElementById('descricaoDinamica');
+  const optionItems = document.querySelectorAll('.option-item');
+  const paymentSelect = document.getElementById('paymentSelect');
+  const installmentInfoDiv = document.getElementById('installmentInfo');
+
+  function fmt(v) { return v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+  function atualizarDropdown() {
+    const currentVal = paymentSelect.value;
+    paymentSelect.innerHTML = '';
+    const pixOption = document.createElement('option');
+    pixOption.value = 'pix';
+    pixOption.textContent = `PIX (10% OFF) — R$ ${fmt(vPix)} à vista`;
+    paymentSelect.appendChild(pixOption);
+    for (let i = 1; i <= 6; i++) {
+      const option = document.createElement('option');
+      option.value = `${i}x`;
+      const valorParcela = valorOriginal / i;
+      option.textContent = `${i}x de R$ ${fmt(valorParcela)} sem juros`;
+      paymentSelect.appendChild(option);
+    }
+    if (currentVal && [...paymentSelect.options].some(opt => opt.value === currentVal)) {
+      paymentSelect.value = currentVal;
+    }
+    updatePaymentInfo();
+  }
+
+  function atualizarPreco() {
+    if (radioFrente.checked) {
+      valorOriginal = precos.frente;
+      descricaoSpan.innerHTML = "Proteção apenas na fachada principal da residência, com 6 fios de aço INOX, eletrificador digital e placas de sinalização.";
+    } else {
+      valorOriginal = precos.completa;
+      descricaoSpan.innerHTML = "Proteção da fachada principal + muro dos fundos (lado esquerdo da casa). 6 fios de aço INOX, eletrificador de alta potência e placas adicionais de sinalização.";
+    }
+    vPix = valorOriginal * 0.90;
+    totalSpan.textContent = `R$ ${fmt(valorOriginal)}`;
+    pixSpan.textContent = `PIX: R$ ${fmt(vPix)}`;
+    atualizarDropdown();
+  }
+  
+  function updatePaymentInfo() {
+    const selected = paymentSelect.value;
+    if (selected === 'pix') {
+      installmentInfoDiv.innerHTML = `<span>PIX à vista com <span class="pix-discount">10% de desconto</span></span><span class="installment-value">R$ ${fmt(vPix)}</span><small style="color:var(--gray);font-size:11px;">Economia de R$ ${fmt(valorOriginal - vPix)}</small>`;
+    } else {
+      const p = parseInt(selected.replace('x', ''));
+      const vp = valorOriginal / p;
+      installmentInfoDiv.innerHTML = `<span>${p}x no Cartão — Sem juros</span><span class="installment-value">${p}x de R$ ${fmt(vp)}</span><small style="color:var(--gray);font-size:11px;">Total: R$ ${fmt(valorOriginal)}</small>`;
+    }
+  }
+  
+  function marcarItemSelecionado() {
+    optionItems.forEach(item => {
+      const radio = item.querySelector('input[type="radio"]');
+      if (radio.checked) item.classList.add('selected');
+      else item.classList.remove('selected');
+    });
+  }
+  
+  function handleOptionChange() {
+    atualizarPreco();
+    marcarItemSelecionado();
+    approveBtn.disabled = false;
+  }
+  
+  radioFrente.addEventListener('change', handleOptionChange);
+  radioCompleta.addEventListener('change', handleOptionChange);
+  paymentSelect.addEventListener('change', updatePaymentInfo);
+  
+  optionItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      const radio = item.querySelector('input[type="radio"]');
+      if (radio && !radio.checked) {
+        radio.checked = true;
+        handleOptionChange();
+      }
+    });
+  });
+  
+  approveBtn.addEventListener('click', () => {
+    const selected = paymentSelect.value;
+    let forma, valor;
+    const opcaoTexto = radioFrente.checked ? "Frente da casa" : "Frente + Fundos (lado esquerdo)";
+    if (selected === 'pix') {
+      forma = 'PIX (10% OFF)';
+      valor = `R$ ${fmt(vPix)}`;
+    } else {
+      const p = parseInt(selected.replace('x', ''));
+      forma = `${p}x no Cartão Sem juros`;
+      valor = `${p}x de R$ ${fmt(valorOriginal / p)} (total R$ ${fmt(valorOriginal)})`;
+    }
+    const msg = `Aprovei a proposta de Cerca Elétrica!\n\nOpção: ${opcaoTexto}\nValor Total: R$ ${fmt(valorOriginal)}\nPagamento: ${forma}\nValor a pagar: ${valor}\n\nSolicito link para pagamento ou chave PIX para agendamento da instalação.`;
+    window.open(`https://wa.me/5583996787788?text=${encodeURIComponent(msg)}`, '_blank');
+  });
+  
+  atualizarPreco();
+  marcarItemSelecionado();
+  approveBtn.disabled = false;
+})();
+</script>
+</body>
+</html>
