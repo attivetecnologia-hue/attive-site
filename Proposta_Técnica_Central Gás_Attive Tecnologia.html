@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+<title>Proposta Técnica | Central Gás | Attive Tecnologia</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #08141C;
+    --bg2: #0D1E28;
+    --surface: #112233;
+    --blue: #1FA8E0;
+    --blue2: #0E6FA3;
+    --blue-dim: rgba(31, 168, 224, 0.12);
+    --white: #F0F8FF;
+    --gray: #7FA8C0;
+    --gray2: #1E3448;
+    --green: #18C97A;
+    --green-dim: rgba(24, 201, 122, 0.1);
+    --red: #E54B4B;
+    --red-dim: rgba(229, 75, 75, 0.1);
+    --pix: #32BCAD;
+    --pix-dim: rgba(50, 188, 173, 0.1);
+    --orange: #F59E0B;
+    --orange-dim: rgba(245, 158, 11, 0.1);
+    --gold: #FFD700;
+    --gold-dim: rgba(255, 215, 0, 0.1);
+    --font: 'DM Sans', sans-serif;
+    --serif: 'DM Serif Display', serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  body { background: var(--bg); color: var(--white); font-family: var(--font); font-size: 15px; line-height: 1.45; overflow-x: hidden; }
+  .container { max-width: 100%; margin: 0 auto; padding: 16px; }
+
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes fadeInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  @keyframes pulseGlow { 0%,100% { box-shadow: 0 0 0 0 rgba(31,168,224,0.4); } 50% { box-shadow: 0 0 0 6px rgba(31,168,224,0); } }
+  @keyframes borderPulse { 0%,100% { border-color: var(--green); } 50% { border-color: var(--pix); } }
+  @keyframes iconFloat { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  @keyframes slideInBottom { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes blinkSoft { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+  @keyframes numberCount { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+  @keyframes urgencyPulse { 0%,100% { background: rgba(229,75,75,0.15); } 50% { background: rgba(229,75,75,0.28); } }
+
+  .os-header { animation: fadeInUp 0.5s ease-out; }
+  .client-info { animation: fadeInLeft 0.5s ease-out; }
+  .diagnostic-item { animation: fadeInRight 0.4s ease-out; animation-fill-mode: backwards; }
+  .diagnostic-item:nth-child(1) { animation-delay: 0.05s; }
+  .diagnostic-item:nth-child(2) { animation-delay: 0.1s; }
+  .diagnostic-item:nth-child(3) { animation-delay: 0.15s; }
+  .diagnostic-item:nth-child(4) { animation-delay: 0.2s; }
+  .service-block { animation: fadeInScale 0.5s ease-out; }
+  .benefit-card { animation: fadeInUp 0.4s ease-out; animation-fill-mode: backwards; }
+  .benefit-card:nth-child(1) { animation-delay: 0s; }
+  .benefit-card:nth-child(2) { animation-delay: 0.08s; }
+  .benefit-card:nth-child(3) { animation-delay: 0.16s; }
+  .benefit-card:nth-child(4) { animation-delay: 0.24s; }
+  .benefit-card:nth-child(5) { animation-delay: 0.32s; }
+  .benefit-card:nth-child(6) { animation-delay: 0.4s; }
+  .materials-card { animation: slideInBottom 0.5s ease-out; }
+  .whyus-card { animation: fadeInLeft 0.4s ease-out; animation-fill-mode: backwards; }
+  .whyus-card:nth-child(1) { animation-delay: 0s; }
+  .whyus-card:nth-child(2) { animation-delay: 0.1s; }
+  .whyus-card:nth-child(3) { animation-delay: 0.2s; }
+  .whyus-card:nth-child(4) { animation-delay: 0.3s; }
+  .whyus-card:nth-child(5) { animation-delay: 0.4s; }
+  .whyus-card:nth-child(6) { animation-delay: 0.5s; }
+  .whyus-card:nth-child(7) { animation-delay: 0.6s; }
+  .pagamento-total { animation: borderPulse 2s infinite; transition: all 0.3s ease; }
+  .obs-box { animation: fadeInUp 0.5s ease-out; }
+  .signature { animation: fadeInScale 0.5s ease-out; }
+
+  .logo-img { transition: transform 0.3s ease; animation: iconFloat 3s ease-in-out infinite; }
+  .check-icon { animation: iconFloat 2s ease-in-out infinite; }
+  .btn-whatsapp { position: relative; overflow: hidden; transition: all 0.3s ease; animation: pulseGlow 2s infinite; }
+  .btn-whatsapp::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); animation: shimmer 2s infinite; }
+  .diagnostic-item:hover { transform: translateX(5px) scale(1.01); }
+  .service-block:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+  .benefit-card:hover { transform: translateY(-4px) scale(1.01); border-color: var(--green); background: rgba(24,201,122,0.12); }
+  .whyus-card { transition: all 0.3s ease; }
+  .whyus-card:hover { transform: translateY(-4px); border-color: var(--blue); background: rgba(31,168,224,0.05); }
+  .payment-radio-card:hover .pag-card { transform: translateY(-3px); }
+  .print-btn:hover { background: var(--blue-dim); transform: translateY(-2px); }
+  .wa-float:hover { transform: scale(1.05); }
+  .section-title em:hover { text-shadow: 0 0 8px var(--blue); }
+  .total-valor { animation: blinkSoft 3s ease-in-out infinite; }
+  .diferencial-numero { animation: numberCount 0.6s ease-out; }
+
+  .os-header { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--gray2); }
+  .logo-img { height: 50px; width: auto; }
+  .os-info { text-align: center; width: 100%; }
+  .os-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--blue-dim); border: 1px solid var(--blue); padding: 6px 14px; border-radius: 40px; font-size: 12px; font-weight: 600; color: var(--blue); margin-bottom: 10px; }
+  .os-badge svg { width: 16px; height: 16px; stroke: var(--blue); stroke-width: 2.5; fill: none; }
+  .os-number { font-size: 13px; color: var(--gray); font-family: var(--mono); }
+  .os-date { font-size: 12px; color: var(--gray); margin-top: 4px; }
+  .os-contact { font-size: 11px; color: var(--gray); margin-top: 10px; font-family: var(--mono); display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+  .os-contact a { color: var(--blue); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: all 0.3s ease; }
+  .contact-icon { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+  .contact-icon.crea-icon { fill: var(--blue); stroke: none; }
+
+  .client-info { background: var(--surface); border: 1px solid var(--gray2); border-radius: 20px; padding: 18px 16px; margin-bottom: 20px; display: flex; flex-direction: column; text-align: center; gap: 14px; transition: all 0.3s ease; }
+  .client-info:hover { border-color: var(--green); transform: translateY(-2px); }
+  .client-details h2 { font-family: var(--serif); font-size: 22px; font-weight: 400; margin-bottom: 6px; }
+  .client-details p { color: var(--gray); font-size: 13px; margin-top: 4px; }
+  .client-address { font-size: 12px; color: var(--blue); font-family: var(--mono); margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+  .client-address svg { width: 12px; height: 12px; stroke: var(--blue); stroke-width: 1.8; }
+  .attn-line { font-family: var(--mono); font-size: 12px; color: var(--blue); background: var(--blue-dim); display: inline-block; padding: 4px 12px; border-radius: 20px; margin-top: 8px; }
+  .modern-seal { display: inline-flex; align-items: center; gap: 6px; background: rgba(24,201,122,0.08); border-left: 3px solid var(--green); padding: 6px 14px; border-radius: 40px; }
+  .modern-seal svg { width: 18px; height: 18px; stroke: var(--green); fill: none; stroke-width: 2; }
+  .modern-seal span { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--green); }
+
+  .section-title { font-family: var(--serif); font-size: 24px; font-weight: 400; margin: 28px 0 6px; }
+  .section-title em { color: var(--blue); font-style: italic; }
+  .section-sub { font-size: 13px; color: var(--gray); margin-bottom: 16px; border-left: 3px solid var(--blue); padding-left: 12px; }
+
+  .diagnostic-grid { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+  .diagnostic-item { background: var(--red-dim); border-left: 3px solid var(--red); border-radius: 14px; padding: 14px 16px; transition: all 0.3s ease; }
+  .diagnostic-title { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--red); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .diagnostic-title svg { width: 20px; height: 20px; stroke: var(--red); fill: none; stroke-width: 1.8; }
+  .diagnostic-title svg.rack-icon { stroke: none; fill: var(--red); }
+  .diagnostic-title svg.protection-icon { fill: var(--red); stroke: none; }
+  .diagnostic-text { font-size: 13px; color: var(--gray); line-height: 1.45; }
+  .diagnostic-consequence { font-size: 12px; color: rgba(229,75,75,0.8); margin-top: 6px; font-style: italic; }
+
+  .service-block { background: var(--surface); border: 1px solid var(--gray2); border-radius: 20px; padding: 20px 16px; margin-bottom: 20px; position: relative; }
+  .service-block::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; border-radius: 20px 0 0 20px; background: var(--blue); transition: width 0.3s ease; }
+  .service-block:hover::before { width: 6px; }
+  .block-header { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; margin-bottom: 18px; }
+  .block-icon { width: 50px; height: 50px; border-radius: 14px; background: var(--blue-dim); border: 1px solid var(--blue2); display: flex; align-items: center; justify-content: center; }
+  .block-icon svg { width: 42px; height: 42px; stroke: var(--blue); fill: none; stroke-width: 1.5; }
+  .block-title { font-family: var(--mono); font-size: 16px; font-weight: 600; color: var(--blue); }
+  .block-sub { font-size: 12px; color: var(--gray); margin-top: 3px; }
+
+  .exec-list { list-style: none; }
+  .exec-list li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--gray2); font-size: 13px; }
+  .exec-list li:last-child { border-bottom: none; }
+  .check-icon { width: 20px; height: 20px; stroke: var(--green); stroke-width: 2; fill: none; flex-shrink: 0; margin-top: 1px; }
+
+  .benefits-grid { display: flex; flex-direction: column; gap: 12px; margin: 16px 0 20px; }
+  .benefit-card { background: var(--green-dim); border: 1px solid var(--green); border-radius: 16px; padding: 16px; text-align: center; }
+  .benefit-icon { width: 48px; height: 48px; margin: 0 auto 12px; background: rgba(24,201,122,0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .benefit-icon svg { width: 26px; height: 26px; stroke: var(--green); stroke-width: 1.8; fill: none; }
+  .benefit-icon svg.monitoring-icon { fill: var(--green); stroke: none; }
+  .benefit-icon svg.reduction-icon { stroke: var(--green); fill: none; }
+  .benefit-icon svg.protection-benefit { fill: var(--green); stroke: none; }
+  .benefit-title { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--green); margin-bottom: 6px; }
+  .benefit-text { font-size: 12px; color: var(--gray); line-height: 1.4; }
+
+  .materials-card { background: var(--bg2); border: 1px solid var(--gray2); border-radius: 18px; overflow-x: auto; margin-top: 12px; }
+  .mat-header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: var(--surface); border-bottom: 1px solid var(--gray2); }
+  .mat-header svg { width: 24px; height: 24px; fill: var(--blue); stroke: none; flex-shrink: 0; }
+  .mat-header span { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--blue); text-transform: uppercase; }
+  .mat-table { width: 100%; border-collapse: collapse; min-width: 280px; }
+  .mat-table th { padding: 10px 12px; text-align: left; font-size: 10px; color: var(--blue); font-family: var(--mono); border-bottom: 1px solid var(--gray2); background: rgba(31,168,224,0.04); }
+  .mat-table th:last-child { text-align: right; }
+  .mat-table td { padding: 10px 12px; font-size: 12px; color: var(--gray); border-bottom: 1px solid rgba(30,52,72,0.5); }
+  .mat-table td:last-child { text-align: right; font-family: var(--mono); color: var(--blue); }
+
+  .whyus-grid { display: flex; flex-direction: column; gap: 12px; margin: 16px 0 20px; }
+  .whyus-card { background: var(--surface); border: 1px solid var(--gray2); border-radius: 18px; padding: 18px 16px; text-align: center; transition: all 0.3s ease; }
+  .whyus-icon { width: 55px; height: 55px; margin: 0 auto 12px; background: var(--blue-dim); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .whyus-icon svg { width: 32px; height: 32px; stroke: var(--white); fill: none; stroke-width: 1.8; }
+  .whyus-icon .engineering-icon { fill: var(--white); stroke: none; }
+  .whyus-title { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--blue); margin-bottom: 6px; }
+  .whyus-text { font-size: 12px; color: var(--gray); line-height: 1.4; }
+
+  .diferencial-card { background: linear-gradient(135deg, var(--surface) 0%, var(--bg2) 100%); border: 1px solid var(--gold); border-radius: 18px; padding: 18px 16px; text-align: center; transition: all 0.3s ease; position: relative; overflow: hidden; cursor: default; }
+  .diferencial-card:hover { transform: translateY(-4px); border-color: var(--green); background: rgba(24,201,122,0.05); }
+  .diferencial-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,215,0,0.1), transparent); transition: left 0.5s ease; }
+  .diferencial-card:hover::before { left: 100%; }
+  .diferencial-numero { font-family: var(--mono); font-size: 32px; font-weight: 800; color: var(--gold); line-height: 1; margin-bottom: 8px; }
+  .diferencial-texto { font-size: 12px; color: var(--gray); letter-spacing: 1px; }
+  .diferencial-icon { width: 45px; height: 45px; margin: 0 auto 12px; background: var(--gold-dim); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: iconFloat 3s ease-in-out infinite; }
+  .diferencial-icon svg { width: 24px; height: 24px; stroke: var(--gold); fill: none; stroke-width: 1.8; }
+
+  .pagamento-section { margin: 28px 0; }
+  .pagamento-total { background: var(--surface); border: 1px solid var(--green); border-radius: 20px; padding: 18px 16px; display: flex; flex-direction: column; text-align: center; gap: 12px; margin-bottom: 18px; }
+  .total-label { font-size: 12px; color: var(--gray); font-family: var(--mono); text-transform: uppercase; }
+  .total-valor { font-family: var(--mono); font-size: 32px; font-weight: 700; color: var(--green); }
+  .total-desc { font-size: 11px; color: var(--gray); margin-top: 2px; }
+
+  .pagamento-opcoes { display: flex; flex-direction: column; gap: 16px; }
+  .payment-radio-card { position: relative; cursor: pointer; display: block; }
+  .payment-radio-card input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .pag-card { border-radius: 20px; padding: 18px 16px; transition: all 0.3s ease; pointer-events: none; background: var(--pix-dim); border: 1px solid var(--pix); display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .pag-card.parcelas { background: var(--blue-dim); border-color: var(--blue2); }
+  .payment-radio-card:hover .pag-card { transform: translateY(-3px); }
+  .payment-radio-card input:checked + .pag-card { border-width: 2px; transform: scale(1.01); background: rgba(50,188,173,0.2); }
+  .payment-radio-card input:checked + .pag-card.parcelas { background: rgba(31,168,224,0.2); border-color: var(--blue); }
+  .pag-icon-svg { width: 48px; height: 48px; margin-bottom: 12px; }
+  .pag-icon-svg.pix-icon { fill: var(--pix); stroke: none; }
+  .pag-icon-svg.card-icon { fill: var(--blue); stroke: none; }
+  .pag-tipo { font-family: var(--mono); font-size: 14px; font-weight: 700; margin: 6px 0 2px; }
+  .pag-card.pix .pag-tipo { color: var(--pix); }
+  .pag-card.parcelas .pag-tipo { color: var(--blue); }
+  .pag-valor-destaque { font-family: var(--mono); font-size: 26px; font-weight: 700; margin: 6px 0; }
+  .pag-card.pix .pag-valor-destaque { color: var(--pix); }
+  .pag-card.parcelas .pag-valor-destaque { color: var(--blue); }
+  .pag-detalhe { font-size: 11px; color: var(--gray); margin: 4px 0; }
+  .pag-badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 30px; margin: 8px auto 0; display: inline-block; font-family: var(--mono); }
+  .pag-card.pix .pag-badge { background: var(--pix-dim); border: 1px solid var(--pix); color: var(--pix); }
+  .pag-card.parcelas .pag-badge { background: var(--blue-dim); border: 1px solid var(--blue2); color: var(--blue); }
+  .custom-radio { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 30px; font-size: 11px; font-family: var(--mono); color: var(--gray); margin-top: 12px; }
+  .custom-radio::before { content: ''; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--gray); background: transparent; display: inline-block; }
+  .payment-radio-card input:checked + .pag-card .custom-radio::before { border-color: var(--green); background: var(--green); box-shadow: inset 0 0 0 2px var(--bg); }
+
+  .infra-option { background: var(--orange-dim); border: 1px solid var(--orange); border-radius: 20px; padding: 16px; margin: 20px 0; }
+  .infra-title { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--orange); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .infra-title svg { width: 20px; height: 20px; stroke: var(--orange); fill: none; stroke-width: 1.8; }
+  .infra-text { font-size: 12px; color: var(--gray); margin-bottom: 12px; line-height: 1.45; }
+  .infra-video-sidebyside { display: flex; flex-direction: row; gap: 12px; margin: 16px 0; flex-wrap: wrap; }
+  .video-item { flex: 1; min-width: 140px; background: var(--bg2); border-radius: 16px; overflow: hidden; }
+  .video-wrapper { position: relative; padding-bottom: 177.77%; height: 0; overflow: hidden; background: #000; }
+  .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+  .video-caption { font-size: 10px; color: var(--gray); text-align: center; padding: 8px 4px; background: rgba(0,0,0,0.3); }
+  @media (max-width: 500px) { .infra-video-sidebyside { flex-direction: column; } .video-item { min-width: auto; } }
+  .infra-checkbox { display: flex; align-items: center; gap: 10px; margin-top: 12px; cursor: pointer; }
+  .infra-checkbox input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--orange); }
+  .infra-checkbox label { font-size: 13px; font-family: var(--mono); color: var(--white); cursor: pointer; }
+  .infra-valor-info { font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--orange); margin-top: 10px; display: block; }
+
+  .aviso-cameras {
+    background: rgba(245,158,11,0.12);
+    border-left: 4px solid var(--orange);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin: 16px 0;
+  }
+  .aviso-cameras-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--orange);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .aviso-cameras-title svg { width: 16px; height: 16px; stroke: var(--orange); fill: none; stroke-width: 2; }
+  .aviso-cameras-text {
+    font-size: 12px;
+    color: rgba(245,158,11,0.85);
+    line-height: 1.45;
+  }
+
+  .whatsapp-action { text-align: center; margin-top: 24px; }
+  .btn-whatsapp { background: #25D366; border: none; padding: 14px 20px; border-radius: 60px; font-family: var(--mono); font-weight: 700; font-size: 15px; display: inline-flex; align-items: center; gap: 10px; color: white; cursor: pointer; width: 100%; justify-content: center; position: relative; overflow: hidden; }
+  .btn-whatsapp::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); animation: shimmer 2s infinite; }
+  .btn-whatsapp svg { width: 20px; height: 20px; fill: white; }
+
+  .obs-box { background: var(--green-dim); border-left: 4px solid var(--green); border-radius: 16px; padding: 14px 16px; margin: 20px 0; }
+  .obs-line { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .obs-line:last-child { margin-bottom: 0; }
+  .obs-line svg { width: 16px; height: 16px; stroke: var(--green); stroke-width: 2.5; fill: none; flex-shrink: 0; }
+  .obs-line span { font-size: 12px; color: var(--gray); }
+  .important-note { background: rgba(255, 100, 100, 0.15); border-left: 4px solid #ff6666; border-radius: 12px; padding: 12px 14px; margin: 12px 0; }
+  .important-note .obs-line svg { stroke: #ff6666; }
+  .important-note .obs-line span { color: #ffaaaa; }
+
+  .signature { text-align: center; margin: 28px 0 16px; padding-top: 20px; border-top: 1px solid var(--gray2); }
+  .signature-avatar { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--blue); object-fit: cover; margin-bottom: 10px; }
+  .signature-name { font-size: 14px; font-weight: 600; }
+  .signature-crea { display: inline-block; background: var(--blue-dim); border: 1px solid var(--blue2); color: var(--blue); font-size: 10px; padding: 3px 12px; border-radius: 30px; margin-top: 6px; font-family: var(--mono); }
+  .signature-info { font-size: 11px; color: var(--gray); margin-top: 6px; }
+  .footer { text-align: center; padding: 18px; border-top: 1px solid var(--gray2); margin-top: 20px; font-size: 10px; color: var(--gray); }
+  .print-btn { display: block; width: 100%; margin: 20px 0; background: transparent; color: var(--blue); border: 1px solid var(--blue2); padding: 12px; border-radius: 60px; font-weight: 600; font-size: 13px; cursor: pointer; font-family: var(--mono); }
+  .wa-float { position: fixed; bottom: 16px; right: 16px; background: #25D366; border-radius: 50px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; text-decoration: none; color: white; font-weight: 600; font-size: 12px; box-shadow: 0 3px 12px rgba(0,0,0,0.3); z-index: 1000; font-family: var(--mono); }
+  .wa-float svg { width: 18px; height: 18px; fill: white; }
+
+  @media print {
+    .no-print { display: none !important; }
+    body { background: white; color: #111; }
+    .wa-float { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="os-header">
+    <div class="logo-area"><img class="logo-img" src="https://i.postimg.cc/4xb9f1dS/logobrancasemfundo-Copia.png" alt="Attive Tecnologia"></div>
+    <div class="os-info">
+      <div class="os-badge">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        PROPOSTA COMERCIAL
+      </div>
+      <div class="os-number">PROPOSTA #459/2026</div>
+      <div class="os-date">Validade: 7 dias corridos</div>
+      <div class="os-contact">
+        <a href="https://wa.me/5583996787788"><svg class="contact-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> WhatsApp</a>
+        <a href="mailto:attivesistemas@gmail.com"><svg class="contact-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Email</a>
+        <span><svg class="contact-icon crea-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M-21.5,3H-26V.5a.5.5,0,0,0-.5-.5h-5a.5.5,0,0,0-.5.5V3h-4.5a.5.5,0,0,0-.5.5v12a.5.5,0,0,0,.5.5h15a.5.5,0,0,0,.5-.5V3.5A.5.5,0,0,0-21.5,3ZM-31,3V1h4V3a2,2,0,0,1-2,2A2,2,0,0,1-31,3Zm9,12H-36V4h4.184A3,3,0,0,0-29,6a3,3,0,0,0,2.816-2H-22Zm-7.5-7a2,2,0,0,0-2-2,2,2,0,0,0-2,2,2,2,0,0,0,2,2A2,2,0,0,0-29.5,8Zm-2,1a1,1,0,0,1-1-1,1,1,0,0,1,1-1,1,1,0,0,1,1,1A1,1,0,0,1-31.5,9Zm1,1h-2A2.5,2.5,0,0,0-35,12.5,1.5,1.5,0,0,0-33.5,14h4A1.5,1.5,0,0,0-28,12.5,2.5,2.5,0,0,0-30.5,10Zm1,3h-4a.5.5,0,0,1-.5-.5A1.5,1.5,0,0,1-32.5,11h2A1.5,1.5,0,0,1-29,12.5.5.5,0,0,1-29.5,13Zm6-6a.5.5,0,0,1,.5.5.5.5,0,0,1-.5.5h-4a.5.5,0,0,1-.5-.5.5.5,0,0,1,.5-.5Zm.5,3.5a.5.5,0,0,1-.5.5h-3a.5.5,0,0,1-.5-.5.5.5,0,0,1,.5-.5h3A.5.5,0,0,1-23,10.5Zm0,3a.5.5,0,0,1-.5.5h-3a.5.5,0,0,1-.5-.5.5.5,0,0,1,.5-.5h3A.5.5,0,0,1-23,13.5Z" transform="translate(37)"/></svg> CREA-PB 12290192025PB</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="zeila-banner" style="background: linear-gradient(135deg, rgba(31,168,224,0.08) 0%, rgba(24,201,122,0.06) 100%); border: 1px solid rgba(31,168,224,0.3); border-left: 4px solid var(--blue); border-radius: 16px; padding: 18px 16px; margin-bottom: 20px;">
+    <div style="font-family: var(--mono); font-size: 10px; color: var(--blue); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px;">Proposta preparada especialmente para</div>
+    <div style="font-size: 14px; color: var(--white); line-height: 1.55;">Zélia, analisamos o sistema de CFTV da Central Gás e identificamos falhas que comprometem a segurança do seu estabelecimento agora. Esta proposta entrega uma solução completa e definitiva — com <strong style="color: var(--green);">câmeras funcionando, acesso pelo celular e proteção elétrica</strong> — executada por engenheiro habilitado com ART registrada no CREA-PB.</div>
+  </div>
+
+  <div class="client-info">
+    <div class="client-details">
+      <h2>Central Gás</h2>
+      <p>Diagnóstico, reparo e modernização do sistema de CFTV</p>
+      <div class="client-address">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        R. Fernandes Viêira, 501 - José Pinheiro, Campina Grande - PB, 58407-490
+      </div>
+      <div class="attn-line">A/C Zélia</div>
+    </div>
+    <div class="client-status">
+      <div class="modern-seal">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span>ORÇAMENTO VÁLIDO</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">O que encontramos na <em>Central Gás</em></div>
+  <div class="section-sub">Problemas identificados que precisam de solução imediata</div>
+  <div class="diagnostic-grid">
+    <div class="diagnostic-item">
+      <div class="diagnostic-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M1.5,5.32H7.23a0,0,0,0,1,0,0V8.18a1.91,1.91,0,0,1-1.91,1.91H3.41A1.91,1.91,0,0,1,1.5,8.18V5.32A0,0,0,0,1,1.5,5.32Z"></path>
+          <rect x="2.45" y="1.5" width="3.82" height="3.82"></rect>
+          <path d="M16.77,13.91H22.5a0,0,0,0,1,0,0v2.86a1.91,1.91,0,0,1-1.91,1.91H18.68a1.91,1.91,0,0,1-1.91-1.91V13.91A0,0,0,0,1,16.77,13.91Z" transform="translate(39.27 32.59) rotate(180)"></path>
+          <rect x="17.73" y="18.68" width="3.82" height="3.82" transform="translate(39.27 41.18) rotate(180)"></rect>
+          <path d="M4.36,10.09v8.59A3.82,3.82,0,0,0,8.18,22.5h0A3.82,3.82,0,0,0,12,18.68V5.32A3.82,3.82,0,0,1,15.82,1.5h0a3.82,3.82,0,0,1,3.82,3.82v8.59"></path>
+        </svg>
+        Cabos expostos / danificados
+      </div>
+      <div class="diagnostic-text">Cabos coaxiais instalados sem canalização adequada, expostos a intempéries e impactos. Danos físicos causados por queda de estrutura de alvenaria.</div>
+      <div class="diagnostic-consequence">Consequência: imagem degradada ou inexistente em múltiplos pontos do estabelecimento.</div>
+    </div>
+    <div class="diagnostic-item">
+      <div class="diagnostic-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3.23047 15.6021V19.6021M3.23047 17.6021H6.10979C6.51355 17.6021 6.71543 17.6021 6.88849 17.5357C7.04136 17.477 7.17748 17.3816 7.28489 17.258C7.40648 17.1181 7.47547 16.9283 7.61345 16.5489L9.23047 12.1021M16.2305 14.1021L17.9671 14.9704C18.4144 15.1941 18.638 15.3059 18.8584 15.3124C19.0525 15.3182 19.2441 15.2673 19.4098 15.166C19.5979 15.051 19.7366 14.843 20.014 14.4269L20.2251 14.1102C20.5726 13.589 20.7463 13.3284 20.7669 13.0693C20.785 12.8418 20.7248 12.615 20.5962 12.4265C20.4497 12.2117 20.1696 12.0717 19.6094 11.7916L19.2305 11.6021M4.09035 7.62803L5.96145 4.42043C6.23184 3.9569 6.36703 3.72514 6.56088 3.59657C6.73149 3.48341 6.93273 3.42534 7.13741 3.43022C7.36995 3.43575 7.60783 3.55986 8.0836 3.80809L15.9789 7.92736C16.7263 8.31731 17.1 8.51229 17.2454 8.78849C17.3725 9.02974 17.3955 9.31242 17.3092 9.57107C17.2104 9.86717 16.8732 10.1201 16.1988 10.6259L13.0216 13.0088C12.7344 13.2242 12.5908 13.3319 12.4312 13.3832C12.2901 13.4286 12.1407 13.4421 11.9938 13.4227C11.8276 13.4007 11.6671 13.3204 11.346 13.1599L4.75685 9.8653C4.22599 9.59987 3.96056 9.46716 3.81581 9.26293C3.6886 9.08344 3.62413 8.86702 3.63238 8.64718C3.64176 8.39703 3.79129 8.1407 4.09035 7.62803Z"></path>
+        </svg>
+        Câmeras inoperantes
+      </div>
+      <div class="diagnostic-text">Múltiplas câmeras do sistema apresentam falha total ou parcial, gerando pontos cegos de monitoramento.</div>
+      <div class="diagnostic-consequence">Consequência: em caso de incidente, não haverá evidência de imagem para uso como prova.</div>
+    </div>
+    <div class="diagnostic-item">
+      <div class="diagnostic-title">
+        <svg class="rack-icon" fill="currentColor" viewBox="0 0 36 36">
+          <rect x="6" y="9" width="2" height="2"></rect>
+          <rect x="10" y="9" width="14" height="2"></rect>
+          <rect x="6" y="17" width="2" height="2"></rect>
+          <rect x="10" y="17" width="14" height="2"></rect>
+          <path d="M32,5H4A2,2,0,0,0,2,7V29a2,2,0,0,0,2,2H32a2,2,0,0,0,2-2V7A2,2,0,0,0,32,5ZM4,7H32v6H4Zm0,8H32v6H4ZM4,29V23H32v6Z"></path>
+          <rect x="6" y="25" width="2" height="2"></rect>
+          <rect x="10" y="25" width="14" height="2"></rect>
+        </svg>
+        Rack aberto / sem proteção
+      </div>
+      <div class="diagnostic-text">DVR e fonte de alimentação instalados em rack totalmente aberto, vulneráveis a poeira, umidade e acesso não autorizado.</div>
+      <div class="diagnostic-consequence">Consequência: equipamentos expostos degradam mais rápido e podem ser adulterados facilmente.</div>
+    </div>
+    <div class="diagnostic-item">
+      <div class="diagnostic-title">
+        <svg class="protection-icon" fill="currentColor" version="1.1" viewBox="0 0 29.92 29.921">
+          <path d="M1.676,13.21c-2.234-2.234-2.234-5.869,0-8.104l3.429-3.431c2.233-2.233,5.868-2.233,8.104,0l5.571,5.574l-2.827,2.828 l-5.572-5.574c-0.677-0.674-1.771-0.674-2.447,0l-3.43,3.431c-0.675,0.674-0.675,1.771,0,2.446l5.573,5.574L7.25,18.78L1.676,13.21z M28.244,16.714L22.67,11.14l-2.828,2.828l5.573,5.574c0.675,0.675,0.675,1.771,0,2.446l-3.43,3.429 c-0.678,0.675-1.772,0.673-2.447,0l-5.573-5.572l-2.828,2.828l5.574,5.572c1.116,1.116,2.584,1.676,4.053,1.676 c1.467,0,2.935-0.56,4.052-1.676l3.43-3.429C30.478,22.583,30.478,18.947,28.244,16.714z M27.451,3.767l-1.414-1.414l-3.772,3.771 l1.414,1.414L27.451,3.767z M23.909,9.695l5.149,1.383l0.52-1.934l-5.151-1.381L23.909,9.695z M22.036,5.375l-1.382-5.152 l-1.932,0.52l1.381,5.151L22.036,5.375z M2.585,25.804L4,27.218l3.771-3.771l-1.414-1.413L2.585,25.804z M7.999,24.191l1.382,5.152 l1.932-0.518l-1.381-5.152L7.999,24.191z M6.125,19.871l-5.151-1.383l-0.518,1.934l5.15,1.381L6.125,19.871z"></path>
+        </svg>
+        Sistema sem proteção elétrica (DPS)
+      </div>
+      <div class="diagnostic-text">Ausência de protetor eletrônico (DPS) para os equipamentos, expondo o sistema a surtos elétricos e descargas atmosféricas.</div>
+      <div class="diagnostic-consequence">Consequência: uma única descarga pode queimar DVR, câmeras e fonte — prejuízo estimado acima de R$ 8.000.</div>
+    </div>
+  </div>
+
+  <div class="section-title">O que a Attive vai <em>resolver</em></div>
+  <div class="section-sub">Intervenções planejadas para recuperação e modernização do sistema</div>
+  <div class="service-block">
+    <div class="block-header">
+      <div class="block-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3.23047 15.6021V19.6021M3.23047 17.6021H6.10979C6.51355 17.6021 6.71543 17.6021 6.88849 17.5357C7.04136 17.477 7.17748 17.3816 7.28489 17.258C7.40648 17.1181 7.47547 16.9283 7.61345 16.5489L9.23047 12.1021M16.2305 14.1021L17.9671 14.9704C18.4144 15.1941 18.638 15.3059 18.8584 15.3124C19.0525 15.3182 19.2441 15.2673 19.4098 15.166C19.5979 15.051 19.7366 14.843 20.014 14.4269L20.2251 14.1102C20.5726 13.589 20.7463 13.3284 20.7669 13.0693C20.785 12.8418 20.7248 12.615 20.5962 12.4265C20.4497 12.2117 20.1696 12.0717 19.6094 11.7916L19.2305 11.6021M4.09035 7.62803L5.96145 4.42043C6.23184 3.9569 6.36703 3.72514 6.56088 3.59657C6.73149 3.48341 6.93273 3.42534 7.13741 3.43022C7.36995 3.43575 7.60783 3.55986 8.0836 3.80809L15.9789 7.92736C16.7263 8.31731 17.1 8.51229 17.2454 8.78849C17.3725 9.02974 17.3955 9.31242 17.3092 9.57107C17.2104 9.86717 16.8732 10.1201 16.1988 10.6259L13.0216 13.0088C12.7344 13.2242 12.5908 13.3319 12.4312 13.3832C12.2901 13.4286 12.1407 13.4421 11.9938 13.4227C11.8276 13.4007 11.6671 13.3204 11.346 13.1599L4.75685 9.8653C4.22599 9.59987 3.96056 9.46716 3.81581 9.26293C3.6886 9.08344 3.62413 8.86702 3.63238 8.64718C3.64176 8.39703 3.79129 8.1407 4.09035 7.62803Z"/>
+        </svg>
+      </div>
+      <div><div class="block-title">CFTV — REPARO E MODERNIZAÇÃO</div><div class="block-sub">Intervenções planejadas para o sistema</div></div>
+    </div>
+    <ul class="exec-list">
+      <li><svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Substituição total de 500m de cabo coaxial por cabeamento UTP Cat5e 100% cobre homologado Anatel</li>
+      <li><svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Instalação de 16 conversores de vídeo + 16 plugs de força (conectorização profissional)</li>
+      <li><svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Instalação de protetor eletrônico contra surtos (DPS) no quadro do sistema</li>
+      <li><svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Configuração de visualização remota (acesso pelo celular)</li>
+      <li><svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Teste completo de todas as câmeras, sinal de vídeo e alimentação</li>
+      <li><svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Verificação in loco do estado das câmeras existentes</li>
+    </ul>
+  </div>
+
+  <div class="aviso-cameras">
+    <div class="aviso-cameras-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      ATENÇÃO: TROCA DE CÂMERAS DANIFICADAS
+    </div>
+    <div class="aviso-cameras-text">
+      O fornecimento de novas câmeras <strong>NÃO ESTÁ INCLUSO</strong> no valor desta proposta. Durante a vistoria in loco, será identificado se alguma câmera atual está danificada. Caso seja necessária a substituição, cada câmera será orçada separadamente.
+    </div>
+  </div>
+
+  <div class="section-title">O que essas <em>mudanças trarão?</em></div>
+  <div class="section-sub">Resultados concretos após a modernização do sistema</div>
+  <div class="benefits-grid">
+    <div class="benefit-card"><div class="benefit-icon"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="benefit-title">Cobertura total sem pontos cegos</div><div class="benefit-text">Todas as câmeras operacionais. Monitoramento 24/7 de todo o estabelecimento.</div></div>
+    <div class="benefit-card"><div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9H21M12 18V12M15 15.001L9 15M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z"/></svg></div><div class="benefit-title">Infraestrutura com mais vida útil</div><div class="benefit-text">Cabo UTP Cat5e substitui tecnologia ultrapassada. Sistema moderno que dura anos.</div></div>
+    <div class="benefit-card"><div class="benefit-icon"><svg class="protection-benefit" fill="currentColor" viewBox="0 0 29.92 29.921"><path d="M1.676,13.21c-2.234-2.234-2.234-5.869,0-8.104l3.429-3.431c2.233-2.233,5.868-2.233,8.104,0l5.571,5.574l-2.827,2.828 l-5.572-5.574c-0.677-0.674-1.771-0.674-2.447,0l-3.43,3.431c-0.675,0.674-0.675,1.771,0,2.446l5.573,5.574L7.25,18.78L1.676,13.21z M28.244,16.714L22.67,11.14l-2.828,2.828l5.573,5.574c0.675,0.675,0.675,1.771,0,2.446l-3.43,3.429 c-0.678,0.675-1.772,0.673-2.447,0l-5.573-5.572l-2.828,2.828l5.574,5.572c1.116,1.116,2.584,1.676,4.053,1.676 c1.467,0,2.935-0.56,4.052-1.676l3.43-3.429C30.478,22.583,30.478,18.947,28.244,16.714z M27.451,3.767l-1.414-1.414l-3.772,3.771 l1.414,1.414L27.451,3.767z M23.909,9.695l5.149,1.383l0.52-1.934l-5.151-1.381L23.909,9.695z M22.036,5.375l-1.382-5.152 l-1.932,0.52l1.381,5.151L22.036,5.375z M2.585,25.804L4,27.218l3.771-3.771l-1.414-1.413L2.585,25.804z M7.999,24.191l1.382,5.152 l1.932-0.518l-1.381-5.152L7.999,24.191z M6.125,19.871l-5.151-1.383l-0.518,1.934l5.15,1.381L6.125,19.871z"></path></svg></div><div class="benefit-title">Equipamentos protegidos contra raios</div><div class="benefit-text">DPS instalado elimina o risco de perda total por surto elétrico.</div></div>
+    <div class="benefit-card"><div class="benefit-icon"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div class="benefit-title">Organização e proteção dos equipamentos</div><div class="benefit-text">Sistema organizado em rack adequado, com acesso controlado.</div></div>
+    <div class="benefit-card"><div class="benefit-icon"><svg class="monitoring-icon" fill="currentColor" viewBox="-4 0 19 19"><path d="M10.114 2.69v13.76a1.123 1.123 0 0 1-1.12 1.12H2.102a1.123 1.123 0 0 1-1.12-1.12V2.69a1.123 1.123 0 0 1 1.12-1.12h6.892a1.123 1.123 0 0 1 1.12 1.12zm-1.12 1.844H2.102V14.78h6.892zm-5.31-1.418a.56.56 0 0 0 .56.56h2.61a.56.56 0 0 0 0-1.12h-2.61a.56.56 0 0 0-.56.56zm2.423 13.059a.558.558 0 1 0-.559.558.558.558 0 0 0 .559-.558z"></path></svg></div><div class="benefit-title">Central Gás na palma da mão</div><div class="benefit-text">Zélia acompanha tudo pelo celular em tempo real — de qualquer lugar.</div></div>
+    <div class="benefit-card"><div class="benefit-icon"><svg class="reduction-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 14C2 10.2288 2 8.34315 3.17157 7.17157C4.34315 6 6.22876 6 10 6H14C17.7712 6 19.6569 6 20.8284 7.17157C22 8.34315 22 10.2288 22 14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14Z"/><path d="M16 6C16 4.11438 16 3.17157 15.4142 2.58579C14.8284 2 13.8856 2 12 2C10.1144 2 9.17157 2 8.58579 2.58579C8 3.17157 8 4.11438 8 6"/><path d="M12 17.3333C13.1046 17.3333 14 16.5871 14 15.6667C14 14.7462 13.1046 14 12 14C10.8954 14 10 13.2538 10 12.3333C10 11.4129 10.8954 10.6667 12 10.6667M12 17.3333C10.8954 17.3333 10 16.5871 10 15.6667M12 17.3333V18M12 10V10.6667M12 10.6667C13.1046 10.6667 14 11.4129 14 12.3333" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="benefit-title">Fim das manutenções de emergência</div><div class="benefit-text">Sistema robusto e moderno reduz drasticamente as chamadas corretivas.</div></div>
+  </div>
+
+  <div class="materials-card">
+    <div class="mat-header"><svg viewBox="0 -0.5 25 25" fill="currentColor"><path d="M13.05 12.082C13.05 11.6678 12.7142 11.332 12.3 11.332C11.8858 11.332 11.55 11.6678 11.55 12.082H13.05ZM12.3 19H11.55C11.55 19.249 11.6736 19.4818 11.8799 19.6213C12.0862 19.7608 12.3483 19.7888 12.5794 19.696L12.3 19ZM18.044 16.694L18.3234 17.39C18.6077 17.2759 18.794 17.0003 18.794 16.694H18.044ZM18.794 11.9C18.794 11.4858 18.4582 11.15 18.044 11.15C17.6298 11.15 17.294 11.4858 17.294 11.9H18.794ZM12.7554 11.4861C12.4263 11.2346 11.9556 11.2975 11.7041 11.6266C11.4526 11.9557 11.5155 12.4264 11.8446 12.6779L12.7554 11.4861ZM14.348 13.647L13.8926 14.2429C14.1156 14.4133 14.415 14.445 14.6687 14.325L14.348 13.647ZM18.3617 12.578C18.7361 12.4008 18.8961 11.9537 18.719 11.5793C18.5418 11.2049 18.0947 11.0449 17.7203 11.222L18.3617 12.578ZM12.0206 11.386C11.6362 11.5403 11.4497 11.977 11.604 12.3614C11.7583 12.7458 12.195 12.9323 12.5794 12.778L12.0206 11.386ZM18.3234 10.472C18.7078 10.3177 18.8943 9.88097 18.74 9.49658C18.5857 9.11219 18.149 8.92567 17.7646 9.07999L18.3234 10.472ZM17.7647 10.472C18.1491 10.6263 18.5858 10.4397 18.74 10.0553C18.8943 9.6709 18.7077 9.23421 18.3233 9.07995L17.7647 10.472ZM12.5793 6.77495C12.1949 6.62069 11.7582 6.80727 11.604 7.19168C11.4497 7.5761 11.6363 8.01279 12.0207 8.16705L12.5793 6.77495ZM18.4115 9.12322C18.0505 8.92024 17.5932 9.0484 17.3902 9.40947C17.1872 9.77054 17.3154 10.2278 17.6765 10.4308L18.4115 9.12322ZM20.095 10.93L20.4153 11.6082C20.669 11.4884 20.8346 11.237 20.8445 10.9566C20.8545 10.6762 20.7071 10.4137 20.4625 10.2762L20.095 10.93ZM17.7207 11.2218C17.3462 11.3987 17.1859 11.8457 17.3628 12.2203C17.5397 12.5948 17.9867 12.7551 18.3613 12.5782L17.7207 11.2218ZM17.4849 9.27273C17.207 9.57984 17.2306 10.0541 17.5377 10.3321C17.8448 10.61 18.3191 10.5864 18.5971 10.2793L17.4849 9.27273ZM20.5 7.059L21.0561 7.56227C21.2259 7.37459 21.2897 7.11388 21.2255 6.86901C21.1614 6.62413 20.9781 6.42812 20.738 6.34778L20.5 7.059ZM14.348 5L14.586 4.28878C14.2926 4.19056 13.9689 4.28268 13.7711 4.52071L14.348 5ZM11.7181 6.99171C11.4534 7.31031 11.4971 7.78317 11.8157 8.04787C12.1343 8.31258 12.6072 8.26889 12.8719 7.95029L11.7181 6.99171ZM6.27168 9.07995C5.88727 9.23421 5.70069 9.6709 5.85495 10.0553C6.00921 10.4397 6.4459 10.6263 6.83032 10.472L6.27168 9.07995ZM12.5743 8.16705C12.9587 8.01279 13.1453 7.5761 12.991 7.19168C12.8368 6.80727 12.4001 6.62069 12.0157 6.77495L12.5743 8.16705ZM6.91853 10.4298C7.2796 10.2268 7.40776 9.76954 7.20478 9.40847C7.00179 9.0474 6.54454 8.91924 6.18347 9.12222L6.91853 10.4298ZM4.5 10.929L4.13247 10.2752C3.88802 10.4126 3.74065 10.675 3.75046 10.9552C3.76027 11.2355 3.92561 11.4869 4.17908 11.6069L4.5 10.929ZM6.23008 12.5779C6.60445 12.7551 7.05163 12.5953 7.22887 12.2209C7.40611 11.8465 7.2463 11.3994 6.87192 11.2221L6.23008 12.5779ZM6.83042 9.07999C6.44603 8.92567 6.00931 9.11219 5.85499 9.49658C5.70067 9.88097 5.88719 10.3177 6.27158 10.472L6.83042 9.07999ZM12.0156 12.778C12.4 12.9323 12.8367 12.7458 12.991 12.3614C13.1453 11.977 12.9588 11.5403 12.5744 11.386L12.0156 12.778ZM5.9907 10.2746C6.26604 10.584 6.74011 10.6116 7.04956 10.3363C7.35901 10.061 7.38665 9.58689 7.1113 9.27744L5.9907 10.2746ZM4.5 7.471L4.20362 6.78205C3.98226 6.87727 3.82014 7.07305 3.76786 7.30828C3.71558 7.54351 3.77951 7.78954 3.9397 7.96956L4.5 7.471ZM10.244 5L10.8211 4.52099C10.6087 4.26508 10.2531 4.17962 9.94762 4.31105L10.244 5ZM11.7179 7.95001C11.9824 8.26874 12.4553 8.31265 12.774 8.0481C13.0927 7.78355 13.1367 7.31071 12.8721 6.99199L11.7179 7.95001ZM13.045 12.083C13.045 11.6688 12.7092 11.333 12.295 11.333C11.8808 11.333 11.545 11.6688 11.545 12.083H13.045ZM12.295 19L12.0156 19.696C12.2467 19.7888 12.5088 19.7608 12.7151 19.6213C12.9214 19.4818 13.045 19.249 13.045 19H12.295ZM6.551 16.694H5.801C5.801 17.0003 5.9873 17.2759 6.27158 17.39L6.551 16.694ZM7.301 11.9C7.301 11.4858 6.96521 11.15 6.551 11.15C6.13679 11.15 5.801 11.4858 5.801 11.9H7.301ZM12.75 12.6782C13.0793 12.427 13.1425 11.9563 12.8912 11.627C12.64 11.2977 12.1693 11.2345 11.84 11.4858L12.75 12.6782ZM10.244 13.647L9.92328 14.325C10.1768 14.4449 10.476 14.4134 10.699 14.2432L10.244 13.647ZM6.87172 11.222C6.49729 11.0449 6.05016 11.2049 5.87303 11.5793C5.6959 11.9537 5.85585 12.4008 6.23028 12.578L6.87172 11.222ZM11.55 12.082V19H13.05V12.082H11.55ZM12.5794 19.696L18.3234 17.39L17.7646 15.998L12.0206 18.304L12.5794 19.696ZM18.794 16.694V11.9H17.294V16.694H18.794ZM11.8446 12.6779L13.8926 14.2429L14.8034 13.0511L12.7554 11.4861L11.8446 12.6779ZM14.6687 14.325L18.3617 12.578L17.7203 11.222L14.0273 12.969L14.6687 14.325ZM12.5794 12.778L18.3234 10.472L17.7646 9.07999L12.0206 11.386L12.5794 12.778ZM18.3233 9.07995L12.5793 6.77495L12.0207 8.16705L17.7647 10.472L18.3233 9.07995ZM17.6765 10.4308L19.7275 11.5838L20.4625 10.2762L18.4115 9.12322L17.6765 10.4308ZM19.7747 10.2518L17.7207 11.2218L18.3613 12.5782L20.4153 11.6082L19.7747 10.2518ZM18.5971 10.2793L21.0561 7.56227L19.9439 6.55573L17.4849 9.27273L18.5971 10.2793ZM20.738 6.34778L14.586 4.28878L14.11 5.71122L20.262 7.77022L20.738 6.34778ZM13.7711 4.52071L11.7181 6.99171L12.8719 7.95029L14.9249 5.47929L13.7711 4.52071ZM6.83032 10.472L12.5743 8.16705L12.0157 6.77495L6.27168 9.07995L6.83032 10.472ZM6.18347 9.12222L4.13247 10.2752L4.86753 11.5828L6.91853 10.4298L6.18347 9.12222ZM4.17908 11.6069L6.23008 12.5779L6.87192 11.2221L4.82092 10.2511L4.17908 11.6069ZM6.27158 10.472L12.0156 12.778L12.5744 11.386L6.83042 9.07999L6.27158 10.472ZM7.1113 9.27744L5.0603 6.97244L3.9397 7.96956L5.9907 10.2746L7.1113 9.27744ZM4.79638 8.15995L10.5404 5.68895L9.94762 4.31105L4.20362 6.78205L4.79638 8.15995ZM9.6669 5.47901L11.7179 7.95001L12.8721 6.99199L10.8211 4.52099L9.6669 5.47901ZM11.545 12.083V19H13.045V12.083H11.545ZM12.5744 18.304L6.83042 15.998L6.27158 17.39L12.0156 19.696L12.5744 18.304ZM7.301 16.694V11.9H5.801V16.694H7.301ZM11.84 11.4858L9.78904 13.0508L10.699 14.2432L12.75 12.6782L11.84 11.4858ZM10.5647 12.969L6.87172 11.222L6.23028 12.578L9.92328 14.325L10.5647 12.969Z"/></svg><span>Materiais e equipamentos</span></div>
+    <table class="mat-table">
+      <thead><tr><th>Descrição</th><th style="text-align:right">Quantidade</th></tr></thead>
+      <tbody>
+        <tr><td colspan="2" class="mat-divider">Fornecimento Attive - Serviços Técnicos + Materiais</th></tr>
+        <tr><td class="mat-divider" style="color: var(--blue);"><strong>Valor: R$ 9.200,00</strong></th><td style="text-align:right">9,200.00</td></tr>
+        <tr><td colspan="2" class="mat-divider" style="color: var(--orange);">Opcional: Mão de obra infraestrutura - R$ 1.800,00</th></tr>
+        <tr><td colspan="2" class="mat-divider">Infraestrutura (materiais não inclusos)</th></tr>
+        <tr><td class="mat-divider">Eletrodutos, abraçadeiras, cunha metálica, buchas, parafusos, caixas de passagem, kanaflex</td><td style="text-align:right"><strong>NÃO INCLUSO*</strong></td></tr>
+        <tr><td colspan="2" class="mat-divider">Fornecimento Attive</th></tr>
+        <tr><td class="mat-divider">Cabo UTP Cat5e 100% cobre (homologado Anatel)</td><td style="text-align:right">500 m</td></tr>
+        <tr><td class="mat-divider">Conversor de vídeo</td><td style="text-align:right">16 un.</td></tr>
+        <tr><td class="mat-divider">Plug de força</td><td style="text-align:right">16 un.</td></tr>
+        <tr><td class="mat-divider">Protetor eletrônico contra surtos (DPS)</td><td style="text-align:right">1 un.</td></tr>
+        <tr><td class="mat-divider" style="color: var(--orange);"><strong>Câmera Full HD (nova)</strong></td><td style="text-align:right"><strong>Orçamento separado*</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-title">Por que a <em>Attive Tecnologia?</em></div>
+  <div class="section-sub">O que diferencia quem já instalou mais de 10.000 câmeras na Paraíba</div>
+  <div class="whyus-grid">
+    <div class="diferencial-card">
+      <div class="diferencial-icon"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="9"/></svg></div>
+      <div class="diferencial-numero">+25</div>
+      <div class="diferencial-texto">ANOS DE EXPERIÊNCIA</div>
+    </div>
+    <div class="diferencial-card">
+      <div class="diferencial-icon"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="diferencial-numero">+1.500</div>
+      <div class="diferencial-texto">CLIENTES ATENDIDOS</div>
+    </div>
+    <div class="diferencial-card">
+      <div class="diferencial-icon"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/><path d="M2 12h2M20 12h2M12 2v2M12 20v2"/></svg></div>
+      <div class="diferencial-numero">+10.000</div>
+      <div class="diferencial-texto">CÂMERAS INSTALADAS</div>
+    </div>
+    <div class="whyus-card"><div class="whyus-icon"><svg class="engineering-icon" fill="#FFFFFF" viewBox="0 0 512 512"><path d="M478.162,275.416c-5.687-88.983-65.319-165.555-150.231-192.725c-3.134-24.627-24.205-43.735-49.671-43.735h-44.522 c-25.465,0-46.536,19.108-49.67,43.735C99.158,109.861,39.525,186.433,33.838,275.416C14.175,282.181,0,300.851,0,322.783 c0,23.279,15.966,42.899,37.521,48.489l14.897,44.691c11.381,34.143,43.206,57.081,79.195,57.081h248.775 c35.988,0,67.814-22.939,79.194-57.08l14.898-44.692c21.555-5.59,37.52-25.209,37.52-48.489 C512,300.851,497.825,282.181,478.162,275.416z M328.348,118.245c64.651,25.148,109.82,84.98,116.108,154.45H328.348V118.245z M217.043,89.044c0-9.206,7.49-16.696,16.696-16.696h44.522c9.206,0,16.696,7.49,16.696,16.696v183.652h-77.913V89.044z M183.652,118.245v154.45H67.544C73.833,203.225,119.001,143.393,183.652,118.245z M427.904,405.404 c-6.827,20.484-25.924,34.248-47.516,34.248H131.613c-21.593,0-40.688-13.763-47.517-34.248L73.252,372.87H438.75L427.904,405.404z M461.913,339.478H50.087c-9.206,0-16.696-7.49-16.696-16.696c0-9.206,7.49-16.696,16.696-16.696c12.551,0,395.168,0,411.826,0 c9.206,0,16.696,7.49,16.696,16.696C478.609,331.989,471.119,339.478,461.913,339.478z"/></svg></div><div class="whyus-title">Engenharia com Responsabilidade Técnica</div><div class="whyus-text">ART registrada no CREA-PB em cada projeto. Conformidade legal e segurança garantida.</div></div>
+    <div class="whyus-card"><div class="whyus-icon"><svg viewBox="0 0 48 48" fill="none" stroke="#FFFFFF" stroke-width="1.8"><path d="M33.31,34.99c.86-1.8,1.34-3.81,1.34-5.93,0-7.61-6.16-13.77-13.76-13.77-7.61,0-13.77,6.16-13.77,13.77,0,3.03,.98,5.84,2.64,8.11l-2.06,2.06c-2.25-3.18-3.57-7.06-3.57-11.24,0-10.78,8.74-19.53,19.53-19.53,10.78,0,19.53,8.75,19.53,19.53,0,4.36-1.43,8.39-3.85,11.64l-6.03-4.64z"/><line x1="37.3893" y1="14.1059" x2="31.6627" y2="20.4939"/><line x1="10.0844" y1="13.9539" x2="13.1665" y2="17.6558"/><polygon points="11.3645 22.0748 28.3551 31.6636 25.4953 34.243 11.3645 22.0748"/></svg></div><div class="whyus-title">48h para resolução completa</div><div class="whyus-text">Execução em 48 horas úteis após confirmação. Sem longas esperas.</div></div>
+    <div class="whyus-card"><div class="whyus-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8"><path d="M15.9201 12.8959L19.2583 8.89003C19.533 8.5604 19.6704 8.39557 19.7681 8.21065C19.8548 8.0466 19.9183 7.87128 19.9567 7.68973C20 7.48508 20 7.27053 20 6.84144V6.2C20 5.07989 20 4.51984 19.782 4.09202C19.5903 3.71569 19.2843 3.40973 18.908 3.21799C18.4802 3 17.9201 3 16.8 3H7.2C6.0799 3 5.51984 3 5.09202 3.21799C4.71569 3.40973 4.40973 3.71569 4.21799 4.09202C4 4.51984 4 5.07989 4 6.2V6.84144C4 7.27053 4 7.48508 4.04328 7.68973C4.08168 7.87128 4.14515 8.0466 4.23188 8.21065C4.32964 8.39557 4.467 8.5604 4.74169 8.89003L8.07995 12.8959M13.4009 11.1989L19.3668 3.53988M10.5991 11.1989L4.6394 3.53414M6.55673 6H17.4505M17 16C17 18.7614 14.7614 21 12 21C9.23858 21 7 18.7614 7 16C7 13.2386 9.23858 11 12 11C14.7614 11 17 13.2386 17 16z"/></svg></div><div class="whyus-title">Materiais certificados e com garantia</div><div class="whyus-text">Cabo homologado Anatel, conversores e DPS de fornecedores confiáveis. Garantia de 90 dias.</div></div>
+    <div class="whyus-card"><div class="whyus-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div class="whyus-title">Suporte após a entrega</div><div class="whyus-text">Acompanhamento remoto e presencial dentro do período de garantia.</div></div>
+  </div>
+
+  <div class="infra-option">
+    <div class="infra-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9H21M12 18V12M15 15.001L9 15M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z"/></svg>
+      Instalação completa da infraestrutura
+    </div>
+    <div class="infra-text">Mão de obra especializada para instalação completa de eletrodutos, caixas de passagem, kanaflex, abraçadeiras, buchas e parafusos. Confira abaixo a qualidade da nossa execução:</div>
+    <div class="infra-video-sidebyside">
+      <div class="video-item"><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/PIU9AN2ToiA" title="Vídeo da instalação - Parte 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div class="video-caption">Execução da infraestrutura - Detalhe 1</div></div>
+      <div class="video-item"><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/F6dOn0mArnI" title="Vídeo da instalação - Parte 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div class="video-caption">Qualidade e acabamento - Detalhe 2</div></div>
+    </div>
+    <div class="infra-text"><strong>Valor da mão de obra: R$ 1.800,00</strong></div>
+    <div class="infra-checkbox" id="infraCheckbox"><input type="checkbox" id="incluirInfra"><label for="incluirInfra">Incluir mão de obra de infraestrutura (+ R$ 1.800,00)</label></div>
+    <div class="infra-valor-info" id="infraValorDisplay" style="display: none;">Mão de obra de infraestrutura adicionada: + R$ 1.800,00</div>
+  </div>
+
+  <div class="validade-banner no-print" style="background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.4); border-radius: 14px; padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 14px;">
+    <div class="validade-icon" style="width: 40px; height: 40px; background: rgba(245,158,11,0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 24 24" width="22" height="22" stroke="var(--orange)" fill="none"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+    <div class="validade-texto" style="flex:1;"><strong style="font-family: var(--mono); font-size: 13px; color: var(--orange); display: block; margin-bottom: 3px;">Proposta válida por 7 dias corridos</strong><span style="font-size: 12px; color: var(--gray);">Após esse prazo, os valores estão sujeitos a reajuste de materiais. Para garantir estas condições, confirme o quanto antes.</span></div>
+  </div>
+
+  <div class="pagamento-section">
+    <div class="section-title">Condições de <em>Pagamento</em></div>
+    <div class="section-sub">Escolha a forma mais conveniente e confirme via WhatsApp</div>
+    <div class="pagamento-total">
+      <div><div class="total-label">Valor total — serviços técnicos + materiais</div><div class="total-desc">CFTV · Central Gás · reparo e modernização com UTP Cat5e</div></div>
+      <div class="total-valor" id="valorBase">R$ 9.200,00</div>
+    </div>
+    <div class="pagamento-opcoes" id="paymentOptions">
+      <label class="payment-radio-card"><input type="radio" name="paymentMethod" value="pix" checked><div class="pag-card pix"><svg class="pag-icon-svg pix-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"/><path d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"/></svg><div class="pag-tipo">Pix à vista</div><div class="pag-valor-destaque" id="pixValor">R$ 8.280,00</div><div class="pag-detalhe">10% de desconto no pagamento à vista via Pix</div><div class="pag-badge" id="pixBadge">ECONOMIA DE R$ 920,00</div><div class="select-option"><div class="custom-radio">Selecione esta opção</div></div></div></label>
+      <label class="payment-radio-card"><input type="radio" name="paymentMethod" value="parcelado"><div class="pag-card parcelas"><svg class="pag-icon-svg card-icon" viewBox="0 0 32 32" fill="currentColor"><path d="M29.005 5.5h-26.009c-1.657 0-3 1.343-3 3v15c0 1.657 1.343 3 3 3h26.009c1.657 0 3-1.343 3-3v-15c0-1.657-1.343-3-3-3zM2.995 7.5h26.009c0.552 0 1 0.448 1 1v2h-28.009v-2c0-0.552 0.449-1 1-1zM29.005 24.5h-26.009c-0.552 0-1-0.448-1-1v-9h28.009v9c0 0.552-0.448 1-1 1z"/></svg><div class="pag-tipo">Parcelado no cartão</div><div class="pag-valor-destaque" id="parcValor">6× R$ 1.533,33</div><div class="pag-detalhe">Sem juros · Total R$ 9.200,00</div><div class="pag-badge">SEM JUROS</div><div class="select-option"><div class="custom-radio">Selecione esta opção</div></div></div></label>
+    </div>
+    <div class="whatsapp-action no-print"><button id="sendWABtn" class="btn-whatsapp"><svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Confirmar proposta via WhatsApp</button></div>
+  </div>
+
+  <div class="obs-box">
+    <p><strong>Observações técnicas e garantia:</strong></p>
+    <div class="obs-line"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Garantia de 90 dias sobre os serviços e materiais aplicados (exceto danos elétricos externos).</span></div>
+    <div class="obs-line"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg><span><strong>Prazo de execução: 48 horas úteis após confirmação do pagamento ou autorização.</strong></span></div>
+    <div class="obs-line"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Acesso remoto configurado e entregue funcionando — Zélia acessa as câmeras pelo celular no mesmo dia da conclusão.</span></div>
+    <div class="obs-line"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg><span><strong>ART (Anotação de Responsabilidade Técnica) emitida e registrada no CREA-PB</strong> — garantia de legalidade e segurança técnica.</span></div>
+    <div class="obs-line"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg><span><strong>Nota Fiscal emitida após a conclusão do serviço.</strong></span></div>
+    <div class="obs-line"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg><span><strong>Câmeras danificadas: fornecimento de novas câmeras não incluso. Orçamento separado mediante vistoria.</strong></span></div>
+  </div>
+
+  <div class="important-note">
+    <div class="obs-line"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg><span><strong>Importante:</strong> Eletrodutos, abraçadeiras, cunha metálica, buchas, parafusos, caixas de passagem e kanaflex <strong>NÃO ESTÃO INCLUSOS</strong> no valor base. Os materiais de infraestrutura deverão ser adquiridos pelo cliente ou orçados separadamente. A mão de obra para instalação da infraestrutura pode ser incluída através da opção acima.</span></div>
+  </div>
+
+  <div class="signature">
+    <img class="signature-avatar" src="https://i.postimg.cc/qvv7bbZ4/perfil13.png" alt="Hélio Crispim">
+    <div class="signature-name">Hélio Crispim · Engenheiro Eletricista</div>
+    <span class="signature-crea">CREA-PB 12290192025PB</span>
+    <div class="signature-info">attivesistemas@gmail.com · (83) 99678-7788</div>
+    <div class="signature-info">@attivetecnologia</div>
+  </div>
+
+  <button class="print-btn no-print" onclick="window.print()">IMPRIMIR / SALVAR PDF</button>
+  <div class="footer"><p>Attive Tecnologia · Cuidado e tecnologia para quem você ama · Proposta Central Gás #459/2026</p></div>
+</div>
+
+<a href="https://wa.me/5583996787788" target="_blank" class="wa-float no-print"><svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Falar com a Attive</a>
+
+<script>
+  const valorBase = 9200;
+  const valorInfraMaoObra = 1800;
+  let incluirInfra = false;
+  const valorBaseEl = document.getElementById('valorBase');
+  const pixValorEl = document.getElementById('pixValor');
+  const parcValorEl = document.getElementById('parcValor');
+  const pixBadgeEl = document.getElementById('pixBadge');
+  const infraValorDisplay = document.getElementById('infraValorDisplay');
+  const infraCheckbox = document.getElementById('incluirInfra');
+
+  function atualizarValores() {
+    const total = incluirInfra ? valorBase + valorInfraMaoObra : valorBase;
+    const pixTotal = total * 0.9;
+    const economia = total * 0.1;
+    const parcela = (total / 6).toFixed(2);
+    valorBaseEl.innerHTML = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    pixValorEl.innerHTML = `R$ ${pixTotal.toFixed(2).replace('.', ',')}`;
+    parcValorEl.innerHTML = `6× R$ ${parcela.replace('.', ',')}`;
+    pixBadgeEl.innerHTML = `ECONOMIA DE R$ ${economia.toFixed(2).replace('.', ',')}`;
+    infraValorDisplay.style.display = incluirInfra ? 'block' : 'none';
+  }
+
+  infraCheckbox.addEventListener('change', function() { incluirInfra = this.checked; atualizarValores(); });
+  document.getElementById('sendWABtn').addEventListener('click', function() {
+    const selected = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const total = incluirInfra ? valorBase + valorInfraMaoObra : valorBase;
+    const pixTotal = total * 0.9;
+    const parcela = (total / 6).toFixed(2);
+    const infraTexto = incluirInfra ? '\n\nMão de obra infraestrutura: INCLUÍDA (acréscimo de R$ 1.800,00)' : '\n\nMão de obra infraestrutura: NÃO INCLUÍDA (cliente providencia ou contrata à parte)\n\n*Materiais de infraestrutura (eletrodutos, caixas, etc.) não inclusos - devem ser adquiridos pelo cliente.';
+    const message = selected === 'pix'
+      ? `Olá, A/C Zélia! Gostaria de confirmar a PROPOSTA #459/2026 para Central Gás (CFTV).\n\nForma escolhida: PIX à vista com 10% de desconto\nValor total: R$ ${pixTotal.toFixed(2).replace('.', ',')} (original R$ ${total.toFixed(2).replace('.', ',')})\n\n+25 anos de experiência\n+1.500 clientes atendidos\n+10.000 câmeras instaladas\n\nServiços inclusos:\n- Substituição de 500m de cabo coaxial por UTP Cat5e 100% cobre\n- 16 conversores de vídeo\n- 16 plugs de força\n- DPS (proteção contra surtos)\n- Configuração de acesso remoto\n- Testes e homologação\n- ART registrada no CREA-PB\n- Nota fiscal emitida após o serviço${infraTexto}\n\n*Câmeras danificadas: fornecimento de novas câmeras não incluso. Orçamento separado.\n\nPrazo de execução: 48h úteis. Aguardo chave Pix.`
+      : `Olá, A/C Zélia! Gostaria de confirmar a PROPOSTA #459/2026 para Central Gás (CFTV).\n\nForma escolhida: Cartão parcelado (6x sem juros)\nValor total: R$ ${total.toFixed(2).replace('.', ',')} (6x R$ ${parcela.replace('.', ',')})\n\n+25 anos de experiência\n+1.500 clientes atendidos\n+10.000 câmeras instaladas\n\nServiços inclusos:\n- Substituição de 500m de cabo coaxial por UTP Cat5e 100% cobre\n- 16 conversores de vídeo\n- 16 plugs de força\n- DPS (proteção contra surtos)\n- Configuração de acesso remoto\n- Testes e homologação\n- ART registrada no CREA-PB\n- Nota fiscal emitida após o serviço${infraTexto}\n\n*Câmeras danificadas: fornecimento de novas câmeras não incluso. Orçamento separado.\n\nPrazo de execução: 48h úteis. Aguardo link de pagamento.`;
+    window.open(`https://wa.me/5583996787788?text=${encodeURIComponent(message)}`, '_blank');
+  });
+</script>
+</body>
+</html>
