@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Attive Tecnologia | Proposta de Rastreamento Veicular - A/C Erikson Vagner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      background-color: #07070f;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-20px) scale(1.03); }
+    }
+    @keyframes titleGlow {
+      0% { text-shadow: 0 0 0px rgba(59,130,246,0); background-position: 0% 50%; }
+      50% { text-shadow: 0 0 8px rgba(59,130,246,0.3); background-position: 100% 50%; }
+      100% { text-shadow: 0 0 0px rgba(59,130,246,0); background-position: 0% 50%; }
+    }
+    @keyframes titleFloat {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-3px); }
+      100% { transform: translateY(0px); }
+    }
+    .animated-title {
+      animation: titleGlow 4s ease-in-out infinite, titleFloat 5s ease-in-out infinite;
+      display: inline-block;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa, #3b82f6);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: titleGlow 4s ease-in-out infinite;
+    }
+    .cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    @media (min-width: 992px) {
+      .cards-container {
+        flex-direction: row;
+        gap: 0;
+        max-width: 1300px;
+      }
+      .card:first-child {
+        border-radius: 24px 0 0 24px;
+        border-right: 1px solid rgba(59,130,246,0.3);
+        border-top: 1px solid rgba(59,130,246,0.2);
+        border-bottom: 1px solid rgba(59,130,246,0.2);
+        border-left: 1px solid rgba(59,130,246,0.2);
+      }
+      .card:last-child {
+        border-radius: 0 24px 24px 0;
+        border: 1px solid rgba(59,130,246,0.2);
+        border-left: none;
+      }
+    }
+    .card {
+      flex: 1;
+      background: #10101e;
+      padding: 28px 20px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s;
+      border-radius: 24px;
+      border: 1px solid rgba(59,130,246,0.2);
+      position: relative;
+    }
+    @media (min-width: 768px) {
+      .card {
+        padding: 32px;
+      }
+    }
+    .badge-blue {
+      display: inline-block;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 30px;
+      margin-bottom: 20px;
+      align-self: flex-start;
+    }
+    .badge-popular {
+      position: absolute;
+      top: -12px;
+      right: 24px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 16px;
+      border-radius: 30px;
+      letter-spacing: 0.05em;
+      box-shadow: 0 0 15px rgba(245,158,11,0.3);
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #f1f5f9;
+    }
+    @media (min-width: 768px) {
+      .card-title {
+        font-size: 24px;
+      }
+    }
+    .card-subtitle {
+      color: #60a5fa;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+    .alert-header {
+      font-size: 12px;
+      color: #94a3b8;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+    .alert-list {
+      flex: 1;
+      margin-bottom: 20px;
+    }
+    .alert-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+    @media (min-width: 768px) {
+      .alert-row {
+        font-size: 13px;
+        padding: 8px 0;
+      }
+    }
+    .alert-row:last-child {
+      border-bottom: none;
+    }
+    .check-green {
+      color: #22c55e;
+      font-size: 13px;
+      font-weight: bold;
+      min-width: 20px;
+    }
+    .price-container {
+      margin: 20px 0 8px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    @media (min-width: 768px) {
+      .price-container {
+        margin: 24px 0 8px;
+        padding-top: 20px;
+      }
+    }
+    .price-install {
+      font-family: 'Syne', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: #f1f5f9;
+    }
+    @media (min-width: 768px) {
+      .price-install {
+        font-size: 28px;
+      }
+    }
+    .price-monthly {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #60a5fa;
+    }
+    @media (min-width: 768px) {
+      .price-monthly {
+        font-size: 22px;
+      }
+    }
+    .price-label {
+      color: #94a3b8;
+      font-size: 11px;
+    }
+    @media (min-width: 768px) {
+      .price-label {
+        font-size: 12px;
+      }
+    }
+    .discount-info {
+      color: #22c55e;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+    .installment-info {
+      color: #94a3b8;
+      font-size: 11px;
+    }
+    .contract-period {
+      color: #94a3b8;
+      font-size: 10px;
+      margin-top: 8px;
+      font-style: italic;
+    }
+    .per-vehicle {
+      color: #94a3b8;
+      font-size: 10px;
+      margin-top: 2px;
+    }
+    .btn-select {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: #3b82f6;
+      color: #fff;
+      font-weight: 600;
+      font-size: 13px;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 0 20px rgba(59,130,246,0.3);
+      margin-top: 16px;
+    }
+    @media (min-width: 768px) {
+      .btn-select {
+        padding: 14px 20px;
+        font-size: 14px;
+      }
+    }
+    .btn-select:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+    }
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.35);
+      color: #60a5fa;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    @media (min-width: 768px) {
+      .section-tag {
+        font-size: 11px;
+        padding: 4px 14px;
+      }
+    }
+    .benefit-card {
+      background: #10101e;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 20px 16px;
+      transition: all 0.25s;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    @media (min-width: 768px) {
+      .benefit-card {
+        padding: 28px 22px;
+      }
+    }
+    .benefit-card:hover {
+      border-color: rgba(59,130,246,0.35);
+      background: #141428;
+      transform: translateY(-3px);
+    }
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(22px, 5vw, 40px);
+      font-weight: 800;
+      color: #60a5fa;
+    }
+    .icon-wrapper {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .icon-wrapper svg {
+      width: 18px;
+      height: 18px;
+    }
+    /* Ícones de problema - estilo vermelho */
+    .problem-icon-wrapper {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .problem-icon-wrapper svg {
+      width: 18px;
+      height: 18px;
+    }
+    .stats-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(transparent, rgba(7,7,15,0.9));
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      padding: 16px 12px;
+      flex-wrap: wrap;
+    }
+    @media (min-width: 768px) {
+      .stats-bar {
+        padding: 20px 24px;
+        flex-wrap: nowrap;
+      }
+    }
+    .stat-item {
+      flex: 1;
+      min-width: 100px;
+      text-align: center;
+      padding: 0 8px;
+    }
+    @media (min-width: 768px) {
+      .stat-item {
+        max-width: 200px;
+        padding: 0 16px;
+      }
+      .stat-item:not(:last-child) {
+        border-right: 1px solid rgba(255,255,255,0.06);
+      }
+    }
+    .problems-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 768px) {
+      .problems-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+    }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 1024px) {
+      .benefits-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .benefits-grid .benefit-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .benefits-grid .icon-wrapper {
+      margin-bottom: 18px;
+    }
+    .differentials-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 768px) {
+      .differentials-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .differentials-grid .benefit-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .differentials-grid .icon-wrapper {
+      margin-bottom: 12px;
+    }
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .price-left {
+      flex: 2;
+    }
+    .price-right {
+      text-align: right;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+<div style="background: #07070f; color: #f1f5f9; min-height: 100vh;">
+
+  <!-- Hero Section -->
+  <section style="position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 80px 20px; overflow: hidden; background: #07070f;">
+    <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);"></div>
+    <div style="position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%); top: 10%; left: 10%; pointer-events: none; animation: orbFloat 8s ease-in-out infinite;"></div>
+    <div style="position: absolute; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%); bottom: 15%; right: 15%; pointer-events: none; animation: orbFloat 10s ease-in-out infinite reverse;"></div>
+    
+    <div style="position: absolute; top: 20px; left: 20px; z-index: 10;">
+      <img src="https://i.postimg.cc/4xb9f1dS/logobrancasemfundo-Copia.png" alt="Attive Tecnologia" style="height: 40px; width: auto;">
+    </div>
+
+    <div style="position: relative; z-index: 1; max-width: 840px; text-align: center; padding: 0 16px;">
+      <div class="section-tag" style="margin-bottom: 24px; justify-content: center;">
+        <div style="width: 6px; height: 6px; border-radius: 50%; background: #60a5fa; box-shadow: 0 0 8px #3b82f6;"></div>
+        PROPOSTA TÉCNICA COMERCIAL · A/C Erikson Vagner
+      </div>
+      <h1 style="font-family: 'Syne', sans-serif; font-size: clamp(32px, 7vw, 72px); font-weight: 800; line-height: 1.08; color: #f1f5f9; margin-bottom: 20px;">
+        <span class="animated-title">Proteção Total.</span><br>
+        <span class="gradient-text animated-title">Controle Absoluto.</span>
+      </h1>
+      <p style="font-size: clamp(14px, 4vw, 20px); color: #94a3b8; line-height: 1.6; max-width: 620px; margin: 0 auto; font-weight: 300;">
+        Rastreamento veicular com câmeras embarcadas de alta definição para frotas que exigem visibilidade total, evidências confiáveis e inteligência operacional.
+      </p>
+    </div>
+    
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-number"><span class="counter" data-target="25">0</span>+</div>
+        <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Anos de experiência</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span class="counter" data-target="200">0</span>+</div>
+        <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Clientes atendidos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span class="counter" data-target="98">0</span>%</div>
+        <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Índice de satisfação</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span class="counter" data-target="500">0</span>+</div>
+        <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Instalações realizadas</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre a Attive -->
+  <section style="background: #0c0c1a; padding: 60px 20px;">
+    <div style="max-width: 1100px; margin: 0 auto; text-align: center;">
+      <div class="section-tag" style="justify-content: center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Sobre a Attive</div>
+      <h2 style="font-family: 'Syne', sans-serif; font-size: clamp(24px, 6vw, 44px); font-weight: 700; color: #f1f5f9;">Especialistas em Gestão de Frota</h2>
+      <p style="color: #94a3b8; font-size: clamp(14px, 3vw, 17px); max-width: 600px; margin: 16px auto 0; line-height: 1.6;">Há mais de 25 anos, a Attive Tecnologia entrega soluções de monitoramento, rastreamento e gestão de frota para empresas que não abrem mão de controle e proteção patrimonial.</p>
+    </div>
+  </section>
+
+  <!-- Riscos Operacionais -->
+  <section style="background: #07070f; padding: 60px 20px;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      <div style="text-align: center; margin-bottom: 40px;">
+        <div class="section-tag" style="justify-content: center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 6L6 18M6 6l12 12"></path></svg> Riscos Operacionais</div>
+        <h2 style="font-family: 'Syne', sans-serif; font-size: clamp(22px, 5vw, 44px); font-weight: 700; color: #f1f5f9;">O custo de operar sem visibilidade</h2>
+      </div>
+      <div class="problems-grid">
+        <div class="benefit-card">
+          <div class="problem-icon-wrapper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" stroke="#ef4444" fill="none"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8" stroke="#ef4444" fill="none"/><circle cx="5.5" cy="18.5" r="2.5" stroke="#ef4444" fill="none"/><circle cx="18.5" cy="18.5" r="2.5" stroke="#ef4444" fill="none"/></svg></div>
+          <div><h4 style="font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 6px;">Desvio de Rota</h4><p style="color: #94a3b8; font-size: 13px;">Veículos fora do trajeto autorizado sem visibilidade ou alerta.</p></div>
+        </div>
+        <div class="benefit-card">
+          <div class="problem-icon-wrapper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5"><path d="M3.23047 15.6021V19.6021M3.23047 17.6021H6.10979C6.51355 17.6021 6.71543 17.6021 6.88849 17.5357C7.04136 17.477 7.17748 17.3816 7.28489 17.258C7.40648 17.1181 7.47547 16.9283 7.61345 16.5489L9.23047 12.1021M16.2305 14.1021L17.9671 14.9704C18.4144 15.1941 18.638 15.3059 18.8584 15.3124C19.0525 15.3182 19.2441 15.2673 19.4098 15.166C19.5979 15.051 19.7366 14.843 20.014 14.4269L20.2251 14.1102C20.5726 13.589 20.7463 13.3284 20.7669 13.0693C20.785 12.8418 20.7248 12.615 20.5962 12.4265C20.4497 12.2117 20.1696 12.0717 19.6094 11.7916L19.2305 11.6021M4.09035 7.62803L5.96145 4.42043C6.23184 3.9569 6.36703 3.72514 6.56088 3.59657C6.73149 3.48341 6.93273 3.42534 7.13741 3.43022C7.36995 3.43575 7.60783 3.55986 8.0836 3.80809L15.9789 7.92736C16.7263 8.31731 17.1 8.51229 17.2454 8.78849C17.3725 9.02974 17.3955 9.31242 17.3092 9.57107C17.2104 9.86717 16.8732 10.1201 16.1988 10.6259L13.0216 13.0088C12.7344 13.2242 12.5908 13.3319 12.4312 13.3832C12.2901 13.4286 12.1407 13.4421 11.9938 13.4227C11.8276 13.4007 11.6671 13.3204 11.346 13.1599L4.75685 9.8653C4.22599 9.59987 3.96056 9.46716 3.81581 9.26293C3.6886 9.08344 3.62413 8.86702 3.63238 8.64718C3.64176 8.39703 3.79129 8.1407 4.09035 7.62803Z" stroke="#ef4444" fill="none"/></svg></div>
+          <div><h4 style="font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 6px;">Ausência de Evidências</h4><p style="color: #94a3b8; font-size: 13px;">Incidentes sem registro visual comprometem defesa jurídica.</p></div>
+        </div>
+        <div class="benefit-card">
+          <div class="problem-icon-wrapper"><svg fill="none" width="18" height="18" viewBox="0 0 24 24" id="car-alert-left" xmlns="http://www.w3.org/2000/svg"><line x1="10.05" y1="11.5" x2="9.95" y2="11.5" stroke="#ef4444" stroke-width="1.95"/><path d="M5,18H4a1,1,0,0,1-1-1V13.78a1,1,0,0,1,.76-1L5,12.5" stroke="#ef4444" stroke-width="1.5" fill="none"/><path d="M14,8h2.38a1,1,0,0,1,.9.55L19,12l1.45.72a1,1,0,0,1,.55.9V17a1,1,0,0,1-1,1H19" stroke="#ef4444" stroke-width="1.5" fill="none"/><path d="M9,18h6m2,2a2,2,0,1,0-2-2A2,2,0,0,0,17,20ZM7,20a2,2,0,1,0-2-2A2,2,0,0,0,7,20ZM10,7V4" stroke="#ef4444" stroke-width="1.5" fill="none"/></svg></div>
+          <div><h4 style="font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 6px;">Uso Indevido da Frota</h4><p style="color: #94a3b8; font-size: 13px;">Veículos utilizados fora do horário ou para fins não autorizados.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARDS PRINCIPAIS LADO A LADO -->
+  <section style="background: #07070f; padding: 60px 20px;">
+    <div style="max-width: 1300px; margin: 0 auto;">
+      <div style="text-align: center; margin-bottom: 40px;">
+        <div class="section-tag" style="justify-content: center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.23047 15.6021V19.6021M3.23047 17.6021H6.10979C6.51355 17.6021 6.71543 17.6021 6.88849 17.5357C7.04136 17.477 7.17748 17.3816 7.28489 17.258C7.40648 17.1181 7.47547 16.9283 7.61345 16.5489L9.23047 12.1021M16.2305 14.1021L17.9671 14.9704C18.4144 15.1941 18.638 15.3059 18.8584 15.3124C19.0525 15.3182 19.2441 15.2673 19.4098 15.166C19.5979 15.051 19.7366 14.843 20.014 14.4269L20.2251 14.1102C20.5726 13.589 20.7463 13.3284 20.7669 13.0693C20.785 12.8418 20.7248 12.615 20.5962 12.4265C20.4497 12.2117 20.1696 12.0717 19.6094 11.7916L19.2305 11.6021M4.09035 7.62803L5.96145 4.42043C6.23184 3.9569 6.36703 3.72514 6.56088 3.59657C6.73149 3.48341 6.93273 3.42534 7.13741 3.43022C7.36995 3.43575 7.60783 3.55986 8.0836 3.80809L15.9789 7.92736C16.7263 8.31731 17.1 8.51229 17.2454 8.78849C17.3725 9.02974 17.3955 9.31242 17.3092 9.57107C17.2104 9.86717 16.8732 10.1201 16.1988 10.6259L13.0216 13.0088C12.7344 13.2242 12.5908 13.3319 12.4312 13.3832C12.2901 13.4286 12.1407 13.4421 11.9938 13.4227C11.8276 13.4007 11.6671 13.3204 11.346 13.1599L4.75685 9.8653C4.22599 9.59987 3.96056 9.46716 3.81581 9.26293C3.6886 9.08344 3.62413 8.86702 3.63238 8.64718C3.64176 8.39703 3.79129 8.1407 4.09035 7.62803Z" stroke="#60a5fa" stroke-width="2"/></svg>
+          Câmeras com Inteligência Avançada
+        </div>
+        <h2 style="font-family: 'Syne', sans-serif; font-size: clamp(22px, 5vw, 44px); font-weight: 700; color: #f1f5f9;">Comparação de Tecnologias Embarcadas</h2>
+        <p style="color: #94a3b8; font-size: clamp(13px, 3vw, 17px); max-width: 600px; margin: 12px auto 0;">Confira as diferenças entre os dois modelos e escolha o ideal para sua operação.</p>
+      </div>
+
+      <div class="cards-container">
+        
+        <!-- CARD ESQUERDO - Câmera Tipo 1 -->
+        <div class="card">
+          <div class="badge-blue">CÂMERA TIPO 1</div>
+          <h3 class="card-title">Monitoramento Inteligente</h3>
+          <p class="card-subtitle">Tecnologia avançada para gestão completa da frota</p>
+          
+          <div class="alert-list">
+            <div class="alert-header">ALERTAS DISPONÍVEIS (16 itens)</div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Ignição ligada/desligada</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Pânico</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Sonolência</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Distração</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Cigarro</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Uso de celular</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Ausência de motorista</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Câmera coberta</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Uso de óculos escuros</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Cinto de segurança</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Risco de colisão</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Velocidade máxima excedida</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Veículo dianteiro próximo</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Saída de faixa</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Detecção de pedestre</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Falha de SD Card</span></div>
+          </div>
+          
+          <div class="price-container">
+            <div class="price-row">
+              <div class="price-left">
+                <div class="price-label">Aquisição do equipamento + Instalação e Treinamento</div>
+                <div class="price-install">R$ 1.885,00</div>
+                <div class="installment-info">em até 6x no cartão</div>
+                <div class="discount-info">ou 10% de desconto à vista (R$ 1.696,50)</div>
+                <div class="per-vehicle">/ por veículo</div>
+              </div>
+              <div class="price-right">
+                <div class="price-label">Mensalidade da plataforma</div>
+                <div class="price-monthly">R$ 149,90/mês</div>
+              </div>
+            </div>
+          </div>
+          <div class="contract-period">* Permanência contratual de 24 meses</div>
+          <a href="https://wa.me/5583996787788?text=Olá! Tenho interesse na Câmera Tipo 1 para ASL Distribuição." target="_blank" class="btn-select">Selecionar este modelo →</a>
+        </div>
+        
+        <!-- CARD DIREITO - Câmera Tipo 2 -->
+        <div class="card">
+          <div class="badge-popular">MAIS ESCOLHIDA</div>
+          <div class="badge-blue">CÂMERA TIPO 2</div>
+          <h3 class="card-title">Monitoramento Completo</h3>
+          <p class="card-subtitle">Recursos adicionais para máxima segurança e proteção</p>
+          
+          <div class="alert-list">
+            <div class="alert-header">ALERTAS DISPONÍVEIS (18 itens)</div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Ignição ligada/desligada</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Pânico</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Velocidade máxima excedida</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Vibração</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Colisão</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Aceleração brusca</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Frenagem brusca</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Curva brusca</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Sonolência</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Bocejo</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Distração</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Cigarro</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Uso de telefone</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Ausência de motorista</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Saída de faixa</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Proximidade veículo dianteiro</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Risco de colisão</span></div>
+            <div class="alert-row"><span class="check-green">✓</span><span>Removeu SD card</span></div>
+          </div>
+          
+          <div class="price-container">
+            <div class="price-row">
+              <div class="price-left">
+                <div class="price-label">Aquisição do equipamento + Instalação e Treinamento</div>
+                <div class="price-install">R$ 1.995,00</div>
+                <div class="installment-info">em até 6x no cartão</div>
+                <div class="discount-info">ou 10% de desconto à vista (R$ 1.795,50)</div>
+                <div class="per-vehicle">/ por veículo</div>
+              </div>
+              <div class="price-right">
+                <div class="price-label">Mensalidade da plataforma</div>
+                <div class="price-monthly">R$ 179,90/mês</div>
+              </div>
+            </div>
+          </div>
+          <div class="contract-period">* Permanência contratual de 24 meses</div>
+          <a href="https://wa.me/5583996787788?text=Olá! Tenho interesse na Câmera Tipo 2 para ASL Distribuição." target="_blank" class="btn-select">Selecionar este modelo →</a>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 40px;">
+        <div style="display: inline-block; background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 50px; padding: 10px 20px;">
+          <span style="color: #94a3b8; font-size: 12px;">Ambos os modelos possuem rastreamento GPS integrado e envio automático de alertas para o dashboard</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefícios do Sistema -->
+  <section style="background: #0c0c1a; padding: 60px 20px;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      <div style="text-align: center; margin-bottom: 40px;">
+        <div class="section-tag" style="justify-content: center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Capacidades do Sistema</div>
+        <h2 style="font-family: 'Syne', sans-serif; font-size: clamp(22px, 5vw, 44px); font-weight: 700; color: #f1f5f9;">O que o sistema entrega</h2>
+        <p style="color: #94a3b8; font-size: clamp(13px, 3vw, 17px); max-width: 560px; margin: 12px auto 0;">Tecnologia embarcada de ponta com inteligência analítica para operações que exigem controle e rastreabilidade.</p>
+      </div>
+      <div class="benefits-grid">
+        <div class="benefit-card"><div class="icon-wrapper"><svg width="18" height="18" viewBox="0 0 512.015 512.015" fill="none"><path d="M256.007,213.341c35.355,0,64-28.645,64-64s-28.645-64-64-64s-64,28.645-64,64S220.652,213.341,256.007,213.341z M256.007,128.008c11.791,0,21.333,9.542,21.333,21.333s-9.542,21.333-21.333,21.333c-11.791,0-21.333-9.542-21.333-21.333 S244.216,128.008,256.007,128.008z" fill="#3b82f6"/><path d="M511.593,486.491l-42.667-213.333c-1.994-9.972-10.75-17.15-20.919-17.15h-82.927c1.362-2.146,2.744-4.321,4.162-6.55 l1.036-1.629c5.852-9.199,8.681-13.651,12.042-18.961c14.956-23.623,23.02-50.992,23.02-79.527 c0-89.032-77.35-158.521-166.786-148.343c-66.548,7.591-121.188,60.835-130.398,127.125 c-5.511,39.683,4.604,78.394,27.526,109.517c4.485,6.08,8.817,12.17,13.068,18.368H64.007c-10.169,0-18.925,7.178-20.919,17.15 L0.422,486.491c-2.64,13.201,7.457,25.517,20.919,25.517h469.333C504.136,512.008,514.233,499.692,511.593,486.491z M150.418,133.993c6.528-46.989,45.76-85.218,92.967-90.603c64.055-7.29,119.289,42.33,119.289,105.951 c0,20.39-5.735,39.855-16.403,56.706c-3.34,5.276-6.155,9.708-11.991,18.88l-1.036,1.629 c-40.148,63.109-58.184,93.122-77.28,131.152c-33.196-65.363-56.271-105.169-85.935-145.383 C153.652,190.089,146.453,162.54,150.418,133.993z M47.363,469.341l34.133-170.667h93.854 c15.711,26.598,31.008,55.273,49.787,92.647c1.027,2.044,2.059,4.103,3.107,6.198l8.681,17.362 c7.863,15.726,30.305,15.723,38.164-0.004l18.389-36.8c12.281-24.528,26.224-48.997,44.921-79.403h92.117l34.133,170.667H47.363z" fill="#3b82f6"/></svg></div><h3 style="font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 8px;">Rastreamento em Tempo Real</h3><p style="color: #94a3b8; font-size: 12px;">Localização precisa via GPS 4G com atualização contínua.</p></div>
+        <div class="benefit-card"><div class="icon-wrapper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.23047 15.6021V19.6021M3.23047 17.6021H6.10979C6.51355 17.6021 6.71543 17.6021 6.88849 17.5357C7.04136 17.477 7.17748 17.3816 7.28489 17.258C7.40648 17.1181 7.47547 16.9283 7.61345 16.5489L9.23047 12.1021M16.2305 14.1021L17.9671 14.9704C18.4144 15.1941 18.638 15.3059 18.8584 15.3124C19.0525 15.3182 19.2441 15.2673 19.4098 15.166C19.5979 15.051 19.7366 14.843 20.014 14.4269L20.2251 14.1102C20.5726 13.589 20.7463 13.3284 20.7669 13.0693C20.785 12.8418 20.7248 12.615 20.5962 12.4265C20.4497 12.2117 20.1696 12.0717 19.6094 11.7916L19.2305 11.6021M4.09035 7.62803L5.96145 4.42043C6.23184 3.9569 6.36703 3.72514 6.56088 3.59657C6.73149 3.48341 6.93273 3.42534 7.13741 3.43022C7.36995 3.43575 7.60783 3.55986 8.0836 3.80809L15.9789 7.92736C16.7263 8.31731 17.1 8.51229 17.2454 8.78849C17.3725 9.02974 17.3955 9.31242 17.3092 9.57107C17.2104 9.86717 16.8732 10.1201 16.1988 10.6259L13.0216 13.0088C12.7344 13.2242 12.5908 13.3319 12.4312 13.3832C12.2901 13.4286 12.1407 13.4421 11.9938 13.4227C11.8276 13.4007 11.6671 13.3204 11.346 13.1599L4.75685 9.8653C4.22599 9.59987 3.96056 9.46716 3.81581 9.26293C3.6886 9.08344 3.62413 8.86702 3.63238 8.64718C3.64176 8.39703 3.79129 8.1407 4.09035 7.62803Z" stroke="#3b82f6" stroke-width="2"></path></svg></div><h3 style="font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 8px;">Câmeras Embarcadas HD</h3><p style="color: #94a3b8; font-size: 12px;">Registro visual de alta definição interno e externo.</p></div>
+        <div class="benefit-card"><div class="icon-wrapper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div><h3 style="font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 8px;">Playback de Eventos</h3><p style="color: #94a3b8; font-size: 12px;">Acesso a gravações por data, hora, veículo ou ocorrência.</p></div>
+        <div class="benefit-card"><div class="icon-wrapper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div><h3 style="font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 8px;">Alertas Inteligentes</h3><p style="color: #94a3b8; font-size: 12px;">Notificações instantâneas por excesso de velocidade, saída de rota.</p></div>
+        <div class="benefit-card"><div class="icon-wrapper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div><h3 style="font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 8px;">Monitoramento Remoto</h3><p style="color: #94a3b8; font-size: 12px;">Visualização ao vivo via app mobile ou dashboard web.</p></div>
+        <div class="benefit-card"><div class="icon-wrapper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg></div><h3 style="font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 8px;">Histórico e Relatórios</h3><p style="color: #94a3b8; font-size: 12px;">Dados históricos com relatórios gerenciais exportáveis.</p></div>
+        <div class="benefit-card"><div class="icon-wrapper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div><h3 style="font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 8px;">Proteção Patrimonial</h3><p style="color: #94a3b8; font-size: 12px;">Sistemas de bloqueio, geofencing e alertas de violação.</p></div>
+        <div class="benefit-card"><div class="icon-wrapper"><svg viewBox="-0.5 0 25 25" width="18" height="18" fill="none"><path d="M12.8702 16.97V18.0701C12.8702 18.2478 12.7995 18.4181 12.6739 18.5437C12.5482 18.6694 12.3778 18.74 12.2001 18.74C12.0224 18.74 11.852 18.6694 11.7264 18.5437C11.6007 18.4181 11.5302 18.2478 11.5302 18.0701V16.9399C11.0867 16.8668 10.6625 16.7051 10.2828 16.4646C9.90316 16.2241 9.57575 15.9097 9.32013 15.54C9.21763 15.428 9.16061 15.2817 9.16016 15.1299C9.16006 15.0433 9.17753 14.9576 9.21155 14.8779C9.24557 14.7983 9.29545 14.7263 9.35809 14.6665C9.42074 14.6067 9.49484 14.5601 9.57599 14.5298C9.65713 14.4994 9.7436 14.4859 9.83014 14.49C9.91602 14.4895 10.0009 14.5081 10.0787 14.5444C10.1566 14.5807 10.2254 14.6338 10.2802 14.7C10.6 15.1178 11.0342 15.4338 11.5302 15.6099V13.0701C10.2002 12.5401 9.53015 11.77 9.53015 10.76C9.55019 10.2193 9.7627 9.70353 10.1294 9.30566C10.4961 8.9078 10.9929 8.65407 11.5302 8.59009V7.47998C11.5302 7.30229 11.6007 7.13175 11.7264 7.0061C11.852 6.88045 12.0224 6.81006 12.2001 6.81006C12.3778 6.81006 12.5482 6.88045 12.6739 7.0061C12.7995 7.13175 12.8702 7.30229 12.8702 7.47998V8.58008C13.2439 8.63767 13.6021 8.76992 13.9234 8.96924C14.2447 9.16856 14.5226 9.43077 14.7402 9.73999C14.8284 9.85568 14.8805 9.99471 14.8901 10.1399C14.8928 10.2256 14.8783 10.3111 14.8473 10.3911C14.8163 10.4711 14.7696 10.5439 14.7099 10.6055C14.6502 10.667 14.5787 10.7161 14.4998 10.7495C14.4208 10.7829 14.3359 10.8001 14.2501 10.8C14.1607 10.7989 14.0725 10.7787 13.9915 10.7407C13.9104 10.7028 13.8384 10.648 13.7802 10.5801C13.5417 10.2822 13.2274 10.054 12.8702 9.91992V12.1699L13.1202 12.27C14.3902 12.76 15.1802 13.4799 15.1802 14.6299C15.163 15.2399 14.9149 15.8208 14.4862 16.2551C14.0575 16.6894 13.4799 16.9449 12.8702 16.97Z" fill="#3b82f6"></path><path d="M12.58 3.96997H6C4.93913 3.96997 3.92178 4.39146 3.17163 5.1416C2.42149 5.89175 2 6.9091 2 7.96997V17.97C2 19.0308 2.42149 20.0482 3.17163 20.7983C3.92178 21.5485 4.93913 21.97 6 21.97H18C19.0609 21.97 20.0783 21.5485 20.8284 20.7983C21.5786 20.0482 22 19.0308 22 17.97V11.8999" stroke="#3b82f6" stroke-width="1.5"></path></svg></div><h3 style="font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 8px;">Redução de Custos</h3><p style="color: #94a3b8; font-size: 12px;">Otimização de rotas, controle de combustível e gestão de comportamento do condutor.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Diferenciais -->
+  <section style="background: #0c0c1a; padding: 60px 20px;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      <div style="display: flex; flex-direction: column; gap: 40px;">
+        <div style="text-align: center;">
+          <div class="section-tag" style="justify-content: center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> Diferenciais</div>
+          <h2 style="font-family: 'Syne', sans-serif; font-size: clamp(22px, 5vw, 40px); font-weight: 700; color: #f1f5f9;">Por que escolher a Attive Tecnologia</h2>
+          <p style="color: #94a3b8; font-size: clamp(13px, 3vw, 16px); max-width: 600px; margin: 16px auto 0;">Não vendemos apenas equipamentos. Entregamos um ecossistema completo de monitoramento, suporte e inteligência operacional para sua frota operar com segurança e eficiência.</p>
+          <div style="margin-top: 28px;"><a href="https://wa.me/5583996787788" target="_blank" class="btn-select" style="display: inline-flex; width: auto; padding: 10px 24px;">Conversar com especialista →</a></div>
+        </div>
+        <div class="differentials-grid">
+          <div class="benefit-card"><div class="icon-wrapper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div><h4 style="font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 6px;">Instalação Técnica Certificada</h4><p style="color: #94a3b8; font-size: 11px;">Equipe especializada com processos padronizados e laudos de instalação.</p></div>
+          <div class="benefit-card"><div class="icon-wrapper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div><h4 style="font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 6px;">Suporte Pós-Venda Ativo</h4><p style="color: #94a3b8; font-size: 11px;">Atendimento dedicado, não apenas reativo.</p></div>
+          <div class="benefit-card">
+            <div class="icon-wrapper">
+              <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M28,5H4A2,2,0,0,0,2,7V24a2,2,0,0,0,2,2H18v3a1,1,0,0,0,.53.88,1,1,0,0,0,1-.05L22,28.2l2.45,1.63A1,1,0,0,0,26,29V26h2a2,2,0,0,0,2-2V7A2,2,0,0,0,28,5Z" fill="#3b82f6"/>
+                <path d="M7,12H25a1,1,0,0,0,0-2H7a1,1,0,0,0,0,2Z" fill="#3b82f6"/>
+                <path d="M7,16h8a1,1,0,0,0,0-2H7a1,1,0,0,0,0,2Z" fill="#3b82f6"/>
+                <path d="M7,20h8a1,1,0,0,0,0-2H7a1,1,0,0,0,0,2Z" fill="#3b82f6"/>
+              </svg>
+            </div>
+            <h4 style="font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 6px;">Equipamentos Homologados</h4>
+            <p style="color: #94a3b8; font-size: 11px;">Hardware com certificação Anatel, garantia de fábrica e compatibilidade comprovada.</p>
+          </div>
+          <div class="benefit-card"><div class="icon-wrapper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12" y2="18"></line></svg></div><h4 style="font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 6px;">Tecnologia Atualizada</h4><p style="color: #94a3b8; font-size: 11px;">Plataforma em constante evolução.</p></div>
+          <div class="benefit-card"><div class="icon-wrapper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></div><h4 style="font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 6px;">Integração Completa</h4><p style="color: #94a3b8; font-size: 11px;">Tudo em uma única plataforma.</p></div>
+          <div class="benefit-card">
+            <div class="icon-wrapper">
+              <svg fill="#3b82f6" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15C7.58 15 4 16.79 4 19V21H20V19C20 16.79 16.42 15 12 15ZM8 9C8 10.0609 8.42143 11.0783 9.17157 11.8284C9.92172 12.5786 10.9391 13 12 13C13.0609 13 14.0783 12.5786 14.8284 11.8284C15.5786 11.0783 16 10.0609 16 9H8ZM11.5 2C11.2 2 11 2.21 11 2.5V5.5H10V3C10 3 7.75 3.86 7.75 6.75C7.75 6.75 7 6.89 7 8H17C16.95 6.89 16.25 6.75 16.25 6.75C16.25 3.86 14 3 14 3V5.5H13V2.5C13 2.21 12.81 2 12.5 2H11.5Z"></path>
+              </svg>
+            </div>
+            <h4 style="font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 6px;">Suporte Especializado</h4>
+            <p style="color: #94a3b8; font-size: 11px;">Atuação regional rápida e suporte presencial com técnicos certificados.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background: #07070f; border-top: 1px solid rgba(255,255,255,0.06); padding: 40px 20px;">
+    <div style="max-width: 1100px; margin: 0 auto; text-align: center;">
+      <div style="font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: #f1f5f9;">Attive Tecnologia</div>
+      <div style="color: #94a3b8; font-size: 12px; margin: 8px 0;">Segurança Eletrônica & Monitoramento Inteligente</div>
+      <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin: 16px 0;">
+        <div style="color: #94a3b8; font-size: 12px;">(83) 99678-7788</div>
+        <div style="color: #94a3b8; font-size: 12px;">attivetecnologia@gmail.com</div>
+      </div>
+      <div style="color: #374151; font-size: 10px;">Proposta válida por 7 dias · Campina Grande, PB</div>
+      
+      <div style="display: flex; align-items: center; justify-content: center; gap: 16px; padding-top: 24px; margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap;">
+        <img src="https://i.postimg.cc/qvv7bbZ4/perfil13.png" alt="Responsável Técnico" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6;">
+        <div style="text-align: left;">
+          <div style="color: #f1f5f9; font-size: 13px; font-weight: 600;">Hélio Crispim</div>
+          <div style="color: #94a3b8; font-size: 11px;">Engenheiro Eletricista | CREA: 12290192025OPB</div>
+          <div style="color: #60a5fa; font-size: 10px;">Responsável Técnico - Attive Tecnologia</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  function animateCounter(element, target) {
+    let current = 0;
+    const increment = target / 50;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        element.innerText = target;
+        clearInterval(timer);
+      } else {
+        element.innerText = Math.floor(current);
+      }
+    }, 30);
+  }
+
+  function startCounters() {
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+      const target = parseInt(counter.getAttribute('data-target'));
+      if (target && !counter.hasAttribute('data-animated')) {
+        counter.setAttribute('data-animated', 'true');
+        animateCounter(counter, target);
+      }
+    });
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        startCounters();
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const statsSection = document.querySelector('.stat-number');
+  if (statsSection && statsSection.parentElement) {
+    observer.observe(statsSection.parentElement.parentElement);
+  }
+  
+  setTimeout(() => {
+    const counters = document.querySelectorAll('.counter');
+    let hasAnimated = false;
+    counters.forEach(c => { if (c.getAttribute('data-animated')) hasAnimated = true; });
+    if (!hasAnimated) startCounters();
+  }, 1000);
+</script>
+
+</body>
+</html>
