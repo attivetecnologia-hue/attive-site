@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Orçamento | Câmeras Wi-Fi | Attive Tecnologia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #070E14;
+  --bg2: #0B1520;
+  --bg3: #0F1D2C;
+  --surface: #111E2C;
+  --surface2: #162435;
+  --blue: #1FAAEE;
+  --blue2: #0D6FA8;
+  --blue-dim: rgba(31,170,238,0.10);
+  --cyan: #00E5FF;
+  --white: #EEF6FF;
+  --gray: #7096B2;
+  --gray2: #1A2E42;
+  --green: #19D47E;
+  --green-dim: rgba(25,212,126,0.10);
+  --amber: #F0A500;
+  --amber-dim: rgba(240,165,0,0.10);
+  --font: 'DM Sans', sans-serif;
+  --display: 'Syne', sans-serif;
+  --mono: 'DM Mono', monospace;
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 28px;
+  --r-xl: 36px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Animações */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(32px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@keyframes slideL {
+  from { opacity:0; transform:translateX(-20px); }
+  to { opacity:1; transform:translateX(0); }
+}
+@keyframes pulse {
+  0%,100%{ opacity:1; }
+  50%{ opacity:.5; }
+}
+@keyframes scanline {
+  0%{ top:-60%; }
+  100%{ top:110%; }
+}
+@keyframes shimmer {
+  0%{ left:-100%; }
+  100%{ left:200%; }
+}
+
+/* Noise overlay */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:0;
+  opacity:.4;
+}
+
+.container {
+  max-width: 100%;
+  padding: 20px 16px 48px;
+  position: relative;
+  z-index: 1;
+  overflow-x: hidden;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  margin-bottom: 32px;
+  background: linear-gradient(135deg, #071423 0%, #0d1e33 50%, #071220 100%);
+  border: 1px solid var(--gray2);
+  padding: 28px 20px;
+  animation: fadeUp .7s ease both;
+}
+.hero::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: radial-gradient(ellipse 70% 60% at 80% 30%, rgba(31,170,238,.12) 0%, transparent 60%);
+  pointer-events:none;
+}
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 28px;
+  position: relative;
+  z-index:2;
+}
+.logo-area img {
+  height: 65px;
+  width: auto;
+  max-width: 100%;
+  filter: drop-shadow(0 0 20px rgba(31,170,238,.25));
+}
+.proposal-meta {
+  text-align: right;
+}
+.badge-orcamento {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--blue-dim);
+  border: 1px solid rgba(31,170,238,.35);
+  border-radius: 40px;
+  padding: 4px 14px;
+  font-size: 10px;
+  font-family: var(--mono);
+  font-weight: 500;
+  color: var(--blue);
+  text-transform: uppercase;
+}
+.badge-orcamento::before {
+  content:'';
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background: var(--blue);
+  animation: pulse 1.6s infinite;
+}
+.prop-num, .prop-date {
+  font-size: 11px;
+  color: var(--gray);
+}
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--cyan);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-eyebrow::before {
+  content:'';
+  width:24px;
+  height:1px;
+  background: var(--cyan);
+}
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(32px, 8vw, 56px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  word-break: break-word;
+}
+.hero-title span {
+  color: var(--blue);
+}
+.hero-sub {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--gray2);
+  border-radius: 40px;
+  padding: 4px 10px;
+  font-size: 10px;
+  color: var(--gray);
+  font-family: var(--mono);
+}
+.chip svg {
+  width: 11px;
+  height: 11px;
+  color: var(--blue);
+}
+
+/* Cliente */
+.client-card {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: var(--r-lg);
+  padding: 20px 16px;
+  margin-bottom: 32px;
+  text-align: center;
+  animation: slideL .6s ease .1s both;
+  position: relative;
+}
+.client-card::before {
+  content:'';
+  position:absolute;
+  left:0;
+  top:10px;
+  bottom:10px;
+  width:3px;
+  background: linear-gradient(to bottom, var(--blue), var(--cyan));
+  border-radius:2px;
+}
+.client-name {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.client-desc {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+.client-local {
+  font-size: 13px;
+  color: var(--blue);
+  font-weight: 500;
+  background: var(--blue-dim);
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 40px;
+}
+
+/* Seções */
+.sec-header {
+  margin-bottom: 20px;
+}
+.sec-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--cyan);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sec-eyebrow::after {
+  content:'';
+  flex:1;
+  height:1px;
+  background: linear-gradient(to right, var(--gray2), transparent);
+}
+.sec-title {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.sec-title em {
+  color: var(--blue);
+  font-style: normal;
+}
+.sec-sub {
+  font-size: 13px;
+  color: var(--gray);
+  margin-top: 6px;
+}
+
+/* Tech cards */
+.tech-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+@media (min-width: 640px) {
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.tech-card {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: var(--r-md);
+  padding: 18px;
+}
+.tech-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--blue-dim);
+  border: 1px solid rgba(31,170,238,.2);
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  color: var(--blue);
+}
+.tech-card h4 {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.tech-card p {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.4;
+}
+
+/* Câmeras – agora em coluna única, sem compressão */
+.cameras-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.camera-item {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: var(--r-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.camera-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.cam-number {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--blue-dim);
+  border: 1px solid var(--blue2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+.cam-info {
+  flex: 1;
+  min-width: 0;
+}
+.cam-info h4 {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.cam-info p {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.4;
+}
+.cam-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.cam-tag {
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--gray2);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--gray);
+}
+.cam-tag.highlight {
+  border-color: rgba(31,170,238,.3);
+  color: var(--blue);
+  background: var(--blue-dim);
+}
+
+/* Features */
+.features-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+@media (min-width: 560px) {
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg2);
+  border: 1px solid var(--gray2);
+  border-radius: var(--r-sm);
+}
+.feat-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--green-dim);
+  border: 1px solid rgba(25,212,126,.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.feat-check svg {
+  width: 11px;
+  height: 11px;
+  color: var(--green);
+}
+.feature-item span {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.4;
+}
+.feature-item span strong {
+  color: var(--white);
+  font-weight: 500;
+}
+
+/* Wifi box */
+.wifi-box {
+  background: linear-gradient(135deg, var(--bg2) 0%, #0a1a2a 100%);
+  border: 1px solid rgba(31,170,238,.2);
+  border-radius: var(--r-lg);
+  padding: 20px;
+  margin-bottom: 32px;
+}
+.wifi-box p {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 12px;
+}
+.wifi-highlight {
+  margin-top: 16px;
+  padding: 10px 14px;
+  background: var(--blue-dim);
+  border-left: 3px solid var(--blue);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Total box */
+.total-box {
+  background: linear-gradient(135deg, var(--surface) 0%, #0d1a28 100%);
+  border: 1px solid var(--blue2);
+  border-radius: var(--r-lg);
+  padding: 20px;
+  margin: 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+}
+@media (min-width: 480px) {
+  .total-box {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+.total-left label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.total-label-text {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+}
+.total-value {
+  font-family: var(--mono);
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--white);
+}
+.total-pix {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--green);
+  margin-top: 4px;
+}
+.discount-note {
+  font-size: 11px;
+  color: var(--green);
+  opacity: .75;
+}
+
+/* Pagamento */
+.payment-section {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: var(--r-lg);
+  padding: 20px;
+  margin: 32px 0;
+}
+.payment-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.payment-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--amber-dim);
+  border: 1px solid rgba(240,165,0,.2);
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--amber);
+}
+.payment-header h3 {
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 700;
+}
+.payment-header h3 em {
+  color: var(--blue);
+  font-style: normal;
+}
+.payment-select {
+  width: 100%;
+  padding: 12px;
+  background: var(--bg);
+  border: 1px solid var(--blue2);
+  border-radius: var(--r-sm);
+  color: var(--white);
+  font-family: var(--mono);
+  font-size: 13px;
+  cursor: pointer;
+}
+.installment-info {
+  background: var(--bg2);
+  border: 1px solid var(--gray2);
+  border-radius: var(--r-md);
+  padding: 16px;
+  margin-top: 16px;
+  text-align: center;
+}
+.inst-label {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 6px;
+}
+.inst-value {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--green);
+}
+.pix-badge {
+  background: var(--green-dim);
+  border: 1px solid rgba(25,212,126,.3);
+  color: var(--green);
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-left: 6px;
+}
+.payment-condition {
+  background: linear-gradient(135deg, var(--amber-dim) 0%, rgba(240,165,0,0.05) 100%);
+  border: 1px solid rgba(240,165,0,0.3);
+  border-radius: var(--r-md);
+  padding: 16px;
+  margin-top: 20px;
+  text-align: center;
+}
+.payment-condition strong {
+  color: var(--amber);
+  font-family: var(--display);
+  font-size: 15px;
+  display: block;
+  margin-bottom: 6px;
+}
+.payment-condition p {
+  font-size: 12px;
+  color: var(--gray);
+  line-height: 1.4;
+}
+
+/* Diferenciais */
+.diff-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 32px 0;
+}
+@media (min-width: 520px) {
+  .diff-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 780px) {
+  .diff-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.diff-card {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: var(--r-md);
+  padding: 16px;
+}
+.diff-card h4 {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.diff-card p {
+  font-size: 12px;
+  color: var(--gray);
+}
+
+/* Rodapé proposta */
+.prop-footer {
+  background: var(--surface);
+  border: 1px solid var(--gray2);
+  border-radius: var(--r-lg);
+  padding: 18px;
+  margin: 32px 0;
+}
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@media (min-width: 480px) {
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.info-item label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.info-item p {
+  font-size: 13px;
+  color: var(--gray);
+}
+
+/* Botão */
+.approve-btn {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 24px auto;
+  background: linear-gradient(135deg, #19D47E 0%, #0fb868 100%);
+  color: #062014;
+  text-align: center;
+  padding: 14px 20px;
+  border-radius: 50px;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all .3s ease;
+}
+.approve-btn:hover {
+  transform: scale(1.02);
+}
+
+/* Assinatura */
+.signature {
+  text-align: center;
+  padding: 32px 0 20px;
+  border-top: 1px solid var(--gray2);
+}
+.sig-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 3px solid var(--blue);
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+.sig-name {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.sig-crea {
+  font-size: 13px;
+  color: var(--blue);
+  font-family: var(--mono);
+  margin-bottom: 12px;
+}
+.sig-contact {
+  font-size: 12px;
+  color: var(--gray);
+  line-height: 1.5;
+}
+.page-footer {
+  text-align: center;
+  padding: 16px 0 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gray);
+}
+.wa-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  border-radius: 50px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+  font-size: 12px;
+  font-family: var(--mono);
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,.3);
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-top">
+      <div class="logo-area">
+        <img src="https://i.postimg.cc/4xb9f1dS/logobrancasemfundo-Copia.png" alt="Attive Tecnologia">
+      </div>
+      <div class="proposal-meta">
+        <div class="badge-orcamento">Orçamento Técnico</div>
+        <div class="prop-num">Orçamento 087-2026</div>
+        <div class="prop-date">Emissão: 03 de junho de 2026</div>
+      </div>
+    </div>
+    <div class="hero-body">
+      <div class="hero-eyebrow">Sistema de Vigilância</div>
+      <h1 class="hero-title">Câmeras<br><span>Wi-Fi</span> Inteligentes</h1>
+      <p class="hero-sub">Monitoramento remoto em tempo real direto no seu celular. Ideal para acompanhamento de pessoa da terceira idade e cuidados com a família. <strong>Com áudio bidirecional: você pode escutar e falar através da câmera</strong>. Sem obras, sem cabos aparentes, instalação limpa e discreta.</p>
+      <div class="hero-chips">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1"/></svg> Sem cabos</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> App no celular</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg> Visão noturna</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Instalação profissional</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> Áudio bidirecional</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="client-card">
+    <div class="client-name">Camila Meira</div>
+    <div class="client-desc">Instalação de sistema de câmeras Wi-Fi</div>
+    <div class="client-local">Rua Benjamim Constant, 170 · Apto 203 · Mundo Plaza</div>
+  </div>
+
+  <div class="sec-header">
+    <div class="sec-eyebrow">Tecnologia incluída</div>
+    <div class="sec-title">O que você <em>recebe</em></div>
+  </div>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tech-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1"/></svg></div>
+      <h4>Conectividade Wi-Fi</h4>
+      <p>Transmissão sem cabos coaxiais. Conecta à sua rede existente.</p>
+    </div>
+    <div class="tech-card">
+      <div class="tech-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="2"/><path d="M22 12c-2.667 4.667-6 7-10 7s-7.333-2.333-10-7c2.667-4.667 6-7 10-7s7.333 2.333 10 7"/></svg></div>
+      <h4>Visão Noturna</h4>
+      <p>Infravermelho automático. Imagens nítidas mesmo no escuro.</p>
+    </div>
+    <div class="tech-card">
+      <div class="tech-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+      <h4>Áudio Bidirecional</h4>
+      <p><strong>Você pode se comunicar através da câmera</strong>. Escute e converse com quem estiver no ambiente.</p>
+    </div>
+  </div>
+
+  <div class="cameras-section">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Escopo do projeto</div>
+      <div class="sec-title">3 Câmeras <em>instaladas</em></div>
+      <div class="sec-sub">Posicionamento estratégico para acompanhamento da pessoa da terceira idade.</div>
+    </div>
+    <div class="cameras-list">
+      <div class="camera-item">
+        <div class="camera-row">
+          <div class="cam-number">1</div>
+          <div class="cam-info">
+            <h4>Câmera 1 – Quarto</h4>
+            <p>Monitoramento do descanso, segurança e bem-estar.</p>
+          </div>
+        </div>
+        <div class="cam-tags">
+          <span class="cam-tag highlight">Wi-Fi</span>
+          <span class="cam-tag">Full HD</span>
+          <span class="cam-tag">IR</span>
+          <span class="cam-tag">2-way audio</span>
+        </div>
+      </div>
+      <div class="camera-item">
+        <div class="camera-row">
+          <div class="cam-number">2</div>
+          <div class="cam-info">
+            <h4>Câmera 2 – Sala</h4>
+            <p>Visão ampla da convivência, ideal para acompanhar atividades.</p>
+          </div>
+        </div>
+        <div class="cam-tags">
+          <span class="cam-tag highlight">Wi-Fi</span>
+          <span class="cam-tag">Full HD</span>
+          <span class="cam-tag">IR</span>
+          <span class="cam-tag">2-way audio</span>
+        </div>
+      </div>
+      <div class="camera-item">
+        <div class="camera-row">
+          <div class="cam-number">3</div>
+          <div class="cam-info">
+            <h4>Câmera 3 – Cozinha</h4>
+            <p>Acompanhamento de deslocamentos, prevenção de acidentes.</p>
+          </div>
+        </div>
+        <div class="cam-tags">
+          <span class="cam-tag highlight">Wi-Fi</span>
+          <span class="cam-tag">Full HD</span>
+          <span class="cam-tag">IR</span>
+          <span class="cam-tag">2-way audio</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="service-card">
+    <div class="sec-header" style="margin-bottom:0">
+      <div class="sec-eyebrow">Tudo incluso</div>
+      <div class="sec-title">Serviços e <em>materiais</em></div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-item"><div class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>3 câmeras Wi-Fi Full HD</strong> com visão noturna e áudio bidirecional</span></div>
+      <div class="feature-item"><div class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Configuração do app</strong> no celular com acesso ao vivo</span></div>
+      <div class="feature-item"><div class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Cabeamento elétrico</strong> de alimentação para cada câmera</span></div>
+      <div class="feature-item"><div class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Fixação profissional</strong> com acabamento limpo</span></div>
+      <div class="feature-item"><div class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Configuração de rede Wi-Fi</strong> e conexão com o roteador</span></div>
+      <div class="feature-item"><div class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Áudio bidirecional</strong> – ouça e fale pelo aplicativo</span></div>
+      <div class="feature-item"><div class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Treinamento básico</strong> de uso do aplicativo</span></div>
+    </div>
+  </div>
+
+  <div class="wifi-box">
+    <div class="sec-header" style="margin-bottom:12px">
+      <div class="sec-eyebrow">Por que Wi-Fi?</div>
+      <div class="sec-title" style="font-size:22px">Ideal para <em>apartamentos</em></div>
+    </div>
+    <p>Passar cabos coaxiais entre cômodos exige quebrar paredes e gerar obra. As <strong>câmeras Wi-Fi eliminam essa necessidade</strong>: conectam-se à sua rede e precisam apenas de uma tomada próxima.</p>
+    <p>Resultado: instalação limpa, rápida, sem danos ao imóvel, com foco no cuidado da família.</p>
+    <div class="wifi-highlight">✓ Sem quebrar paredes  ✓ Instalação em 1 dia  ✓ Full HD no celular  ✓ Áudio bidirecional</div>
+  </div>
+
+  <div class="total-box">
+    <div class="total-left">
+      <label>Valor do investimento</label>
+      <div class="total-label-text">Sistema Completo</div>
+      <div style="font-size:12px;color:var(--gray);margin-top:4px">3 câmeras + instalação + configuração</div>
+    </div>
+    <div class="total-right">
+      <div class="total-value" id="totalValue">R$ 2.018,00</div>
+      <div class="total-pix" id="totalPix">PIX com 10% OFF: R$ 1.816,20</div>
+      <div class="discount-note" id="discountNote">*Desconto à vista de 10% para pagamento via PIX</div>
+    </div>
+  </div>
+
+  <div class="payment-section">
+    <div class="payment-header">
+      <div class="payment-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+      <h3>Formas de <em>Pagamento</em></h3>
+    </div>
+    <select id="paymentSelect" class="payment-select">
+      <option value="pix">PIX à vista — 10% OFF</option>
+      <option value="1x">1× no Cartão — sem juros</option>
+      <option value="2x">2× no Cartão — sem juros</option>
+      <option value="3x">3× no Cartão — sem juros</option>
+      <option value="4x">4× no Cartão — sem juros</option>
+      <option value="5x">5× no Cartão — sem juros</option>
+      <option value="6x">6× no Cartão — sem juros</option>
+    </select>
+    <div id="installmentInfo" class="installment-info">
+      <div class="installment-inner"><div class="inst-label">Selecione uma forma de pagamento</div></div>
+    </div>
+    <div class="payment-condition">
+      <strong>🔒 Pagamento integral antecipado</strong>
+      <p>Valor total no ato da aprovação para <strong>garantia de agenda</strong> e <strong>aquisição de materiais e equipamentos</strong>. Após confirmação, agendamos a instalação.</p>
+    </div>
+  </div>
+
+  <div class="sec-header">
+    <div class="sec-eyebrow">Experiência e confiança</div>
+    <div class="sec-title">Por que escolher a <em>Attive</em></div>
+  </div>
+  <div class="diff-grid">
+    <div class="diff-card"><h4>+25 anos</h4><p>Experiência em segurança eletrônica na Paraíba</p></div>
+    <div class="diff-card"><h4>Instalação no dia</h4><p>Equipe técnica especializada, execução ágil e limpa</p></div>
+    <div class="diff-card"><h4>1 ano</h4><p>Garantia sobre os equipamentos</p></div>
+  </div>
+
+  <div class="prop-footer">
+    <div class="info-grid">
+      <div class="info-item"><label>Garantia</label><p>1 ano sobre equipamentos + 90 dias de mão de obra</p></div>
+      <div class="info-item"><label>Validade</label><p>7 dias a partir da emissão</p></div>
+      <div class="info-item"><label>Prazo de execução</label><p>Agendamento após confirmação do pagamento integral</p></div>
+      <div class="info-item"><label>Agendamento</label><p>Pagamento antecipado integral garante data e materiais</p></div>
+      <div class="info-item"><label>Desconto</label><p>10% de desconto no PIX à vista</p></div>
+    </div>
+  </div>
+
+  <button class="approve-btn" id="approveBtn">✓ Aprovar Orçamento</button>
+
+  <div class="signature">
+    <img class="sig-avatar" src="https://i.postimg.cc/qvv7bbZ4/perfil13.png" alt="Hélio Crispim">
+    <div class="sig-name">Hélio Crispim</div>
+    <div class="sig-crea">Eng. Eletricista · CREA-PB 12290192025PB</div>
+    <div class="sig-contact">attivetecnologia@gmail.com · (83) 99678-7788<br>@attivetecnologia</div>
+  </div>
+  <div class="page-footer">Attive Tecnologia · A chave para sua tranquilidade</div>
+</div>
+
+<a href="https://wa.me/5583996787788" target="_blank" class="wa-float">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  Falar com a Attive
+</a>
+
+<script>
+(function() {
+  const valorTotal = 2018.00;
+  const descontoVista = 0.90;
+  const fmtBRL = v => v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  const totalValueEl = document.getElementById('totalValue');
+  const totalPixEl = document.getElementById('totalPix');
+  const discountNoteEl = document.getElementById('discountNote');
+  const infoDiv = document.getElementById('installmentInfo');
+  const select = document.getElementById('paymentSelect');
+
+  function render() {
+    const valorVista = Math.round(valorTotal * descontoVista * 100) / 100;
+    totalValueEl.textContent = `R$ ${fmtBRL(valorTotal)}`;
+    totalPixEl.textContent = `PIX com 10% OFF: R$ ${fmtBRL(valorVista)}`;
+    discountNoteEl.textContent = '*Desconto à vista de 10% para pagamento via PIX';
+
+    if (select.value === 'pix') {
+      infoDiv.innerHTML = `<div class="installment-inner"><div class="inst-label">PIX à vista <span class="pix-badge">−10%</span></div><div class="inst-value">R$ ${fmtBRL(valorVista)}</div><div class="inst-note">Economia de R$ ${fmtBRL(valorTotal - valorVista)} com pagamento à vista</div></div>`;
+    } else {
+      const n = parseInt(select.value);
+      const parc = valorTotal / n;
+      infoDiv.innerHTML = `<div class="installment-inner"><div class="inst-label">${n}× no cartão — sem juros</div><div class="inst-value">${n}× de R$ ${fmtBRL(parc)}</div><div class="inst-note">Total: R$ ${fmtBRL(valorTotal)}</div></div>`;
+    }
+  }
+
+  function gerarMensagem() {
+    const val = select.value;
+    let forma, valorTexto;
+    const valorVista = Math.round(valorTotal * descontoVista * 100) / 100;
+    if (val === 'pix') {
+      forma = 'PIX (10% OFF)';
+      valorTexto = `R$ ${fmtBRL(valorVista)}`;
+    } else {
+      const n = parseInt(val);
+      forma = `${n}× no Cartão`;
+      valorTexto = `${n}× de R$ ${fmtBRL(valorTotal / n)} (total R$ ${fmtBRL(valorTotal)})`;
+    }
+    return encodeURIComponent(`Aprovei o orçamento!
+
+Serviço: Instalação de 3 câmeras Wi-Fi Full HD com áudio bidirecional (Orçamento 087-2026)
+Finalidade: Acompanhamento de pessoa da terceira idade e cuidados com a família. Você pode escutar e falar através da câmera.
+Pagamento: ${forma}
+Valor: ${valorTexto}
+
+*Pagamento integral antecipado para garantia de agenda e aquisição de materiais/equipamentos.*
+
+Solicito link de pagamento ou chave PIX.`);
+  }
+
+  select.addEventListener('change', render);
+  document.getElementById('approveBtn').addEventListener('click', () => {
+    window.open(`https://wa.me/5583996787788?text=${gerarMensagem()}`, '_blank');
+  });
+  render();
+})();
+</script>
+</body>
+</html>
