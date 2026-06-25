@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Técnico-Comercial — Automatizador de Portão | Attive Tecnologia</title>
+<style>
+  /* ============================================================
+     TOKENS (mantidos)
+  ============================================================ */
+  :root {
+    --bg-deep:     #060E1A;
+    --bg-base:     #0A192F;
+    --bg-card:     #0F2040;
+    --bg-card2:    #111827;
+    --border:      rgba(0,102,255,0.18);
+    --border-hi:   rgba(0,163,255,0.45);
+    --blue-core:   #0066FF;
+    --blue-neon:   #00A3FF;
+    --blue-dim:    #0047AB;
+    --text-head:   #E8F4FF;
+    --text-body:   #A8C4DC;
+    --text-muted:  #5A7A9A;
+    --gold:        #F0B429;
+    --green:       #22C55E;
+    --radius-sm:   8px;
+    --radius-md:   14px;
+    --radius-lg:   22px;
+    --glass-bg:    rgba(0,102,255,0.07);
+    --glass-blur:  blur(18px);
+    --shadow-blue: 0 4px 32px rgba(0,102,255,0.18);
+    --shadow-card: 0 2px 24px rgba(0,0,0,0.5);
+    --font-display: 'Segoe UI', system-ui, sans-serif;
+  }
+
+  /* ============================================================
+     RESET & BASE
+  ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-display);
+    background: var(--bg-deep);
+    color: var(--text-body);
+    line-height: 1.65;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(0,102,255,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 35% at 80% 80%, rgba(0,71,171,0.10) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* ============================================================
+     TYPOGRAPHY
+  ============================================================ */
+  h1, h2, h3, h4 { color: var(--text-head); font-weight: 700; line-height: 1.2; }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.6rem); letter-spacing: -0.02em; }
+  h2 { font-size: clamp(1.2rem, 3vw, 1.8rem); }
+  h3 { font-size: clamp(1rem, 2.5vw, 1.3rem); }
+  p  { font-size: clamp(0.88rem, 1.8vw, 0.98rem); }
+
+  .label-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue-neon);
+    background: rgba(0,163,255,0.1);
+    border: 1px solid rgba(0,163,255,0.25);
+    border-radius: 30px;
+    padding: 4px 14px;
+    margin-bottom: 12px;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-hi), transparent);
+    margin: 56px 0;
+  }
+
+  /* ============================================================
+     HEADER (mantido)
+  ============================================================ */
+  .header {
+    position: relative;
+    padding: 52px 0 44px;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 0;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+    z-index: 0;
+    animation: parallaxZoom 16s ease-in-out infinite alternate;
+  }
+
+  .header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: rgba(6, 14, 26, 0.72);
+    backdrop-filter: blur(2px);
+  }
+
+  @keyframes parallaxZoom {
+    0%   { transform: scale(1) translateY(0); }
+    100% { transform: scale(1.06) translateY(-15px); }
+  }
+
+  .header > *:not(.header-bg):not(.header-overlay) {
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-logo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .logo-box {
+    width: 112px;
+    height: 112px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .company-name {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-weight: 800;
+    color: var(--text-head);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .company-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 2px;
+    text-align: center;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue-neon);
+    border: 1px solid var(--border-hi);
+    border-radius: 30px;
+    padding: 5px 16px;
+    margin-bottom: 20px;
+    backdrop-filter: var(--glass-blur);
+    background: var(--glass-bg);
+  }
+
+  .header h1 { margin-bottom: 10px; }
+  .header-sub {
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
+    color: var(--blue-neon);
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .header-intro {
+    max-width: 620px;
+    margin: 0 auto;
+    color: var(--text-body);
+    font-size: 0.96rem;
+    line-height: 1.7;
+  }
+
+  .client-block {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+    padding: 12px 28px 12px 20px;
+    background: linear-gradient(135deg, rgba(0,102,255,0.10), rgba(0,163,255,0.05));
+    border: 1px solid rgba(0,163,255,0.35);
+    border-radius: 60px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 30px rgba(0,163,255,0.08), inset 0 0 30px rgba(0,163,255,0.02);
+    transition: all 0.3s ease;
+  }
+
+  .client-block:hover {
+    border-color: rgba(0,163,255,0.7);
+    box-shadow: 0 0 40px rgba(0,163,255,0.15), inset 0 0 30px rgba(0,163,255,0.05);
+    transform: scale(1.02);
+  }
+
+  .client-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-dim), var(--blue-neon));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(0,163,255,0.3);
+  }
+
+  .client-icon svg {
+    width: 22px;
+    height: 22px;
+    color: #fff;
+    stroke-width: 2.2;
+  }
+
+  .client-info {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .client-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--blue-neon);
+    opacity: 0.8;
+    font-weight: 600;
+  }
+
+  .client-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0,163,255,0.3);
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+  }
+
+  .client-address {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    margin-top: 2px;
+  }
+
+  /* ============================================================
+     SECTION TITLE
+  ============================================================ */
+  .section-title {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .section-title h2 { margin-bottom: 10px; }
+  .section-title p { color: var(--text-body); max-width: 560px; margin: 0 auto; font-size: 0.93rem; }
+
+  /* ============================================================
+     DIFERENCIAIS (mantido)
+  ============================================================ */
+  .diff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .diff-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 22px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: border-color .25s, transform .25s;
+  }
+
+  .diff-card:hover {
+    border-color: var(--border-hi);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-blue);
+  }
+
+  .diff-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(0,71,171,0.4), rgba(0,163,255,0.15));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(0,163,255,0.2);
+  }
+  .diff-icon svg { width: 20px; height: 20px; color: var(--blue-neon); }
+
+  .diff-text h4 { font-size: 0.9rem; margin-bottom: 4px; }
+  .diff-text p  { font-size: 0.8rem; color: var(--text-muted); }
+
+  /* ============================================================
+     CARDS DE SELEÇÃO INDEPENDENTE - LADO A LADO
+  ============================================================ */
+  .items-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .item-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color .3s, box-shadow .3s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item-card.selected {
+    border-color: var(--blue-neon);
+    box-shadow: 0 0 0 3px rgba(0,163,255,0.18), var(--shadow-blue);
+  }
+
+  .item-card.selected .item-header {
+    background: linear-gradient(135deg, #003380, #005BB8);
+  }
+
+  .item-header {
+    background: linear-gradient(135deg, #0A1F3A, #0F2A50);
+    padding: 18px 16px 14px;
+    text-align: center;
+    transition: background .3s;
+  }
+
+  .item-badge {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+  }
+
+  .badge-motor {
+    background: rgba(34,197,94,0.18);
+    color: var(--green);
+    border: 1px solid rgba(34,197,94,0.4);
+  }
+
+  .badge-wifi {
+    background: rgba(240,180,41,0.15);
+    color: var(--gold);
+    border: 1px solid rgba(240,180,41,0.4);
+  }
+
+  .item-name {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-head);
+  }
+
+  .item-model {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  .item-body {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .spec-list {
+    list-style: none;
+    margin: 0 0 12px 0;
+    padding: 0;
+  }
+
+  .spec-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.75rem;
+  }
+
+  .spec-list li:last-child {
+    border-bottom: none;
+  }
+
+  .spec-key {
+    color: var(--text-muted);
+  }
+
+  .spec-val {
+    color: var(--text-head);
+    font-weight: 600;
+  }
+
+  .benefits {
+    margin: 8px 0 12px;
+  }
+
+  .benefits-title {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin: 0 0 6px 0;
+  }
+
+  .benefit-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+  }
+
+  .benefit-list li {
+    font-size: 0.7rem;
+    color: var(--text-body);
+    position: relative;
+    padding-left: 14px;
+  }
+
+  .benefit-list li::before {
+    content: "✓";
+    color: var(--green);
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+  }
+
+  .price-block {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 10px;
+    margin: 8px 0 12px;
+    display: flex;
+    justify-content: space-around;
+    gap: 8px;
+  }
+
+  .price-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .price-label {
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  .price-val {
+    font-weight: 700;
+    color: var(--text-head);
+    font-size: 0.9rem;
+  }
+
+  .price-val .currency {
+    font-size: 0.75em;
+    color: var(--blue-neon);
+  }
+
+  .price-discount {
+    font-size: 0.55rem;
+    color: var(--green);
+  }
+
+  .price-installments {
+    font-size: 0.55rem;
+    color: var(--text-muted);
+  }
+
+  .select-toggle-btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border: 2px solid var(--border-hi);
+    background: transparent;
+    color: var(--blue-neon);
+    transition: all .25s;
+    margin-top: auto;
+  }
+
+  .select-toggle-btn:hover {
+    background: rgba(0,163,255,0.1);
+  }
+
+  .item-card.selected .select-toggle-btn {
+    background: linear-gradient(135deg, var(--blue-dim), var(--blue-neon));
+    border-color: transparent;
+    color: #fff;
+  }
+
+  /* ============================================================
+     INVESTIMENTO (resumo com total)
+  ============================================================ */
+  .invest-wrap {
+    background: linear-gradient(135deg, #05122A, #0A1F3D);
+    border: 1px solid var(--border-hi);
+    border-radius: var(--radius-lg);
+    padding: 40px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .invest-wrap::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 320px; height: 160px;
+    background: radial-gradient(ellipse, rgba(0,163,255,0.15), transparent 70%);
+    pointer-events: none;
+  }
+
+  .invest-selected-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .invest-items {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-weight: 800;
+    color: var(--blue-neon);
+    margin-bottom: 18px;
+    min-height: 2.2rem;
+  }
+
+  .invest-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 500px;
+    margin: 0 auto 28px;
+  }
+
+  @media (max-width: 480px) {
+    .invest-grid { grid-template-columns: 1fr; }
+  }
+
+  .invest-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 18px 14px;
+  }
+
+  .invest-box-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .invest-val {
+    font-size: clamp(1.4rem, 4vw, 1.9rem);
+    font-weight: 800;
+    color: var(--text-head);
+    letter-spacing: -0.02em;
+  }
+
+  .invest-val .currency {
+    font-size: 0.75em;
+    color: var(--blue-neon);
+    vertical-align: top;
+    margin-top: 3px;
+    display: inline-block;
+  }
+
+  .invest-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  /* ============================================================
+     PAGAMENTO E PARCELAS - CENTRALIZADO
+  ============================================================ */
+  .payment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 540px) {
+    .payment-grid { grid-template-columns: 1fr; }
+  }
+
+  .pay-option {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 20px 18px;
+    cursor: pointer;
+    transition: all .25s;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .pay-option:hover { border-color: var(--border-hi); }
+
+  .pay-option.selected {
+    border-color: var(--blue-neon);
+    background: rgba(0,163,255,0.06);
+    box-shadow: 0 0 0 3px rgba(0,163,255,0.12);
+  }
+
+  .pay-radio {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border-hi);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+  }
+
+  .pay-option.selected .pay-radio {
+    border-color: var(--blue-neon);
+    background: var(--blue-neon);
+  }
+
+  .pay-radio::after {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0;
+    transition: opacity .2s;
+  }
+
+  .pay-option.selected .pay-radio::after { opacity: 1; }
+
+  .pay-info h4 { font-size: 0.88rem; margin-bottom: 4px; }
+  .pay-info p  { font-size: 0.78rem; color: var(--text-muted); }
+  .pay-highlight { color: var(--green); font-weight: 700; font-size: 0.82rem; margin-top: 6px; }
+
+  /* Container e grid das parcelas - centralizado */
+  .installment-container {
+    max-width: 600px;
+    margin: 20px auto 0;
+    padding: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    text-align: center;
+    display: none;
+  }
+
+  .installment-container.visible {
+    display: block;
+  }
+
+  .installment-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+
+  .installment-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 480px) {
+    .installment-grid {
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 260px;
+    }
+  }
+
+  .installment-btn {
+    background: var(--bg-card2);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 4px;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+    color: var(--text-body);
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
+  .installment-btn:hover {
+    border-color: var(--border-hi);
+    background: rgba(0,163,255,0.05);
+  }
+
+  .installment-btn.selected {
+    border-color: var(--blue-neon);
+    background: rgba(0,163,255,0.12);
+    color: var(--text-head);
+    box-shadow: 0 0 0 2px rgba(0,163,255,0.18);
+  }
+
+  .installment-btn .parcela-qtd {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--text-head);
+  }
+
+  .installment-btn .parcela-valor {
+    font-size: 0.65rem;
+    color: var(--blue-neon);
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* ============================================================
+     SERVIÇOS, TIMELINE, FOOTER (mantidos)
+  ============================================================ */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .service-item {
+    background: var(--glass-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.84rem;
+    color: var(--text-body);
+    font-weight: 500;
+    transition: border-color .2s;
+  }
+  .service-item:hover { border-color: var(--border-hi); }
+  .service-item svg { width: 18px; height: 18px; color: var(--blue-neon); flex-shrink: 0; }
+
+  .timeline {
+    position: relative;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 21px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--blue-neon), var(--blue-dim), transparent);
+  }
+
+  .tl-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 0 0 28px 0;
+    position: relative;
+  }
+
+  .tl-num {
+    width: 44px; height: 44px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-dim), var(--blue-neon));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 0 14px rgba(0,163,255,0.35);
+    position: relative;
+    z-index: 1;
+  }
+
+  .tl-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    flex: 1;
+  }
+
+  .tl-content h4 { font-size: 0.9rem; margin-bottom: 4px; }
+  .tl-content p  { font-size: 0.8rem; color: var(--text-muted); }
+
+  /* ============================================================
+     CTA WHATSAPP
+  ============================================================ */
+  .cta-wrap {
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .cta-status {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    min-height: 22px;
+    transition: color .3s;
+  }
+
+  .cta-status.ready { color: var(--green); }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px 40px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all .3s;
+    background: linear-gradient(135deg, #128C7E, #25D366);
+    color: #fff;
+    box-shadow: 0 4px 30px rgba(37,211,102,0.35);
+  }
+
+  .cta-btn:hover:not(.disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 40px rgba(37,211,102,0.45);
+  }
+
+  .cta-btn.disabled {
+    background: linear-gradient(135deg, #1E293B, #263344);
+    color: var(--text-muted);
+    box-shadow: none;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .cta-btn svg { width: 22px; height: 22px; }
+
+  /* ============================================================
+     FOOTER (mantido)
+  ============================================================ */
+  .footer {
+    text-align: center;
+    padding: 40px 0 20px;
+    border-top: 1px solid var(--border);
+    margin-top: 56px;
+  }
+
+  .footer-headline {
+    font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+    font-weight: 700;
+    color: var(--text-head);
+    margin-bottom: 10px;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-thanks {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .footer-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+  .footer-meta .engineer {
+    font-weight: 700;
+    color: var(--blue-neon);
+    font-size: 0.8rem;
+    margin-top: 4px;
+  }
+
+  /* ============================================================
+     REVEAL ANIMATIONS
+  ============================================================ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .55s ease, transform .55s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============================================================
+     RESPONSIVO
+  ============================================================ */
+  @media (max-width: 768px) {
+    .diff-grid { grid-template-columns: 1fr 1fr; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .invest-wrap { padding: 28px 20px; }
+    .cta-btn { padding: 16px 28px; font-size: 0.9rem; }
+    .items-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .diff-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .timeline::before { left: 19px; }
+    .page-wrap { padding: 0 14px 48px; }
+    .logo-box { width: 80px; height: 80px; }
+    .client-block { padding: 10px 18px 10px 14px; gap: 12px; }
+    .client-icon { width: 36px; height: 36px; }
+    .client-icon svg { width: 18px; height: 18px; }
+    .client-name { font-size: 0.95rem; }
+    .items-grid { grid-template-columns: 1fr; }
+    .installment-grid { grid-template-columns: repeat(3, 1fr); max-width: 260px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- =============================================
+       HEADER
+  ============================================= -->
+  <header class="header reveal">
+    <img src="https://i.postimg.cc/Bv2vgXDz/gates-and-automation-header-1536x640.jpg" class="header-bg" alt="Automação de portões">
+    <div class="header-overlay"></div>
+
+    <div class="header-logo-wrap">
+      <div class="logo-box">
+        <img src="https://i.postimg.cc/4xb9f1dS/logobrancasemfundo-Copia.png" alt="Attive Tecnologia">
+      </div>
+      <div>
+        <div class="company-name">Attive Tecnologia</div>
+        <div class="company-sub">Segurança Eletrônica com Engenharia</div>
+      </div>
+    </div>
+
+    <div class="header-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+      Proposta Técnico-Comercial
+    </div>
+
+    <h1>Automatização de Portão Residencial</h1>
+    <p class="header-sub">Solução completa de automatização com instalação especializada</p>
+    <p class="header-intro">
+      Nosso objetivo é oferecer uma solução segura, durável e profissional, executada por especialistas,
+      proporcionando praticidade, confiabilidade e valorização do seu patrimônio.
+    </p>
+
+    <div class="client-block">
+      <div class="client-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div class="client-info">
+        <span class="client-label">Proposta destinada a</span>
+        <span class="client-name">Hélder</span>
+        <span class="client-address">Rua Severina Ramos de Andrade, 35 – Catolé</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       DIFERENCIAIS
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Nossa empresa</div>
+      <h2>Por que escolher a Attive?</h2>
+      <p>Mais de 25 anos de experiência em segurança eletrônica e automação com execução técnica especializada.</p>
+    </div>
+
+    <div class="diff-grid">
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="diff-text"><h4>Profissionais qualificados</h4><p>Equipe técnica certificada com formação em engenharia elétrica e automação.</p></div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <div class="diff-text"><h4>Instalação especializada</h4><p>Execução técnica criteriosa, com ART do engenheiro responsável quando aplicável.</p></div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div class="diff-text"><h4>Materiais de qualidade</h4><p>Equipamentos homologados de fabricantes com tradição e confiabilidade no mercado.</p></div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="diff-text"><h4>Acabamento profissional</h4><p>Fiação embutida, fixações niveladas e organização impecável em cada detalhe.</p></div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="diff-text"><h4>Segurança operacional</h4><p>Sistemas configurados com proteções anti-esmagamento e reversão de emergência.</p></div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.38a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div class="diff-text"><h4>Suporte pós-instalação</h4><p>Atendimento ágil após a entrega do sistema para garantir sua tranquilidade.</p></div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="diff-text"><h4>Atendimento transparente</h4><p>Proposta clara, sem surpresas. Você sabe exatamente o que será executado.</p></div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <div class="diff-text"><h4>Compromisso total</h4><p>Sua satisfação é a nossa principal métrica de qualidade em cada projeto entregue.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       CARDS DE SELEÇÃO INDEPENDENTE - LADO A LADO
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Escolha os itens</div>
+      <h2>Selecione o automatizador e/ou o módulo Wi‑fi</h2>
+      <p>Você pode escolher um ou ambos. O valor total será atualizado automaticamente.</p>
+    </div>
+
+    <div class="items-grid">
+
+      <!-- CARD: AUTOMATIZADOR ROSSI -->
+      <div class="item-card" id="card-motor" onclick="toggleItem('motor')">
+        <div class="item-header">
+          <span class="item-badge badge-motor">Automatizador</span>
+          <div class="item-name">Rossi</div>
+          <div class="item-model">Residencial</div>
+        </div>
+
+        <div class="item-body">
+          <ul class="spec-list">
+            <li><span class="spec-key">Peso máximo</span><span class="spec-val">400 kg</span></li>
+            <li><span class="spec-key">Aplicação</span><span class="spec-val">Residencial</span></li>
+            <li><span class="spec-key">Tempo de abertura</span><span class="spec-val">10,5 s</span></li>
+          </ul>
+
+          <div class="benefits">
+            <p class="benefits-title">Itens inclusos</p>
+            <ul class="benefit-list">
+              <li>Roldanas</li>
+              <li>02 Controles</li>
+              <li>02 Cremalheiras</li>
+            </ul>
+          </div>
+
+          <div class="price-block">
+            <div class="price-item">
+              <span class="price-label">À vista</span>
+              <span class="price-val"><span class="currency">R$</span> 1.187,10</span>
+              <span class="price-discount">(10% desconto)</span>
+            </div>
+            <div class="price-item">
+              <span class="price-label">Parcelado</span>
+              <span class="price-val"><span class="currency">R$</span> 1.319,00</span>
+              <span class="price-installments">6x sem juros</span>
+            </div>
+          </div>
+
+          <button class="select-toggle-btn" id="btn-motor" onclick="event.stopPropagation(); toggleItem('motor');">
+            <span id="btn-motor-text">Selecionar</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD: MÓDULO WI-FI -->
+      <div class="item-card" id="card-wifi" onclick="toggleItem('wifi')">
+        <div class="item-header">
+          <span class="item-badge badge-wifi">Módulo Wi‑fi</span>
+          <div class="item-name">Conveniência</div>
+          <div class="item-model">Controle por smartphone</div>
+        </div>
+
+        <div class="item-body">
+          <ul class="spec-list">
+            <li><span class="spec-key">Compatibilidade</span><span class="spec-val">Android e iOS</span></li>
+            <li><span class="spec-key">Segurança</span><span class="spec-val">Chave única</span></li>
+            <li><span class="spec-key">Acesso</span><span class="spec-val">De qualquer lugar</span></li>
+            <li><span class="spec-key">Integração</span><span class="spec-val">Com o Rossi</span></li>
+          </ul>
+
+          <div class="benefits">
+            <p class="benefits-title">Vantagens</p>
+            <ul class="benefit-list">
+              <li>Abra e feche pelo celular</li>
+              <li>Cada celular é uma chave</li>
+              <li>Instalação simples</li>
+            </ul>
+          </div>
+
+          <div class="price-block">
+            <div class="price-item">
+              <span class="price-label">À vista</span>
+              <span class="price-val"><span class="currency">R$</span> 283,50</span>
+              <span class="price-discount">(10% desconto)</span>
+            </div>
+            <div class="price-item">
+              <span class="price-label">Parcelado</span>
+              <span class="price-val"><span class="currency">R$</span> 315,00</span>
+              <span class="price-installments">6x sem juros</span>
+            </div>
+          </div>
+
+          <button class="select-toggle-btn" id="btn-wifi" onclick="event.stopPropagation(); toggleItem('wifi');">
+            <span id="btn-wifi-text">Selecionar</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       INVESTIMENTO (RESUMO COM TOTAL)
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Resumo do pedido</div>
+      <h2>Valor total da sua escolha</h2>
+    </div>
+
+    <div class="invest-wrap">
+      <div class="invest-selected-label">Itens selecionados</div>
+      <div class="invest-items" id="invest-items">Nenhum item selecionado</div>
+
+      <div class="invest-grid" id="invest-grid" style="display:none;">
+        <div class="invest-box">
+          <div class="invest-box-label">Pagamento à vista</div>
+          <div class="invest-val" id="val-avista"><span class="currency">R$</span> </div>
+          <div class="invest-note">10% de desconto à vista</div>
+        </div>
+        <div class="invest-box">
+          <div class="invest-box-label" id="parcela-label">Parcelado (total)</div>
+          <div class="invest-val" id="val-parcela"><span class="currency">R$</span> </div>
+          <div class="invest-note" id="val-parcela-note">6x sem juros</div>
+        </div>
+      </div>
+
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">
+        Inclui equipamentos, mão de obra, materiais e garantia.
+      </p>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;font-style:italic;">
+        Observação: Estamos levando em consideração que a instalação elétrica está funcional. Caso seja necessária alguma intervenção elétrica adicional, os custos serão apresentados previamente.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       FORMAS DE PAGAMENTO E PARCELAS - CENTRALIZADO
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Forma de pagamento</div>
+      <h2>Escolha como prefere pagar</h2>
+    </div>
+
+    <div class="payment-grid">
+      <div class="pay-option" id="pay-avista" onclick="selectPayment('avista')">
+        <div class="pay-radio"></div>
+        <div class="pay-info">
+          <h4>Pagamento à vista</h4>
+          <p>PIX, transferência ou dinheiro</p>
+          <p class="pay-highlight">10% de desconto</p>
+        </div>
+      </div>
+      <div class="pay-option" id="pay-parcelado" onclick="selectPayment('parcelado')">
+        <div class="pay-radio"></div>
+        <div class="pay-info">
+          <h4>Pagamento parcelado</h4>
+          <p>6x sem juros no cartão</p>
+          <p class="pay-highlight">Sem acréscimo</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Container de opções de parcelas - centralizado -->
+    <div class="installment-container" id="installment-container">
+      <div class="installment-title">Escolha a quantidade de parcelas</div>
+      <div class="installment-grid" id="installment-grid">
+        <!-- Gerado via JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       SERVIÇOS INCLUSOS
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">O que está incluso</div>
+      <h2>Serviços executados pela Attive</h2>
+      <p>A instalação completa é realizada pela nossa equipe técnica, sem custos adicionais.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Instalação completa do sistema</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg> Configuração da central</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Ajustes mecânicos e balanceamento</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg> Programação dos controles remotos</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Testes operacionais completos</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Orientação completa ao usuário</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Acabamento profissional da instalação</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.38a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Suporte pós-instalação</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       ETAPAS
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Processo de trabalho</div>
+      <h2>Etapas do serviço</h2>
+      <p>Da aprovação à entrega, acompanhe cada passo da nossa execução.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-step"><div class="tl-num">1</div><div class="tl-content"><h4>Aprovação da proposta</h4><p>Você confirma a opção escolhida e formalizamos o início do serviço.</p></div></div>
+      <div class="tl-step"><div class="tl-num">2</div><div class="tl-content"><h4>Agendamento</h4><p>Definimos a data e horário mais conveniente para você.</p></div></div>
+      <div class="tl-step"><div class="tl-num">3</div><div class="tl-content"><h4>Instalação</h4><p>Nossa equipe executa a instalação com rigor técnico e organização.</p></div></div>
+      <div class="tl-step"><div class="tl-num">4</div><div class="tl-content"><h4>Configuração e ajustes</h4><p>Programamos os controles, ajustamos limites e configuramos proteções do sistema.</p></div></div>
+      <div class="tl-step"><div class="tl-num">5</div><div class="tl-content"><h4>Testes finais</h4><p>Realizamos ciclos completos de teste para garantir funcionamento perfeito.</p></div></div>
+      <div class="tl-step"><div class="tl-num">6</div><div class="tl-content"><h4>Entrega e orientação</h4><p>Apresentamos o sistema funcionando e orientamos sobre operação e manutenção.</p></div></div>
+      <div class="tl-step" style="padding-bottom:0;">
+        <div class="tl-num" style="background:linear-gradient(135deg,#128C7E,#25D366);box-shadow:0 0 14px rgba(37,211,102,0.35);">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="tl-content" style="border-color:rgba(37,211,102,0.25);background:rgba(37,211,102,0.04);">
+          <h4 style="color:#22C55E;">Satisfação garantida</h4>
+          <p>Portão automático funcionando. Você aprova e nós seguimos disponíveis para suporte.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       CTA WHATSAPP
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Próximo passo</div>
+      <h2>Pronto para avançar?</h2>
+      <p>Selecione os itens, a forma de pagamento, as parcelas (se for o caso) e clique para confirmar.</p>
+    </div>
+
+    <div class="cta-wrap">
+      <p class="cta-status" id="cta-status">Selecione pelo menos um item e uma forma de pagamento.</p>
+      <button class="cta-btn disabled" id="cta-btn" onclick="openWhatsApp()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.115.549 4.099 1.508 5.829L0 24l6.335-1.654A11.954 11.954 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.373l-.36-.213-3.731.975.995-3.635-.234-.374A9.818 9.818 0 0 1 12 2.182c5.423 0 9.818 4.395 9.818 9.818 0 5.422-4.395 9.818-9.818 9.818z"/>
+        </svg>
+        Confirmar pelo WhatsApp
+      </button>
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER
+  ============================================= -->
+  <footer class="footer reveal">
+    <p class="footer-headline">
+      "Mais do que automatizar um portão, entregamos segurança, conforto, durabilidade e tranquilidade para sua família."
+    </p>
+    <p class="footer-thanks">Obrigado pela oportunidade de apresentar nossa solução.</p>
+    <div class="footer-meta">
+      <span>Attive Tecnologia em Segurança Eletrônica &nbsp;|&nbsp; CREA-PB 1229019/2025-PB &nbsp;|&nbsp; (83) 9 9678-7788</span>
+      <span class="engineer">Hélio Crispim – Engenheiro Eletricista</span>
+    </div>
+  </footer>
+
+</div><!-- .page-wrap -->
+
+<script>
+// ============================================================
+// DADOS DOS ITENS
+// ============================================================
+const ITEMS = {
+  motor: {
+    id: 'motor',
+    name: 'Automatizador Rossi',
+    avista: 1319.00,   // base para cálculo do desconto de 10%
+    parcela: 1319.00,  // valor total cheio
+    details: 'Peso 400kg, residencial, abertura 10,5s. Inclui roldanas, 2 controles e 2 cremalheiras.'
+  },
+  wifi: {
+    id: 'wifi',
+    name: 'Módulo Wi-fi',
+    avista: 315.00,
+    parcela: 315.00,
+    details: 'Controle por smartphone (Android/iOS), chave única, acesso de qualquer lugar. Compatível com o automatizador Rossi.'
+  }
+};
+
+const WHATSAPP_NUMBER = "5583996787788";
+
+// ============================================================
+// ESTADO
+// ============================================================
+let selectedItems = { motor: false, wifi: false };
+let selectedPayment = null;       // 'avista' ou 'parcelado'
+let selectedInstallment = null;   // número de parcelas (2, 3, 4, 5, 6)
+
+// ============================================================
+// FUNÇÕES DE TOGGLE
+// ============================================================
+function toggleItem(id) {
+  selectedItems[id] = !selectedItems[id];
+
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('selected', selectedItems[id]);
+
+  const btnText = document.getElementById('btn-' + id + '-text');
+  btnText.textContent = selectedItems[id] ? 'Selecionado' : 'Selecionar';
+
+  updateSummary();
+  updateInstallmentValues();
+  updateCTA();
+}
+
+// ============================================================
+// GERAR OPÇÕES DE PARCELAS
+// ============================================================
+function generateInstallmentOptions() {
+  const grid = document.getElementById('installment-grid');
+  grid.innerHTML = '';
+  for (let i = 2; i <= 6; i++) {
+    const btn = document.createElement('div');
+    btn.className = 'installment-btn';
+    btn.dataset.parcelas = i;
+    btn.innerHTML = `<span class="parcela-qtd">${i}x</span><span class="parcela-valor">--</span>`;
+    btn.onclick = function(e) {
+      e.stopPropagation();
+      selectInstallment(i);
+    };
+    grid.appendChild(btn);
+  }
+}
+
+// ============================================================
+// ATUALIZAR VALORES DAS PARCELAS NOS BOTÕES
+// ============================================================
+function updateInstallmentValues() {
+  const totalParcela = getTotalParcela();
+  const btns = document.querySelectorAll('.installment-btn');
+  btns.forEach(btn => {
+    const parcelas = parseInt(btn.dataset.parcelas);
+    const valorParcela = totalParcela / parcelas;
+    const valorSpan = btn.querySelector('.parcela-valor');
+    valorSpan.textContent = valorParcela ? 'R$ ' + valorParcela.toFixed(2).replace('.', ',') : '--';
+  });
+}
+
+// ============================================================
+// CALCULAR TOTAL PARCELADO
+// ============================================================
+function getTotalParcela() {
+  let total = 0;
+  for (const [id, selected] of Object.entries(selectedItems)) {
+    if (selected) {
+      total += ITEMS[id].parcela;
+    }
+  }
+  return total;
+}
+
+// ============================================================
+// SELECIONAR PARCELAS
+// ============================================================
+function selectInstallment(num) {
+  selectedInstallment = num;
+  document.querySelectorAll('.installment-btn').forEach(el => {
+    el.classList.toggle('selected', parseInt(el.dataset.parcelas) === num);
+  });
+  updateSummary();
+  updateCTA();
+}
+
+// ============================================================
+// ATUALIZA O RESUMO DO INVESTIMENTO
+// ============================================================
+function updateSummary() {
+  const selectedNames = [];
+  let totalAvista = 0;
+  let totalParcela = 0;
+
+  for (const [id, selected] of Object.entries(selectedItems)) {
+    if (selected) {
+      const item = ITEMS[id];
+      selectedNames.push(item.name);
+      totalAvista += item.avista;
+      totalParcela += item.parcela;
+    }
+  }
+
+  const investItems = document.getElementById('invest-items');
+  const investGrid = document.getElementById('invest-grid');
+  const valAvista = document.getElementById('val-avista');
+  const valParcela = document.getElementById('val-parcela');
+  const valParcelaNote = document.getElementById('val-parcela-note');
+  const parcelaLabel = document.getElementById('parcela-label');
+
+  if (selectedNames.length === 0) {
+    investItems.textContent = 'Nenhum item selecionado';
+    investGrid.style.display = 'none';
+    return;
+  }
+
+  investItems.textContent = selectedNames.join(' + ');
+  investGrid.style.display = 'grid';
+
+  const avistaComDesconto = totalAvista * 0.90;
+  valAvista.innerHTML = '<span class="currency">R$</span> ' + avistaComDesconto.toFixed(2).replace('.', ',');
+
+  if (selectedPayment === 'parcelado' && selectedInstallment) {
+    const valorParcela = totalParcela / selectedInstallment;
+    valParcela.innerHTML = '<span class="currency">R$</span> ' + valorParcela.toFixed(2).replace('.', ',');
+    parcelaLabel.textContent = `Parcelado (${selectedInstallment}x)`;
+    valParcelaNote.textContent = `Total: R$ ${totalParcela.toFixed(2).replace('.', ',')}`;
+  } else {
+    valParcela.innerHTML = '<span class="currency">R$</span> ' + totalParcela.toFixed(2).replace('.', ',');
+    parcelaLabel.textContent = 'Parcelado (total)';
+    valParcelaNote.textContent = '6x sem juros';
+  }
+}
+
+// ============================================================
+// SELEÇÃO DE PAGAMENTO
+// ============================================================
+function selectPayment(type) {
+  selectedPayment = type;
+  const container = document.getElementById('installment-container');
+
+  document.getElementById('pay-avista').classList.toggle('selected', type === 'avista');
+  document.getElementById('pay-parcelado').classList.toggle('selected', type === 'parcelado');
+
+  if (type === 'parcelado') {
+    container.classList.add('visible');
+    updateInstallmentValues();
+    if (!selectedInstallment) {
+      selectInstallment(6);
+    } else {
+      document.querySelectorAll('.installment-btn').forEach(el => {
+        el.classList.toggle('selected', parseInt(el.dataset.parcelas) === selectedInstallment);
+      });
+    }
+  } else {
+    container.classList.remove('visible');
+  }
+
+  updateSummary();
+  updateCTA();
+}
+
+// ============================================================
+// ATUALIZA O BOTÃO CTA
+// ============================================================
+function updateCTA() {
+  const btn    = document.getElementById('cta-btn');
+  const status = document.getElementById('cta-status');
+
+  const hasItems = Object.values(selectedItems).some(v => v === true);
+  let payOk = false;
+
+  if (selectedPayment === 'avista') {
+    payOk = true;
+  } else if (selectedPayment === 'parcelado') {
+    payOk = (selectedInstallment !== null);
+  }
+
+  if (hasItems && payOk) {
+    btn.classList.remove('disabled');
+    status.textContent = 'Tudo pronto! Clique abaixo para confirmar sua escolha.';
+    status.classList.add('ready');
+  } else if (!hasItems) {
+    btn.classList.add('disabled');
+    status.textContent = 'Selecione pelo menos um item (automatizador e/ou Wi-fi).';
+    status.classList.remove('ready');
+  } else if (selectedPayment === 'parcelado' && !selectedInstallment) {
+    btn.classList.add('disabled');
+    status.textContent = 'Escolha a quantidade de parcelas.';
+    status.classList.remove('ready');
+  } else {
+    btn.classList.add('disabled');
+    status.textContent = 'Agora escolha a forma de pagamento.';
+    status.classList.remove('ready');
+  }
+}
+
+// ============================================================
+// ABRIR WHATSAPP
+// ============================================================
+function openWhatsApp() {
+  const hasItems = Object.values(selectedItems).some(v => v === true);
+  if (!hasItems || !selectedPayment) return;
+  if (selectedPayment === 'parcelado' && !selectedInstallment) return;
+
+  const selectedNames = [];
+  let totalAvista = 0;
+  let totalParcela = 0;
+  const detailsList = [];
+
+  for (const [id, selected] of Object.entries(selectedItems)) {
+    if (selected) {
+      const item = ITEMS[id];
+      selectedNames.push(item.name);
+      totalAvista += item.avista;
+      totalParcela += item.parcela;
+      detailsList.push(item.details);
+    }
+  }
+
+  let formaPagamento = '';
+  let valorFormatado = '';
+
+  if (selectedPayment === 'avista') {
+    const avistaComDesconto = totalAvista * 0.90;
+    formaPagamento = 'à vista';
+    valorFormatado = 'R$ ' + avistaComDesconto.toFixed(2).replace('.', ',') + ' (10% de desconto)';
+  } else {
+    const valorParcela = totalParcela / selectedInstallment;
+    formaPagamento = `${selectedInstallment}x sem juros`;
+    valorFormatado = `${selectedInstallment}x de R$ ${valorParcela.toFixed(2).replace('.', ',')} (total R$ ${totalParcela.toFixed(2).replace('.', ',')})`;
+  }
+
+  const msg = encodeURIComponent(
+    `Olá, analisei a proposta técnico-comercial e escolhi os seguintes itens:\n\n` +
+    `📦 ${selectedNames.join(' + ')}\n` +
+    `🔹 Detalhes: ${detailsList.join(' | ')}\n\n` +
+    `💰 Forma de pagamento: ${formaPagamento} — ${valorFormatado}\n\n` +
+    `Observação: Estamos levando em consideração que a instalação elétrica está funcional. Caso seja necessária alguma intervenção elétrica adicional, os custos serão apresentados previamente.\n\n` +
+    `Gostaria de prosseguir com a contratação.`
+  );
+
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+}
+
+// ============================================================
+// INICIALIZAÇÃO E SCROLL REVEAL
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  generateInstallmentOptions();
+  // Se houver itens selecionados, atualiza valores das parcelas
+  updateInstallmentValues();
+});
+
+const revealEls = document.querySelectorAll('.reveal');
+const observer  = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+revealEls.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
