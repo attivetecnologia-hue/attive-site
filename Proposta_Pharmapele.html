@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposta Unificada — Pharmapele | Attive Tecnologia</title>
+  <meta property="og:title" content="Proposta Técnico-Comercial — Pharmapele Farmácia de Manipulação" />
+  <meta property="og:description" content="Infraestrutura de Rede com câmeras + Instalação Elétrica. Proposta completa com valores à vista e parcelado." />
+  <meta property="og:image" content="https://cdn.phototourl.com/free/2026-04-01-bd1ea34f-46fa-4af7-8452-af7677dbb7e9.png" />
+  <meta property="og:url" content="https://seudominio.com/proposta-pharmapele" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Attive Tecnologia" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Proposta Técnico-Comercial — Pharmapele Farmácia de Manipulação" />
+  <meta name="twitter:description" content="Infraestrutura de Rede com câmeras + Instalação Elétrica. Proposta completa com valores à vista e parcelado." />
+  <meta name="twitter:image" content="https://cdn.phototourl.com/free/2026-04-01-bd1ea34f-46fa-4af7-8452-af7677dbb7e9.png" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+
+  <style>
+    /* ============================================================
+       TOKENS (mantidos iguais)
+       ============================================================ */
+    :root {
+      --bg-deep:     #060E1A;
+      --bg-base:     #0A192F;
+      --bg-card:     #0F2040;
+      --bg-card2:    #111827;
+      --border:      rgba(0,102,255,0.18);
+      --border-hi:   rgba(0,163,255,0.45);
+      --blue-core:   #0066FF;
+      --blue-neon:   #00A3FF;
+      --blue-dim:    #0047AB;
+      --text-head:   #E8F4FF;
+      --text-body:   #A8C4DC;
+      --text-muted:  #5A7A9A;
+      --gold:        #F0B429;
+      --green:       #22C55E;
+      --radius-sm:   8px;
+      --radius-md:   14px;
+      --radius-lg:   22px;
+      --glass-bg:    rgba(0,102,255,0.07);
+      --glass-blur:  blur(18px);
+      --shadow-blue: 0 4px 32px rgba(0,102,255,0.18);
+      --shadow-card: 0 2px 24px rgba(0,0,0,0.5);
+      --font-display: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-display);
+      background: var(--bg-deep);
+      color: var(--text-body);
+      line-height: 1.65;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 10%, rgba(0,102,255,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 35% at 80% 80%, rgba(0,71,171,0.10) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    h1, h2, h3, h4 { color: var(--text-head); font-weight: 700; line-height: 1.2; }
+    h1 { font-size: clamp(1.6rem, 4vw, 2.6rem); letter-spacing: -0.02em; }
+    h2 { font-size: clamp(1.2rem, 3vw, 1.8rem); }
+    h3 { font-size: clamp(1rem, 2.5vw, 1.3rem); }
+    p  { font-size: clamp(0.88rem, 1.8vw, 0.98rem); }
+
+    .label-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue-neon);
+      background: rgba(0,163,255,0.1);
+      border: 1px solid rgba(0,163,255,0.25);
+      border-radius: 30px;
+      padding: 4px 14px;
+      margin-bottom: 12px;
+      animation: fadeInDown 0.6s ease both;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-hi), transparent);
+      margin: 56px 0;
+    }
+    .divider-light {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,163,255,0.15), transparent);
+      margin: 40px 0;
+    }
+
+    /* ============================================================
+       ANIMAÇÕES
+       ============================================================ */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseGlow {
+      0%   { box-shadow: 0 0 0 0 rgba(0,163,255,0.2); }
+      70%  { box-shadow: 0 0 0 12px rgba(0,163,255,0); }
+      100% { box-shadow: 0 0 0 0 rgba(0,163,255,0); }
+    }
+    @keyframes float {
+      0%   { transform: translateY(0px); }
+      50%  { transform: translateY(-6px); }
+      100% { transform: translateY(0px); }
+    }
+    @keyframes pulseGold {
+      0%   { box-shadow: 0 0 0 0 rgba(240, 180, 41, 0.2); }
+      70%  { box-shadow: 0 0 0 10px rgba(240, 180, 41, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(240, 180, 41, 0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+    .header {
+      position: relative;
+      padding: 52px 0 44px;
+      text-align: center;
+      overflow: hidden;
+      border-radius: 0;
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: fadeInDown 0.8s ease both;
+    }
+
+    .header-bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      z-index: 0;
+      animation: parallaxZoom 16s ease-in-out infinite alternate;
+    }
+
+    .header-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+      background: rgba(6, 14, 26, 0.72);
+      backdrop-filter: blur(2px);
+    }
+
+    @keyframes parallaxZoom {
+      0%   { transform: scale(1) translateY(0); }
+      100% { transform: scale(1.06) translateY(-15px); }
+    }
+
+    .header > *:not(.header-bg):not(.header-overlay) {
+      position: relative;
+      z-index: 2;
+    }
+
+    .header-logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .logo-box {
+      width: 112px; height: 112px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center; justify-content: center;
+      flex-shrink: 0;
+      background: transparent;
+      box-shadow: none;
+      animation: float 4s ease-in-out infinite;
+    }
+    .logo-box img { width: 100%; height: 100%; object-fit: contain; }
+
+    .company-name {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      font-weight: 800;
+      color: var(--text-head);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .company-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 2px;
+      text-align: center;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue-neon);
+      border: 1px solid var(--border-hi);
+      border-radius: 30px;
+      padding: 5px 16px;
+      margin-bottom: 20px;
+      backdrop-filter: var(--glass-blur);
+      background: var(--glass-bg);
+      animation: pulseGlow 3s infinite;
+    }
+
+    .header h1 { margin-bottom: 10px; }
+    .header-sub {
+      font-size: clamp(0.9rem, 2vw, 1.05rem);
+      color: var(--blue-neon);
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .header-intro {
+      max-width: 620px;
+      margin: 0 auto;
+      color: var(--text-body);
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+
+    .client-block {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 32px;
+      padding: 12px 28px 12px 20px;
+      background: linear-gradient(135deg, rgba(0,102,255,0.10), rgba(0,163,255,0.05));
+      border: 1px solid rgba(0,163,255,0.35);
+      border-radius: 60px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 30px rgba(0,163,255,0.08), inset 0 0 30px rgba(0,163,255,0.02);
+      transition: all 0.3s ease;
+    }
+    .client-block:hover {
+      border-color: rgba(0,163,255,0.7);
+      box-shadow: 0 0 40px rgba(0,163,255,0.15), inset 0 0 30px rgba(0,163,255,0.05);
+      transform: scale(1.02);
+    }
+
+    .client-icon {
+      width: 44px; height: 44px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-dim), var(--blue-neon));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 20px rgba(0,163,255,0.3);
+    }
+    .client-icon svg { width: 22px; height: 22px; color: #fff; stroke-width: 2.2; }
+
+    .client-info { text-align: left; display: flex; flex-direction: column; }
+    .client-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--blue-neon); opacity: 0.8; font-weight: 600; }
+    .client-name { font-size: 1.15rem; font-weight: 800; color: #fff; text-shadow: 0 0 20px rgba(0,163,255,0.3); letter-spacing: 0.02em; line-height: 1.3; }
+    .client-address { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* ============================================================
+       SECTION TITLE
+       ============================================================ */
+    .section-title { text-align: center; margin-bottom: 40px; }
+    .section-title h2 { margin-bottom: 10px; }
+    .section-title p { color: var(--text-body); max-width: 560px; margin: 0 auto; font-size: 0.93rem; }
+
+    /* ============================================================
+       DIFERENCIAIS
+       ============================================================ */
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .diff-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: default;
+    }
+    .diff-card:hover {
+      border-color: var(--border-hi);
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: var(--shadow-blue);
+    }
+
+    .diff-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(0,71,171,0.4), rgba(0,163,255,0.15));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(0,163,255,0.2);
+      transition: transform 0.3s ease;
+    }
+    .diff-card:hover .diff-icon {
+      transform: rotate(4deg) scale(1.05);
+    }
+    .diff-icon svg { width: 18px; height: 18px; color: var(--blue-neon); }
+    .diff-text h4 { font-size: 0.85rem; margin-bottom: 2px; }
+    .diff-text p  { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* ============================================================
+       ESCOPO (cards)
+       ============================================================ */
+    .escopo-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .escopo-container { grid-template-columns: 1fr; }
+    }
+
+    .scope-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border-hi);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 0 0 3px rgba(0,163,255,0.12), var(--shadow-blue);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .scope-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 40px rgba(0,163,255,0.20);
+    }
+
+    .scope-header {
+      background: linear-gradient(135deg, #003380, #005BB8);
+      padding: 18px 20px 14px;
+      text-align: center;
+      transition: background 0.5s ease;
+    }
+    .scope-card:hover .scope-header {
+      background: linear-gradient(135deg, #0047AB, #0066FF);
+    }
+
+    .scope-badge {
+      display: inline-block;
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 20px;
+      background: rgba(34,197,94,0.18); color: var(--green); border: 1px solid rgba(34,197,94,0.4);
+      margin-bottom: 6px;
+    }
+    .scope-name { font-size: 1rem; font-weight: 800; color: var(--text-head); }
+    .scope-model { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+    .scope-body { padding: 18px 20px; }
+    .scope-body .spec-list li { font-size: 0.78rem; padding: 6px 0; }
+    .scope-body .benefit-list li { font-size: 0.7rem; }
+
+    .spec-list { list-style: none; margin: 0 0 10px 0; padding: 0; }
+    .spec-list li {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.7rem;
+      transition: background 0.2s;
+    }
+    .spec-list li:hover {
+      background: rgba(0,163,255,0.04);
+      border-radius: 4px;
+    }
+    .spec-list li:last-child { border-bottom: none; }
+    .spec-key { color: var(--text-muted); }
+    .spec-val { color: var(--text-head); font-weight: 600; }
+
+    .benefits { margin: 6px 0 10px; }
+    .benefits-title { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 700; margin: 0 0 4px 0; }
+    .benefit-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 4px 10px; }
+    .benefit-list li { font-size: 0.65rem; color: var(--text-body); position: relative; padding-left: 14px; transition: transform 0.2s; }
+    .benefit-list li:hover { transform: translateX(4px); }
+    .benefit-list li::before { content: "✓"; color: var(--green); position: absolute; left: 0; font-weight: 700; }
+
+    /* ============================================================
+       TIMELINE
+       ============================================================ */
+    .timeline { position: relative; padding-left: 0; display: flex; flex-direction: column; gap: 0; max-width: 640px; margin: 0 auto; }
+    .timeline::before {
+      content: ''; position: absolute; left: 21px; top: 10px; bottom: 10px;
+      width: 2px; background: linear-gradient(to bottom, var(--blue-neon), var(--blue-dim), transparent);
+    }
+    .tl-step { display: flex; align-items: flex-start; gap: 20px; padding: 0 0 24px 0; position: relative; }
+    .tl-num {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-dim), var(--blue-neon));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800; color: #fff;
+      box-shadow: 0 0 14px rgba(0,163,255,0.35);
+      position: relative; z-index: 1;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .tl-step:hover .tl-num {
+      transform: scale(1.1);
+      box-shadow: 0 0 24px rgba(0,163,255,0.5);
+    }
+    .tl-content { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; flex: 1; transition: border-color 0.3s, background 0.3s; }
+    .tl-step:hover .tl-content { border-color: var(--border-hi); background: var(--bg-card2); }
+    .tl-content h4 { font-size: 0.85rem; margin-bottom: 2px; }
+    .tl-content p  { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* ============================================================
+       INVESTIMENTO (tabela)
+       ============================================================ */
+    .invest-table {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 2px solid var(--border-hi);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-blue);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .invest-table:hover {
+      transform: scale(1.005);
+      box-shadow: 0 8px 40px rgba(0,163,255,0.15);
+    }
+    .invest-table table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+    .invest-table th, .invest-table td {
+      padding: 16px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.2s;
+    }
+    .invest-table th {
+      background: linear-gradient(135deg, #003380, #005BB8);
+      color: var(--text-head);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .invest-table td {
+      font-size: 0.85rem;
+    }
+    .invest-table tr:hover td {
+      background: rgba(0,163,255,0.04);
+    }
+    .invest-table .servico-nome {
+      font-weight: 700;
+      color: var(--text-head);
+      text-align: left;
+      padding-left: 20px;
+    }
+    .invest-table .valor-destaque {
+      font-weight: 800;
+      color: var(--text-head);
+    }
+    .invest-table .nota {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .invest-table .footer-row td {
+      background: rgba(0,0,0,0.2);
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .invest-table .footer-row td:first-child {
+      border-radius: 0 0 0 var(--radius-lg);
+    }
+    .invest-table .footer-row td:last-child {
+      border-radius: 0 0 var(--radius-lg) 0;
+    }
+    @media (max-width: 600px) {
+      .invest-table th, .invest-table td { padding: 10px 8px; font-size: 0.75rem; }
+    }
+
+    /* ============================================================
+       BANNER DE DESTAQUE - PAGAMENTO ANTECIPADO
+       ============================================================ */
+    .destaque-antecipado {
+      background: rgba(240, 180, 41, 0.08);
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-md);
+      padding: 18px 24px;
+      margin: 16px 20px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(240, 180, 41, 0.05);
+      animation: pulseGold 3s infinite;
+      transition: all 0.3s ease;
+    }
+    .destaque-antecipado:hover {
+      background: rgba(240, 180, 41, 0.15);
+      transform: scale(1.01);
+    }
+    .destaque-antecipado p {
+      color: var(--gold);
+      font-weight: 800;
+      font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+      margin: 0;
+      letter-spacing: 0.02em;
+    }
+    .destaque-antecipado .sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-top: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================================
+       FORMAS DE PAGAMENTO
+       ============================================================ */
+    .pagamento-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .pagamento-container { grid-template-columns: 1fr; }
+    }
+
+    .servico-pagamento {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .servico-pagamento:hover {
+      border-color: var(--border-hi);
+      box-shadow: var(--shadow-blue);
+    }
+    .servico-pagamento h3 {
+      font-size: 1rem;
+      color: var(--text-head);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .servico-pagamento .payment-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 480px) {
+      .servico-pagamento .payment-grid { grid-template-columns: 1fr; }
+    }
+
+    .pay-option {
+      background: var(--bg-card2);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 10px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+    }
+    .pay-option:hover {
+      border-color: var(--border-hi);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,163,255,0.10);
+    }
+    .pay-option.selected {
+      border-color: var(--blue-neon);
+      background: rgba(0,163,255,0.06);
+      box-shadow: 0 0 0 3px rgba(0,163,255,0.12), 0 4px 20px rgba(0,163,255,0.10);
+      transform: scale(1.02);
+    }
+    .pay-radio {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--border-hi);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+    .pay-option.selected .pay-radio {
+      border-color: var(--blue-neon);
+      background: var(--blue-neon);
+    }
+    .pay-radio::after {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .pay-option.selected .pay-radio::after { opacity: 1; }
+
+    .pay-info h4 { font-size: 0.8rem; margin-bottom: 1px; }
+    .pay-info p  { font-size: 0.7rem; color: var(--text-muted); margin: 0; }
+    .pay-highlight { color: var(--green); font-weight: 700; font-size: 0.7rem; margin-top: 2px; }
+
+    /* ============================================================
+       RESUMO CONSOLIDADO
+       ============================================================ */
+    .resumo-wrap {
+      background: linear-gradient(135deg, #0A1F3D, #061833);
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      text-align: center;
+      margin-top: 40px;
+      animation: fadeInUp 0.8s ease both;
+      transition: border-color 0.3s;
+    }
+    .resumo-wrap:hover {
+      border-color: #F7C948;
+    }
+    .resumo-wrap h3 {
+      color: var(--gold);
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      margin-bottom: 16px;
+      letter-spacing: 0.04em;
+    }
+    .resumo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .resumo-grid.single {
+      grid-template-columns: 1fr;
+      max-width: 320px;
+    }
+    .resumo-box.hidden {
+      display: none;
+    }
+
+    .resumo-box {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 10px;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .resumo-box:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-hi);
+    }
+    .resumo-box .label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .resumo-box .valor {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 800;
+      color: var(--text-head);
+    }
+    .resumo-box .detalhe {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .resumo-obs {
+      margin-top: 12px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ============================================================
+       CTA WHATSAPP
+       ============================================================ */
+    .cta-wrap { text-align: center; margin-top: 8px; }
+    .cta-status {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      min-height: 22px;
+      transition: color 0.3s;
+    }
+    .cta-status.ready { color: var(--green); }
+    .cta-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+      padding: 18px 40px; border-radius: 50px; font-size: 1rem; font-weight: 800;
+      letter-spacing: 0.04em; text-decoration: none; border: none; cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      background: linear-gradient(135deg, #128C7E, #25D366);
+      color: #fff; box-shadow: 0 4px 30px rgba(37,211,102,0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      transform: scale(0.5);
+    }
+    .cta-btn:hover:not(.disabled)::after {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .cta-btn:hover:not(.disabled) {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 40px rgba(37,211,102,0.45);
+    }
+    .cta-btn.disabled {
+      background: linear-gradient(135deg, #1E293B, #263344);
+      color: var(--text-muted);
+      box-shadow: none;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .cta-btn svg { width: 22px; height: 22px; }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer { text-align: center; padding: 40px 0 20px; border-top: 1px solid var(--border); margin-top: 56px; }
+    .footer-headline { font-size: clamp(0.95rem, 2.5vw, 1.15rem); font-weight: 700; color: var(--text-head); margin-bottom: 10px; max-width: 540px; margin-left: auto; margin-right: auto; }
+    .footer-thanks { font-size: 0.84rem; color: var(--text-muted); margin-bottom: 24px; }
+    .footer-meta { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.06em; }
+    .footer-meta .engineer { font-weight: 700; color: var(--blue-neon); font-size: 0.8rem; margin-top: 4px; }
+
+    /* ============================================================
+       RESPONSIVO
+       ============================================================ */
+    @media (max-width: 768px) {
+      .diff-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .diff-grid { grid-template-columns: 1fr; }
+      .page-wrap { padding: 0 14px 48px; }
+      .logo-box { width: 80px; height: 80px; }
+      .client-block { padding: 10px 18px 10px 14px; gap: 12px; }
+      .client-icon { width: 36px; height: 36px; }
+      .client-icon svg { width: 18px; height: 18px; }
+      .client-name { font-size: 0.95rem; }
+      .destaque-antecipado { margin: 16px 10px; padding: 14px 16px; }
+      .resumo-grid.single { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- =============================================
+       HEADER
+       ============================================= -->
+  <header class="header">
+    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1536&h=640&fit=crop&q=80" class="header-bg" alt="Infraestrutura e elétrica">
+    <div class="header-overlay"></div>
+
+    <div class="header-logo-wrap">
+      <div class="logo-box">
+        <img src="https://cdn.phototourl.com/free/2026-04-01-bd1ea34f-46fa-4af7-8452-af7677dbb7e9.png" alt="Attive Tecnologia">
+      </div>
+      <div>
+        <div class="company-name">Attive Tecnologia</div>
+        <div class="company-sub">Engenharia Elétrica e Infraestrutura</div>
+      </div>
+    </div>
+
+    <div class="header-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+      Proposta Técnico-Comercial Unificada
+    </div>
+
+    <h1>Pharmapele Farmácia de Manipulação</h1>
+    <p class="header-sub">Infraestrutura de Rede + Instalação Elétrica</p>
+    <p class="header-intro">
+      Proposta completa para a execução dos serviços de infraestrutura de rede, instalação de câmeras e instalação elétrica,
+      com responsabilidade técnica, materiais certificados e garantia de qualidade.
+    </p>
+
+    <div class="client-block">
+      <div class="client-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div class="client-info">
+        <span class="client-label">Proposta destinada a</span>
+        <span class="client-name">Pharmapele Farmácia de Manipulação</span>
+        <span class="client-address">R. Treze de Maio, 105 - Centro, Campina Grande - PB</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       DIFERENCIAIS
+       ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Nossa empresa</div>
+      <h2>Por que escolher a Attive?</h2>
+      <p>Excelência em engenharia elétrica, infraestrutura de rede e segurança eletrônica.</p>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="diff-text"><h4>Equipe especializada</h4><p>Profissionais experientes e engenheiro responsável com CREA ativo.</p></div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="diff-text"><h4>Materiais certificados</h4><p>Cabos, conectores e componentes de marcas consolidadas.</p></div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="diff-text"><h4>Testes e garantia</h4><p>Testes de todos os pontos (rede e câmeras) e medições (elétrica) com garantia de 90 dias.</p></div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="diff-text"><h4>Acabamento profissional</h4><p>Organização, identificação e padronização em todos os serviços.</p></div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.38a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div class="diff-text"><h4>Suporte pós-instalação</h4><p>Atendimento ágil após a entrega para garantir sua tranquilidade.</p></div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <div class="diff-text"><h4>Conformidade técnica</h4><p>Execução conforme NBR 5410 (elétrica) e boas práticas de cabeamento estruturado.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       ESCOPO
+       ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Escopo dos serviços</div>
+      <h2>O que será executado</h2>
+      <p>Levantamento técnico realizado em campo. Abaixo os detalhes de cada serviço.</p>
+    </div>
+    <div class="escopo-container">
+      <!-- Rede + Câmeras -->
+      <div class="scope-card">
+        <div class="scope-header">
+          <div class="scope-badge">Infraestrutura de Rede + Câmeras</div>
+          <div class="scope-name">Cabeamento Cat5e + Switches + Câmeras</div>
+        </div>
+        <div class="scope-body">
+          <ul class="spec-list">
+            <li><span class="spec-key">Pontos de rede</span><span class="spec-val">6 (4 PCs, 1 Impressora, 1 TV)</span></li>
+            <li><span class="spec-key">Câmeras</span><span class="spec-val">1 Analógica + 2 IPs</span></li>
+            <li><span class="spec-key">Cabo</span><span class="spec-val">UTP Cat5e</span></li>
+            <li><span class="spec-key">Metragem</span><span class="spec-val">aprox. 80 m</span></li>
+            <li><span class="spec-key">Switch (Sala)</span><span class="spec-val">1x 8 portas Gigabit</span></li>
+            <li><span class="spec-key">Switch (Rack)</span><span class="spec-val">1x 16 portas Gigabit</span></li>
+            <li><span class="spec-key">Dutos</span><span class="spec-val">Rígido (ext.) / Corrugado (gesso)</span></li>
+          </ul>
+          <div class="benefits">
+            <p class="benefits-title">Itens inclusos</p>
+            <ul class="benefit-list">
+              <li>Tomadas RJ-45</li>
+              <li>Instalação das 3 câmeras</li>
+              <li>Instalação dos switches</li>
+              <li>Bandeja organizadora</li>
+              <li>Organização do rack</li>
+              <li>Teste e identificação</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elétrica -->
+      <div class="scope-card">
+        <div class="scope-header">
+          <div class="scope-badge">Instalação Elétrica</div>
+          <div class="scope-name">Mão de obra especializada</div>
+        </div>
+        <div class="scope-body">
+          <ul class="spec-list">
+            <li><span class="spec-key">Carga instalada</span><span class="spec-val">5 tomadas 10A + 1 tomada 20A (ar cond.)</span></li>
+            <li><span class="spec-key">Tensão</span><span class="spec-val">220 V — Monofásico</span></li>
+            <li><span class="spec-key">Padrão de entrada</span><span class="spec-val">Existente / Cliente</span></li>
+            <li><span class="spec-key">Quadro</span><span class="spec-val">1 circuito exclusivo + DR/DDR</span></li>
+            <li><span class="spec-key">Disjuntor geral</span><span class="spec-val">Existente / Cliente</span></li>
+            <li><span class="spec-key">Proteção diferencial</span><span class="spec-val">DR/DDR incluso</span></li>
+          </ul>
+          <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:8px 12px;margin:8px 0;border-left:3px solid var(--blue-neon);">
+            <p style="font-size:0.7rem;color:var(--text-body);margin:0;">
+              <strong style="color:var(--text-head);">Infraestrutura:</strong> Lançamento de cabo em PVC (área aberta) e corrugado (forro de gesso).
+            </p>
+            <p style="font-size:0.65rem;color:var(--gold);margin:4px 0 0 0;">
+              <strong>Material elétrico fornecido pelo cliente.</strong>
+            </p>
+          </div>
+          <div class="benefits">
+            <p class="benefits-title">Itens inclusos</p>
+            <ul class="benefit-list">
+              <li>Mão de obra especializada</li>
+              <li>Infraestrutura em PVC/corrugado</li>
+              <li>Instalação DR/DDR</li>
+              <li>Identificação e acabamento</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       ETAPAS
+       ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Processo de trabalho</div>
+      <h2>Etapas de execução</h2>
+      <p>Da aprovação à entrega, acompanhe cada passo.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-step"><div class="tl-num">1</div><div class="tl-content"><h4>Aprovação da proposta</h4><p>Confirmação do escopo e formalização do início.</p></div></div>
+      <div class="tl-step"><div class="tl-num">2</div><div class="tl-content"><h4>Levantamento e projeto</h4><p>Detalhamento definitivo de pontos, câmeras, trajeto de cabos e ativos.</p></div></div>
+      <div class="tl-step"><div class="tl-num">3</div><div class="tl-content"><h4>Agendamento</h4><p>Data e cronograma de execução com mínimo impacto.</p></div></div>
+      <div class="tl-step"><div class="tl-num">4</div><div class="tl-content"><h4>Execução</h4><p>Lançamento de cabos, instalação de switches, câmeras, disjuntores e infraestrutura.</p></div></div>
+      <div class="tl-step"><div class="tl-num">5</div><div class="tl-content"><h4>Testes e medições</h4><p>Testes de rede, câmeras e elétricos (conforme NBR 5410).</p></div></div>
+      <div class="tl-step"><div class="tl-num">6</div><div class="tl-content"><h4>Entrega e orientação</h4><p>Sistemas funcionando, documentação entregue e suporte disponível.</p></div></div>
+      <div class="tl-step" style="padding-bottom:0;">
+        <div class="tl-num" style="background:linear-gradient(135deg,#128C7E,#25D366);box-shadow:0 0 14px rgba(37,211,102,0.35);">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="tl-content" style="border-color:rgba(37,211,102,0.25);background:rgba(37,211,102,0.04);">
+          <h4 style="color:#22C55E;">Satisfação garantida</h4>
+          <p>Você aprova e nós seguimos disponíveis para suporte pós-instalação.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       INVESTIMENTO
+       ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Investimento</div>
+      <h2>Valores dos serviços</h2>
+      <p>Preços à vista com 10% de desconto e parcelados em até 6x sem juros.</p>
+    </div>
+    <div class="invest-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Serviço</th>
+            <th>À vista</th>
+            <th>Parcelado (total)</th>
+            <th>Parcelas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="servico-nome">Infraestrutura de Rede + Câmeras</td>
+            <td><span class="valor-destaque">R$ 3.796,24</span><br><span class="nota">(10% off)</span></td>
+            <td><span class="valor-destaque">R$ 4.218,04</span></td>
+            <td>até 6x</td>
+          </tr>
+          <tr>
+            <td class="servico-nome">Instalação Elétrica</td>
+            <td><span class="valor-destaque">R$ 990,00</span><br><span class="nota">(10% off)</span></td>
+            <td><span class="valor-destaque">R$ 1.100,00</span></td>
+            <td>até 6x</td>
+          </tr>
+          <tr class="footer-row">
+            <td><strong>Total</strong></td>
+            <td><strong>R$ 4.786,24</strong></td>
+            <td><strong>R$ 5.318,04</strong></td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="destaque-antecipado">
+        <p>Pagamento antecipado para compra de material e garantia da agenda.</p>
+        <div class="sub">Esta condição é essencial para assegurar a disponibilidade de materiais e a reserva da data de execução.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       FORMAS DE PAGAMENTO (com sincronização automática)
+       ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Escolha a forma de pagamento</div>
+      <h2>Selecione para cada serviço</h2>
+      <p>À vista com desconto ou parcelado em até 6x sem juros.</p>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:6px;">Ao escolher o número de parcelas em um serviço, o outro será automaticamente ajustado.</p>
+    </div>
+    <div class="pagamento-container">
+      <div class="servico-pagamento">
+        <h3>Infraestrutura de Rede + Câmeras</h3>
+        <div class="payment-grid" id="paymentGridRede">
+          <div class="pay-option" data-payment="avista_rede" onclick="selectPayment('rede','avista')">
+            <div class="pay-radio"></div>
+            <div class="pay-info">
+              <h4>À vista</h4>
+              <p>Total: R$ 3.796,24</p>
+              <p class="pay-highlight">10% off</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="servico-pagamento">
+        <h3>Instalação Elétrica</h3>
+        <div class="payment-grid" id="paymentGridEletrica">
+          <div class="pay-option" data-payment="avista_eletrica" onclick="selectPayment('eletrica','avista')">
+            <div class="pay-radio"></div>
+            <div class="pay-info">
+              <h4>À vista</h4>
+              <p>Total: R$ 990,00</p>
+              <p class="pay-highlight">10% off</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       RESUMO CONSOLIDADO
+       ============================================= -->
+  <section class="reveal" id="resumo-section" style="display:none;">
+    <div class="section-title">
+      <div class="label-tag">Resumo da proposta</div>
+      <h2>Valores consolidados</h2>
+      <p>Totais considerando as opções de pagamento selecionadas para cada serviço.</p>
+    </div>
+    <div class="resumo-wrap">
+      <h3>Total Geral</h3>
+      <div class="resumo-grid" id="resumoGrid">
+        <div class="resumo-box" id="boxAvista">
+          <div class="label">À vista (total)</div>
+          <div class="valor" id="totalAvista">R$ 4.786,24</div>
+          <div class="detalhe">(desconto de 10% aplicado)</div>
+        </div>
+        <div class="resumo-box hidden" id="boxParcelado">
+          <div class="label">Parcelado (total)</div>
+          <div class="valor" id="totalParcelado">R$ 0,00</div>
+          <div class="detalhe" id="detalheParcelado">até 6x</div>
+        </div>
+        <div class="resumo-box hidden" id="boxParcelaMedia">
+          <div class="label">Total das parcelas</div>
+          <div class="valor" id="valorParcelaMedia">R$ 0,00</div>
+          <div class="detalhe" id="detalheParcelaMedia">(soma das parcelas mensais de cada serviço)</div>
+        </div>
+      </div>
+      <div class="resumo-obs" id="resumoObs">* Os valores acima refletem as opções de pagamento selecionadas para cada serviço.</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       CTA WHATSAPP
+       ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Próximo passo</div>
+      <h2>Pronto para avançar?</h2>
+      <p>Após selecionar as formas de pagamento para ambos os serviços, clique abaixo para confirmar pelo WhatsApp.</p>
+    </div>
+    <div class="cta-wrap">
+      <p class="cta-status" id="cta-status">Selecione a forma de pagamento para cada serviço.</p>
+      <button class="cta-btn disabled" id="cta-btn" onclick="openWhatsApp()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.115.549 4.099 1.508 5.829L0 24l6.335-1.654A11.954 11.954 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.373l-.36-.213-3.731.975.995-3.635-.234-.374A9.818 9.818 0 0 1 12 2.182c5.423 0 9.818 4.395 9.818 9.818 0 5.422-4.395 9.818-9.818 9.818z"/>
+        </svg>
+        Confirmar pelo WhatsApp
+      </button>
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER
+       ============================================= -->
+  <footer class="footer reveal">
+    <p class="footer-headline">"Mais do que instalar pontos de rede, câmeras ou executar uma instalação elétrica, entregamos conectividade confiável, segurança e tranquilidade para a sua operação."</p>
+    <p class="footer-thanks">Obrigado pela oportunidade de apresentar nossa solução.</p>
+    <div class="footer-meta">
+      <span>Attive Tecnologia em Engenharia Elétrica e Infraestrutura &nbsp;|&nbsp; CREA-PB 1229019/2025-PB &nbsp;|&nbsp; (83) 9 9678-7788</span>
+      <span class="engineer">Hélio Crispim – Engenheiro Eletricista</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+// ============================================================
+// DADOS DOS SERVIÇOS (ATUALIZADOS)
+// ============================================================
+const servicos = {
+  rede: {
+    nome: 'Infraestrutura de Rede + Câmeras',
+    valorTotal: 4218.04,
+    valorAvista: 3796.24,
+    desconto: '10%'
+  },
+  eletrica: {
+    nome: 'Instalação Elétrica',
+    valorTotal: 1100.00,
+    valorAvista: 990.00,
+    desconto: '10%'
+  }
+};
+
+// Totais fixos
+const TOTAL_AVISTA = servicos.rede.valorAvista + servicos.eletrica.valorAvista; // 4786.24
+const TOTAL_PARCELADO = servicos.rede.valorTotal + servicos.eletrica.valorTotal; // 5318.04
+
+const WHATSAPP_NUMBER = "5583996787788";
+const MAX_PARCELAS = 6;
+
+// ============================================================
+// ESTADO DE SELEÇÃO
+// ============================================================
+const selecoes = {
+  rede: { tipo: null, parcelas: null },
+  eletrica: { tipo: null, parcelas: null }
+};
+
+// ============================================================
+// GERAR PARCELAS (a partir de 2x)
+// ============================================================
+function gerarParcelas(servicoId, containerId) {
+  const container = document.getElementById(containerId);
+  const servico = servicos[servicoId];
+  const valorTotal = servico.valorTotal;
+
+  for (let i = 2; i <= MAX_PARCELAS; i++) {
+    const valorParcela = valorTotal / i;
+    const div = document.createElement('div');
+    div.className = 'pay-option';
+    div.dataset.payment = `parcelado_${servicoId}_${i}`;
+    div.setAttribute('onclick', `selectPayment('${servicoId}', 'parcelado', ${i})`);
+    div.innerHTML = `
+      <div class="pay-radio"></div>
+      <div class="pay-info">
+        <h4>${i}x</h4>
+        <p>${i} parcelas</p>
+        <p class="pay-highlight">R$ ${valorParcela.toFixed(2).replace('.', ',')}/mês</p>
+      </div>
+    `;
+    container.appendChild(div);
+  }
+}
+
+gerarParcelas('rede', 'paymentGridRede');
+gerarParcelas('eletrica', 'paymentGridEletrica');
+
+// ============================================================
+// FUNÇÃO DE SELEÇÃO (com sincronização automática)
+// ============================================================
+function selectPayment(servicoId, tipo, parcelas = null) {
+  const prefix = servicoId === 'rede' ? 'rede' : 'eletrica';
+  const outroId = servicoId === 'rede' ? 'eletrica' : 'rede';
+  const outroPrefix = outroId === 'rede' ? 'rede' : 'eletrica';
+
+  // Atualiza o serviço clicado
+  selecoes[servicoId].tipo = tipo;
+  selecoes[servicoId].parcelas = parcelas;
+
+  // Se for parcelado, sincroniza o outro serviço com o mesmo número de parcelas
+  if (tipo === 'parcelado' && parcelas !== null) {
+    selecoes[outroId].tipo = 'parcelado';
+    selecoes[outroId].parcelas = parcelas;
+  }
+
+  // Se for à vista, não força o outro a ser à vista (deixa como está)
+  // Mas se o outro estiver com parcelas diferentes, pode ficar inconsistente.
+  // Para evitar isso, quando um for à vista e o outro parcelado, mantém.
+  // Mas o ideal é que se um for à vista, o outro também seja à vista? Vou deixar a critério do usuário.
+
+  // Remove seleção de todos os cards do serviço clicado
+  const containerId = servicoId === 'rede' ? 'paymentGridRede' : 'paymentGridEletrica';
+  document.querySelectorAll(`#${containerId} .pay-option`).forEach(el => el.classList.remove('selected'));
+
+  // Marca o card correto no serviço clicado
+  let selector = '';
+  if (tipo === 'avista') {
+    selector = `#${containerId} .pay-option[data-payment="avista_${prefix}"]`;
+  } else {
+    selector = `#${containerId} .pay-option[data-payment="parcelado_${prefix}_${parcelas}"]`;
+  }
+  const target = document.querySelector(selector);
+  if (target) target.classList.add('selected');
+
+  // Se o outro foi sincronizado, marca o card correspondente nele
+  if (tipo === 'parcelado' && parcelas !== null) {
+    const outroContainerId = outroId === 'rede' ? 'paymentGridRede' : 'paymentGridEletrica';
+    document.querySelectorAll(`#${outroContainerId} .pay-option`).forEach(el => el.classList.remove('selected'));
+    const outroSelector = `#${outroContainerId} .pay-option[data-payment="parcelado_${outroPrefix}_${parcelas}"]`;
+    const outroTarget = document.querySelector(outroSelector);
+    if (outroTarget) outroTarget.classList.add('selected');
+  }
+
+  atualizarResumo();
+  updateCTA();
+}
+
+// ============================================================
+// ATUALIZAR RESUMO
+// ============================================================
+function atualizarResumo() {
+  const resumoSection = document.getElementById('resumo-section');
+  const resumoGrid = document.getElementById('resumoGrid');
+  const boxAvista = document.getElementById('boxAvista');
+  const boxParcelado = document.getElementById('boxParcelado');
+  const boxParcelaMedia = document.getElementById('boxParcelaMedia');
+  const totalAvistaEl = document.getElementById('totalAvista');
+  const totalParceladoEl = document.getElementById('totalParcelado');
+  const detalheParceladoEl = document.getElementById('detalheParcelado');
+  const valorParcelaMediaEl = document.getElementById('valorParcelaMedia');
+  const detalheParcelaMediaEl = document.getElementById('detalheParcelaMedia');
+  const resumoObs = document.getElementById('resumoObs');
+
+  if (selecoes.rede.tipo && selecoes.eletrica.tipo) {
+    resumoSection.style.display = 'block';
+    resumoSection.querySelector('.resumo-wrap').style.animation = 'none';
+    setTimeout(() => {
+      resumoSection.querySelector('.resumo-wrap').style.animation = 'fadeInUp 0.6s ease both';
+    }, 10);
+  } else {
+    resumoSection.style.display = 'none';
+    return;
+  }
+
+  // Total à vista (fixo)
+  totalAvistaEl.textContent = `R$ ${TOTAL_AVISTA.toFixed(2).replace('.', ',')}`;
+
+  const hasParcelado = (selecoes.rede.tipo === 'parcelado' || selecoes.eletrica.tipo === 'parcelado');
+
+  if (hasParcelado) {
+    boxParcelado.classList.remove('hidden');
+    boxParcelaMedia.classList.remove('hidden');
+
+    let totalParcelado = 0;
+    let detalheParcelado = '';
+    let totalParcelasMensais = 0;
+    let countParcelas = 0;
+
+    if (selecoes.rede.tipo === 'parcelado') {
+      totalParcelado += servicos.rede.valorTotal;
+      const parcelaRede = servicos.rede.valorTotal / selecoes.rede.parcelas;
+      totalParcelasMensais += parcelaRede;
+      countParcelas++;
+      detalheParcelado += `Rede: ${selecoes.rede.parcelas}x; `;
+    }
+    if (selecoes.eletrica.tipo === 'parcelado') {
+      totalParcelado += servicos.eletrica.valorTotal;
+      const parcelaElet = servicos.eletrica.valorTotal / selecoes.eletrica.parcelas;
+      totalParcelasMensais += parcelaElet;
+      countParcelas++;
+      detalheParcelado += `Elétrica: ${selecoes.eletrica.parcelas}x; `;
+    }
+
+    totalParceladoEl.textContent = `R$ ${totalParcelado.toFixed(2).replace('.', ',')}`;
+    detalheParceladoEl.textContent = detalheParcelado.replace(/; $/, '');
+
+    // Total das parcelas mensais (soma)
+    valorParcelaMediaEl.textContent = `R$ ${totalParcelasMensais.toFixed(2).replace('.', ',')}`;
+    detalheParcelaMediaEl.textContent = `(soma das parcelas mensais de cada serviço)`;
+
+    resumoObs.textContent = '* Os valores acima refletem as opções de pagamento selecionadas para cada serviço.';
+    resumoGrid.classList.remove('single');
+  } else {
+    boxParcelado.classList.add('hidden');
+    boxParcelaMedia.classList.add('hidden');
+    resumoObs.textContent = '* Pagamento à vista em todos os serviços.';
+    resumoGrid.classList.add('single');
+  }
+}
+
+// ============================================================
+// CTA E WHATSAPP
+// ============================================================
+function updateCTA() {
+  const btn = document.getElementById('cta-btn');
+  const status = document.getElementById('cta-status');
+  if (selecoes.rede.tipo && selecoes.eletrica.tipo) {
+    btn.classList.remove('disabled');
+    status.textContent = 'Tudo pronto! Clique abaixo para confirmar sua escolha.';
+    status.classList.add('ready');
+  } else {
+    btn.classList.add('disabled');
+    status.textContent = 'Selecione a forma de pagamento para cada serviço.';
+    status.classList.remove('ready');
+  }
+}
+
+function openWhatsApp() {
+  if (!selecoes.rede.tipo || !selecoes.eletrica.tipo) {
+    alert('Selecione a forma de pagamento para ambos os serviços.');
+    return;
+  }
+
+  let mensagem = `Olá! Confirmo que li e aceito a proposta unificada para "Pharmapele Farmácia de Manipulação".\n\n`;
+
+  // Rede + Câmeras
+  let redeDetalhe = '';
+  if (selecoes.rede.tipo === 'avista') {
+    redeDetalhe = `À vista: R$ ${servicos.rede.valorAvista.toFixed(2).replace('.', ',')}`;
+  } else {
+    const vp = servicos.rede.valorTotal / selecoes.rede.parcelas;
+    redeDetalhe = `${selecoes.rede.parcelas}x de R$ ${vp.toFixed(2).replace('.', ',')} (Total R$ ${servicos.rede.valorTotal.toFixed(2).replace('.', ',')})`;
+  }
+  mensagem += `*Rede + Câmeras:* ${redeDetalhe}\n`;
+
+  // Elétrica
+  let eletricaDetalhe = '';
+  if (selecoes.eletrica.tipo === 'avista') {
+    eletricaDetalhe = `À vista: R$ ${servicos.eletrica.valorAvista.toFixed(2).replace('.', ',')}`;
+  } else {
+    const vp = servicos.eletrica.valorTotal / selecoes.eletrica.parcelas;
+    eletricaDetalhe = `${selecoes.eletrica.parcelas}x de R$ ${vp.toFixed(2).replace('.', ',')} (Total R$ ${servicos.eletrica.valorTotal.toFixed(2).replace('.', ',')})`;
+  }
+  mensagem += `*Elétrica:* ${eletricaDetalhe}\n\n`;
+
+  // Totais fixos
+  mensagem += `*Resumo dos totais:*\n`;
+  mensagem += `- À vista (total de todos os serviços): R$ ${TOTAL_AVISTA.toFixed(2).replace('.', ',')}\n`;
+
+  if (selecoes.rede.tipo === 'parcelado' || selecoes.eletrica.tipo === 'parcelado') {
+    let totalParcelado = 0;
+    let totalParcelasMensais = 0;
+    let count = 0;
+    if (selecoes.rede.tipo === 'parcelado') {
+      totalParcelado += servicos.rede.valorTotal;
+      totalParcelasMensais += servicos.rede.valorTotal / selecoes.rede.parcelas;
+      count++;
+    }
+    if (selecoes.eletrica.tipo === 'parcelado') {
+      totalParcelado += servicos.eletrica.valorTotal;
+      totalParcelasMensais += servicos.eletrica.valorTotal / selecoes.eletrica.parcelas;
+      count++;
+    }
+    mensagem += `- Parcelado (total dos serviços parcelados): R$ ${totalParcelado.toFixed(2).replace('.', ',')}\n`;
+    if (count > 0) {
+      mensagem += `- Total das parcelas mensais: R$ ${totalParcelasMensais.toFixed(2).replace('.', ',')}`;
+    }
+  } else {
+    mensagem += `- Nenhum serviço parcelado.\n`;
+  }
+
+  mensagem += `\n*Observações importantes:*\n`;
+  mensagem += `- *Pagamento antecipado para compra de material e garantia da agenda.*\n`;
+  mensagem += `- Material elétrico fornecido pelo cliente\n`;
+  mensagem += `- Serviços executados conforme escopo descrito\n\n`;
+  mensagem += `Declaro estar de acordo com todos os termos e autorizo o início dos serviços.`;
+
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`, '_blank');
+}
+
+// ============================================================
+// SCROLL REVEAL
+// ============================================================
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Inicializa CTA
+updateCTA();
+</script>
+
+</body>
+</html>
