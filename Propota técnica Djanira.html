@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>Proposta Técnico-Comercial — Controle de Acesso | Attive Tecnologia</title>
+
+<!-- ============================================================
+     META TAGS PARA COMPARTILHAMENTO EM REDES SOCIAIS
+     ============================================================ -->
+<meta property="og:title" content="Proposta de Controle de Acesso — Escola Djanira Tavares | Attive Tecnologia" />
+<meta property="og:description" content="Proposta técnico-comercial para instalação de catraca com 2 controladores faciais e software de gestão. Escola Djanira Tavares — A/C Socorro. Attive Tecnologia em Segurança Eletrônica." />
+<meta property="og:image" content="https://i.postimg.cc/LXkKGCgR/Chat-GPT-Image-2-de-jul-de-2026-12-35-48.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<style>
+  /* ============================================================
+     TOKENS
+  ============================================================ */
+  :root {
+    --bg-deep:     #060E1A;
+    --bg-base:     #0A192F;
+    --bg-card:     #0F2040;
+    --bg-card2:    #111827;
+    --border:      rgba(0,102,255,0.18);
+    --border-hi:   rgba(0,163,255,0.45);
+    --blue-core:   #0066FF;
+    --blue-neon:   #00A3FF;
+    --blue-dim:    #0047AB;
+    --text-head:   #E8F4FF;
+    --text-body:   #A8C4DC;
+    --text-muted:  #5A7A9A;
+    --gold:        #F0B429;
+    --green:       #22C55E;
+    --orange:      #F59E0B;
+    --radius-sm:   8px;
+    --radius-md:   14px;
+    --radius-lg:   22px;
+    --glass-bg:    rgba(0,102,255,0.07);
+    --glass-blur:  blur(18px);
+    --shadow-blue: 0 4px 32px rgba(0,102,255,0.18);
+    --shadow-card: 0 2px 24px rgba(0,0,0,0.5);
+    --font-display: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  /* ============================================================
+     RESET & BASE
+  ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: var(--font-display);
+    background: var(--bg-deep);
+    color: var(--text-body);
+    line-height: 1.65;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ============================================================
+     BACKGROUND AMBIENT
+  ============================================================ */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(0,102,255,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 35% at 80% 80%, rgba(0,71,171,0.10) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 14px 40px;
+  }
+
+  /* ============================================================
+     TYPOGRAPHY
+  ============================================================ */
+  h1, h2, h3, h4 { color: var(--text-head); font-weight: 700; line-height: 1.2; }
+  h1 { font-size: clamp(1.4rem, 5vw, 2.6rem); letter-spacing: -0.02em; }
+  h2 { font-size: clamp(1.1rem, 3.5vw, 1.8rem); }
+  h3 { font-size: clamp(0.95rem, 2.8vw, 1.3rem); }
+  p  { font-size: clamp(0.82rem, 2vw, 0.98rem); }
+
+  .label-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue-neon);
+    background: rgba(0,163,255,0.1);
+    border: 1px solid rgba(0,163,255,0.25);
+    border-radius: 30px;
+    padding: 3px 12px;
+    margin-bottom: 10px;
+  }
+
+  /* ============================================================
+     DIVIDER
+  ============================================================ */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-hi), transparent);
+    margin: 40px 0;
+  }
+
+  /* ============================================================
+     HEADER - OTIMIZADO MOBILE
+  ============================================================ */
+  .header {
+    position: relative;
+    padding: 30px 0 28px;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 0;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    animation: parallaxZoom 20s ease-in-out infinite alternate;
+  }
+
+  .header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: rgba(6, 14, 26, 0.75);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+
+  @keyframes parallaxZoom {
+    0%   { transform: scale(1) translateY(0); }
+    100% { transform: scale(1.05) translateY(-8px); }
+  }
+
+  .header > *:not(.header-bg):not(.header-overlay) {
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-logo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .logo-box {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: transparent;
+  }
+
+  .logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .company-name {
+    font-size: clamp(0.85rem, 2.8vw, 1.3rem);
+    font-weight: 800;
+    color: var(--text-head);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .company-sub {
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue-neon);
+    border: 1px solid var(--border-hi);
+    border-radius: 30px;
+    padding: 4px 12px;
+    margin-bottom: 14px;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    background: var(--glass-bg);
+  }
+
+  .header h1 { margin-bottom: 6px; }
+  .header-sub {
+    font-size: clamp(0.8rem, 2.2vw, 1.05rem);
+    color: var(--blue-neon);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .header-intro {
+    max-width: 620px;
+    margin: 0 auto;
+    color: var(--text-body);
+    font-size: clamp(0.8rem, 1.8vw, 0.96rem);
+    line-height: 1.6;
+    padding: 0 4px;
+  }
+
+  /* ============================================================
+     CLIENT BLOCK - OTIMIZADO MOBILE
+  ============================================================ */
+  .client-block {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 8px 16px 8px 12px;
+    background: linear-gradient(135deg, rgba(0,102,255,0.10), rgba(0,163,255,0.05));
+    border: 1px solid rgba(0,163,255,0.35);
+    border-radius: 40px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 0 20px rgba(0,163,255,0.06);
+    transition: all 0.3s ease;
+  }
+
+  .client-block:hover {
+    border-color: rgba(0,163,255,0.7);
+    box-shadow: 0 0 30px rgba(0,163,255,0.10);
+    transform: scale(1.01);
+  }
+
+  .client-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-dim), var(--blue-neon));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 14px rgba(0,163,255,0.25);
+  }
+
+  .client-icon svg {
+    width: 16px;
+    height: 16px;
+    color: #fff;
+    stroke-width: 2.2;
+  }
+
+  .client-info {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .client-label {
+    font-size: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--blue-neon);
+    opacity: 0.8;
+    font-weight: 600;
+  }
+
+  .client-name {
+    font-size: clamp(0.85rem, 2.5vw, 1.15rem);
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0,163,255,0.2);
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  /* ============================================================
+     SECTION TITLE
+  ============================================================ */
+  .section-title {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .section-title h2 { margin-bottom: 6px; }
+  .section-title p { color: var(--text-body); max-width: 560px; margin: 0 auto; font-size: clamp(0.78rem, 1.8vw, 0.93rem); }
+
+  /* ============================================================
+     DIFERENCIAIS GRID - MOBILE FIRST
+  ============================================================ */
+  .diff-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .diff-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    transition: border-color .25s, transform .25s;
+  }
+
+  .diff-card:hover {
+    border-color: var(--border-hi);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-blue);
+  }
+
+  .diff-icon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(0,71,171,0.4), rgba(0,163,255,0.15));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(0,163,255,0.15);
+  }
+  .diff-icon svg { width: 16px; height: 16px; color: var(--blue-neon); }
+
+  .diff-text h4 { font-size: clamp(0.75rem, 1.8vw, 0.9rem); margin-bottom: 2px; }
+  .diff-text p  { font-size: clamp(0.6rem, 1.4vw, 0.8rem); color: var(--text-muted); line-height: 1.4; }
+
+  /* ============================================================
+     ESCOPO DO SERVIÇO - TRÊS BLOCOS MOBILE
+  ============================================================ */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .compare-grid .option-card:last-child {
+    grid-column: 1 / -1;
+    max-width: 100%;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .option-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    opacity: 1 !important;
+    pointer-events: none;
+  }
+
+  .option-card .option-header {
+    background: linear-gradient(135deg, #0A1F3A, #0F2A50);
+    padding: 12px 10px 10px;
+    text-align: center;
+    position: relative;
+  }
+
+  .option-card .option-header.highlight-1 {
+    background: linear-gradient(135deg, #003380, #005BB8);
+  }
+
+  .option-card .option-header.highlight-2 {
+    background: linear-gradient(135deg, #1a3a2a, #0d5c2e);
+  }
+
+  .option-card .option-header.highlight-3 {
+    background: linear-gradient(135deg, #7c3a00, #b45309);
+  }
+
+  .option-badges {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 4px;
+  }
+
+  .option-badge {
+    display: inline-block;
+    font-size: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 16px;
+  }
+
+  .badge-hardware {
+    background: rgba(0,163,255,0.2);
+    color: var(--blue-neon);
+    border: 1px solid rgba(0,163,255,0.3);
+  }
+
+  .badge-software {
+    background: rgba(34,197,94,0.18);
+    color: var(--green);
+    border: 1px solid rgba(34,197,94,0.3);
+  }
+
+  .badge-suporte {
+    background: rgba(245,158,11,0.2);
+    color: var(--orange);
+    border: 1px solid rgba(245,158,11,0.3);
+  }
+
+  .option-number {
+    font-size: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .option-name {
+    font-size: clamp(0.8rem, 2.2vw, 1rem);
+    font-weight: 800;
+    color: var(--text-head);
+  }
+
+  .option-model {
+    font-size: 0.6rem;
+    color: var(--text-muted);
+  }
+
+  .option-body {
+    padding: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .spec-list {
+    list-style: none;
+    margin: 0 0 8px 0;
+    padding: 0;
+  }
+
+  .spec-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: clamp(0.6rem, 1.4vw, 0.75rem);
+  }
+
+  .spec-list li:last-child {
+    border-bottom: none;
+  }
+
+  .spec-key {
+    color: var(--text-muted);
+  }
+
+  .spec-val {
+    color: var(--text-head);
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .benefits {
+    margin: 4px 0 8px;
+  }
+
+  .benefits-title {
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin: 0 0 4px 0;
+  }
+
+  .benefit-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 8px;
+  }
+
+  .benefit-list li {
+    font-size: clamp(0.55rem, 1.3vw, 0.7rem);
+    color: var(--text-body);
+    position: relative;
+    padding-left: 12px;
+  }
+
+  .benefit-list li::before {
+    content: "✓";
+    color: var(--green);
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+    font-size: 0.6rem;
+  }
+
+  .info-block {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 6px;
+    margin: 4px 0 8px;
+    text-align: center;
+  }
+
+  .info-block .highlight {
+    color: var(--blue-neon);
+    font-weight: 700;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+  }
+
+  .info-block .highlight-green {
+    color: var(--green);
+    font-weight: 700;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+  }
+
+  .info-block .highlight-orange {
+    color: var(--orange);
+    font-weight: 700;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+  }
+
+  .info-block .highlight-mensal {
+    font-size: 0.55rem;
+    color: var(--text-muted);
+  }
+
+  /* ============================================================
+     CARDS SELECIONÁVEIS
+  ============================================================ */
+  .option-card.selectable {
+    pointer-events: auto;
+    cursor: pointer;
+    transition: border-color .3s, box-shadow .3s, transform .2s;
+  }
+
+  .option-card.selectable:active {
+    transform: scale(0.98);
+  }
+
+  .option-card.selectable.selected {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 2px rgba(245,158,11,0.2), 0 4px 20px rgba(245,158,11,0.10);
+  }
+
+  .option-card.selectable.selected .option-header.highlight-3 {
+    background: linear-gradient(135deg, #92400e, #d97706);
+  }
+
+  .select-btn-suporte {
+    width: 100%;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    border: 2px solid var(--orange);
+    background: transparent;
+    color: var(--orange);
+    transition: all .25s;
+    margin-top: auto;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .select-btn-suporte:active {
+    transform: scale(0.97);
+  }
+
+  .option-card.selectable.selected .select-btn-suporte {
+    background: linear-gradient(135deg, #92400e, #d97706);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  /* ============================================================
+     OBSERVAÇÃO
+  ============================================================ */
+  .obs-box {
+    background: rgba(240,180,41,0.06);
+    border: 1px solid rgba(240,180,41,0.2);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin: 16px 0 6px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .obs-box svg {
+    width: 18px;
+    height: 18px;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .obs-box .obs-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 1px;
+  }
+
+  .obs-box .obs-text {
+    font-size: 0.7rem;
+    color: var(--text-body);
+    line-height: 1.5;
+  }
+
+  .obs-box .obs-text strong {
+    color: var(--text-head);
+  }
+
+  /* ============================================================
+     CAMINHO PARA ACEITE
+  ============================================================ */
+  .aceite-steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .aceite-step {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px 12px;
+    text-align: center;
+    position: relative;
+    transition: border-color .3s, transform .2s;
+  }
+
+  .aceite-step:active {
+    transform: scale(0.98);
+  }
+
+  .aceite-step .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-dim), var(--blue-neon));
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    box-shadow: 0 0 14px rgba(0,163,255,0.2);
+  }
+
+  .aceite-step .step-title {
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
+    font-weight: 700;
+    color: var(--text-head);
+    margin-bottom: 4px;
+  }
+
+  .aceite-step .step-desc {
+    font-size: clamp(0.6rem, 1.4vw, 0.78rem);
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .aceite-step .step-desc .opcional-tag {
+    display: inline-block;
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--orange);
+    background: rgba(245,158,11,0.12);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 10px;
+    padding: 1px 8px;
+    margin-left: 3px;
+  }
+
+  .aceite-step .step-status {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 2px 10px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.04);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  .aceite-step .step-status.done {
+    background: rgba(34,197,94,0.10);
+    color: var(--green);
+    border-color: rgba(34,197,94,0.25);
+  }
+
+  .aceite-step .step-status.active {
+    background: rgba(0,163,255,0.10);
+    color: var(--blue-neon);
+    border-color: rgba(0,163,255,0.25);
+    animation: pulse-status 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-status {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .aceite-step .step-connector {
+    display: none;
+  }
+
+  /* ============================================================
+     SERVIÇOS - MOBILE
+  ============================================================ */
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .service-item {
+    background: var(--glass-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: clamp(0.65rem, 1.5vw, 0.84rem);
+    color: var(--text-body);
+    font-weight: 500;
+    transition: border-color .2s;
+  }
+  .service-item:hover { border-color: var(--border-hi); }
+  .service-item svg { width: 14px; height: 14px; color: var(--blue-neon); flex-shrink: 0; }
+
+  /* ============================================================
+     TIMELINE
+  ============================================================ */
+  .timeline {
+    position: relative;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--blue-neon), var(--blue-dim), transparent);
+  }
+
+  .tl-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 0 0 20px 0;
+    position: relative;
+  }
+
+  .tl-num {
+    width: 36px; height: 36px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-dim), var(--blue-neon));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(0,163,255,0.3);
+    position: relative;
+    z-index: 1;
+  }
+
+  .tl-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    flex: 1;
+  }
+
+  .tl-content h4 { font-size: clamp(0.75rem, 1.8vw, 0.9rem); margin-bottom: 2px; }
+  .tl-content p  { font-size: clamp(0.6rem, 1.4vw, 0.8rem); color: var(--text-muted); }
+
+  /* ============================================================
+     INVESTIMENTO - MOBILE
+  ============================================================ */
+  .invest-wrap {
+    background: linear-gradient(135deg, #05122A, #0A1F3D);
+    border: 1px solid var(--border-hi);
+    border-radius: var(--radius-md);
+    padding: 24px 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .invest-wrap::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: 50%;
+    transform: translateX(-50%);
+    width: 200px; height: 100px;
+    background: radial-gradient(ellipse, rgba(0,163,255,0.10), transparent 70%);
+    pointer-events: none;
+  }
+
+  .invest-name {
+    font-size: clamp(0.85rem, 2.5vw, 1.3rem);
+    font-weight: 800;
+    color: var(--blue-neon);
+    margin-bottom: 14px;
+  }
+
+  .invest-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: 500px;
+    margin: 0 auto 18px;
+  }
+
+  .invest-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 10px;
+  }
+
+  .invest-box-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .invest-val {
+    font-size: clamp(1.1rem, 3.5vw, 1.9rem);
+    font-weight: 800;
+    color: var(--text-head);
+    letter-spacing: -0.02em;
+  }
+
+  .invest-val .currency {
+    font-size: 0.7em;
+    color: var(--blue-neon);
+    vertical-align: top;
+    margin-top: 2px;
+    display: inline-block;
+  }
+
+  .invest-note {
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ============================================================
+     GARANTIA
+  ============================================================ */
+  .garantia-box {
+    background: rgba(34,197,94,0.05);
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .garantia-box svg {
+    width: 16px;
+    height: 16px;
+    color: var(--green);
+    flex-shrink: 0;
+  }
+
+  .garantia-box span {
+    font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+    color: var(--text-body);
+  }
+
+  .garantia-box strong {
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  /* ============================================================
+     PAGAMENTO - MOBILE
+  ============================================================ */
+  .payment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .pay-option {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 12px;
+    cursor: pointer;
+    transition: all .25s;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .pay-option:active {
+    transform: scale(0.97);
+  }
+
+  .pay-option.selected {
+    border-color: var(--blue-neon);
+    background: rgba(0,163,255,0.05);
+    box-shadow: 0 0 0 2px rgba(0,163,255,0.10);
+  }
+
+  .pay-radio {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--border-hi);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+  }
+
+  .pay-option.selected .pay-radio {
+    border-color: var(--blue-neon);
+    background: var(--blue-neon);
+  }
+
+  .pay-radio::after {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0;
+    transition: opacity .2s;
+  }
+
+  .pay-option.selected .pay-radio::after { opacity: 1; }
+
+  .pay-info h4 { font-size: clamp(0.75rem, 2vw, 0.88rem); margin-bottom: 2px; }
+  .pay-info p  { font-size: clamp(0.6rem, 1.4vw, 0.78rem); color: var(--text-muted); }
+  .pay-highlight { color: var(--green); font-weight: 700; font-size: clamp(0.65rem, 1.5vw, 0.82rem); margin-top: 4px; }
+
+  /* ============================================================
+     CTA WHATSAPP - MOBILE
+  ============================================================ */
+  .cta-wrap {
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .cta-status {
+    font-size: clamp(0.7rem, 1.6vw, 0.82rem);
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    min-height: 20px;
+    transition: color .3s;
+  }
+
+  .cta-status.ready { color: var(--green); }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border-radius: 40px;
+    font-size: clamp(0.85rem, 2.2vw, 1rem);
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all .3s;
+    background: linear-gradient(135deg, #128C7E, #25D366);
+    color: #fff;
+    box-shadow: 0 4px 24px rgba(37,211,102,0.30);
+    -webkit-tap-highlight-color: transparent;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .cta-btn:active:not(.disabled) {
+    transform: scale(0.97);
+  }
+
+  .cta-btn.disabled {
+    background: linear-gradient(135deg, #1E293B, #263344);
+    color: var(--text-muted);
+    box-shadow: none;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .cta-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  /* ============================================================
+     FOOTER - MOBILE
+  ============================================================ */
+  .footer {
+    text-align: center;
+    padding: 30px 0 16px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  .footer-headline {
+    font-size: clamp(0.8rem, 2.2vw, 1.15rem);
+    font-weight: 700;
+    color: var(--text-head);
+    margin-bottom: 6px;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-thanks {
+    font-size: clamp(0.7rem, 1.6vw, 0.84rem);
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .footer-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+  .footer-meta .engineer {
+    font-weight: 700;
+    color: var(--blue-neon);
+    font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+    margin-top: 2px;
+  }
+
+  /* ============================================================
+     REVEAL ANIMATIONS
+  ============================================================ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============================================================
+     RESPONSIVO - AJUSTES FINOS MOBILE
+  ============================================================ */
+  @media (max-width: 480px) {
+    .page-wrap {
+      padding: 0 10px 30px;
+    }
+
+    .diff-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .diff-card {
+      padding: 10px 8px;
+      gap: 6px;
+    }
+
+    .diff-icon {
+      width: 24px;
+      height: 24px;
+    }
+    .diff-icon svg { width: 12px; height: 12px; }
+
+    .compare-grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .compare-grid .option-card:last-child {
+      max-width: 100%;
+    }
+
+    .services-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .service-item {
+      padding: 8px 10px;
+      font-size: 0.6rem;
+      gap: 6px;
+    }
+    .service-item svg { width: 12px; height: 12px; }
+
+    .aceite-steps {
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .aceite-step {
+      padding: 12px 8px;
+    }
+
+    .aceite-step .step-num {
+      width: 28px;
+      height: 28px;
+      font-size: 0.75rem;
+      margin-bottom: 4px;
+    }
+
+    .invest-grid {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .payment-grid {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .cta-btn {
+      padding: 12px 20px;
+      max-width: 100%;
+    }
+
+    .header {
+      padding: 20px 0 18px;
+      min-height: 200px;
+    }
+
+    .logo-box {
+      width: 56px;
+      height: 56px;
+    }
+
+    .client-block {
+      padding: 6px 12px 6px 10px;
+      gap: 8px;
+    }
+
+    .client-icon {
+      width: 28px;
+      height: 28px;
+    }
+    .client-icon svg { width: 14px; height: 14px; }
+    .client-name { font-size: 0.8rem; }
+    .client-label { font-size: 0.45rem; }
+
+    .divider {
+      margin: 28px 0;
+    }
+
+    .timeline::before {
+      left: 16px;
+    }
+
+    .tl-num {
+      width: 30px;
+      height: 30px;
+      font-size: 0.6rem;
+    }
+
+    .tl-content {
+      padding: 8px 12px;
+    }
+
+    .section-title {
+      margin-bottom: 18px;
+    }
+
+    .obs-box {
+      padding: 10px 12px;
+    }
+    .obs-box svg { width: 16px; height: 16px; }
+    .obs-box .obs-text { font-size: 0.65rem; }
+
+    .garantia-box {
+      padding: 8px 12px;
+    }
+    .garantia-box svg { width: 14px; height: 14px; }
+
+    .invest-wrap {
+      padding: 18px 12px;
+    }
+
+    .invest-box {
+      padding: 10px 8px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .diff-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .aceite-steps {
+      grid-template-columns: 1fr;
+    }
+
+    .header-badge {
+      font-size: 0.5rem;
+      padding: 3px 10px;
+    }
+
+    .header h1 { font-size: 1.2rem; }
+  }
+
+  @media (min-width: 601px) and (max-width: 768px) {
+    .compare-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .compare-grid .option-card:last-child {
+      grid-column: 1 / -1;
+      max-width: 80%;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .aceite-steps {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .aceite-step .step-connector {
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: -16px;
+      width: 16px;
+      height: 2px;
+      background: var(--border-hi);
+      opacity: 0.3;
+    }
+    .aceite-step:last-child .step-connector {
+      display: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- =============================================
+       HEADER
+  ============================================= -->
+  <header class="header reveal">
+    <img src="https://i.postimg.cc/LXkKGCgR/Chat-GPT-Image-2-de-jul-de-2026-12-35-48.png" class="header-bg" alt="Controle de Acesso - Escola Djanira Tavares">
+    <div class="header-overlay"></div>
+
+    <div class="header-logo-wrap">
+      <div class="logo-box">
+        <img src="https://i.postimg.cc/4xb9f1dS/logobrancasemfundo-Copia.png" alt="Attive Tecnologia">
+      </div>
+      <div>
+        <div class="company-name">Attive Tecnologia</div>
+        <div class="company-sub">Segurança Eletrônica com Engenharia</div>
+      </div>
+    </div>
+
+    <div class="header-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+      Proposta Técnico-Comercial
+    </div>
+
+    <h1>Sistema de Controle de Acesso</h1>
+    <p class="header-sub">Catraca + 2 Controladores Faciais + Software de Gestão</p>
+    <p class="header-intro">
+      Solução completa para gestão de entrada e saída de alunos, funcionários e visitantes,
+      com reconhecimento facial de alta precisão e plataforma integrada para monitoramento.
+    </p>
+
+    <div class="client-block">
+      <div class="client-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div class="client-info">
+        <span class="client-label">Proposta destinada a</span>
+        <span class="client-name">Escola Djanira Tavares — A/C Socorro</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       DIFERENCIAIS
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Nossa empresa</div>
+      <h2>Por que escolher a Attive?</h2>
+      <p>Mais de 25 anos de experiência em segurança eletrônica e automação com execução técnica especializada.</p>
+    </div>
+
+    <div class="diff-grid">
+      <div class="diff-card">
+        <div class="diff-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="diff-text">
+          <h4>Profissionais qualificados</h4>
+          <p>Equipe técnica certificada com formação em engenharia.</p>
+        </div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div class="diff-text">
+          <h4>Instalação especializada</h4>
+          <p>Execução técnica criteriosa, com ART do engenheiro.</p>
+        </div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div class="diff-text">
+          <h4>Equipamentos de qualidade</h4>
+          <p>Hardware com tecnologia de reconhecimento facial de ponta.</p>
+        </div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="diff-text">
+          <h4>Acabamento profissional</h4>
+          <p>Passagem de cabos organizada e fixações seguras.</p>
+        </div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="diff-text">
+          <h4>Segurança e confiabilidade</h4>
+          <p>Registros de acesso e controle total de entrada/saída.</p>
+        </div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.38a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div class="diff-text">
+          <h4>Suporte pós-instalação</h4>
+          <p>Atendimento ágil para garantir sua tranquilidade.</p>
+        </div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="diff-text">
+          <h4>Atendimento transparente</h4>
+          <p>Proposta clara, sem surpresas. Você sabe o que será executado.</p>
+        </div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="diff-text">
+          <h4>Compromisso total</h4>
+          <p>Sua satisfação é nossa principal métrica de qualidade.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       ESCOPO DO SERVIÇO
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Escopo do serviço</div>
+      <h2>O que está incluído no projeto</h2>
+      <p>O projeto contempla instalação, configuração e treinamento para uso do sistema completo.</p>
+    </div>
+
+    <div class="obs-box">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <div>
+        <div class="obs-title">ATENÇÃO</div>
+        <div class="obs-text">
+          <strong>Os equipamentos (catraca e controladores faciais) serão fornecidos pelo cliente</strong> e estão ausentes de garantia por parte da Attive Tecnologia. Nossa responsabilidade limita-se à instalação, configuração e treinamento.
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+
+      <!-- BLOCO 1: INSTALAÇÃO -->
+      <div class="option-card">
+        <div class="option-header highlight-1">
+          <div class="option-badges">
+            <span class="option-badge badge-hardware">Hardware</span>
+            <span class="option-number">Instalação</span>
+          </div>
+          <div class="option-name">Catraca + 2x Controladores</div>
+          <div class="option-model">Instalação e configuração do hardware</div>
+        </div>
+
+        <div class="option-body">
+          <ul class="spec-list">
+            <li><span class="spec-key">Catraca</span><span class="spec-val">Eletromecânica</span></li>
+            <li><span class="spec-key">Controladores</span><span class="spec-val">2 unidades</span></li>
+            <li><span class="spec-key">Autenticação</span><span class="spec-val">Reconhecimento Facial</span></li>
+            <li><span class="spec-key">Tempo de reconhecimento</span><span class="spec-val">&lt; 1s</span></li>
+          </ul>
+
+          <div class="benefits">
+            <p class="benefits-title">Serviços incluídos</p>
+            <ul class="benefit-list">
+              <li>Montagem da catraca</li>
+              <li>Instalação dos controladores</li>
+              <li>Configuração da rede</li>
+              <li>Cadastro de usuários</li>
+              <li>Testes operacionais</li>
+              <li>Garantia do serviço: 90 dias</li>
+            </ul>
+          </div>
+
+          <div class="info-block">
+            <span style="font-size:0.65rem;color:var(--text-muted);">Instalação + Materiais</span><br>
+            <span class="highlight">R$ 1.820,00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOCO 2: SOFTWARE -->
+      <div class="option-card">
+        <div class="option-header highlight-2">
+          <div class="option-badges">
+            <span class="option-badge badge-software">Software</span>
+            <span class="option-number">Gestão</span>
+          </div>
+          <div class="option-name">Software de Controle</div>
+          <div class="option-model">Plataforma de gestão e monitoramento</div>
+        </div>
+
+        <div class="option-body">
+          <ul class="spec-list">
+            <li><span class="spec-key">Tipo</span><span class="spec-val">Desktop / Web / App</span></li>
+            <li><span class="spec-key">Licença</span><span class="spec-val">400 usuários</span></li>
+            <li><span class="spec-key">Funcionalidades</span><span class="spec-val">Gestão completa</span></li>
+            <li><span class="spec-key">Relatórios</span><span class="spec-val">Completos</span></li>
+            <li><span class="spec-key">Notificações</span><span class="spec-val">Por e-mail</span></li>
+            <li><span class="spec-key">Exportação</span><span class="spec-val">CSV / PDF</span></li>
+          </ul>
+
+          <div class="benefits">
+            <p class="benefits-title">Funcionalidades</p>
+            <ul class="benefit-list">
+              <li>Registro com foto</li>
+              <li>Controle de visitantes</li>
+              <li>Relatórios completos</li>
+              <li>Notificações por e-mail</li>
+              <li>Exportação de dados</li>
+              <li>Multi-usuários</li>
+            </ul>
+          </div>
+
+          <div class="info-block">
+            <span style="font-size:0.65rem;color:var(--text-muted);">Licença do software</span><br>
+            <span class="highlight-green">R$ 220,00</span><br>
+            <span class="highlight-mensal">/ mês</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOCO 3: PLANO DE SUPORTE - SELECIONÁVEL -->
+      <div class="option-card selectable" id="card-suporte" onclick="toggleSuporte()">
+        <div class="option-header highlight-3">
+          <div class="option-badges">
+            <span class="option-badge badge-suporte">Opcional</span>
+            <span class="option-number">Suporte</span>
+          </div>
+          <div class="option-name">Plano de Suporte Técnico</div>
+          <div class="option-model">Manutenção preventiva e corretiva</div>
+        </div>
+
+        <div class="option-body">
+          <ul class="spec-list">
+            <li><span class="spec-key">Visita preventiva</span><span class="spec-val">1 visita</span></li>
+            <li><span class="spec-key">Visitas corretivas</span><span class="spec-val">2 visitas</span></li>
+            <li><span class="spec-key">Acumulativas</span><span class="spec-val">Não acumulativas</span></li>
+            <li><span class="spec-key">Período</span><span class="spec-val">12 meses</span></li>
+          </ul>
+
+          <div class="benefits">
+            <p class="benefits-title">O que está incluso</p>
+            <ul class="benefit-list">
+              <li>1 visita preventiva</li>
+              <li>2 visitas corretivas</li>
+              <li>Mão de obra especializada</li>
+              <li>Diagnóstico completo</li>
+              <li>Suporte remoto</li>
+            </ul>
+          </div>
+
+          <div class="info-block">
+            <span style="font-size:0.65rem;color:var(--text-muted);">Plano anual</span><br>
+            <span class="highlight-orange">R$ 200,00</span>
+          </div>
+
+          <button class="select-btn-suporte" id="btn-suporte" onclick="event.stopPropagation(); toggleSuporte();">
+            <span id="btn-suporte-text">Adicionar ao orçamento</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       CAMINHO PARA ACEITE
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Como finalizar</div>
+      <h2>Caminho para aceite da proposta</h2>
+      <p>Siga os passos abaixo para formalizar a contratação do serviço.</p>
+    </div>
+
+    <div class="aceite-steps">
+      <div class="aceite-step">
+        <div class="step-connector"></div>
+        <div class="step-num">1</div>
+        <div class="step-title">Analise a proposta</div>
+        <div class="step-desc">Leia atentamente todas as informações do projeto.</div>
+        <span class="step-status done">✓ Concluído</span>
+      </div>
+
+      <div class="aceite-step">
+        <div class="step-connector"></div>
+        <div class="step-num">2</div>
+        <div class="step-title">Escolha o suporte</div>
+        <div class="step-desc">
+          Adicione o Plano de Suporte clicando no card laranja.
+          <span class="opcional-tag">Opcional</span>
+        </div>
+        <span class="step-status" id="status-passo2">Aguardando</span>
+      </div>
+
+      <div class="aceite-step">
+        <div class="step-connector"></div>
+        <div class="step-num">3</div>
+        <div class="step-title">Selecione o pagamento</div>
+        <div class="step-desc">À vista com 10% de desconto ou parcelado em 6x.</div>
+        <span class="step-status" id="status-passo3">Aguardando</span>
+      </div>
+
+      <div class="aceite-step">
+        <div class="step-num">4</div>
+        <div class="step-title">Confirme pelo WhatsApp</div>
+        <div class="step-desc">Clique no botão verde para enviar sua confirmação.</div>
+        <span class="step-status" id="status-passo4">Aguardando</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       SERVIÇOS EXECUTADOS
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Serviços executados</div>
+      <h2>O que a Attive entrega</h2>
+      <p>Além dos equipamentos, oferecemos instalação, configuração, treinamento e suporte.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Instalação da catraca</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg> Configuração dos controladores</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Instalação do software</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg> Cadastro de usuários</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Testes operacionais</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Treinamento da equipe</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Acabamento profissional</div>
+      <div class="service-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.38a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Suporte pós-instalação</div>
+    </div>
+
+    <div class="garantia-box" style="margin-top:14px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <polyline points="9 12 11 14 15 10"/>
+      </svg>
+      <span><strong>Garantia do serviço de instalação:</strong> 90 dias contra defeitos de instalação e configuração.</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       ETAPAS
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Processo de trabalho</div>
+      <h2>Etapas do serviço</h2>
+      <p>Da aprovação à entrega, acompanhe cada passo da nossa execução.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-step"><div class="tl-num">1</div><div class="tl-content"><h4>Aprovação da proposta</h4><p>Você confirma o serviço e formalizamos o início do projeto.</p></div></div>
+      <div class="tl-step"><div class="tl-num">2</div><div class="tl-content"><h4>Agendamento</h4><p>Definimos a data e horário mais conveniente para a instalação.</p></div></div>
+      <div class="tl-step"><div class="tl-num">3</div><div class="tl-content"><h4>Instalação do hardware</h4><p>Montagem da catraca e instalação dos controladores faciais.</p></div></div>
+      <div class="tl-step"><div class="tl-num">4</div><div class="tl-content"><h4>Configuração e cadastro</h4><p>Configuramos os controladores, instalamos o software e cadastramos os usuários.</p></div></div>
+      <div class="tl-step"><div class="tl-num">5</div><div class="tl-content"><h4>Testes finais</h4><p>Realizamos testes completos de funcionamento e integração do sistema.</p></div></div>
+      <div class="tl-step"><div class="tl-num">6</div><div class="tl-content"><h4>Treinamento e entrega</h4><p>Treinamos a equipe e entregamos o sistema operando com excelência.</p></div></div>
+      <div class="tl-step" style="padding-bottom:0;">
+        <div class="tl-num" style="background:linear-gradient(135deg,#128C7E,#25D366);box-shadow:0 0 12px rgba(37,211,102,0.3);">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="tl-content" style="border-color:rgba(37,211,102,0.2);background:rgba(37,211,102,0.03);">
+          <h4 style="color:#22C55E;">Satisfação garantida</h4>
+          <p>Sistema funcionando. Você aprova e seguimos disponíveis para suporte.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       INVESTIMENTO
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Investimento</div>
+      <h2>Valores do projeto</h2>
+    </div>
+
+    <div class="invest-wrap">
+      <div class="invest-name">Instalação + Materiais + Licença do Software (mensal)</div>
+
+      <div class="invest-grid">
+        <div class="invest-box">
+          <div class="invest-box-label">Instalação (à vista)</div>
+          <div class="invest-val"><span class="currency">R$</span> 1.638,00</div>
+          <div class="invest-note">10% de desconto à vista</div>
+        </div>
+        <div class="invest-box">
+          <div class="invest-box-label">Instalação (parcelado)</div>
+          <div class="invest-val"><span class="currency">R$</span> 1.820,00</div>
+          <div class="invest-note">6x de R$ 303,33 sem juros</div>
+        </div>
+      </div>
+
+      <div style="max-width:500px; margin:0 auto 14px;">
+        <div class="invest-box" style="border-color:var(--green);">
+          <div class="invest-box-label" style="color:var(--green);">Licença do Software</div>
+          <div class="invest-val" style="color:var(--green);"><span class="currency" style="color:var(--green);">R$</span> 220,00</div>
+          <div class="invest-note">/ mês</div>
+        </div>
+      </div>
+
+      <div style="max-width:500px; margin:0 auto 14px;" id="box-suporte">
+        <div class="invest-box" style="border-color:var(--orange); opacity:0.5; transition: all .3s;" id="invest-suporte">
+          <div class="invest-box-label" style="color:var(--orange);">+ Plano de Suporte (opcional)</div>
+          <div class="invest-val" style="color:var(--orange);"><span class="currency" style="color:var(--orange);">R$</span> 200,00</div>
+          <div class="invest-note">Anual - 1 preventiva + 2 corretivas não acumulativas</div>
+          <div style="margin-top:4px; font-size:0.6rem; color:var(--text-muted);" id="status-suporte">❌ Não selecionado</div>
+        </div>
+      </div>
+
+      <p style="font-size:0.7rem;color:var(--text-muted);margin-top:6px;">
+        Inclui instalação, materiais e treinamento.
+      </p>
+      <p style="font-size:0.65rem;color:var(--text-muted);margin-top:4px;font-style:italic;">
+        Material elétrico e de infraestrutura incluso na instalação.
+      </p>
+      <p style="font-size:0.65rem;color:var(--green);margin-top:4px;">
+        ✅ Garantia do serviço de instalação: 90 dias
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       FORMAS DE PAGAMENTO
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Forma de pagamento</div>
+      <h2>Escolha como prefere pagar a instalação</h2>
+    </div>
+
+    <div class="payment-grid">
+      <div class="pay-option" id="pay-avista" onclick="selectPayment('avista')">
+        <div class="pay-radio"></div>
+        <div class="pay-info">
+          <h4>Pagamento à vista</h4>
+          <p>PIX, transferência ou dinheiro</p>
+          <p class="pay-highlight">10% de desconto — R$ 1.638,00</p>
+        </div>
+      </div>
+      <div class="pay-option" id="pay-parcelado" onclick="selectPayment('parcelado')">
+        <div class="pay-radio"></div>
+        <div class="pay-info">
+          <h4>Pagamento parcelado</h4>
+          <p>6x sem juros no cartão</p>
+          <p class="pay-highlight">R$ 1.820,00 — 6x de R$ 303,33</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =============================================
+       CTA WHATSAPP
+  ============================================= -->
+  <section class="reveal">
+    <div class="section-title">
+      <div class="label-tag">Próximo passo</div>
+      <h2>Pronto para avançar?</h2>
+      <p>Após selecionar a forma de pagamento, clique abaixo para confirmar pelo WhatsApp.</p>
+    </div>
+
+    <div class="cta-wrap">
+      <p class="cta-status" id="cta-status">Selecione uma forma de pagamento para continuar.</p>
+      <button class="cta-btn disabled" id="cta-btn" onclick="openWhatsApp()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.115.549 4.099 1.508 5.829L0 24l6.335-1.654A11.954 11.954 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.373l-.36-.213-3.731.975.995-3.635-.234-.374A9.818 9.818 0 0 1 12 2.182c5.423 0 9.818 4.395 9.818 9.818 0 5.422-4.395 9.818-9.818 9.818z"/>
+        </svg>
+        Confirmar pelo WhatsApp
+      </button>
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER
+  ============================================= -->
+  <footer class="footer reveal">
+    <p class="footer-headline">
+      "Mais do que instalar um sistema, entregamos segurança, controle e tranquilidade para a gestão da sua escola."
+    </p>
+    <p class="footer-thanks">Obrigado pela oportunidade de apresentar nossa solução.</p>
+    <div class="footer-meta">
+      <span>Attive Tecnologia em Segurança Eletrônica &nbsp;|&nbsp; CREA-PB 1229019/2025-PB &nbsp;|&nbsp; (83) 9 9678-7788</span>
+      <span class="engineer">Hélio Crispim – Engenheiro Eletricista</span>
+    </div>
+  </footer>
+
+</div><!-- .page-wrap -->
+
+<script>
+// ============================================================
+// DADOS — VALORES DO PROJETO
+// ============================================================
+const PROJETO = {
+  totalAvista: "1.638,00",
+  totalParcelado: "1.820,00",
+  parcelaValor: "303,33",
+  parcelaNote: "6x sem juros",
+  descricao: "Instalação + Materiais + Licença do Software (R$ 220,00/mês)"
+};
+
+const WHATSAPP_NUMBER = "5583996787788";
+
+// ============================================================
+// ESTADO
+// ============================================================
+let selectedPayment = null;
+let suporteSelecionado = false;
+
+function toggleSuporte() {
+  suporteSelecionado = !suporteSelecionado;
+  
+  const card = document.getElementById('card-suporte');
+  const btnText = document.getElementById('btn-suporte-text');
+  const investSuporte = document.getElementById('invest-suporte');
+  const statusSuporte = document.getElementById('status-suporte');
+  
+  if (suporteSelecionado) {
+    card.classList.add('selected');
+    btnText.textContent = 'Remover do orçamento';
+    investSuporte.style.opacity = '1';
+    statusSuporte.innerHTML = '✅ Selecionado — R$ 200,00';
+    statusSuporte.style.color = 'var(--green)';
+    document.getElementById('status-passo2').textContent = '✓ Selecionado';
+    document.getElementById('status-passo2').className = 'step-status done';
+  } else {
+    card.classList.remove('selected');
+    btnText.textContent = 'Adicionar ao orçamento';
+    investSuporte.style.opacity = '0.5';
+    statusSuporte.innerHTML = '❌ Não selecionado';
+    statusSuporte.style.color = 'var(--text-muted)';
+    document.getElementById('status-passo2').textContent = 'Aguardando';
+    document.getElementById('status-passo2').className = 'step-status';
+  }
+}
+
+function selectPayment(type) {
+  selectedPayment = type;
+
+  document.getElementById('pay-avista').classList.toggle('selected',    type === 'avista');
+  document.getElementById('pay-parcelado').classList.toggle('selected', type === 'parcelado');
+
+  if (type === 'avista') {
+    document.getElementById('status-passo3').textContent = '✓ À vista (10% desc)';
+    document.getElementById('status-passo3').className = 'step-status done';
+  } else {
+    document.getElementById('status-passo3').textContent = '✓ Parcelado (6x)';
+    document.getElementById('status-passo3').className = 'step-status done';
+  }
+
+  updateCTA();
+}
+
+function updateCTA() {
+  const btn    = document.getElementById('cta-btn');
+  const status = document.getElementById('cta-status');
+
+  if (selectedPayment !== null) {
+    btn.classList.remove('disabled');
+    status.textContent = 'Tudo pronto! Clique abaixo para confirmar sua escolha.';
+    status.classList.add('ready');
+    document.getElementById('status-passo4').textContent = '✓ Pronto para confirmar';
+    document.getElementById('status-passo4').className = 'step-status active';
+  } else {
+    btn.classList.add('disabled');
+    status.textContent = 'Selecione a forma de pagamento para continuar.';
+    status.classList.remove('ready');
+    document.getElementById('status-passo4').textContent = 'Aguardando';
+    document.getElementById('status-passo4').className = 'step-status';
+  }
+}
+
+function openWhatsApp() {
+  if (!selectedPayment) return;
+
+  let formaPagamento = '';
+  let valorFormatado = '';
+  if (selectedPayment === 'avista') {
+    formaPagamento = 'à vista';
+    valorFormatado = 'R$ ' + PROJETO.totalAvista + ' (com 10% de desconto)';
+  } else {
+    formaPagamento = 'parcelado';
+    valorFormatado = 'R$ ' + PROJETO.totalParcelado + ' em 6x de R$ ' + PROJETO.parcelaValor + ' sem juros';
+  }
+
+  let msgSuporte = 'Não';
+  if (suporteSelecionado) {
+    msgSuporte = 'Sim — R$ 200,00 (1 preventiva + 2 corretivas não acumulativas)';
+  }
+
+  const msg = encodeURIComponent(
+    `Olá, analisei a proposta técnico-comercial para Controle de Acesso.\n\n` +
+    `Escopo do projeto: ${PROJETO.descricao}\n` +
+    `Forma de pagamento escolhida: ${formaPagamento} — ${valorFormatado}\n\n` +
+    `Observações importantes:\n` +
+    `• Equipamentos fornecidos pelo cliente (ausentes de garantia)\n` +
+    `• Garantia do serviço de instalação: 90 dias\n` +
+    `• Material elétrico e de infraestrutura incluso na instalação\n` +
+    `• Licença do software: R$ 220,00/mês\n` +
+    `• Plano de Suporte Técnico (opcional): ${msgSuporte}\n\n` +
+    `Gostaria de prosseguir com a contratação.`
+  );
+
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+}
+
+// ============================================================
+// SCROLL REVEAL
+// ============================================================
+const revealEls = document.querySelectorAll('.reveal');
+const observer  = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06 });
+
+revealEls.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
