@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Padrão de Entrada · NDU-001 v7.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c1218;
+  --bg-elev:#121a22;
+  --surface:#18222c;
+  --surface-2:#1f2c38;
+  --line:#2a3947;
+  --line-soft:#20303e;
+  --text:#e9eef2;
+  --text-muted:#8fa3b3;
+  --text-dim:#5b6c7c;
+  --copper:#cd8248;
+  --copper-soft:rgba(205,130,72,0.14);
+  --alum:#a7bac9;
+  --alum-soft:rgba(167,186,201,0.12);
+  --safety:#e8b93a;
+  --safety-soft:rgba(232,185,58,0.14);
+  --danger:#dd5d55;
+  --danger-soft:rgba(221,93,85,0.12);
+  --ok:#4fa375;
+  --ok-soft:rgba(79,163,117,0.12);
+  --fase-a:#161616;
+  --fase-b:#d7dde2;
+  --fase-c:#c0392b;
+  --neutro:#6fb3e8;
+  --terra:#3e8e5a;
+  --radius:10px;
+  --font-display:'Big Shoulders Display',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom);}
+::selection{background:var(--copper-soft);color:var(--text);}
+::-webkit-scrollbar{height:0;width:0;}
+
+.app{max-width:960px;margin:0 auto;min-height:100vh;position:relative;}
+
+header.topbar{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,var(--bg-elev) 0%,rgba(18,26,34,0.96) 100%);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);}
+.topbar-inner{display:flex;align-items:center;gap:12px;padding:14px 16px 12px;}
+.mark{width:38px;height:38px;flex:0 0 auto;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;}
+.mark svg{width:20px;height:20px;}
+.brand{flex:1;min-width:0;}
+.brand h1{font-family:var(--font-display);font-weight:700;font-size:19px;letter-spacing:0.01em;margin:0;line-height:1.05;text-transform:uppercase;}
+.brand p{margin:2px 0 0;font-size:11.5px;color:var(--text-muted);font-family:var(--font-mono);letter-spacing:0.02em;}
+.badge-version{flex:0 0 auto;font-family:var(--font-mono);font-size:10.5px;color:var(--copper);border:1px solid var(--copper);border-radius:20px;padding:4px 9px;white-space:nowrap;background:var(--copper-soft);}
+
+.section-select-wrap{padding:0 16px 12px;}
+.section-select{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;cursor:pointer;text-align:left;font-family:var(--font-body);transition:border-color .15s ease;}
+.section-select:hover{border-color:var(--copper);}
+.section-select .ss-idx{flex:0 0 auto;font-family:var(--font-mono);font-size:11.5px;color:var(--copper);background:var(--copper-soft);border-radius:5px;padding:3px 7px;}
+.section-select .ss-label{flex:1;min-width:0;font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.section-select .ss-chev{flex:0 0 auto;width:16px;height:16px;color:var(--text-dim);}
+
+.sheet-backdrop{position:fixed;inset:0;background:rgba(6,10,14,0.6);opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease;z-index:90;}
+.sheet-backdrop.open{opacity:1;visibility:visible;}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-width:960px;margin:0 auto;background:var(--bg-elev);border:1px solid var(--line);border-bottom:none;border-radius:16px 16px 0 0;z-index:91;transform:translateY(100%);transition:transform .25s ease;max-height:80vh;display:flex;flex-direction:column;}
+.sheet.open{transform:translateY(0);}
+.sheet-handle{flex:0 0 auto;width:36px;height:4px;background:var(--line);border-radius:3px;margin:10px auto 2px;}
+.sheet-header{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:8px 16px 12px;border-bottom:1px solid var(--line);}
+.sheet-header h2{font-family:var(--font-display);text-transform:uppercase;font-weight:700;font-size:15px;letter-spacing:.03em;margin:0;color:var(--text);}
+.sheet-close{flex:0 0 auto;width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;color:var(--text-muted);cursor:pointer;}
+.sheet-close svg{width:16px;height:16px;}
+.sheet-list{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 10px calc(14px + env(safe-area-inset-bottom));}
+.sheet-item{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;background:transparent;border:none;border-radius:10px;padding:12px 10px;cursor:pointer;text-align:left;transition:background .15s ease;}
+.sheet-item:active{background:var(--surface-2);}
+.sheet-item.active{background:var(--copper-soft);}
+.sheet-item.active .si-label{color:var(--copper);}
+.sheet-item .si-idx{flex:0 0 26px;font-family:var(--font-mono);font-size:12px;color:var(--copper);}
+.sheet-item .si-label{flex:1;font-size:14.5px;font-weight:600;color:var(--text);}
+.sheet-item .si-chev{flex:0 0 auto;width:16px;height:16px;color:var(--text-dim);}
+@media(min-width:760px){
+  .sheet{max-width:440px;left:auto;right:24px;bottom:24px;border-radius:14px;border-bottom:1px solid var(--line);max-height:70vh;}
+}
+
+main{padding:16px 16px 48px;}
+.view{display:none;animation:fadein .25s ease;}
+.view.active{display:block;}
+@keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+section.block{margin-bottom:22px;}
+.block-head{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;}
+.block-head .idx{font-family:var(--font-mono);color:var(--copper);font-size:12px;}
+.block-head h2{font-family:var(--font-display);text-transform:uppercase;font-weight:700;font-size:16px;letter-spacing:.02em;margin:0;color:var(--text);}
+.block-sub{font-size:12.5px;color:var(--text-muted);margin:-4px 0 12px;line-height:1.5;}
+
+.plate{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
+.plate::before,.plate::after,.plate .cm2,.plate .cm3{content:"";position:absolute;width:9px;height:9px;border:1.5px solid var(--line-soft);}
+.plate::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+.plate::after{top:-1px;right:-1px;border-left:none;border-bottom:none;}
+
+/* CALCULADORA */
+.calc-hero{background:var(--bg-elev);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:18px;}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:4px;margin-bottom:16px;}
+.seg button{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:44px;font-family:var(--font-body);font-weight:600;font-size:13px;padding:9px 4px;border-radius:7px;border:none;background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s ease;}
+.seg button.active{background:var(--copper);color:#151005;}
+.seg button .fios{display:block;font-family:var(--font-mono);font-weight:400;font-size:10px;opacity:.75;margin-top:1px;}
+
+.tension-row{display:flex;gap:6px;margin-bottom:14px;}
+.tension-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:44px;flex:1;font-family:var(--font-mono);font-size:11px;padding:7px 4px;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--text-muted);cursor:pointer;text-align:center;transition:all .15s;}
+.tension-btn.active{border-color:var(--copper);color:var(--copper);background:var(--copper-soft);}
+
+.kva-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;}
+.kva-row label{font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;}
+.kva-value{font-family:var(--font-mono);font-size:14px;color:var(--copper);}
+input[type="number"].kva-input{width:100%;background:var(--surface);border:1px solid var(--line);color:var(--text);font-family:var(--font-mono);font-size:22px;border-radius:8px;padding:10px 12px;margin-bottom:10px;}
+input[type="number"].kva-input:focus{outline:2px solid var(--copper);outline-offset:1px;}
+input[type="range"]{-webkit-appearance:none;width:100%;height:4px;border-radius:3px;background:var(--line);margin:16px 0 10px;}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--copper);border:3px solid var(--bg-elev);cursor:pointer;box-shadow:0 0 0 1px var(--copper);}
+input[type="range"]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--copper);border:3px solid var(--bg-elev);cursor:pointer;box-shadow:0 0 0 1px var(--copper);border:3px solid var(--bg-elev);}
+.range-minmax{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10.5px;color:var(--text-dim);margin-bottom:2px;}
+
+.nameplate{margin-top:16px;}
+.nameplate.out-of-range .plate{border-color:var(--danger);}
+.np-top{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dashed var(--line);}
+.np-code{font-family:var(--font-display);font-weight:800;font-size:44px;line-height:1;color:var(--text);letter-spacing:.01em;}
+.np-code small{display:block;font-family:var(--font-mono);font-weight:400;font-size:11px;color:var(--text-muted);letter-spacing:.03em;text-transform:none;margin-top:3px;}
+.np-range{text-align:right;}
+.np-range .r1{font-family:var(--font-mono);font-size:15px;color:var(--copper);}
+.np-range .r2{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.np-range .r3{font-size:10px;color:var(--text-dim);margin-top:2px;font-family:var(--font-mono);}
+
+.wires{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.wire-chip{display:flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--line);border-radius:20px;padding:5px 10px 5px 6px;font-size:11px;color:var(--text-muted);}
+.wire-dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto;border:1px solid rgba(255,255,255,.15);}
+
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+.spec-cell{background:var(--surface);padding:10px 12px;}
+.spec-cell .k{font-size:10.5px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px;}
+.spec-cell .v{font-family:var(--font-mono);font-size:15px;color:var(--text);}
+.spec-cell.accent-al .v{color:var(--alum);}
+.spec-cell.accent-cu .v{color:var(--copper);}
+.spec-cell.accent-terra .v{color:var(--terra);}
+.spec-cell.accent-safety .v{color:var(--safety);}
+
+.oor-msg{display:none;align-items:flex-start;gap:10px;background:var(--danger-soft);border:1px solid var(--danger);border-radius:8px;padding:12px;font-size:12.5px;color:var(--text);line-height:1.5;}
+.out-of-range .oor-msg{display:flex;}
+.out-of-range .np-body{display:none;}
+
+.np-note{margin-top:10px;font-size:11px;color:var(--text-dim);line-height:1.6;}
+
+/* DEMANDA */
+.dem-section{margin-bottom:18px;}
+.dem-section h3{font-family:var(--font-mono);font-size:12px;color:var(--copper);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px;}
+.dem-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.dem-row label{flex:1;font-size:12.5px;color:var(--text-muted);}
+.dem-row input[type="number"]{width:70px;background:var(--surface);border:1px solid var(--line);color:var(--text);font-family:var(--font-mono);font-size:14px;border-radius:6px;padding:6px 8px;text-align:right;}
+.dem-row .unit{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);width:28px;}
+.dem-total{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:16px;}
+.dem-total-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.dem-total-item .k{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px;}
+.dem-total-item .v{font-family:var(--font-mono);font-size:20px;color:var(--copper);}
+.dem-total-item .v small{font-size:12px;color:var(--text-muted);}
+.dem-btn{width:100%;margin-top:12px;padding:12px;background:var(--copper);border:none;border-radius:8px;font-family:var(--font-display);font-weight:700;font-size:15px;color:#0c1218;cursor:pointer;text-transform:uppercase;letter-spacing:.04em;}
+.dem-btn:hover{filter:brightness(1.1);}
+
+/* LEGEND */
+.legend-note{font-size:10.5px;color:var(--text-dim);line-height:1.6;font-family:var(--font-mono);margin:0 0 20px;}
+
+/* TABELAS */
+.subtabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.subtabs button{min-height:40px;font-size:12px;font-weight:600;padding:8px 13px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--text-muted);cursor:pointer;}
+.subtabs button.active{background:var(--surface-2);border-color:var(--copper);color:var(--copper);}
+.cat-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;transition:border-color .15s;}
+.cat-card:hover{border-color:var(--copper);}
+.cat-card-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.cat-card-head .id{font-family:var(--font-display);font-weight:800;font-size:22px;color:var(--copper);}
+.cat-card-head .range{font-family:var(--font-mono);font-size:10.5px;color:var(--text-muted);}
+.cat-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.cat-mini-grid div{background:var(--surface-2);border-radius:6px;padding:6px 8px;}
+.cat-mini-grid .k{font-size:9.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.03em;display:block;margin-bottom:2px;}
+.cat-mini-grid .v{font-family:var(--font-mono);font-size:13px;color:var(--text);}
+.tabelas-grid{display:grid;grid-template-columns:1fr;gap:10px;}
+.tap-hint{font-size:11px;color:var(--text-dim);text-align:center;margin-top:12px;font-family:var(--font-mono);}
+
+/* APARELHOS search */
+.search-box{width:100%;background:var(--surface);border:1px solid var(--line);color:var(--text);font-family:var(--font-body);font-size:14px;border-radius:8px;padding:10px 12px;margin-bottom:12px;}
+.search-box:focus{outline:2px solid var(--copper);outline-offset:1px;}
+.aparelho-table{width:100%;border-collapse:collapse;}
+.aparelho-table tr:not(:last-child){border-bottom:1px solid var(--line-soft);}
+.aparelho-table td{padding:8px 4px;font-size:13px;}
+.aparelho-table td:first-child{color:var(--text-muted);}
+.aparelho-table td:last-child{font-family:var(--font-mono);color:var(--copper);text-align:right;}
+
+/* CARDS */
+details.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden;}
+details.card summary{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;list-style:none;gap:8px;}
+details.card summary::-webkit-details-marker{display:none;}
+details.card summary span.stag{font-family:var(--font-mono);font-size:10.5px;color:var(--copper);background:var(--copper-soft);border-radius:4px;padding:2px 6px;margin-right:6px;}
+details.card summary .chev{color:var(--text-dim);font-size:14px;transition:transform .2s;}
+details[open].card summary .chev{transform:rotate(180deg);}
+.card-body{padding:4px 16px 16px;font-size:13px;line-height:1.65;color:var(--text-muted);}
+
+/* KV list */
+.kv-list{background:var(--surface-2);border-radius:8px;overflow:hidden;margin-bottom:10px;}
+.kv-list .row{display:flex;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--line-soft);}
+.kv-list .row:last-child{border:none;}
+.kv-list .k{font-size:12px;color:var(--text-muted);}
+.kv-list .v{font-family:var(--font-mono);font-size:12px;color:var(--text);text-align:right;}
+
+/* tables */
+table{width:100%;border-collapse:collapse;margin-bottom:10px;}
+table th{font-size:10.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.04em;padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;font-weight:600;}
+table td{padding:7px 8px;font-size:12.5px;border-bottom:1px solid var(--line-soft);}
+table tr:last-child td{border:none;}
+
+/* callout */
+.callout{background:var(--copper-soft);border-left:3px solid var(--copper);border-radius:0 6px 6px 0;padding:10px 12px;font-size:12px;color:var(--text);line-height:1.6;margin-top:10px;}
+.callout.danger{background:var(--danger-soft);border-color:var(--danger);}
+.callout.ok{background:var(--ok-soft);border-color:var(--ok);}
+
+/* wire legend */
+.wire-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.wire-legend .item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted);}
+
+/* REGRAS */
+.resp-table{width:100%;border-collapse:collapse;}
+.resp-table th{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-dim);padding:8px;border-bottom:1px solid var(--line);}
+.resp-table td{padding:8px;font-size:12.5px;border-bottom:1px solid var(--line-soft);}
+.resp-table td.item{color:var(--text-muted);}
+.resp-table td.mark{text-align:center;font-family:var(--font-mono);}
+.resp-table td.mark.yes{color:var(--ok);}
+.resp-table td.mark.no{color:var(--text-dim);}
+
+ul.rules{list-style:none;padding:0;margin:0 0 14px;}
+ul.rules li{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;font-size:13px;border-radius:6px;margin-bottom:4px;}
+ul.rules.deny li{background:var(--danger-soft);color:var(--text);}
+ul.rules.allow li{background:var(--ok-soft);color:var(--text);}
+ul.rules li .ic{font-size:14px;flex:0 0 auto;margin-top:1px;}
+ul.rules.deny li .ic{color:var(--danger);}
+ul.rules.allow li .ic{color:var(--ok);}
+
+ul.plain{padding:0 0 0 16px;margin:0 0 10px;color:var(--text-muted);font-size:12.5px;line-height:1.8;}
+ul.plain.numbered{padding:0;list-style:none;counter-reset:li;}
+ul.plain.numbered li{counter-increment:li;display:flex;gap:6px;}
+ul.plain.numbered li::before{content:counter(li)".";color:var(--copper);font-family:var(--font-mono);font-size:11px;flex:0 0 18px;}
+
+/* VISTORIA */
+.vist-card{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px;}
+.vist-card .l{flex:1 1 auto;min-width:0;}
+.vist-card .l .t{font-size:13px;color:var(--text);font-weight:500;}
+.vist-card .l .s{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.vist-card .r{flex:0 1 38%;min-width:0;overflow-wrap:anywhere;font-family:var(--font-mono);font-size:12px;color:var(--copper);text-align:right;}
+
+/* NORMAS */
+.norm-group{margin-bottom:16px;}
+.norm-group h3{font-family:var(--font-display);font-size:14px;font-weight:700;text-transform:uppercase;color:var(--text-muted);letter-spacing:.04em;margin:0 0 8px;}
+.norm-item{display:flex;gap:10px;padding:7px 10px;background:var(--surface);border-radius:6px;margin-bottom:4px;font-size:12.5px;}
+.norm-item .code{font-family:var(--font-mono);color:var(--copper);flex:0 0 auto;min-width:130px;}
+.norm-item .desc{color:var(--text-muted);}
+
+/* DISTÂNCIAS */
+.dist-card{display:flex;align-items:center;justify-content:space-between;background:var(--surface-2);border-radius:6px;padding:8px 12px;margin-bottom:4px;}
+.dist-card .local{font-size:12.5px;color:var(--text-muted);}
+.dist-card .val{font-family:var(--font-mono);font-size:14px;color:var(--safety);font-weight:600;}
+
+footer.appfoot{padding:20px 16px 12px;border-top:1px solid var(--line);}
+footer.appfoot p{font-size:10.5px;color:var(--text-dim);line-height:1.7;font-family:var(--font-mono);margin:0;}
+
+@media (min-width:760px){
+  .topbar-inner{padding:18px 24px 14px;}
+  main{padding:24px 24px 60px;}
+  .section-select-wrap{padding:0 24px 14px;}
+  .calc-hero{padding:22px;}
+  .spec-grid{grid-template-columns:repeat(3,1fr);}
+  .cat-mini-grid{grid-template-columns:repeat(6,1fr);}
+  .np-code{font-size:56px;}
+  .tabelas-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .dem-total-grid{grid-template-columns:repeat(4,1fr);}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>
+      </div>
+      <div class="brand">
+        <h1>Padrão de Entrada</h1>
+        <p>NDU-001 v7.0 · Nov/2024 · Grupo Energisa</p>
+      </div>
+      <div class="badge-version">EPB</div>
+    </div>
+    <div class="section-select-wrap">
+      <button class="section-select" id="sectionSelectBtn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="sectionSheet">
+        <span class="ss-idx" id="ssIdx">01</span>
+        <span class="ss-label" id="ssLabel">Calculadora</span>
+        <svg class="ss-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="sheet-backdrop" id="sheetBackdrop"></div>
+  <div class="sheet" id="sectionSheet" role="dialog" aria-modal="true" aria-label="Selecionar seção">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <h2>Seções</h2>
+      <button class="sheet-close" id="sheetClose" type="button" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="sheet-list" id="sheetList"></div>
+  </div>
+
+  <main id="main">
+
+    <!-- ===================== CALCULADORA ===================== -->
+    <section class="view active" id="view-calc">
+      <div class="calc-hero">
+        <div class="seg" id="typeSeg"></div>
+
+        <div class="tension-row" id="tensionRow"></div>
+
+        <div class="kva-row">
+          <label for="kvaInput" id="kvaLabel">Carga Instalada</label>
+          <span class="kva-value" id="kvaUnit">kW</span>
+        </div>
+        <input type="number" class="kva-input" id="kvaInput" step="0.1" min="0" value="4.0">
+        <input type="range" id="kvaRange" step="0.1" min="0" value="4.0">
+        <div class="range-minmax"><span id="rangeMin">0,0</span><span id="rangeMax">8,8</span></div>
+
+        <div class="nameplate" id="nameplate">
+          <div class="plate">
+            <div class="np-top">
+              <div class="np-code" id="npCode">—<small id="npCodeSub">selecione a potência</small></div>
+              <div class="np-range">
+                <div class="r1" id="npRange">–</div>
+                <div class="r2" id="npFios">–</div>
+                <div class="r3" id="npTensao">–</div>
+              </div>
+            </div>
+            <div class="np-body">
+              <div class="wires" id="npWires"></div>
+              <div class="spec-grid" id="npGrid"></div>
+            </div>
+            <div class="oor-msg">⚠ <span>Fora das faixas padrão. Consulte a Energisa para dimensionamento especial (acima de 75 kW, geração distribuída ou agrupamentos — NDU-003).</span></div>
+          </div>
+          <p class="np-note" id="npNote"></p>
+        </div>
+      </div>
+      <p class="legend-note">¹ seção maior para ramal subterrâneo · ² terra igual ao condutor de fase · N.A. não aplicável · Valores mínimos normativos (Tabelas 16/18 · NDU-001 v7.0)</p>
+    </section>
+
+    <!-- ===================== DEMANDA ===================== -->
+    <section class="view" id="view-demanda">
+      <div class="block-head"><span class="idx">09</span><h2>Cálculo de demanda</h2></div>
+      <p class="block-sub">Fórmula oficial NDU-001: D(kVA) = d(kW) / 0,92 · onde d = d1+d2+d3+d4+d5+d6+d7</p>
+      <div class="calc-hero">
+        <div class="dem-section">
+          <h3>d1 · Iluminação e tomadas (residencial)</h3>
+          <div class="dem-row"><label>Carga instalada (iluminação + tomadas)</label><input type="number" id="d1" value="0" min="0" step="0.1"><span class="unit">kW</span></div>
+          <div id="d1result" style="font-size:11.5px;color:var(--copper);font-family:var(--font-mono);margin:-4px 0 8px;"></div>
+        </div>
+        <div class="dem-section">
+          <h3>d2 · Aquecimento de água (chuveiros, boilers)</h3>
+          <div class="dem-row"><label>Quantidade de aparelhos</label><input type="number" id="d2n" value="0" min="0" step="1"><span class="unit">un</span></div>
+          <div class="dem-row"><label>Potência total instalada</label><input type="number" id="d2p" value="0" min="0" step="0.1"><span class="unit">kW</span></div>
+          <div id="d2result" style="font-size:11.5px;color:var(--copper);font-family:var(--font-mono);margin:-4px 0 8px;"></div>
+        </div>
+        <div class="dem-section">
+          <h3>d3 · Secadoras, micro-ondas, lava-louças, hidromassagem</h3>
+          <div class="dem-row"><label>Quantidade</label><input type="number" id="d3n" value="0" min="0" step="1"><span class="unit">un</span></div>
+          <div class="dem-row"><label>Potência total instalada</label><input type="number" id="d3p" value="0" min="0" step="0.1"><span class="unit">kW</span></div>
+          <div id="d3result" style="font-size:11.5px;color:var(--copper);font-family:var(--font-mono);margin:-4px 0 8px;"></div>
+        </div>
+        <div class="dem-section">
+          <h3>d4 · Fogões e fornos elétricos</h3>
+          <div class="dem-row"><label>Quantidade</label><input type="number" id="d4n" value="0" min="0" step="1"><span class="unit">un</span></div>
+          <div class="dem-row"><label>Potência total instalada</label><input type="number" id="d4p" value="0" min="0" step="0.1"><span class="unit">kW</span></div>
+          <div id="d4result" style="font-size:11.5px;color:var(--copper);font-family:var(--font-mono);margin:-4px 0 8px;"></div>
+        </div>
+        <div class="dem-section">
+          <h3>d5 · Ar-condicionado (residencial)</h3>
+          <div class="dem-row"><label>Quantidade de aparelhos</label><input type="number" id="d5n" value="0" min="0" step="1"><span class="unit">un</span></div>
+          <div class="dem-row"><label>Potência total instalada</label><input type="number" id="d5p" value="0" min="0" step="0.1"><span class="unit">kW</span></div>
+          <div id="d5result" style="font-size:11.5px;color:var(--copper);font-family:var(--font-mono);margin:-4px 0 8px;"></div>
+        </div>
+        <div class="dem-section">
+          <h3>d6 · Motores elétricos</h3>
+          <div class="dem-row"><label>Potência total dos motores</label><input type="number" id="d6p" value="0" min="0" step="0.1"><span class="unit">kW</span></div>
+          <div id="d6result" style="font-size:11.5px;color:var(--copper);font-family:var(--font-mono);margin:-4px 0 8px;"></div>
+        </div>
+        <div class="dem-section">
+          <h3>d7 · Máquinas de solda / Raios-X</h3>
+          <div class="dem-row"><label>Potência total instalada</label><input type="number" id="d7p" value="0" min="0" step="0.1"><span class="unit">kW</span></div>
+        </div>
+
+        <div class="dem-total">
+          <div class="dem-total-grid">
+            <div class="dem-total-item"><div class="k">d total</div><div class="v" id="dTotal">0,00 <small>kW</small></div></div>
+            <div class="dem-total-item"><div class="k">D demanda</div><div class="v" id="dDemanda">0,00 <small>kVA</small></div></div>
+            <div class="dem-total-item"><div class="k">Categoria (220/127V)</div><div class="v" id="dCat127" style="font-size:16px;">—</div></div>
+            <div class="dem-total-item"><div class="k">Categoria (380/220V)</div><div class="v" id="dCat220" style="font-size:16px;">—</div></div>
+          </div>
+          <button class="dem-btn" onclick="goToCalcFromDemanda()">▶ Ver na calculadora (380/220V)</button>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:0;">
+        <b>Notas NDU-001 §9:</b> Fator de potência base = 0,92. Não computar aparelhos reserva. Cargas industriais exigem memorial de cálculo. Motores &gt;30 cv: consultar Energisa.
+      </div>
+    </section>
+
+    <!-- ===================== APARELHOS ===================== -->
+    <section class="view" id="view-aparelhos">
+      <div class="block-head"><span class="idx">T4</span><h2>Potência dos aparelhos</h2></div>
+      <p class="block-sub">Tabela 4 da NDU-001 — valores orientativos INMETRO/PROCEL. Consultar fabricante para projetos.</p>
+      <input class="search-box" type="text" id="apSearch" placeholder="Buscar aparelho...">
+      <table class="aparelho-table" id="apTable">
+        <thead><tr><th>Aparelho</th><th>Potência (W)</th></tr></thead>
+        <tbody id="apBody"></tbody>
+      </table>
+    </section>
+
+    <!-- ===================== TABELAS ===================== -->
+    <section class="view" id="view-tabelas">
+      <div class="block-head"><span class="idx">02</span><h2>Tabelas de dimensionamento</h2></div>
+      <p class="block-sub">Toque em qualquer categoria para abrir na calculadora com os valores preenchidos.</p>
+      <div class="subtabs" id="tabelasSub"></div>
+      <div id="tabelasList"></div>
+    </section>
+
+    <!-- ===================== MATERIAIS ===================== -->
+    <section class="view" id="view-materiais">
+      <div class="block-head"><span class="idx">03</span><h2>Materiais</h2></div>
+      <p class="block-sub">Especificação técnica de cada componente, por responsabilidade.</p>
+      <div id="materiaisList"></div>
+    </section>
+
+    <!-- ===================== INSTALAÇÃO ===================== -->
+    <section class="view" id="view-instalacao">
+      <div class="block-head"><span class="idx">04</span><h2>Critérios de instalação</h2></div>
+      <div id="instalacaoList"></div>
+    </section>
+
+    <!-- ===================== REGRAS ===================== -->
+    <section class="view" id="view-regras">
+      <div class="block-head"><span class="idx">05·06</span><h2>Responsabilidades &amp; regras</h2></div>
+      <div class="plate" style="margin-bottom:16px;">
+        <table class="resp-table" id="respTable"></table>
+      </div>
+      <div class="block-head"><span class="idx">6.1</span><h2>Proibições expressas (§6.12)</h2></div>
+      <ul class="rules deny" id="denyList"></ul>
+      <div class="block-head" style="margin-top:18px;"><span class="idx">6.2</span><h2>Obrigações do consumidor</h2></div>
+      <ul class="rules allow" id="allowList"></ul>
+    </section>
+
+    <!-- ===================== VISTORIA ===================== -->
+    <section class="view" id="view-vistoria">
+      <div class="block-head"><span class="idx">07</span><h2>Checklist de vistoria</h2></div>
+      <p class="block-sub">O que o vistoriador da Energisa confere. Prazo: até 5 dias úteis (REN 1.000/2021 Art. 91).</p>
+      <div id="vistoriaList"></div>
+    </section>
+
+    <!-- ===================== NORMAS ===================== -->
+    <section class="view" id="view-normas">
+      <div class="block-head"><span class="idx">09</span><h2>Normas de referência</h2></div>
+      <div id="normasList"></div>
+      <div class="block-head" style="margin-top:20px;"><span class="idx">10</span><h2>Casos especiais</h2></div>
+      <ul class="plain" id="casosList"></ul>
+      <div class="callout" style="margin-top:14px;"><b>Tensões cobertas pela NDU-001:</b> 220/127V (Tab.16) · 220V (Tab.17) · 380/220V (Tab.18) · 230/115V (Tab.19) · 230V (Tab.20) · 254/127V (Tab.21) · 440/220V (Tab.22) · 240/120V (Tab.23). EPB utiliza 380/220V e 220/127V.</div>
+    </section>
+
+  </main>
+
+  <footer class="appfoot">
+    <p>Baseado na NDU-001 Versão 7.0 (Novembro/2024) — Grupo Energisa · ENERGISA/GTD-NRM/Nº070/2018.<br>
+    Valores mínimos normativos. Não substitui a norma oficial nem análise de vistoria da concessionária.</p>
+  </footer>
+</div>
+
+<script>
+/* ========== DATA: TABELA 16 — 220/127V (EPB, EAC, EMR, EMS, EMT, ERO, ESE, ESS) ========== */
+/* Carga instalada (kW) para mono/bi; demanda (kVA) para tri */
+const T16_MONO = [
+  {id:'M1',min:0,max:3.8,  al:'10',cuEmb:'10',cuSub:'10',neutroEmb:'6', neutroSub:'6', terra:'6', eletrodo:'6',        disj:'30/32',edt:'3/4"',caixa:'CMI-01'},
+  {id:'M2',min:3.8,max:6.3, al:'10',cuEmb:'10',cuSub:'10',neutroEmb:'10',neutroSub:'10',terra:'6', eletrodo:'6² ou 10²',disj:'50',   edt:'3/4"',caixa:'CMI-01'},
+  {id:'M3',min:6.3,max:8.8, al:'16',cuEmb:'16',cuSub:'16',neutroEmb:'16',neutroSub:'16',terra:'10',eletrodo:'10² ou 16²',disj:'70',  edt:'1"',  caixa:'CMI-01'},
+];
+const T16_BI = [
+  {id:'B1',min:0,max:10.1,  al:'10',cuEmb:'10',cuSub:'10',neutroEmb:'10',neutroSub:'10',terra:'10',eletrodo:'10',        disj:'50',   edt:'3/4"',caixa:'CMI-01'},
+  {id:'B2',min:10.1,max:12.7,al:'16',cuEmb:'16',cuSub:'16',neutroEmb:'16',neutroSub:'16',terra:'10(16)¹',eletrodo:'10² ou 16²',disj:'60/63',edt:'1"',caixa:'CMI-01'},
+  {id:'B3',min:12.7,max:17.7,al:'25',cuEmb:'25',cuSub:'25',neutroEmb:'25',neutroSub:'25',terra:'16(25)¹',eletrodo:'16',  disj:'80',   edt:'1 1/4"',caixa:'CMI-01'},
+];
+const T16_TRI = [
+  {id:'T1',min:0,max:15.2,   al:'10',cuEmb:'10',cuSub:'10',neutroEmb:'10',neutroSub:'10',terra:'6(10)¹',eletrodo:'10',   disj:'40',  edt:'3/4"', caixa:'CMI-02'},
+  {id:'T2',min:15.2,max:19.0, al:'16',cuEmb:'16',cuSub:'16',neutroEmb:'16',neutroSub:'16',terra:'10',   eletrodo:'10² ou 16²',disj:'50',edt:'1"', caixa:'CMI-02'},
+  {id:'T3',min:19.0,max:26.6, al:'25',cuEmb:'25',cuSub:'25',neutroEmb:'25',neutroSub:'25',terra:'16(25)¹',eletrodo:'16', disj:'70',  edt:'1 1/4"',caixa:'CMI-02'},
+  {id:'T4',min:26.6,max:38.1, al:'35',cuEmb:'25',cuSub:'N.A.',neutroEmb:'25',neutroSub:'N.A.',terra:'25(35)¹',eletrodo:'16',disj:'100',edt:'1 1/2"',caixa:'CMI-02'},
+  {id:'T5',min:38.1,max:57.1, al:'70',cuEmb:'35',cuSub:'N.A.',neutroEmb:'N.A.',neutroSub:'N.A.',terra:'50(70)¹',eletrodo:'25(35)¹',disj:'150',edt:'2"',caixa:'CMD-BT 200'},
+  {id:'T6',min:57.1,max:81.5, al:'120',cuEmb:'70',cuSub:'N.A.',neutroEmb:'N.A.',neutroSub:'N.A.',terra:'95',eletrodo:'50',disj:'200',edt:'2 1/2"',caixa:'CMD-BT 200'},
+];
+
+/* ========== DATA: TABELA 18 — 380/220V (EPB e ETO) ========== */
+const T18_MONO = [
+  {id:'M1',min:0,max:6.0,   al:'10',cuEmb:'10',cuSub:'10',neutroEmb:'6', neutroSub:'6', terra:'6', eletrodo:'6',        disj:'30/32',edt:'3/4"',caixa:'CMI-01'},
+  {id:'M2',min:6.0,max:11.0, al:'10',cuEmb:'10',cuSub:'10',neutroEmb:'10',neutroSub:'10',terra:'6', eletrodo:'6² ou 10²',disj:'50',   edt:'3/4"',caixa:'CMI-01'},
+  {id:'M3',min:11.0,max:15.4,al:'16',cuEmb:'16',cuSub:'16',neutroEmb:'16',neutroSub:'16',terra:'10',eletrodo:'10² ou 16²',disj:'70',  edt:'1"',  caixa:'CMI-03'},
+];
+const T18_BI = [
+  {id:'B1',min:0,max:17.6,   al:'10',cuEmb:'N.A.',cuSub:'10',neutroEmb:'10',neutroSub:'10',terra:'10',eletrodo:'10',     disj:'50',   edt:'3/4"',caixa:'CMI-01'},
+  {id:'B2',min:17.6,max:22.0, al:'16',cuEmb:'16',cuSub:'16',neutroEmb:'16',neutroSub:'16',terra:'10(16)¹',eletrodo:'10² ou 16²',disj:'60/63',edt:'1"',caixa:'CMI-01'},
+  {id:'B3',min:22.0,max:26.3, al:'25',cuEmb:'25',cuSub:'25',neutroEmb:'25',neutroSub:'25',terra:'16',eletrodo:'16',      disj:'70',   edt:'1 1/4"',caixa:'CMI-01'},
+];
+const T18_TRI = [
+  {id:'T1',min:0,max:26.1,   al:'10',cuEmb:'10',cuSub:'10',neutroEmb:'10',neutroSub:'10',terra:'6',   eletrodo:'6² ou 10²',disj:'40',edt:'3/4"', caixa:'CMI-02'},
+  {id:'T2',min:26.1,max:35.4, al:'16',cuEmb:'16',cuSub:'16',neutroEmb:'16',neutroSub:'16',terra:'10', eletrodo:'10² ou 16²',disj:'50',edt:'1"',  caixa:'CMI-02'},
+  {id:'T3',min:35.4,max:46.1, al:'25',cuEmb:'N.A.',cuSub:'25',neutroEmb:'25',neutroSub:'25',terra:'16(25)¹',eletrodo:'16(25)¹',disj:'70',edt:'1 1/4"',caixa:'CMI-02'},
+  {id:'T4',min:46.1,max:65.8, al:'35',cuEmb:'25',cuSub:'50',neutroEmb:'25',neutroSub:'25',terra:'35',eletrodo:'25',      disj:'100',edt:'1 1/2"',caixa:'CMI-02'},
+  {id:'T5',min:65.8,max:81.5, al:'70',cuEmb:'35',cuSub:'70',neutroEmb:'35',neutroSub:'35',terra:'50(70)¹',eletrodo:'25(35)¹',disj:'125',edt:'2"',caixa:'CMD-BT 200'},
+];
+
+const TENSIONS = {
+  t16:{label:'220/127V',note:'Tab.16 · EPB + outros',mono:T16_MONO,bi:T16_BI,tri:T16_TRI},
+  t18:{label:'380/220V',note:'Tab.18 · EPB (Paraíba)',mono:T18_MONO,bi:T18_BI,tri:T18_TRI},
+};
+
+let currentTension = 't18';
+
+const TYPES = {
+  mono:{label:'Monofásico',fios:'2 fios · Fase + Neutro',wires:['a','n'],isKW:true},
+  bi:  {label:'Bifásico',  fios:'3 fios · 2 Fases + Neutro',wires:['a','b','n'],isKW:true},
+  tri: {label:'Trifásico', fios:'4 fios · 3 Fases + Neutro',wires:['a','b','c','n'],isKW:false},
+};
+
+const WIRE_META = {
+  a:{name:'Fase A · Preto',   color:'var(--fase-a)',border:'1px solid #666'},
+  b:{name:'Fase B · Cinza',   color:'var(--fase-b)',border:'1px solid #999'},
+  c:{name:'Fase C · Vermelho',color:'var(--fase-c)',border:'none'},
+  n:{name:'Neutro · Azul',    color:'var(--neutro)', border:'none'},
+  t:{name:'Terra · Verde',    color:'var(--terra)',  border:'none'},
+};
+
+const TABS = [
+  {id:'calc',    idx:'01', label:'Calculadora'},
+  {id:'demanda', idx:'02', label:'Demanda'},
+  {id:'aparelhos',idx:'03',label:'Aparelhos'},
+  {id:'tabelas', idx:'04', label:'Tabelas'},
+  {id:'materiais',idx:'05',label:'Materiais'},
+  {id:'instalacao',idx:'06',label:'Instalação'},
+  {id:'regras',  idx:'07', label:'Regras'},
+  {id:'vistoria',idx:'08', label:'Vistoria'},
+  {id:'normas',  idx:'09', label:'Normas'},
+];
+
+/* ========== SECTION SHEET ========== */
+const sheetList = document.getElementById('sheetList');
+const sectionSelectBtn = document.getElementById('sectionSelectBtn');
+const sheetBackdrop = document.getElementById('sheetBackdrop');
+const sectionSheet = document.getElementById('sectionSheet');
+const ssIdx = document.getElementById('ssIdx');
+const ssLabel = document.getElementById('ssLabel');
+
+TABS.forEach(t=>{
+  const b=document.createElement('button');
+  b.className='sheet-item'+(t.id==='calc'?' active':'');
+  b.type='button'; b.dataset.tab=t.id;
+  b.innerHTML='<span class="si-idx">'+t.idx+'</span><span class="si-label">'+t.label+'</span>'
+    +'<svg class="si-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+  b.onclick=()=>{switchView(t.id); closeSheet();};
+  sheetList.appendChild(b);
+});
+
+function openSheet(){
+  sheetBackdrop.classList.add('open');
+  sectionSheet.classList.add('open');
+  sectionSelectBtn.setAttribute('aria-expanded','true');
+  document.body.style.overflow='hidden';
+}
+function closeSheet(){
+  sheetBackdrop.classList.remove('open');
+  sectionSheet.classList.remove('open');
+  sectionSelectBtn.setAttribute('aria-expanded','false');
+  document.body.style.overflow='';
+}
+sectionSelectBtn.onclick=openSheet;
+sheetBackdrop.onclick=closeSheet;
+document.getElementById('sheetClose').onclick=closeSheet;
+document.addEventListener('keydown',e=>{if(e.key==='Escape') closeSheet();});
+
+function switchView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  document.querySelectorAll('.sheet-item').forEach(b=>b.classList.toggle('active', b.dataset.tab===id));
+  const t=TABS.find(x=>x.id===id);
+  if(t){ ssIdx.textContent=t.idx; ssLabel.textContent=t.label; }
+  window.scrollTo({top:0,behavior:'instant' in window?'instant':'auto'});
+}
+
+/* ========== TENSION BUTTONS ========== */
+const tensionRow = document.getElementById('tensionRow');
+Object.entries(TENSIONS).forEach(([key,t])=>{
+  const b=document.createElement('button');
+  b.className='tension-btn'+(key===currentTension?' active':'');
+  b.innerHTML='<b>'+t.label+'</b><br><span style="font-size:9.5px;opacity:.7">'+t.note+'</span>';
+  b.dataset.tension=key;
+  b.onclick=()=>{currentTension=key;document.querySelectorAll('.tension-btn').forEach(x=>x.classList.toggle('active',x.dataset.tension===key));syncTypeUI();renderCalc();};
+  tensionRow.appendChild(b);
+});
+
+/* ========== TYPE SEGMENT ========== */
+const typeSeg=document.getElementById('typeSeg');
+let currentType='mono';
+Object.entries(TYPES).forEach(([key,t])=>{
+  const b=document.createElement('button');
+  b.innerHTML=t.label+'<span class="fios">'+t.fios.split('·')[0].trim()+'</span>';
+  b.dataset.type=key; b.className=key===currentType?'active':'';
+  b.onclick=()=>{currentType=key;syncTypeUI();renderCalc();};
+  typeSeg.appendChild(b);
+});
+
+function getList(){return TENSIONS[currentTension][currentType];}
+
+function syncTypeUI(){
+  document.querySelectorAll('#typeSeg button').forEach(b=>b.classList.toggle('active',b.dataset.type===currentType));
+  const list=getList(); const t=TYPES[currentType];
+  const maxV=list[list.length-1].max;
+  document.getElementById('rangeMax').textContent=fmt(maxV);
+  document.getElementById('kvaRange').max=maxV+5;
+  document.getElementById('kvaInput').max=maxV+20;
+  document.getElementById('kvaLabel').textContent=t.isKW?'Carga Instalada':'Demanda';
+  document.getElementById('kvaUnit').textContent=t.isKW?'kW':'kVA';
+}
+
+const kvaInput=document.getElementById('kvaInput');
+const kvaRange=document.getElementById('kvaRange');
+kvaInput.addEventListener('input',()=>{kvaRange.value=kvaInput.value;renderCalc();});
+kvaRange.addEventListener('input',()=>{kvaInput.value=kvaRange.value;renderCalc();});
+
+function fmt(n){return n.toFixed(1).replace('.',',');}
+
+function findCat(list,val){return list.find(c=>val<=c.max)||null;}
+
+function wireDots(type){
+  return TYPES[type].wires.concat('t').map(w=>{
+    const m=WIRE_META[w];
+    return '<span class="wire-chip"><span class="wire-dot" style="background:'+m.color+';border:'+m.border+'"></span>'+m.name+'</span>';
+  }).join('');
+}
+
+function specHTML(cat,type){
+  const rows=[];
+  rows.push(['accent-al','Ramal conexão (Al)',cat.al+' mm²']);
+  rows.push(['accent-cu','Entrada embutido (Cu)',cat.cuEmb+(cat.cuEmb!=='N.A.'?' mm²':'')]);
+  rows.push(['accent-cu','Entrada subterrâneo (Cu)',cat.cuSub+(cat.cuSub!=='N.A.'?' mm²':'')]);
+  rows.push(['accent-cu','Neutro embutido (Cu)',cat.neutroEmb+(cat.neutroEmb!=='N.A.'?' mm²':'')]);
+  rows.push(['accent-terra','Terra (PE)',cat.terra+' mm²']);
+  rows.push(['accent-terra','Eletrodo / haste',cat.eletrodo+' mm²']);
+  rows.push(['accent-safety','Disjuntor termomag.',cat.disj+' A / 5 kA min']);
+  rows.push(['','Eletroduto Ø',cat.edt]);
+  rows.push(['','Caixa de medição',cat.caixa||'—']);
+  return rows.map(([cls,k,v])=>'<div class="spec-cell '+cls+'"><div class="k">'+k+'</div><div class="v">'+v+'</div></div>').join('');
+}
+
+function renderCalc(){
+  const list=getList(); const t=TYPES[currentType];
+  const val=parseFloat(kvaInput.value)||0;
+  const cat=findCat(list,val);
+  const npEl=document.getElementById('nameplate');
+  if(!cat){
+    npEl.classList.add('out-of-range');
+    document.getElementById('npCode').innerHTML='—<small id="npCodeSub">fora de faixa</small>';
+    return;
+  }
+  npEl.classList.remove('out-of-range');
+  document.getElementById('npCode').innerHTML=cat.id+'<small>'+t.label.toLowerCase()+'</small>';
+  const prev=list[list.indexOf(cat)-1];
+  const prevMax=prev?prev.max:0;
+  const unit=t.isKW?'kW':'kVA';
+  document.getElementById('npRange').textContent=fmt(prevMax)+' – '+fmt(cat.max)+' '+unit;
+  document.getElementById('npFios').textContent=t.fios;
+  document.getElementById('npTensao').textContent=TENSIONS[currentTension].label+' · '+TENSIONS[currentTension].note;
+  document.getElementById('npWires').innerHTML=wireDots(currentType);
+  document.getElementById('npGrid').innerHTML=specHTML(cat,currentType);
+  // notes
+  const notes=[];
+  if(currentType==='tri') notes.push('Demanda calculada com fp=0,92 (§9 NDU-001)');
+  if(cat.id==='M1'&&currentType==='mono') notes.push('Máx. 2 cv motores monofásicos · Máx. 2 kVA solda a transformador');
+  if(currentType==='bi') notes.push('Máx. 5 cv motores mon. 220V (B1/B2) · Máx. 8 kW solda 220V');
+  if(currentType==='tri') notes.push('Motores >5 cv: partida compensada (Tabela 13) · Máx. 30 cv total motores');
+  document.getElementById('npNote').textContent=notes.join(' · ');
+}
+syncTypeUI(); renderCalc();
+
+/* ========== DEMANDA (§9) ========== */
+/* Tabela 5 residencial — acumulativo por faixas */
+function calcD1Res(c){
+  if(c<=0) return 0;
+  const faixas=[
+    [0,1.0,0.86],[1.0,2.0,0.75],[2.0,3.0,0.66],[3.0,4.0,0.59],[4.0,5.0,0.52],
+    [5.0,6.0,0.45],[6.0,7.0,0.40],[7.0,8.0,0.35],[8.0,9.0,0.31],[9.0,10.0,0.27],
+    [10.0,75.0,0.24]
+  ];
+  let dem=0;
+  for(const [a,b,f] of faixas){
+    if(c<=a) break;
+    const trecho=Math.min(c,b)-a;
+    dem+=trecho*f;
+  }
+  return dem;
+}
+/* Tabela 6 */
+function fdAgua(n){
+  const t=[100,75,70,66,62,59,56,53,51,49,47,45,43,41,40,39,38,37,36,35,34,33,32,31];
+  if(n<=0) return 0; if(n>=25) return 0.30;
+  return t[Math.min(n,t.length)-1]/100;
+}
+/* Tabela 7 */
+function fdSec(n){if(n<=0) return 0; if(n===1) return 1.0; if(n<=4) return 0.70; if(n<=6) return 0.60; return 0.50;}
+/* Tabela 8 fogão */
+function fdFogao(n){if(n<=0) return 0; if(n===1) return 0.80; if(n===2) return 0.75; if(n<=4) return 0.70; if(n<=6) return 0.65; return 0.60;}
+/* Tabela 10 AC residencial */
+function fdAC(n){if(n<=0) return 0; if(n===1) return 1.0; if(n===2) return 0.95; if(n<=5) return 0.90; return 0.85;}
+/* motores: fator 1.25 para monofásicos até 30cv */
+function calcD6(p){return p*1.25;}
+
+function updateDemanda(){
+  const d1kw=parseFloat(document.getElementById('d1').value)||0;
+  const d1=calcD1Res(d1kw);
+  document.getElementById('d1result').textContent='d1 = '+d1.toFixed(2)+' kW (fator acumulativo Tabela 5)';
+
+  const d2n=parseInt(document.getElementById('d2n').value)||0;
+  const d2p=parseFloat(document.getElementById('d2p').value)||0;
+  const d2=d2p*fdAgua(d2n);
+  document.getElementById('d2result').textContent='d2 = '+d2.toFixed(2)+' kW (fd='+((fdAgua(d2n)*100).toFixed(0))+'% · Tabela 6)';
+
+  const d3n=parseInt(document.getElementById('d3n').value)||0;
+  const d3p=parseFloat(document.getElementById('d3p').value)||0;
+  const d3=d3p*fdSec(d3n);
+  document.getElementById('d3result').textContent='d3 = '+d3.toFixed(2)+' kW (fd='+((fdSec(d3n)*100).toFixed(0))+'% · Tabela 7)';
+
+  const d4n=parseInt(document.getElementById('d4n').value)||0;
+  const d4p=parseFloat(document.getElementById('d4p').value)||0;
+  const d4=d4p*fdFogao(d4n);
+  document.getElementById('d4result').textContent='d4 = '+d4.toFixed(2)+' kW (fd='+((fdFogao(d4n)*100).toFixed(0))+'% · Tabela 8)';
+
+  const d5n=parseInt(document.getElementById('d5n').value)||0;
+  const d5p=parseFloat(document.getElementById('d5p').value)||0;
+  const d5=d5p*fdAC(d5n);
+  document.getElementById('d5result').textContent='d5 = '+d5.toFixed(2)+' kW (fd='+((fdAC(d5n)*100).toFixed(0))+'% · Tabela 10)';
+
+  const d6p=parseFloat(document.getElementById('d6p').value)||0;
+  const d6=calcD6(d6p);
+  document.getElementById('d6result').textContent='d6 = '+d6.toFixed(2)+' kW (×1,25 · Tabelas 12/13)';
+
+  const d7p=parseFloat(document.getElementById('d7p').value)||0;
+  const d7=d7p*0.50; // fator 50% padrão solda
+
+  const dTot=d1+d2+d3+d4+d5+d6+d7;
+  const dKva=dTot/0.92;
+  document.getElementById('dTotal').innerHTML=dTot.toFixed(2)+' <small>kW</small>';
+  document.getElementById('dDemanda').innerHTML=dKva.toFixed(2)+' <small>kVA</small>';
+
+  const cat127=findCat(T16_TRI,dKva);
+  const cat220=findCat(T18_TRI,dKva);
+  document.getElementById('dCat127').textContent=cat127?cat127.id:'> T6';
+  document.getElementById('dCat220').textContent=cat220?cat220.id:'> T5';
+
+  window._demandaKva=dKva;
+}
+['d1','d2n','d2p','d3n','d3p','d4n','d4p','d5n','d5p','d6p','d7p'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',updateDemanda);
+});
+updateDemanda();
+
+function goToCalcFromDemanda(){
+  if(!window._demandaKva) return;
+  currentType='tri'; currentTension='t18';
+  document.querySelectorAll('.tension-btn').forEach(b=>b.classList.toggle('active',b.dataset.tension==='t18'));
+  syncTypeUI();
+  kvaInput.value=window._demandaKva.toFixed(1);
+  kvaRange.value=kvaInput.value;
+  renderCalc();
+  switchView('calc');
+}
+
+/* ========== APARELHOS (Tabela 4) ========== */
+const APARELHOS=[
+  ['Aparelho de Blu-ray','12'],['Aparelho de DVD','15'],['Aparelho de som','110'],
+  ['Aquecedor de ambiente','1.612'],['Boiler 50–100L','1.000'],['Boiler 150–200L','1.250'],
+  ['Boiler 250L','1.500'],['Boiler 300–350L','2.000'],['Boiler 400L','2.500'],
+  ['Aquecedor de mamadeira','100'],['Aspirador de pó','717'],['Batedeira','200–750'],
+  ['Bebedouro','70–110'],['Bomba d\'água ¼ cv','335'],['Bomba d\'água ½ cv','613'],
+  ['Bomba d\'água ¾ cv','849'],['Bomba d\'água 1 cv','1.051'],['Cafeteira elétrica','219'],
+  ['Cafeteira expresso','794'],['Carregador VE (lento)','3.300'],['Chaleira elétrica','941'],
+  ['Chuveiro elétrico','4.500–6.600'],['Computador desktop','300'],['Enceradeira','450'],
+  ['Espremedor de frutas','54'],['Estabilizador','300–1.400'],['Exaustor para fogão','160'],
+  ['Ferro elétrico a seco','1.050'],['Ferro elétrico a vapor','1.200'],
+  ['Fogão de indução (cooktop)','7.000'],['Forno elétrico embutido 50L','2.422'],
+  ['Forno micro-ondas 25L','1.398'],['Freezer vertical frost free','75'],
+  ['Freezer vertical/horizontal','66'],['Frigobar','26'],['Fritadeira elétrica','1.500'],
+  ['Furadeira','235'],['Geladeira frost free 342L','55'],['Geladeira frost free 443L','118'],
+  ['Grill','1.600'],['Home Theater','350'],['Impressora','15'],['Lavadora de louças','1.543'],
+  ['Lavadora de roupas 15 kg','2.280'],['Liquidificador','1.200'],['Monitor LCD','37'],
+  ['Notebook','30'],['Panela elétrica','1.100'],['Projetor','345'],['Purificador de ar','66'],
+  ['Roteador','7'],['Sanduicheira','1.000'],['Secador de cabelo','2.120'],
+  ['Televisor LCD','217'],['Televisor LED','112'],['Triturador de lixo','1.214'],
+  ['Ventilador','80–250'],['Videogame','120'],
+];
+const apBody=document.getElementById('apBody');
+function renderAparelhos(q){
+  const q2=(q||'').toLowerCase();
+  const list=q2?APARELHOS.filter(a=>a[0].toLowerCase().includes(q2)):APARELHOS;
+  apBody.innerHTML=list.map(a=>'<tr><td>'+a[0]+'</td><td>'+a[1]+'</td></tr>').join('');
+}
+document.getElementById('apSearch').addEventListener('input',e=>renderAparelhos(e.target.value));
+renderAparelhos();
+
+/* ========== TABELAS ========== */
+const tabelasSub=document.getElementById('tabelasSub');
+let tabelasTension='t18', tabelasType='tri';
+
+Object.entries(TENSIONS).forEach(([key,t])=>{
+  const b=document.createElement('button');
+  b.textContent=t.label; b.className=key===tabelasTension?'active':'';
+  b.onclick=()=>{tabelasTension=key;document.querySelectorAll('#tabelasSub button').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderTabelas();};
+  tabelasSub.appendChild(b);
+});
+['Monofásico','Bifásico','Trifásico'].forEach((lbl,i)=>{
+  const key=['mono','bi','tri'][i];
+  const b=document.createElement('button');
+  b.textContent=lbl; b.className=key===tabelasType?'active':'';
+  b.onclick=()=>{tabelasType=key;document.querySelectorAll('#tabelasSub button').forEach(x=>x.classList.remove('active'));b.classList.add('active');/* reselect tension btn */;renderTabelas();};
+  tabelasSub.appendChild(b);
+});
+
+function renderTabelas(){
+  const ten=TENSIONS[tabelasTension];
+  const list=ten[tabelasType];
+  const t=TYPES[tabelasType];
+  const unit=t.isKW?'kW':'kVA';
+  const wrap=document.getElementById('tabelasList');
+  wrap.innerHTML='<div class="tabelas-grid">'+list.map((cat,i)=>{
+    const prev=list[i-1]; const prevMax=prev?prev.max:0;
+    return '<div class="cat-card" data-tension="'+tabelasTension+'" data-type="'+tabelasType+'" data-value="'+((cat.max+prevMax)/2||cat.max)+'">'
+      +'<div class="cat-card-head"><span class="id">'+cat.id+'</span><span class="range">'+fmt(prevMax)+'–'+fmt(cat.max)+' '+unit+'</span></div>'
+      +'<div class="cat-mini-grid">'
+        +'<div><span class="k">Al ramal</span><span class="v">'+cat.al+'</span></div>'
+        +'<div><span class="k">Cu emb.</span><span class="v">'+cat.cuEmb+'</span></div>'
+        +'<div><span class="k">Terra</span><span class="v">'+cat.terra+'</span></div>'
+        +'<div><span class="k">Eletrodo</span><span class="v">'+cat.eletrodo+'</span></div>'
+        +'<div><span class="k">Disj.</span><span class="v">'+cat.disj+'A</span></div>'
+        +'<div><span class="k">Edt.</span><span class="v">'+cat.edt+'</span></div>'
+      +'</div>'
+    +'</div>';
+  }).join('')+'</div><p class="tap-hint">toque numa categoria para abrir na calculadora</p>';
+  wrap.querySelectorAll('.cat-card').forEach(card=>{
+    card.onclick=()=>{
+      currentTension=card.dataset.tension; currentType=card.dataset.type;
+      document.querySelectorAll('.tension-btn').forEach(b=>b.classList.toggle('active',b.dataset.tension===currentTension));
+      syncTypeUI();
+      kvaInput.value=parseFloat(card.dataset.value).toFixed(1);
+      kvaRange.value=kvaInput.value;
+      renderCalc(); switchView('calc');
+    };
+  });
+}
+renderTabelas();
+
+/* ========== MATERIAIS ========== */
+const materiaisData=[
+  {tag:'3.1',title:'Ramal de conexão (Alumínio — Energisa)',open:true,body:`
+    <div class="kv-list">
+      <div class="row"><span class="k">Material</span><span class="v">Alumínio (Al)</span></div>
+      <div class="row"><span class="k">Isolação</span><span class="v">XLPE 0,6/1,0 kV (90°C)</span></div>
+      <div class="row"><span class="k">Tipo</span><span class="v">Multiplexado autossustentado (ABNT NBR 8182) ou Concêntrico (ABNT NBR 15716)</span></div>
+      <div class="row"><span class="k">Seções disponíveis</span><span class="v">10 · 16 · 25 · 35 · 70 · 95 · 120 mm²</span></div>
+      <div class="row"><span class="k">Vão máximo</span><span class="v">40 m (além disso: extensão de rede)</span></div>
+      <div class="row"><span class="k">Responsabilidade</span><span class="v">Concessionária (fornecimento + instalação)</span></div>
+    </div>
+    <div class="wire-legend">
+      <span class="item"><span class="wire-dot" style="width:10px;height:10px;display:inline-block;border-radius:50%;background:var(--fase-a);border:1px solid #666;"></span>Fase A · Preto</span>
+      <span class="item"><span class="wire-dot" style="width:10px;height:10px;display:inline-block;border-radius:50%;background:var(--fase-b);border:1px solid #aaa;"></span>Fase B · Cinza/Branco</span>
+      <span class="item"><span class="wire-dot" style="width:10px;height:10px;display:inline-block;border-radius:50%;background:var(--fase-c);"></span>Fase C · Vermelho</span>
+      <span class="item"><span class="wire-dot" style="width:10px;height:10px;display:inline-block;border-radius:50%;background:var(--neutro);"></span>Neutro · Azul claro ou nu</span>
+    </div>
+    <div class="callout">Nas conexões bimetálicas Al/Cu, o cobre deve ficar <b>abaixo</b> para evitar corrosão galvânica do alumínio.</div>`},
+  {tag:'3.2',title:'Ramal de entrada (Cobre — Consumidor)',body:`
+    <div class="kv-list">
+      <div class="row"><span class="k">Material</span><span class="v">Cobre (Cu)</span></div>
+      <div class="row"><span class="k">Isolação opção A</span><span class="v">PVC 0,6/1,0 kV (70°C)</span></div>
+      <div class="row"><span class="k">Isolação opção B</span><span class="v">XLPE, HEPR ou EPR 0,6/1,0 kV (90°C)</span></div>
+      <div class="row"><span class="k">Bitola mínima</span><span class="v">6 mm² (inclusive o neutro)</span></div>
+      <div class="row"><span class="k">Ramal de saída</span><span class="v">Mesma seção e características do ramal de entrada</span></div>
+      <div class="row"><span class="k">Cabo flexível</span><span class="v">Exige terminal tubular (ETU-159.2)</span></div>
+      <div class="row"><span class="k">Responsabilidade</span><span class="v">Consumidor (fornecimento + instalação + manutenção)</span></div>
+    </div>
+    <div class="callout danger"><b>Emendas proibidas</b> em qualquer trecho do ramal de entrada. Neutro contínuo — vedado qualquer seccionamento.</div>`},
+  {tag:'3.3',title:'Aterramento (PE · Terra)',body:`
+    <div class="kv-list">
+      <div class="row"><span class="k">Condutor</span><span class="v">Aço cobreado, sem emendas, mais curto e retilíneo possível</span></div>
+      <div class="row"><span class="k">Seções (Tabelas 16/18)</span><span class="v">6 · 10 · 16 · 25 · 35 · 50 · 95 mm²</span></div>
+      <div class="row"><span class="k">Eletroduto</span><span class="v">Exclusivo (não compartilhar com outros circuitos)</span></div>
+      <div class="row"><span class="k">Haste</span><span class="v">Aço cobreado Ø 17,30 mm (3/4") × 2.400 mm (ABNT NBR 13571)</span></div>
+      <div class="row"><span class="k">Resistência máxima</span><span class="v">≤ 20 Ω (qualquer época do ano)</span></div>
+      <div class="row"><span class="k">Distância entre hastes</span><span class="v">≥ 2.400 mm (se mais de uma)</span></div>
+      <div class="row"><span class="k">Conector haste–cabo</span><span class="v">Cunha, compressão tipo "H" ou parafuso-fendido</span></div>
+      <div class="row"><span class="k">Ponto de aterramento do neutro</span><span class="v">Único, junto à caixa (se metálica)</span></div>
+    </div>
+    <p style="font-size:11px;color:var(--text-dim);margin:8px 0 4px;text-transform:uppercase;letter-spacing:.03em;">Caixa de inspeção</p>
+    <ul class="plain">
+      <li>Cimento, alvenaria ou PVC com tampa</li>
+      <li>Em trânsito de veículos/pedestres: tampa de concreto (PVC proibido)</li>
+      <li>Com recuo: pode ser interna ou no passeio</li>
+      <li>Sem recuo: no passeio</li>
+    </ul>`},
+  {tag:'3.4',title:'Proteção elétrica',body:`
+    <div class="kv-list">
+      <div class="row"><span class="k">Disjuntor termomagnético</span><span class="v">Capacidade de interrupção ≥ 5 kA · ABNT NBR NM 60898 · Corrente conforme Tabelas 16–18</span></div>
+      <div class="row"><span class="k">DPS</span><span class="v">Obrigatório em novas ligações e reformas (ABNT NBR 5410) · Trilho DIN 35</span></div>
+      <div class="row"><span class="k">DPS — conductor max</span><span class="v">Comprimento ≤ 500 mm até barra/conector PEN</span></div>
+      <div class="row"><span class="k">DPS — indicador</span><span class="v">Deve possuir indicador de estado (operando/inoperante)</span></div>
+      <div class="row"><span class="k">DR (diferencial-residual)</span><span class="v">Recomendado — alta sensibilidade (ABNT NBR 5410)</span></div>
+      <div class="row"><span class="k">Neutro</span><span class="v">Contínuo — proibido qualquer interrupção (chave, fusível, disjuntor)</span></div>
+      <div class="row"><span class="k">Proteção pós-medição</span><span class="v">Disjuntor do ramal de saída instalado após o medidor</span></div>
+    </div>
+    <div class="callout">O DPS deve ter <b>proteção interna contra curto-circuito permanente do varistor</b> (ABNT NBR IEC 61643). Substituição sob responsabilidade do cliente; instalação pela distribuidora.</div>`},
+  {tag:'3.5',title:'Eletrodutos',body:`
+    <table><tr><th>Tipo</th><th>Aplicação</th><th>Norma</th></tr>
+      <tr><td>PVC rígido antichamas</td><td>Ramal aéreo (área seca)</td><td>ABNT NBR 15465</td></tr>
+      <tr><td>Aço galvanizado pesado</td><td>Embutido, subterrâneo, descida no poste (6m)</td><td>ABNT NBR 5624</td></tr>
+    </table>
+    <div class="callout danger"><b>PVC rígido proibido embutido.</b> Aço galvanizado obrigatório para condutores não medidos embutidos e para ramal subterrâneo.</div>
+    <p style="font-size:11px;color:var(--text-dim);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.03em;">Conversão Polegadas × mm (Tabela 25)</p>
+    <table><tr><th>Polegadas</th><th>DN (mm)</th></tr>
+      <tr><td>3/4"</td><td>20</td></tr><tr><td>1"</td><td>25</td></tr>
+      <tr><td>1 1/4"</td><td>32</td></tr><tr><td>1 1/2"</td><td>40</td></tr>
+      <tr><td>2"</td><td>50</td></tr><tr><td>2 1/2"</td><td>65</td></tr>
+    </table>
+    <p style="font-size:11px;color:var(--text-muted);margin-top:8px;">Condutores não medidos: eletroduto ao lado <b>esquerdo</b> da caixa. Medidos: lado <b>direito</b>. Extremidade curvada para baixo com cabeçote.</p>`},
+  {tag:'3.6',title:'Postes auxiliares e pontaletes',body:`
+    <table><tr><th>Tipo</th><th>Comprimento</th><th>Aplicação</th></tr>
+      <tr><td>Concreto duplo T (ABNT NBR 8451-5)</td><td>5,0 m / 7,0 m</td><td>Conforme lado da rede</td></tr>
+      <tr><td>Aço galvanizado (ABNT NBR 6591)</td><td>5.000 / 7.000 mm</td><td>Conforme lado da rede</td></tr>
+      <tr><td>PRFV (fibra de vidro)</td><td>5,0 m / 7,0 m</td><td>ETU 180.3</td></tr>
+      <tr><td>Pontalete (aço galv.)</td><td>Máx. 1.500 mm</td><td>Sem recuo e altura insuficiente</td></tr>
+    </table>
+    <ul class="plain">
+      <li><b>Poste 5,0 m:</b> cliente na mesma calçada da rede BT</li>
+      <li><b>Poste 7,0 m:</b> cliente na calçada oposta à rede</li>
+      <li><b>Poste 7,0 m:</b> também quando garagem impede 4,5m (mesmo lado)</li>
+      <li>Engastamento 5m: dimensões conforme DESENHO 29/30</li>
+      <li>Base concretada · Características gravadas a 3.500 mm da base</li>
+      <li>Pontalete: engastamento mín. 0,5 m em coluna/viga · Sem emendas</li>
+    </ul>
+    <div class="callout danger"><b>Pontalete proibido</b> em muro. Pontalete fixado em laje somente se não houver mais construção acima.</div>`},
+  {tag:'3.7',title:'Caixas de medição',body:`
+    <table><tr><th>Modelo</th><th>Aplicação</th><th>Material</th></tr>
+      <tr><td>CMI-01</td><td>Monofásico (M1–M3) e Bifásico baixo</td><td>Policarbonato (ETU 187.1)</td></tr>
+      <tr><td>CMI-02</td><td>Trifásico T1–T4</td><td>Policarbonato</td></tr>
+      <tr><td>CMI-03</td><td>Mono/Bi 380/220V M3 / B</td><td>Policarbonato</td></tr>
+      <tr><td>CMD-BT 200</td><td>Medição direta 200A (T5/T6)</td><td>Chapa de aço pintada</td></tr>
+    </table>
+    <ul class="plain">
+      <li>Altura: <b>1,7 m</b> do piso acabado ao <b>topo da caixa</b> (±20 mm)</li>
+      <li>Visor voltado para a via pública · 25 mm exposto além do reboco</li>
+      <li>Livre acesso à Energisa — sem obstrução</li>
+      <li>Homologação obrigatória (PT 003/2017) · ABNT NBR 15820</li>
+      <li>Marcação: fabricante, ano, lote, logomarca Energisa</li>
+      <li>Vedado compartilhamento de postes auxiliares entre UCs</li>
+    </ul>`},
+];
+
+const materiaisList=document.getElementById('materiaisList');
+materiaisData.forEach(m=>{
+  materiaisList.innerHTML+='<details class="card"'+(m.open?' open':'')+'><summary><span><span class="stag">'+m.tag+'</span>'+m.title+'</span><span class="chev">▾</span></summary><div class="card-body">'+m.body+'</div></details>';
+});
+
+/* ========== INSTALAÇÃO ========== */
+const instalacaoData=[
+  {tag:'8.3',title:'Ramal de conexão aéreo — distâncias',open:true,body:`
+    <p style="font-size:11px;color:var(--text-dim);margin:2px 0 8px;text-transform:uppercase;letter-spacing:.03em;">Distâncias mínimas ao solo (maior flecha)</p>
+    <div class="dist-card"><span class="local">Vias exclusivas pedestres (urbana)</span><span class="val">3,5 m</span></div>
+    <div class="dist-card"><span class="local">Vias exclusivas pedestres (rural)</span><span class="val">4,5 m</span></div>
+    <div class="dist-card"><span class="local">Entradas de prédios / garagens</span><span class="val">4,5 m</span></div>
+    <div class="dist-card"><span class="local">Locais c/ veículos em área rural</span><span class="val">4,5 m</span></div>
+    <div class="dist-card"><span class="local">Ruas e avenidas</span><span class="val">5,5 m</span></div>
+    <div class="dist-card"><span class="local">Estradas rurais (máquinas agrícolas)</span><span class="val">6,5 m</span></div>
+    <div class="dist-card"><span class="local">Travessias de ferrovias</span><span class="val">6,0 m</span></div>
+    <div class="dist-card"><span class="local">Travessias de rodovias</span><span class="val">7,0 m</span></div>
+    <div class="dist-card"><span class="local">Ferrovias eletrificadas (até 36,2 kV)</span><span class="val">12,0 m</span></div>
+    <div class="kv-list" style="margin-top:12px;">
+      <div class="row"><span class="k">Vão máximo ramal</span><span class="v">40 m (acima: extensão de rede)</span></div>
+      <div class="row"><span class="k">Afastamento janelas/sacadas</span><span class="v">≥ 1.200 mm</span></div>
+      <div class="row"><span class="k">Afastamento telefonia/sinalização</span><span class="v">≥ 700 mm</span></div>
+    </div>
+    <div class="callout">Ramal deve entrar pela <b>frente do terreno</b>, ser aéreo, visível e sem cruzar terrenos de terceiros. Em terreno de esquina: preferência lado da entrada principal.</div>`},
+  {tag:'8.5a',title:'Ramal de entrada embutido (aéreo)',body:`
+    <div class="kv-list">
+      <div class="row"><span class="k">Eletroduto</span><span class="v">PVC rígido antichamas (exterior) ou Aço galvanizado (embutido)</span></div>
+      <div class="row"><span class="k">Instalação</span><span class="v">Menor número de curvas · emendas rosqueáveis quando necessário</span></div>
+      <div class="row"><span class="k">Fixação</span><span class="v">Fita ou cinta de aço inox, aço carbono zincado ou liga de alumínio</span></div>
+      <div class="row"><span class="k">Vedação</span><span class="v">Massa de calafetar (proibido massa de vidraceiro)</span></div>
+    </div>
+    <ul class="plain">
+      <li>Sem emendas nos condutores</li>
+      <li>Sem emendas no eletroduto entre forro e telhado</li>
+      <li>Eletroduto firmemente atarraxado à caixa (bucha + contra-bucha)</li>
+      <li>Extremidade curvada para baixo (DESENHO 27)</li>
+      <li>Condutores não medidos: lado <b>esquerdo</b> da caixa</li>
+      <li>Condutores medidos: lado <b>direito</b> da caixa</li>
+      <li>Identificação de fases em todos os pontos de derivação e conexão</li>
+    </ul>`},
+  {tag:'8.5b',title:'Ramal de entrada subterrâneo',body:`
+    <div class="callout danger"><b>Exige autorização prévia da Energisa</b> (análise de viabilidade técnica) e <b>autorização do poder público</b>.</div>
+    <p style="font-size:11px;color:var(--text-dim);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.03em;">Requisitos construtivos obrigatórios</p>
+    <ul class="plain numbered">
+      <li>Declaração de compromisso (Anexo I NDU-001) com firma reconhecida ou assinatura digital ICP</li>
+      <li>Cabos: EPR, HEPR ou XLPE 0,6/1,0 kV — sem emendas</li>
+      <li>Descida no poste: eletroduto aço galv. pesado (NBR 5624) — 6,0 m de comprimento</li>
+      <li>Raio mínimo de curvatura: 12× o diâmetro externo do cabo</li>
+      <li>Caixa de passagem obrigatória próximo ao poste (raio ≤ 0,5 m), no passeio, com lacre</li>
+      <li>Segunda caixa de passagem se distância ao padrão &gt; 20 m</li>
+      <li>Sobra de cabo na caixa junto ao poste: 2,0 m · Demais caixas: 1,0–2,0 m</li>
+      <li>Eletroduto aço galvanizado em todo o percurso subterrâneo</li>
+      <li>Envelopado em concreto: travessias de vias com circulação de veículos</li>
+      <li>Diretamente enterrado: calçadas e locais sem veículos</li>
+      <li>Placa de identificação 0,20×0,10 m no poste (a ≈5,0 m do solo)</li>
+    </ul>
+    <div class="kv-list" style="margin-top:8px;">
+      <div class="row"><span class="k">Poste com equipamentos (trafo, religador)</span><span class="v">Máx. 2 ramais subterrâneos</span></div>
+      <div class="row"><span class="k">Poste sem equipamentos</span><span class="v">Máx. 4 ramais subterrâneos</span></div>
+    </div>
+    <div class="callout danger"><b>Vedado:</b> cruzar vias públicas (exceto calçadas), propriedades de terceiros. Custos integralmente do consumidor.</div>`},
+  {tag:'8.6',title:'Caixas de passagem (subterrâneo)',body:`
+    <table><tr><th>Caixa</th><th>Bitola dos cabos</th><th>Dimensões internas mínimas</th></tr>
+      <tr><td>CP-01</td><td>&lt; 70 mm²</td><td>Conforme DESENHO 12</td></tr>
+      <tr><td>CP-02</td><td>≥ 70 mm²</td><td>Conforme DESENHO 13</td></tr>
+    </table>
+    <ul class="plain">
+      <li>Construída em concreto armado ou alvenaria</li>
+      <li>Sistema de drenagem obrigatório</li>
+      <li>Subtampa metálica com dispositivos para lacre</li>
+      <li>Tampa: ferro fundido ou concreto armado com 2 alças retráteis</li>
+      <li>Em passeio com pedestres/veículos: apenas tampa de concreto</li>
+      <li>Exclusivas para condutores elétricos e aterramento (não misturar com telefonia, TV cabo etc.)</li>
+      <li>Afastamento do poste: 50 cm (máx. 1,0 m) · A cada 20 m no percurso</li>
+    </ul>`},
+  {tag:'8.10',title:'Sistema de aterramento',body:`
+    <div class="kv-list">
+      <div class="row"><span class="k">Resistência máxima</span><span class="v">≤ 20 Ω (toda época do ano)</span></div>
+      <div class="row"><span class="k">Ponto de aterramento do neutro</span><span class="v">Único · Junto à caixa (se metálica)</span></div>
+      <div class="row"><span class="k">Sem interrupção</span><span class="v">Proibido chave/dispositivo no condutor de terra</span></div>
+      <div class="row"><span class="k">Haste</span><span class="v">Aço cobreado 3/4" (17,3 mm) × 2.400 mm · ABNT NBR 13571</span></div>
+      <div class="row"><span class="k">Conector haste</span><span class="v">Cunha, grampo GTDU ou grampo TH/THR</span></div>
+      <div class="row"><span class="k">Revestimento do ponto de conexão</span><span class="v">Massa de calafetar</span></div>
+    </div>
+    <div class="callout">Se a resistência exceder 20 Ω: acrescentar hastes adicionais a cada 2.400 mm até atingir o limite. Ponto de conexão deve ser acessível à inspeção.</div>`},
+  {tag:'8.11',title:'Bomba de incêndio',body:`
+    <ul class="plain">
+      <li>Ligação conforme ABNT NBR 13714</li>
+      <li>Circuito de alimentação independente do consumo geral</li>
+      <li>Derivado da entrada consumidora <b>antes da chave geral e após a medição</b></li>
+      <li>Sinalização obrigatória: "ALIMENTAÇÃO DA BOMBA DE INCÊNDIO – NÃO DESLIGUE"</li>
+      <li>Desligamento geral não pode afetar o funcionamento da bomba</li>
+    </ul>`},
+];
+const instalacaoList=document.getElementById('instalacaoList');
+instalacaoData.forEach(m=>{
+  instalacaoList.innerHTML+='<details class="card"'+(m.open?' open':'')+'><summary><span><span class="stag">'+m.tag+'</span>'+m.title+'</span><span class="chev">▾</span></summary><div class="card-body">'+m.body+'</div></details>';
+});
+
+/* ========== REGRAS ========== */
+const resp=[
+  ['Ramal de conexão (Al)','Fornecimento, instalação, manutenção',''],
+  ['Ramal de entrada (Cu)','','Fornecimento, instalação, manutenção'],
+  ['Medidor / equipamento de medição','Instalação, manutenção, lacre',''],
+  ['Caixa de medição','','Fornecimento, instalação'],
+  ['Proteção geral (disjuntor, DPS)','','Fornecimento, instalação'],
+  ['Aterramento (haste, condutor)','','Fornecimento, instalação'],
+  ['Poste auxiliar / pontalete','','Fornecimento, instalação'],
+  ['Eletrodutos e acessórios','','Fornecimento, instalação'],
+  ['Substituição do DPS inoperante','Instalação','Fornecimento do equipamento'],
+];
+document.getElementById('respTable').innerHTML=
+  '<tr><th>Item</th><th>Concessionária</th><th>Consumidor</th></tr>'+
+  resp.map(r=>'<tr><td class="item">'+r[0]+'</td><td class="mark '+(r[1]?'yes':'no')+'">'+(r[1]?r[1]:'—')+'</td><td class="mark '+(r[2]?'yes':'no')+'">'+(r[2]?r[2]:'—')+'</td></tr>').join('');
+
+const denies=[
+  'Mais de um ramal de conexão para um mesmo imóvel (§6.12-f)',
+  'Ramal de conexão ou ramal de entrada cruzar sobre imóveis de terceiros (§6.12-c)',
+  'Ramal de entrada cruzar sobre área construída (§6.12-d)',
+  'Uso do poste da concessionária para construção do padrão de entrada (§6.12-i)',
+  'Emendas nos condutores do ramal de entrada ou subterrâneo',
+  'Pontalete fixado em muro (§8.2)',
+  'Padrão pré-moldado ou em placas de concreto (§6.12-l)',
+  'Condutores com classe de isolação diferente de 0,6/1 kV (§6.12-k)',
+  'Cabos de cobre com encordoamento flexível sem terminais tubulares (§6.12-g)',
+  'Paralelismo de geradores particulares com a rede da Energisa (§6.12-b)',
+  'Condutores não medidos na mesma tubulação/caixa que condutores medidos (§6.12-a)',
+  'Ligação de unidades consumidoras situadas sob a rede de distribuição (§6.12-j)',
+  'Aumento de carga, alteração de disponibilidade ou GD sem autorização prévia (§6.12-e)',
+  'Aterramento do gerador compartilhado com o aterramento da concessionária',
+  'Interligação do circuito de emergência (gerador) com a fase+neutro da rede',
+  'Injeção de energia elétrica na rede a partir de veículos elétricos (§6.13)',
+  'PVC rígido antichamas embutido (§8.5)',
+];
+document.getElementById('denyList').innerHTML=denies.map(d=>'<li><span class="ic">✕</span><span>'+d+'</span></li>').join('');
+
+const allows=[
+  'Manter o padrão de entrada em bom estado de conservação (§6.1-g)',
+  'Permitir livre acesso aos representantes credenciados da Energisa a qualquer tempo',
+  'Informar aumento de carga antes da execução — aguardar aprovação (§6.9)',
+  'Manter fator de potência ≥ 0,92 indutivo ou capacitivo (§6.10)',
+  'Instalar DPS — obrigatório para novas ligações e reformas (§8.7)',
+  'Executar aterramento com resistência ≤ 20 Ω (§8.10)',
+  'Aguardar vistoria da concessionária antes de ligar o padrão (§7.4)',
+  'Declarar carga instalada no pedido de ligação com todos os equipamentos (§7.1)',
+  'Obter autorização ambiental para ligações em Área de Preservação Permanente',
+  'Comunicar à Energisa antes de instalar estação de recarga para VE (§6.13)',
+  'Entregar declaração de compromisso com firma reconhecida para ramal subterrâneo',
+];
+document.getElementById('allowList').innerHTML=allows.map(d=>'<li><span class="ic">✓</span><span>'+d+'</span></li>').join('');
+
+/* ========== VISTORIA ========== */
+const vistoria=[
+  ['Altura da caixa de medição','Piso acabado → topo da caixa','1,70 m (±20 mm)'],
+  ['Posição da caixa','Visor voltado para via pública; 25 mm exposto além do reboco','Obrigatório'],
+  ['Distância ramal–solo','Maior flecha do condutor ao ponto mais baixo','Ver tabela de distâncias'],
+  ['Vão máximo do ramal','Entre pontos de fixação (poste ↔ olhal/pontalete)','≤ 40 m'],
+  ['Aterramento','Resistência medida (ohms)','≤ 20 Ω'],
+  ['Continuidade do neutro','Sem seccionamento em nenhum ponto','Contínuo'],
+  ['DPS','Instalado, estado operacional, indicador verde','Obrigatório'],
+  ['Disjuntor termomag.','Corrente e capacidade de interrupção','Conforme Tabela 16/18 · ≥ 5 kA'],
+  ['Poste / pontalete','Engastamento, prumo, base concretada','Conforme DESENHOS 29/30'],
+  ['Identificação das fases','Cores dos condutores em todos os pontos','A=preto·B=cinza·C=vermelho·N=azul·T=verde'],
+  ['Emendas','Ramal de entrada e subterrâneo','Zero emendas permitidas'],
+  ['Eletroduto','Tipo, fixação, vedação, curvatura da extremidade','Aço galv. embutido; PVC externo'],
+  ['Caixa de medição','Modelo homologado (PT 003/2017); marcação completa','Conforme tipo de ligação'],
+  ['Ramal de saída','Seção e isolação','Igual ao ramal de entrada'],
+  ['Acesso à medição','Desobstruído, livre e fácil','Sem impedimentos físicos'],
+  ['Licenças','Autorização ambiental (se APP); autorização posse p/ ramal sub.','Quando aplicável'],
+];
+document.getElementById('vistoriaList').innerHTML=vistoria.map(v=>
+  '<div class="vist-card"><div class="l"><div class="t">'+v[0]+'</div><div class="s">'+v[1]+'</div></div><div class="r">'+v[2]+'</div></div>'
+).join('');
+
+/* ========== NORMAS ========== */
+const normas={
+  'Regulatórias':[
+    ['REN ANEEL 1.000/2021','Regras de prestação do serviço público de distribuição de energia elétrica'],
+    ['PRODIST / REN 956/2021','Procedimentos de distribuição de energia elétrica no SEN'],
+    ['NR 10','Segurança em instalações e serviços em eletricidade'],
+    ['Lei 11.337/2006','Obrigatoriedade de aterramento e condutor de proteção'],
+  ],
+  'ABNT — Instalações':[
+    ['NBR 5410/2004','Instalações elétricas de baixa tensão'],
+    ['NBR 5419/2015','Proteção contra descargas atmosféricas'],
+    ['NBR 13534/2008','Instalações em estabelecimentos assistenciais de saúde'],
+    ['NBR 14039/2021','Instalações elétricas de média tensão 1,0 kV a 36,2 kV'],
+  ],
+  'ABNT — Cabos':[
+    ['NBR 8182/2011','Cabos multiplexados autossustentados XLPE/PE até 0,6/1 kV'],
+    ['NBR 15716','Cabos concêntricos com isolação XLPE/PE até 0,6/1 kV'],
+    ['NBR 7285/2016','Cabos XLPE 0,6/1 kV sem cobertura'],
+    ['NBR 7286/2022','Cabos EPR/HEPR/EPR 105 0,6/1 kV sem cobertura'],
+    ['NBR 6251/2018','Cabos de potência extrudados 1 kV a 35 kV'],
+  ],
+  'ABNT — Proteção':[
+    ['NBR IEC 60898/2019','Disjuntores para instalações domésticas e similares'],
+    ['NBR IEC 61643-1/2021','DPS — Dispositivos de proteção contra surtos em BT'],
+    ['NBR IEC 61000-4-5/2020','Ensaio de imunidade a surtos'],
+    ['NBR 13571','Haste de aterramento em aço cobreado'],
+  ],
+  'ABNT — Eletrodutos e redes':[
+    ['NBR 15465/2020','Sistemas de eletrodutos plásticos BT'],
+    ['NBR 5597/2013','Eletroduto de aço-carbono com rosca NPT'],
+    ['NBR 5598/2011','Eletroduto de aço-carbono com rosca BSP'],
+    ['NBR 15688/2012','Redes de distribuição aérea com condutores nus'],
+    ['NBR 10676/2011','Fornecimento a edificações individuais em tensão secundária'],
+  ],
+  'Normas internas Energisa':[
+    ['NDU-002','Fornecimento em tensão primária'],
+    ['NDU-003','Fornecimento a agrupamentos / múltiplas UCs'],
+    ['NDU-013','Conexão BT de geração distribuída'],
+    ['NDU-042','Fornecimento para estações de recarga de VE'],
+    ['NDU-027','Materiais em área de corrosão atmosférica (maresia)'],
+    ['ETU 180.1','Postes auxiliares em concreto armado'],
+    ['ETU 180.2','Postes auxiliares em aço-carbono tubular'],
+    ['ETU 180.3','Postes auxiliares em PRFV'],
+    ['ETU 187.1','Caixas de medição em policarbonato'],
+    ['ETU 159.2','Conector terminal de cobre tipo cabo-barra à compressão'],
+    ['ETU-136.1','Cabo de potência até 0,6/1,0 kV'],
+    ['PT 003/2017','Lista de fornecedores homologados de caixas de medição'],
+  ],
+};
+const normasList=document.getElementById('normasList');
+Object.entries(normas).forEach(([group,items])=>{
+  normasList.innerHTML+='<div class="norm-group"><h3>'+group+'</h3>'+
+    items.map(i=>'<div class="norm-item"><span class="code">'+i[0]+'</span><span class="desc">'+i[1]+'</span></div>').join('')+
+  '</div>';
+});
+const casos=[
+  'Casos não previstos nesta norma: encaminhar à concessionária para apreciação prévia (§1)',
+  'Cargas especiais (solda, raio-X, eletrogalvanização, compressor): consultar Energisa antes da instalação (§6.7)',
+  'Geração distribuída conectada em BT: seguir NDU-013',
+  'Estações de recarga de veículos elétricos: seguir NDU-042',
+  'Agrupamentos / múltiplas unidades consumidoras no mesmo terreno: NDU-003',
+  'Fornecimento provisório (obra, evento): mesmos padrões da ligação definitiva; despesas do consumidor (§7.3)',
+  'Irrigantes: caixa polifásica independente do tipo de rede (§6.8)',
+  'APP — Área de Preservação Permanente: exige autorização do órgão ambiental (§6.1-k)',
+  'Prazo de vistoria: até 5 dias úteis em BT (REN 1.000/2021 Art. 91)',
+  'Reprovação: distribuidora entrega relatório em 3 dias úteis (REN 1.000/2021 Art. 94)',
+];
+document.getElementById('casosList').innerHTML=casos.map(c=>'<li>'+c+'</li>').join('');
+</script>
+</body>
+</html>
