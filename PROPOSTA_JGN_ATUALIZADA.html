@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta ORC-2026-0017 – Automação de Porta de Vidro | Attive Tecnologia</title>
+<meta name="description" content="Automação de porta de vidro deslizante – JGN Manutenção e Serviços. Attive Tecnologia e Engenharia.">
+<meta name="robots" content="noindex, nofollow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Attive Tecnologia e Engenharia">
+<meta property="og:title" content="Proposta ORC-2026-0017 – Automação de Porta de Vidro | JGN">
+<meta property="og:description" content="Automação de porta de vidro deslizante com automatizador e sensores de abertura.">
+<meta property="og:image" content="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png">
+<meta property="og:locale" content="pt_BR">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Proposta ORC-2026-0017 – Automação de Porta de Vidro | JGN">
+<meta name="twitter:description" content="Automação de porta de vidro deslizante com automatizador e sensores de abertura.">
+<meta name="twitter:image" content="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png">
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1d'/%3E%3Cpath d='M50 20 L80 75 H20 Z' fill='none' stroke='%232563eb' stroke-width='7' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --page-bg: #090d16;
+    --container-bg: #ffffff;
+    --primary: #0a0f1d;
+    --accent: #2563eb;
+    --accent-2: #3b82f6;
+    --accent-light: #dbeafe;
+    --accent-soft: #eff6ff;
+    --border: #e2e8f0;
+    --secondary-bg: #f8fafc;
+    --muted: #64748b;
+    --success: #16a34a;
+    --warning: #fbbf24;
+    --warning-dark: #78350f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--page-bg);
+    background-image: radial-gradient(circle at 20% 0%, rgba(37,99,235,0.18), transparent 45%),
+                       radial-gradient(circle at 100% 30%, rgba(59,130,246,0.12), transparent 40%);
+    color: var(--primary);
+    padding: 48px 16px;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 850px;
+    margin: 0 auto;
+    background-color: var(--container-bg);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+
+  .container::before {
+    content: "";
+    display: block;
+    height: 6px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+
+  .inner { padding: 44px; }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand-logo-wrap { display: flex; align-items: center; gap: 14px; }
+
+  .brand-logo {
+    height: 96px;
+    width: auto;
+    display: block;
+  }
+
+  .brand-subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 5px 11px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    background-color: var(--accent-light);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .meta-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+    margin-bottom: 28px;
+  }
+
+  .meta-item label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .meta-item span {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .progress-bar-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 12px 0 32px 0;
+    position: relative;
+  }
+
+  .progress-bar-wrap::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    right: 30px;
+    height: 3px;
+    background: var(--border);
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+
+  .progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 1;
+    cursor: default;
+    flex: 1;
+  }
+
+  .progress-step .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s;
+    border: 3px solid transparent;
+  }
+
+  .progress-step.active .circle {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+  }
+
+  .progress-step.done .circle {
+    background: var(--success);
+    color: #fff;
+    border-color: var(--success);
+  }
+
+  .progress-step .label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: center;
+    transition: color 0.3s;
+  }
+
+  .progress-step.active .label,
+  .progress-step.done .label { color: var(--primary); }
+
+  .step-page { display: none; animation: fadeIn 0.35s ease; }
+  .step-page.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .step-title .step-icon {
+    width: 28px;
+    height: 28px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .step-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    padding-left: 38px;
+  }
+
+  .single-option-card {
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    background: linear-gradient(160deg, var(--accent-soft), #ffffff);
+  }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 4px 0 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+  }
+
+  .service-description {
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.6;
+    padding: 4px 0;
+  }
+
+  .service-description strong { color: var(--primary); }
+
+  .service-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 4px;
+  }
+
+  .option-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    color: #334155;
+    border-top: 1px solid var(--border);
+    padding-top: 4px;
+    margin-top: 4px;
+  }
+
+  .option-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 0;
+    line-height: 1.35;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .option-list li:last-child { border-bottom: none; }
+
+  .option-list li .li-icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    background-color: var(--accent);
+  }
+
+  .option-list li .li-icon svg {
+    width: 10px;
+    height: 10px;
+    stroke: #fff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  thead th:not(:first-child), tbody td:not(:first-child) { text-align: right; }
+
+  tbody td {
+    font-size: 14px;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--border);
+    color: var(--primary);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  .total-row td {
+    border-top: 1.5px solid var(--primary);
+    border-bottom: none;
+    padding-top: 14px;
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .total-row td:last-child { color: var(--accent); }
+
+  .payment-options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .payment-option-card {
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+  }
+
+  .payment-option-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 8px 24px rgba(37,99,235,0.10);
+  }
+
+  .payment-option-card.selected {
+    border-color: var(--success) !important;
+    box-shadow: 0 0 0 3px rgba(22,163,74,0.18), 0 12px 32px rgba(22,163,74,0.13) !important;
+    background: linear-gradient(160deg, #f0fdf4, #ffffff) !important;
+    transform: translateY(-2px);
+  }
+
+  .payment-option-card .check-mark {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--success);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: all 0.25s;
+  }
+
+  .payment-option-card .check-mark svg {
+    width: 14px;
+    height: 14px;
+    stroke: #fff;
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .payment-option-card.selected .check-mark { opacity: 1; transform: scale(1); }
+
+  .payment-option-card .pay-icon {
+    width: 32px;
+    height: 32px;
+    stroke: var(--accent);
+    stroke-width: 1.8;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .payment-option-card.selected .pay-icon { stroke: var(--success); }
+
+  .payment-option-card .pay-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .payment-option-card.selected .pay-title { color: var(--success); }
+
+  .payment-option-card .pay-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .payment-option-card .pay-desc strong {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .payment-option-card .pay-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 4px;
+  }
+
+  .payment-option-card.selected .pay-value { color: var(--success); }
+
+  .payment-option-card .pay-cta {
+    font-weight: 700;
+    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    color: var(--muted);
+    transition: all 0.2s;
+    text-align: center;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .payment-option-card .pay-cta svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .payment-option-card:hover .pay-cta { border-color: var(--accent); color: var(--accent); }
+
+  .payment-option-card.selected .pay-cta {
+    background: var(--success);
+    border-color: var(--success);
+    color: #fff;
+  }
+
+  .summary-box {
+    background: var(--secondary-bg);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .summary-row:last-child { border-bottom: none; }
+
+  .summary-row .label { font-weight: 500; color: var(--muted); }
+  .summary-row .value { font-weight: 700; text-align: right; }
+  .summary-row .value.highlight { color: var(--success); }
+
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: inherit;
+  }
+
+  .btn .btn-icon {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover {
+    background: var(--accent-2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-secondary { background: var(--border); color: var(--primary); }
+  .btn-secondary:hover { background: #d1d5db; }
+
+  .btn-whatsapp {
+    background: #25D366;
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .btn-whatsapp.enabled { pointer-events: auto; opacity: 1; }
+
+  .btn-whatsapp:hover {
+    background: #1ebe5c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(37,211,102,0.35);
+  }
+
+  .schedule-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 14px 16px;
+    background-color: var(--accent-soft);
+    border: 1px solid var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    text-align: left;
+    line-height: 1.4;
+  }
+
+  .schedule-notice svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    margin-top: 1px;
+  }
+
+  .warning-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 14px 16px;
+    background-color: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 3px solid #d97706;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #92400e;
+    text-align: left;
+    line-height: 1.4;
+  }
+
+  .warning-notice svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    stroke: #d97706;
+    stroke-width: 2;
+    fill: none;
+    margin-top: 1px;
+  }
+
+  .footer {
+    padding: 28px 44px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .footer-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-info { text-align: left; }
+
+  .footer .name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+  }
+
+  .footer .role {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 1px;
+  }
+
+  .footer .contact {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .footer .validity {
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 768px) {
+    body { padding: 20px 8px; }
+    .inner { padding: 22px; }
+    .meta-strip { grid-template-columns: 1fr 1fr; }
+    .step-title { font-size: 17px; }
+    .step-subtitle { padding-left: 0; }
+    .progress-step .label { font-size: 10px; }
+    .progress-step .circle { width: 34px; height: 34px; font-size: 12px; }
+    .progress-bar-wrap::before { left: 20px; right: 20px; }
+    .nav-buttons { flex-direction: column; }
+    .nav-buttons .btn { width: 100%; justify-content: center; }
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 12px 6px; }
+    .inner { padding: 16px; }
+    .header { gap: 12px; }
+    .brand-logo { height: 80px; }
+    .meta-strip { grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+    .meta-item span { font-size: 14px; }
+    .single-option-card { padding: 18px; gap: 12px; }
+    .service-description { font-size: 12px; }
+    .service-value { font-size: 16px; }
+    .step-title { font-size: 16px; }
+    .step-title .step-icon { width: 22px; height: 22px; }
+    .payment-option-card { padding: 16px; gap: 10px; }
+    .payment-option-card .pay-title { font-size: 15px; }
+    .payment-option-card .pay-desc { font-size: 12px; }
+    .payment-option-card .pay-value { font-size: 14px; }
+    .footer { padding: 22px 16px 20px; flex-direction: column; text-align: center; gap: 12px; }
+    .footer-info { text-align: center; }
+    .footer-avatar { width: 60px; height: 60px; }
+    .progress-step .circle { width: 28px; height: 28px; font-size: 10px; }
+    .progress-step .label { font-size: 9px; }
+    .progress-bar-wrap::before { left: 14px; right: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="inner">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand-logo-wrap">
+        <img class="brand-logo" src="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png" alt="Attive Tecnologia">
+        <div class="brand-text">
+          <div class="brand-subtitle">Engenharia &amp; Tecnologia</div>
+        </div>
+      </div>
+      <span class="badge">Proposta Comercial</span>
+    </div>
+
+    <!-- META -->
+    <div class="meta-strip">
+      <div class="meta-item">
+        <label>Proposta</label>
+        <span>ORC-2026-0017</span>
+      </div>
+      <div class="meta-item">
+        <label>A/C</label>
+        <span>Jean</span>
+      </div>
+      <div class="meta-item">
+        <label>Cliente</label>
+        <span>JGN Manutenção e Serviços</span>
+      </div>
+      <div class="meta-item">
+        <label>CNPJ</label>
+        <span>51.007.814/0001-99</span>
+      </div>
+      <div class="meta-item">
+        <label>Emissão</label>
+        <span id="emissao">--/--/----</span>
+      </div>
+      <div class="meta-item">
+        <label>Válida até</label>
+        <span id="validade">--/--/----</span>
+      </div>
+    </div>
+
+    <!-- PROGRESSO -->
+    <div class="progress-bar-wrap">
+      <div class="progress-step active" id="ps1">
+        <div class="circle">1</div>
+        <div class="label">Resumo do serviço</div>
+      </div>
+      <div class="progress-step" id="ps2">
+        <div class="circle">2</div>
+        <div class="label">Forma de pagamento</div>
+      </div>
+      <div class="progress-step" id="ps3">
+        <div class="circle">3</div>
+        <div class="label">Confirmar</div>
+      </div>
+    </div>
+
+    <!-- ETAPA 1 -->
+    <div class="step-page active" id="step1">
+      <div class="step-title">
+        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="2"/>
+          <path d="M2 12h20"/>
+          <path d="M12 2v20"/>
+        </svg>
+        Automação de Porta de Vidro Deslizante
+      </div>
+      <div class="step-subtitle">Automatização completa da porta deslizante de vidro (10mm, folha única, 0,92m x 2,10m) com automatizador e sensores de abertura na entrada e saída.</div>
+
+      <div class="single-option-card">
+        <div>
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Escopo do serviço
+          </div>
+          <div class="service-description">
+            <strong>Automatizador de porta deslizante:</strong> kit motorizado dimensionado para folha única de vidro 10mm (0,92m x 2,10m), com acionamento suave e parada de segurança.<br><br>
+            <strong>Sensores de abertura:</strong> sensores de presença instalados na entrada e na saída, permitindo abertura automática bidirecional sem necessidade de contato.<br><br>
+            <strong>Controles:</strong> fornecimento de 02 controles remotos para operação manual.<br><br>
+            <strong>Mão de obra:</strong> instalação completa, configuração, ajustes e testes de funcionamento.
+          </div>
+          <div class="service-value">Valor total: <strong>R$ 5.600,00</strong></div>
+        </div>
+
+        <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 8px;">
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="6" y1="6" x2="18" y2="6"/><line x1="6" y1="10" x2="18" y2="10"/><line x1="6" y1="14" x2="18" y2="14"/><line x1="6" y1="18" x2="18" y2="18"/></svg>
+            Composição do valor
+          </div>
+          <table style="margin-top: 8px;">
+            <thead>
+              <tr><th>Item</th><th>Subtotal</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Equipamentos (Automatizador + Sensores + 02 Controles)</td><td>R$ 4.250,00</td></tr>
+              <tr><td>Mão de obra e instalação</td><td>R$ 1.350,00</td></tr>
+              <tr class="total-row"><td>Total</td><td>R$ 5.600,00</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ul class="option-list" style="margin-top: 4px;">
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Garantia de 12 meses nos serviços executados</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Serviço executado conforme recomendações técnicas dos fabricantes</span></li>
+        </ul>
+      </div>
+
+      <div class="warning-notice">
+        <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        <span><strong>Responsabilidades:</strong> a disponibilização de ponto de energia elétrica próximo à porta (rede elétrica) é de responsabilidade do <strong>contratante</strong> e não está incluída neste orçamento. Toda a estrutura física da porta deve estar funcional para perfeito acabamento na instalação.</span>
+      </div>
+
+      <div class="nav-buttons">
+        <span></span>
+        <button class="btn btn-primary" id="step1Next">
+          Avançar
+          <svg class="btn-icon" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ETAPA 2 -->
+    <div class="step-page" id="step2">
+      <div class="step-title">
+        <svg class="step-icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Forma de pagamento
+      </div>
+      <div class="step-subtitle">Confirme a forma de pagamento</div>
+
+      <div class="payment-options-grid">
+        <!-- Única opção -->
+        <div class="payment-option-card" onclick="selectPayment(1)">
+          <div class="check-mark"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <svg class="pay-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <div class="pay-title">Condições de pagamento</div>
+          <div class="pay-desc">
+            <strong>No agendamento da instalação:</strong> R$ 4.250,00 (equipamentos) garante a agenda e a aquisição dos materiais.<br><br>
+            <strong>Após a conclusão da instalação:</strong> R$ 1.350,00 (mão de obra).
+          </div>
+          <div class="pay-value">R$ 4.250,00 + R$ 1.350,00</div>
+          <div class="pay-cta">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            Selecione aqui
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goToStep(1)">
+          <svg class="btn-icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Voltar
+        </button>
+        <button class="btn btn-primary" id="step2Next" disabled>
+          Avançar
+          <svg class="btn-icon" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ETAPA 3 -->
+    <div class="step-page" id="step3">
+      <div class="step-title">
+        <svg class="step-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Confirmar proposta
+      </div>
+      <div class="step-subtitle">Revise os dados e confirme pelo WhatsApp</div>
+
+      <div class="summary-box" id="summaryBox">
+        <div class="summary-row">
+          <span class="label">Serviço</span>
+          <span class="value">Automação de Porta de Vidro Deslizante</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Valor total</span>
+          <span class="value highlight">R$ 5.600,00</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Forma de pagamento</span>
+          <span class="value">50% no agendamento + 50% na conclusão</span>
+        </div>
+      </div>
+
+      <div class="schedule-notice">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Agendamento da instalação realizado automaticamente em até 48h úteis após a confirmação do pagamento.</span>
+      </div>
+
+      <div class="warning-notice">
+        <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        <span>Mesmo dentro do período de garantia, por se tratar de serviço executado em Areia/PB, eventual necessidade de deslocamento implicará cobrança de taxa de visita técnica. Orçamento válido por 7 dias corridos a partir da emissão.</span>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goToStep(2)">
+          <svg class="btn-icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Voltar
+        </button>
+        <a class="btn btn-whatsapp" id="whatsappFinal" href="#" target="_blank">
+          <svg viewBox="0 0 32 32" style="width:20px; height:20px; fill:#fff;"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.648 4.83 1.782 6.86L2 30l7.347-1.757A13.94 13.94 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5a11.44 11.44 0 01-5.847-1.6l-.418-.249-4.36 1.043 1.072-4.25-.272-.437A11.46 11.46 0 014.5 16C4.5 9.649 9.649 4.5 16 4.5S27.5 9.649 27.5 16 22.351 27.5 16 27.5zm6.29-8.61c-.345-.172-2.04-1.006-2.356-1.12-.315-.115-.545-.172-.774.172-.23.345-.888 1.12-1.09 1.35-.2.23-.4.258-.745.086-.345-.172-1.455-.537-2.771-1.71-1.024-.913-1.715-2.04-1.916-2.385-.2-.345-.021-.531.15-.703.155-.155.345-.402.517-.603.172-.2.23-.345.345-.575.115-.23.057-.431-.029-.603-.086-.172-.774-1.866-1.06-2.556-.28-.672-.563-.58-.774-.591-.2-.01-.43-.013-.66-.013s-.603.086-.919.431c-.315.345-1.204 1.177-1.204 2.87 0 1.694 1.233 3.33 1.405 3.56.172.23 2.427 3.706 5.88 5.198.822.355 1.463.566 1.963.725.825.263 1.576.226 2.169.137.661-.099 2.04-.833 2.327-1.637.287-.804.287-1.493.2-1.637-.086-.143-.315-.23-.66-.402z"/></svg>
+          Confirmar pelo WhatsApp
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <img class="footer-avatar" src="https://i.postimg.cc/TwjQxnJc/Whats-App-Image-2026-08-31-at-14-32-09.jpg" alt="Hélio Crispim">
+    <div class="footer-info">
+      <div class="name">Hélio Crispim</div>
+      <div class="role">Eng. Eletricista · CREA-PB 12290192025PB</div>
+      <div class="contact">(83) 99678-7788 &middot; attivesistemas@gmail.com</div>
+      <div class="contact">CNPJ: 48.979.364/0001-91</div>
+      <div class="validity" id="footerValidity">Proposta ORC-2026-0017 · válida por 7 dias a partir da emissão (--/--/----)</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== DATAS AUTOMÁTICAS =====
+  (function setDates() {
+    var hoje = new Date();
+    var dia = String(hoje.getDate()).padStart(2, '0');
+    var mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    var ano = hoje.getFullYear();
+    var dataStr = dia + '/' + mes + '/' + ano;
+
+    document.getElementById('emissao').textContent = dataStr;
+
+    var validade = new Date(hoje);
+    validade.setDate(hoje.getDate() + 7);
+    var diaVal = String(validade.getDate()).padStart(2, '0');
+    var mesVal = String(validade.getMonth() + 1).padStart(2, '0');
+    var anoVal = validade.getFullYear();
+    var dataValStr = diaVal + '/' + mesVal + '/' + anoVal;
+
+    document.getElementById('validade').textContent = dataValStr;
+    document.getElementById('footerValidity').textContent = 'Proposta ORC-2026-0017 · válida por 7 dias a partir da emissão (' + dataValStr + ')';
+  })();
+
+  // ===== LÓGICA =====
+  var phone = "5583996787788";
+  var proposta = "ORC-2026-0017";
+  var contato = "Jean";
+  var cliente = "JGN Manutenção e Serviços";
+
+  var selectedPayment = 0;
+
+  function selectPayment(option) {
+    selectedPayment = option;
+    document.querySelectorAll('.payment-option-card').forEach(function(c) { c.classList.remove('selected'); });
+    document.querySelectorAll('.payment-option-card')[option-1].classList.add('selected');
+
+    document.querySelectorAll('.payment-option-card .pay-cta').forEach(function(cta) {
+      cta.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg> Selecione aqui';
+    });
+    var cta = document.querySelectorAll('.payment-option-card')[option-1].querySelector('.pay-cta');
+    cta.innerHTML = '<svg viewBox="0 0 24 24" style="display:inline-block;width:14px;height:14px;stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg> Selecionado ✓';
+
+    document.getElementById('step2Next').disabled = false;
+    updateSummary();
+  }
+
+  function updateSummary() {
+    var btn = document.getElementById('whatsappFinal');
+    if (selectedPayment) {
+      var msg = buildMessage();
+      btn.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
+      btn.classList.add('enabled');
+    } else {
+      btn.href = '#';
+      btn.classList.remove('enabled');
+    }
+  }
+
+  function buildMessage() {
+    var msg = 'Olá, Hélio! Sou ' + contato + ', da ' + cliente + ', e gostaria de confirmar:\n\n*Automação de Porta de Vidro Deslizante*\n';
+    msg += 'Valor total: R$ 5.600,00\n';
+    msg += 'Forma de pagamento: 50% no agendamento (R$ 4.250,00) e 50% na conclusão (R$ 1.350,00)\n\n';
+    msg += 'Proposta: *' + proposta + '*\n\n';
+    msg += '*Estou ciente de todos os detalhes desta proposta:*\n';
+    msg += '✓ Equipamentos: Automatizador + 2 Sensores + 2 Controles (R$ 4.250,00)\n';
+    msg += '✓ Mão de obra e instalação (R$ 1.350,00)\n';
+    msg += '✓ Garantia de 12 meses nos serviços\n';
+    msg += '✓ Ponto de energia é de responsabilidade do contratante\n\n';
+    msg += 'Aguardo o próximo passo!';
+    return msg;
+  }
+
+  function goToStep(step) {
+    document.querySelectorAll('.step-page').forEach(function(el) { el.classList.remove('active'); });
+    document.getElementById('step' + step).classList.add('active');
+    document.querySelectorAll('.progress-step').forEach(function(el, i) {
+      el.classList.remove('active', 'done');
+      if (i+1 < step) el.classList.add('done');
+      else if (i+1 === step) el.classList.add('active');
+    });
+    document.querySelector('.container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (step === 3) updateSummary();
+  }
+
+  document.getElementById('step1Next').addEventListener('click', function() {
+    goToStep(2);
+  });
+
+  document.getElementById('step2Next').addEventListener('click', function() {
+    if (selectedPayment) goToStep(3);
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    goToStep(1);
+  });
+</script>
+</body>
+</html>
