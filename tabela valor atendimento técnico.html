@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabela de Atendimento Técnico | Attive Tecnologia</title>
+<meta name="description" content="Valores progressivos para atendimento técnico com 1 técnico. Atendimento de segunda a sexta, em horário comercial. Deslocamento incluso para a Região de Campina Grande-PB.">
+<meta name="robots" content="noindex, nofollow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Attive Tecnologia e Engenharia">
+<meta property="og:title" content="Tabela de Atendimento Técnico | Attive Tecnologia">
+<meta property="og:description" content="Valores progressivos para atendimento técnico com 1 técnico. Atendimento de segunda a sexta, em horário comercial.">
+<meta property="og:image" content="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png">
+<meta property="og:locale" content="pt_BR">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tabela de Atendimento Técnico | Attive Tecnologia">
+<meta name="twitter:description" content="Valores progressivos para atendimento técnico com 1 técnico. Atendimento de segunda a sexta, em horário comercial.">
+<meta name="twitter:image" content="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png">
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1d'/%3E%3Cpath d='M50 20 L80 75 H20 Z' fill='none' stroke='%232563eb' stroke-width='7' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --page-bg: #090d16;
+    --container-bg: #ffffff;
+    --primary: #0a0f1d;
+    --accent: #2563eb;
+    --accent-2: #3b82f6;
+    --accent-light: #dbeafe;
+    --accent-soft: #eff6ff;
+    --border: #e2e8f0;
+    --secondary-bg: #f8fafc;
+    --muted: #64748b;
+    --success: #16a34a;
+    --warning: #fbbf24;
+    --warning-dark: #78350f;
+    --danger: #dc2626;
+    --danger-bg: #fef2f2;
+    --danger-border: #fecaca;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--page-bg);
+    background-image: radial-gradient(circle at 20% 0%, rgba(37,99,235,0.18), transparent 45%),
+                       radial-gradient(circle at 100% 30%, rgba(59,130,246,0.12), transparent 40%);
+    color: var(--primary);
+    padding: 48px 16px;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 850px;
+    margin: 0 auto;
+    background-color: var(--container-bg);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+
+  .container::before {
+    content: "";
+    display: block;
+    height: 6px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+
+  .inner { padding: 44px; }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand-logo-wrap { display: flex; align-items: center; gap: 14px; }
+
+  .brand-logo {
+    height: 96px;
+    width: auto;
+    display: block;
+  }
+
+  .brand-subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 5px 11px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    background-color: var(--accent-light);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .meta-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+    margin-bottom: 28px;
+  }
+
+  .meta-item label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .meta-item span {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .step-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .step-title .step-icon {
+    width: 28px;
+    height: 28px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .step-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    padding-left: 38px;
+  }
+
+  .single-option-card {
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    background: linear-gradient(160deg, var(--accent-soft), #ffffff);
+  }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 4px 0 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+  }
+
+  .service-description {
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.6;
+    padding: 4px 0;
+  }
+
+  .service-description strong { color: var(--primary); }
+
+  /* ====== TABELA DE VALORES PROGRESSIVOS ====== */
+  .price-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+
+  .price-table thead th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .price-table thead th:not(:first-child),
+  .price-table tbody td:not(:first-child) {
+    text-align: right;
+  }
+
+  .price-table tbody td {
+    font-size: 14px;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--border);
+    color: var(--primary);
+  }
+
+  .price-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .price-table tbody tr.total-row td {
+    border-top: 1.5px solid var(--primary);
+    border-bottom: none;
+    padding-top: 14px;
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .price-table tbody tr.total-row td:last-child {
+    color: var(--accent);
+  }
+
+  .price-table tbody tr td:first-child {
+    font-weight: 500;
+  }
+
+  .price-table tbody tr td:first-child .hour-badge {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-left: 8px;
+    vertical-align: middle;
+    letter-spacing: 0.02em;
+  }
+
+  /* ====== CONDIÇÕES DE ATENDIMENTO - MELHORADO ====== */
+  .conditions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .condition-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .condition-card .condition-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .condition-card .condition-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .condition-card.blue .condition-icon {
+    background: var(--accent-light);
+  }
+  .condition-card.blue .condition-icon svg { stroke: var(--accent); }
+
+  .condition-card.amber .condition-icon {
+    background: #fef3c7;
+  }
+  .condition-card.amber .condition-icon svg { stroke: #d97706; }
+
+  .condition-card.red .condition-icon {
+    background: #fee2e2;
+  }
+  .condition-card.red .condition-icon svg { stroke: #dc2626; }
+
+  .condition-card .condition-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .condition-card .condition-text {
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.55;
+  }
+
+  .condition-card .condition-text strong {
+    color: var(--primary);
+  }
+
+  /* ====== HORÁRIO DE ATENDIMENTO ====== */
+  .schedule-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 16px;
+    padding: 18px 20px;
+    background: linear-gradient(160deg, #f0f6ff, #ffffff);
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    animation: glow-blue 2s ease-out infinite;
+  }
+
+  @keyframes glow-blue {
+    0%   { box-shadow: 0 0 0 0 rgba(37,99,235,0.45), 0 8px 24px rgba(37,99,235,0.12); }
+    70%  { box-shadow: 0 0 0 14px rgba(37,99,235,0), 0 8px 24px rgba(37,99,235,0.12); }
+    100% { box-shadow: 0 0 0 0 rgba(37,99,235,0), 0 8px 24px rgba(37,99,235,0.12); }
+  }
+
+  .schedule-box .schedule-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .schedule-box .schedule-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: #fff;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .schedule-box .schedule-content {
+    flex: 1;
+  }
+
+  .schedule-box .schedule-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 3px;
+  }
+
+  .schedule-box .schedule-detail {
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.5;
+  }
+
+  .schedule-box .schedule-detail strong {
+    color: var(--accent);
+  }
+
+  /* ====== DESTAQUE DE DESLOCAMENTO ====== */
+  .displacement-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 16px;
+    padding: 18px 20px;
+    background: linear-gradient(160deg, #fef2f2, #ffffff);
+    border: 2px solid var(--danger);
+    border-radius: 12px;
+  }
+
+  .displacement-box .displacement-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .displacement-box .displacement-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: #fff;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .displacement-box .displacement-content {
+    flex: 1;
+  }
+
+  .displacement-box .displacement-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--danger);
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .displacement-box .displacement-detail {
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.5;
+  }
+
+  .displacement-box .displacement-detail strong {
+    color: #dc2626;
+  }
+
+  /* ====== DESTAQUE DE INVESTIMENTO MÁXIMO ====== */
+  .max-investment-box {
+    margin-top: 12px;
+    padding: 18px 20px;
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    background: linear-gradient(160deg, #f0f6ff, #ffffff);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    animation: glow-blue 2s ease-out infinite;
+  }
+
+  .max-investment-box .max-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .max-investment-box .max-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: #fff;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .max-investment-box .max-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    line-height: 1.4;
+  }
+
+  .max-investment-box .max-text strong {
+    color: var(--accent);
+    font-size: 16px;
+  }
+
+  /* ====== NOTICE ====== */
+  .warning-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 14px 16px;
+    background-color: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 3px solid #d97706;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #92400e;
+    text-align: left;
+    line-height: 1.4;
+  }
+
+  .warning-notice svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    stroke: #d97706;
+    stroke-width: 2;
+    fill: none;
+    margin-top: 1px;
+  }
+
+  .footer {
+    padding: 28px 44px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .footer-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-info { text-align: left; }
+
+  .footer .name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+  }
+
+  .footer .role {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 1px;
+  }
+
+  .footer .contact {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .footer .validity {
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 768px) {
+    body { padding: 20px 8px; }
+    .inner { padding: 22px; }
+    .meta-strip { grid-template-columns: 1fr 1fr; }
+    .step-title { font-size: 17px; }
+    .step-subtitle { padding-left: 0; }
+    .conditions-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 12px 6px; }
+    .inner { padding: 16px; }
+    .header { gap: 12px; }
+    .brand-logo { height: 80px; }
+    .meta-strip { grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+    .meta-item span { font-size: 14px; }
+    .single-option-card { padding: 18px; gap: 12px; }
+    .service-description { font-size: 12px; }
+    .step-title { font-size: 16px; }
+    .step-title .step-icon { width: 22px; height: 22px; }
+    .footer { padding: 22px 16px 20px; flex-direction: column; text-align: center; gap: 12px; }
+    .footer-info { text-align: center; }
+    .footer-avatar { width: 60px; height: 60px; }
+    .max-investment-box { flex-direction: column; text-align: center; }
+    .schedule-box { flex-direction: column; text-align: center; }
+    .displacement-box { flex-direction: column; text-align: center; }
+    .price-table tbody td { font-size: 13px; padding: 10px 0; }
+    .price-table tbody tr td:first-child .hour-badge { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="inner">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand-logo-wrap">
+        <img class="brand-logo" src="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png" alt="Attive Tecnologia">
+        <div class="brand-text">
+          <div class="brand-subtitle">Engenharia &amp; Tecnologia</div>
+        </div>
+      </div>
+      <span class="badge">Tabela de Valores</span>
+    </div>
+
+    <!-- META -->
+    <div class="meta-strip">
+      <div class="meta-item">
+        <label>Documento</label>
+        <span>TAB-TEC-2026-001</span>
+      </div>
+      <div class="meta-item">
+        <label>Referência</label>
+        <span>Atendimento Técnico</span>
+      </div>
+      <div class="meta-item">
+        <label>Base de cálculo</label>
+        <span>1 técnico</span>
+      </div>
+      <div class="meta-item">
+        <label>Emissão</label>
+        <span id="emissao">--/--/----</span>
+      </div>
+      <div class="meta-item">
+        <label>Atendimento</label>
+        <span>Seg. a Sex.</span>
+      </div>
+      <div class="meta-item">
+        <label>Região</label>
+        <span>Campina Grande - PB</span>
+      </div>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="step-title">
+      <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 6v6l4 2"/>
+      </svg>
+      Atendimento Técnico
+    </div>
+    <div class="step-subtitle">
+      Para os atendimentos realizados por <strong>1 técnico</strong>, adotamos uma tabela de valores progressivos conforme o período de permanência no local.
+    </div>
+
+    <div class="single-option-card">
+
+      <!-- DESCRIÇÃO -->
+      <div>
+        <div class="section-title">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Como funciona
+        </div>
+        <div class="service-description">
+          A primeira hora possui um valor de mobilização e início do atendimento. A partir da segunda hora, os valores são reduzidos progressivamente, proporcionando melhor custo-benefício para atendimentos de maior duração.
+        </div>
+      </div>
+
+      <!-- TABELA DE VALORES -->
+      <div>
+        <div class="section-title">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="6" y1="6" x2="18" y2="6"/><line x1="6" y1="10" x2="18" y2="10"/><line x1="6" y1="14" x2="18" y2="14"/><line x1="6" y1="18" x2="18" y2="18"/></svg>
+          Investimento por técnico
+        </div>
+        <table class="price-table">
+          <thead>
+            <tr>
+              <th>Período de atendimento</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1ª hora <span class="hour-badge">mobilização</span></td>
+              <td>R$ 150,00</td>
+            </tr>
+            <tr>
+              <td>2ª hora</td>
+              <td>R$ 75,00</td>
+            </tr>
+            <tr>
+              <td>3ª hora</td>
+              <td>R$ 70,00</td>
+            </tr>
+            <tr>
+              <td>4ª hora</td>
+              <td>R$ 65,00</td>
+            </tr>
+            <tr>
+              <td>5ª hora</td>
+              <td>R$ 60,00</td>
+            </tr>
+            <tr>
+              <td>6ª hora</td>
+              <td>R$ 55,00</td>
+            </tr>
+            <tr>
+              <td>7ª hora</td>
+              <td>R$ 45,00</td>
+            </tr>
+            <tr>
+              <td>8ª hora</td>
+              <td>R$ 40,00</td>
+            </tr>
+            <tr class="total-row">
+              <td>Total — 8 horas</td>
+              <td>R$ 560,00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- CONDIÇÕES DE ATENDIMENTO -->
+      <div class="conditions-grid">
+
+        <!-- Card 1: Mão de obra -->
+        <div class="condition-card blue">
+          <div class="condition-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="condition-title">Mão de obra especializada</div>
+          <div class="condition-text">
+            Os valores apresentados são referentes <strong>exclusivamente à mão de obra de 1 técnico</strong>.
+          </div>
+        </div>
+
+        <!-- Card 2: Mais técnicos -->
+        <div class="condition-card blue">
+          <div class="condition-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div class="condition-title">Múltiplos técnicos</div>
+          <div class="condition-text">
+            Em caso de necessidade de mais profissionais, o valor será calculado <strong>individualmente</strong> de acordo com a quantidade de técnicos e a natureza do serviço.
+          </div>
+        </div>
+
+        <!-- Card 3: Itens não inclusos -->
+        <div class="condition-card amber">
+          <div class="condition-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          </div>
+          <div class="condition-title">Itens não inclusos</div>
+          <div class="condition-text">
+            Materiais, equipamentos, deslocamentos especiais e serviços de terceiros, quando necessários, serão <strong>considerados separadamente</strong>.
+          </div>
+        </div>
+
+        <!-- Card 4: Horário de atendimento -->
+        <div class="condition-card amber">
+          <div class="condition-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="condition-title">Horário de atendimento</div>
+          <div class="condition-text">
+            Atendimento de <strong>segunda a sexta-feira</strong>, em horário comercial. <strong>Não atendemos</strong> fora do horário comercial, finais de semana e feriados.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- HORÁRIO DE ATENDIMENTO - DESTAQUE -->
+      <div class="schedule-box">
+        <div class="schedule-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="schedule-content">
+          <div class="schedule-title">Horário de atendimento</div>
+          <div class="schedule-detail">
+            Atendimento de <strong>segunda a sexta-feira</strong>, em horário comercial. <strong>Não atendemos</strong> fora do horário comercial, finais de semana e feriados.
+          </div>
+        </div>
+      </div>
+
+      <!-- DESLOCAMENTO - DESTAQUE -->
+      <div class="displacement-box">
+        <div class="displacement-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="displacement-content">
+          <div class="displacement-title">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+            Deslocamento não incluso
+          </div>
+          <div class="displacement-detail">
+            Os valores <strong>não incluem deslocamento para fora da Região de Campina Grande-PB</strong>. Para atendimentos em outras localidades, o custo de deslocamento será calculado separadamente.
+          </div>
+        </div>
+      </div>
+
+      <!-- DESTAQUE INVESTIMENTO MÁXIMO -->
+      <div class="max-investment-box">
+        <div class="max-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <div class="max-text">
+          Investimento máximo por técnico em uma jornada de até 8 horas: <strong>R$ 560,00</strong>
+        </div>
+      </div>
+
+      <!-- NOTA DE TRANSPARÊNCIA -->
+      <div class="warning-notice">
+        <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        <span><strong>Importante:</strong> os valores acima não incluem deslocamento, materiais, equipamentos ou serviços de terceiros. O orçamento final será apresentado após avaliação técnica do escopo.</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <img class="footer-avatar" src="https://i.postimg.cc/TwjQxnJc/Whats-App-Image-2026-08-31-at-14-32-09.jpg" alt="Hélio Crispim">
+    <div class="footer-info">
+      <div class="name">Hélio Crispim</div>
+      <div class="role">Eng. Eletricista · CREA-PB 12290192025PB</div>
+      <div class="contact">(83) 99678-7788 &middot; attivesistemas@gmail.com</div>
+      <div class="contact">CNPJ: 48.979.364/0001-91</div>
+      <div class="validity" id="footerValidity">Tabela TAB-TEC-2026-001 · atendimento de segunda a sexta-feira, em horário comercial (--/--/----)</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== DATAS AUTOMÁTICAS =====
+  (function setDates() {
+    var hoje = new Date();
+    var dia = String(hoje.getDate()).padStart(2, '0');
+    var mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    var ano = hoje.getFullYear();
+    var dataStr = dia + '/' + mes + '/' + ano;
+
+    document.getElementById('emissao').textContent = dataStr;
+    document.getElementById('footerValidity').textContent = 'Tabela TAB-TEC-2026-001 · atendimento de segunda a sexta-feira, em horário comercial (' + dataStr + ')';
+  })();
+</script>
+</body>
+</html>
