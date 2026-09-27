@@ -1,0 +1,2428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta ORC-2026-0031 – Sistema de Controle de Acesso | Attive Tecnologia</title>
+<meta name="description" content="Sistema de controle de acesso com reconhecimento facial, fechadura, sensor de porta e infraestrutura. Desfruta Minimercados, A/C Éwerton.">
+<meta name="robots" content="noindex, nofollow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Attive Tecnologia e Engenharia">
+<meta property="og:title" content="Proposta ORC-2026-0031 – Sistema de Controle de Acesso | Attive Tecnologia">
+<meta property="og:description" content="Sistema de controle de acesso com facial, fechadura e sensor de porta.">
+<meta property="og:url" content="https://attivetecnologia-hue.github.io/attive-site/proposta-controle-acesso.html">
+<meta property="og:locale" content="pt_BR">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Proposta ORC-2026-0031 – Sistema de Controle de Acesso | Attive Tecnologia">
+<meta name="twitter:description" content="Sistema de controle de acesso com facial, fechadura e sensor de porta.">
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1d'/%3E%3Cpath d='M50 20 L80 75 H20 Z' fill='none' stroke='%232563eb' stroke-width='7' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --page-bg: #090d16;
+    --container-bg: #ffffff;
+    --primary: #0a0f1d;
+    --accent: #2563eb;
+    --accent-2: #3b82f6;
+    --accent-light: #dbeafe;
+    --accent-soft: #eff6ff;
+    --border: #e2e8f0;
+    --secondary-bg: #f8fafc;
+    --muted: #64748b;
+    --success: #16a34a;
+    --success-dark: #166534;
+    --success-soft: #f0fdf4;
+    --orange: #d97706;
+    --orange-soft: #fffbeb;
+    --red: #dc2626;
+    --red-soft: #fef2f2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--page-bg);
+    background-image: radial-gradient(circle at 20% 0%, rgba(37,99,235,0.18), transparent 45%),
+                       radial-gradient(circle at 100% 30%, rgba(59,130,246,0.12), transparent 40%);
+    color: var(--primary);
+    padding: 48px 16px;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 850px;
+    margin: 0 auto;
+    background-color: var(--container-bg);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+
+  .container::before {
+    content: "";
+    display: block;
+    height: 6px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+
+  .inner { padding: 44px; }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand-logo-wrap { display: flex; align-items: center; gap: 14px; }
+
+  .brand-logo {
+    height: 96px;
+    width: auto;
+    display: block;
+  }
+
+  .brand-subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 5px 11px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    background-color: var(--accent-light);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .meta-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+    margin-bottom: 28px;
+  }
+
+  .meta-item label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .meta-item span {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .meta-item.meta-address {
+    grid-column: 1 / -1;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .meta-item.meta-address svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .meta-item.meta-address .meta-address-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-item.meta-address label { margin-bottom: 0; }
+
+  .meta-item.meta-address span {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .progress-bar-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 12px 0 32px 0;
+    position: relative;
+  }
+
+  .progress-bar-wrap::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    right: 30px;
+    height: 3px;
+    background: var(--border);
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+
+  .progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 1;
+    cursor: default;
+    flex: 1;
+  }
+
+  .progress-step .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s;
+    border: 3px solid transparent;
+  }
+
+  .progress-step.active .circle {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+  }
+
+  .progress-step.done .circle {
+    background: var(--success);
+    color: #fff;
+    border-color: var(--success);
+  }
+
+  .progress-step .label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: center;
+    transition: color 0.3s;
+  }
+
+  .progress-step.active .label,
+  .progress-step.done .label { color: var(--primary); }
+
+  .step-page { display: none; animation: fadeIn 0.35s ease; }
+  .step-page.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .step-title .step-icon {
+    width: 28px;
+    height: 28px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .step-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    padding-left: 38px;
+  }
+
+  /* ====== BOX DE "COMO FUNCIONA" ====== */
+  .how-it-works {
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    padding: 22px 24px;
+    background: linear-gradient(160deg, var(--accent-soft), #ffffff);
+    margin-bottom: 20px;
+  }
+
+  .hiw-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .hiw-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .hiw-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: #fff;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .hiw-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .hiw-text {
+    font-size: 13.5px;
+    color: #334155;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .hiw-text strong { color: var(--primary); }
+
+  .hiw-text .asterisk {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .hiw-steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .hiw-step {
+    background: #ffffff;
+    border: 1px solid var(--accent-light);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .hiw-step .hiw-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .hiw-step .hiw-step-text {
+    font-size: 12.5px;
+    color: #334155;
+    line-height: 1.5;
+  }
+
+  .hiw-step .hiw-step-text strong {
+    display: block;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 2px;
+    font-size: 13px;
+  }
+
+  /* ====== NOTA DO ASTERISCO ====== */
+  .asterisk-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: #ffffff;
+    border: 1px solid var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.55;
+    text-align: left;
+  }
+
+  .asterisk-note .asterisk-mark {
+    flex-shrink: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-top: 1px;
+  }
+
+  .asterisk-note strong { color: var(--primary); }
+
+  /* ====== BOX DE CONECTIVIDADE ====== */
+  .connectivity-box {
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    padding: 22px 24px;
+    background: linear-gradient(160deg, #fffbeb, #ffffff);
+    margin-top: 16px;
+    box-shadow: 0 4px 16px rgba(217,119,6,0.12);
+  }
+
+  .connectivity-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .connectivity-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .connectivity-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: #fff;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .connectivity-title {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: #92400e;
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .connectivity-text {
+    font-size: 13.5px;
+    color: #78350f;
+    line-height: 1.65;
+    margin-bottom: 10px;
+  }
+
+  .connectivity-text strong { color: #92400e; }
+
+  .connectivity-highlight {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: #ffffff;
+    border: 1.5px solid #fde68a;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #92400e;
+    line-height: 1.5;
+  }
+
+  .connectivity-highlight svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--orange);
+    stroke-width: 2.2;
+    fill: none;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ====== BOX DE CÁLCULO ====== */
+  .calc-box {
+    background: linear-gradient(160deg, #eff6ff, #ffffff);
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+  }
+
+  .calc-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .calc-title svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+  }
+
+  .calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 13.5px;
+    color: #334155;
+    gap: 16px;
+  }
+
+  .calc-row.calc-subtotal {
+    border-top: 1px dashed var(--border);
+    margin-top: 6px;
+    padding-top: 12px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .calc-row.calc-subtotal .calc-value {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .calc-row.calc-total {
+    border-top: 1.5px solid var(--accent);
+    margin-top: 8px;
+    padding-top: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .calc-row.calc-total .calc-value {
+    color: var(--accent);
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .calc-row .calc-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .calc-row .calc-label .badge-mo {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .calc-row .calc-label .badge-mat {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .calc-row .calc-value {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .single-option-card {
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    background: linear-gradient(160deg, var(--accent-soft), #ffffff);
+  }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 4px 0 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+  }
+
+  .service-description {
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.6;
+    padding: 4px 0;
+  }
+
+  .service-description strong { color: var(--primary); }
+
+  .option-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    color: #334155;
+    border-top: 1px solid var(--border);
+    padding-top: 4px;
+    margin-top: 4px;
+  }
+
+  .option-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 0;
+    line-height: 1.35;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .option-list li:last-child { border-bottom: none; }
+
+  .option-list li .li-icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    background-color: var(--accent);
+  }
+
+  .option-list li .li-icon svg {
+    width: 10px;
+    height: 10px;
+    stroke: #fff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+  }
+
+  /* ====== BOX DE EQUIPAMENTOS BLOQUEADO ====== */
+  .equip-locked-box {
+    border: 2px dashed var(--orange);
+    border-radius: 14px;
+    padding: 22px 24px;
+    background: linear-gradient(160deg, #fffbeb, #ffffff);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-top: 8px;
+  }
+
+  .equip-locked-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fef3c7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .equip-locked-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--orange);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .equip-locked-content { flex: 1; }
+
+  .equip-locked-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .equip-locked-title .spec-tag {
+    display: inline-block;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 3px 9px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    background: var(--orange);
+    color: #fff;
+  }
+
+  .equip-locked-text {
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.6;
+  }
+
+  .equip-locked-text strong { color: #92400e; }
+
+  .equip-locked-text .asterisk {
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  .equip-locked-list {
+    list-style: none;
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 16px;
+    font-size: 12.5px;
+    color: #78350f;
+  }
+
+  .equip-locked-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.4;
+  }
+
+  .equip-locked-list li::before {
+    content: '•';
+    color: var(--orange);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  /* ====== BOX DE EQUIPAMENTOS LIBERADO (COM LINKS) ====== */
+  .equip-box {
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    padding: 22px 24px;
+    background: linear-gradient(160deg, #fffbeb, #ffffff);
+    margin-top: 8px;
+  }
+
+  .equip-box-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .equip-box-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .equip-box-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: #fff;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .equip-box-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #92400e;
+    line-height: 1.3;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .equip-box-title .spec-tag {
+    display: inline-block;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 3px 9px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    background: var(--success);
+    color: #fff;
+  }
+
+  .equip-box-desc {
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .equip-box-desc strong { color: #92400e; }
+
+  .equip-box-desc .asterisk {
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  .equip-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .equip-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #ffffff;
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+    flex-wrap: wrap;
+  }
+
+  .equip-item-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .equip-item-info .equip-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .equip-item-info .equip-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    line-height: 1.35;
+  }
+
+  .equip-item-info .equip-name small {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  .equip-item-info .equip-name .equip-price {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--orange);
+    background: #fef3c7;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-top: 5px;
+  }
+
+  .equip-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--orange);
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 9px 16px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .equip-link:hover {
+    background: #b45309;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(217,119,6,0.3);
+  }
+
+  .equip-link svg {
+    width: 14px;
+    height: 14px;
+    stroke: #fff;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .equip-total-box {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: #ffffff;
+    border: 1.5px solid var(--orange);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .equip-total-box .etb-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #92400e;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .equip-total-box .etb-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: -0.01em;
+  }
+
+  .equip-note {
+    font-size: 12px;
+    color: #78350f;
+    line-height: 1.5;
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 3px solid var(--orange);
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .equip-note svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--orange);
+    stroke-width: 2;
+    fill: none;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .equip-note strong { color: #92400e; }
+
+  /* ====== BOX DE GARANTIAS ====== */
+  .warranty-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .warranty-card {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .warranty-card.warranty-service {
+    border-color: var(--accent);
+    background: linear-gradient(160deg, var(--accent-soft), #ffffff);
+  }
+
+  .warranty-card.warranty-equip {
+    border-color: var(--orange);
+    background: linear-gradient(160deg, #fffbeb, #ffffff);
+  }
+
+  .warranty-card .wc-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .warranty-card.warranty-service .wc-title { color: var(--accent); }
+  .warranty-card.warranty-equip .wc-title { color: var(--orange); }
+
+  .warranty-card .wc-title svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    fill: none;
+    flex-shrink: 0;
+  }
+
+  .warranty-card .wc-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+  }
+
+  .warranty-card .wc-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  /* ====== TABELA DE VALORES ====== */
+  .value-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  .value-breakdown-header {
+    background: var(--secondary-bg);
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+  }
+
+  .value-breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #334155;
+    border-top: 1px solid var(--border);
+    gap: 12px;
+  }
+
+  .value-breakdown-row .vb-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    line-height: 1.35;
+  }
+
+  .value-breakdown-row .vb-value {
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--primary);
+  }
+
+  .value-breakdown-row.vb-mo .vb-label::before {
+    content: 'MO';
+    background: var(--accent);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+    flex-shrink: 0;
+  }
+
+  .value-breakdown-row.vb-mat .vb-label::before {
+    content: 'MAT';
+    background: var(--orange);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+    flex-shrink: 0;
+  }
+
+  .value-breakdown-row.vb-subtotal {
+    background: var(--secondary-bg);
+    font-weight: 700;
+    color: var(--primary);
+    border-top: 1.5px solid var(--border);
+  }
+
+  .value-breakdown-row.vb-subtotal .vb-value {
+    color: var(--primary);
+  }
+
+  /* LEGENDA */
+  .legend-inline {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .legend-inline span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .legend-inline .dot-mo {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  .legend-inline .dot-mat {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--orange);
+    display: inline-block;
+  }
+
+  /* TOTAL EM DESTAQUE */
+  .total-highlight {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .total-highlight .total-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .total-highlight .total-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+
+  /* ====== BOX DE PAGAMENTO DIVIDIDO (MO + MAT SEPARADOS) ====== */
+  .payment-split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .payment-split-card {
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+  }
+
+  .payment-split-card.pay-mo {
+    border-color: var(--accent);
+    background: linear-gradient(160deg, var(--accent-soft), #ffffff);
+  }
+
+  .payment-split-card.pay-mat {
+    border-color: var(--orange);
+    background: linear-gradient(160deg, var(--orange-soft), #ffffff);
+  }
+
+  .payment-split-card .psc-badge {
+    position: absolute;
+    top: -10px;
+    left: 14px;
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #fff;
+  }
+
+  .payment-split-card.pay-mo .psc-badge { background: var(--accent); }
+  .payment-split-card.pay-mat .psc-badge { background: var(--orange); }
+
+  .payment-split-card .psc-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .payment-split-card .psc-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .payment-split-card.pay-mo .psc-icon { background: var(--accent-light); }
+  .payment-split-card.pay-mat .psc-icon { background: #fef3c7; }
+
+  .payment-split-card .psc-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .payment-split-card.pay-mo .psc-icon svg { stroke: var(--accent); }
+  .payment-split-card.pay-mat .psc-icon svg { stroke: var(--orange); }
+
+  .payment-split-card .psc-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .payment-split-card .psc-title .asterisk {
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  .payment-split-card .psc-desc {
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.55;
+  }
+
+  .payment-split-card .psc-value-box {
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .payment-split-card.pay-mo .psc-value-box { border-color: var(--accent); }
+  .payment-split-card.pay-mat .psc-value-box { border-color: var(--orange); }
+
+  .payment-split-card .psc-value-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+
+  .payment-split-card .psc-value {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .payment-split-card.pay-mo .psc-value { color: var(--accent); }
+  .payment-split-card.pay-mat .psc-value { color: var(--orange); }
+
+  .payment-split-card .psc-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    padding: 10px 12px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .payment-split-card.pay-mo .psc-note {
+    background: #eff6ff;
+    border-color: var(--accent-light);
+    border-left-color: var(--accent);
+  }
+
+  .payment-split-card.pay-mat .psc-note {
+    background: #fffbeb;
+    border-color: #fde68a;
+    border-left-color: var(--orange);
+  }
+
+  .payment-split-card .psc-note svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+    fill: none;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .payment-split-card.pay-mo .psc-note svg { stroke: var(--accent); }
+  .payment-split-card.pay-mat .psc-note svg { stroke: var(--orange); }
+
+  .payment-split-card .psc-note strong { color: var(--primary); }
+
+  /* ====== NOTA DE RESPONSABILIDADE ====== */
+  .responsibility-note {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: #f1f5f9;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--muted);
+    border-radius: 10px;
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .responsibility-note strong {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .responsibility-note .asterisk-mark {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .summary-box {
+    background: var(--secondary-bg);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+    gap: 16px;
+  }
+
+  .summary-row:last-child { border-bottom: none; }
+
+  .summary-row .label { font-weight: 500; color: var(--muted); }
+  .summary-row .value { font-weight: 700; text-align: right; }
+
+  .summary-row.summary-mo {
+    background: var(--accent-soft);
+    margin: 4px -12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border-bottom: none;
+  }
+
+  .summary-row.summary-mo .label { color: var(--accent); font-weight: 600; }
+  .summary-row.summary-mo .value { color: var(--accent); }
+
+  .summary-row.summary-mat {
+    background: var(--orange-soft);
+    margin: 4px -12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border-bottom: none;
+  }
+
+  .summary-row.summary-mat .label { color: var(--orange); font-weight: 600; }
+  .summary-row.summary-mat .value { color: var(--orange); }
+
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: inherit;
+  }
+
+  .btn .btn-icon {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover {
+    background: var(--accent-2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+  }
+
+  .btn-secondary { background: var(--border); color: var(--primary); }
+  .btn-secondary:hover { background: #d1d5db; }
+
+  .btn-whatsapp {
+    background: #25D366;
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-whatsapp:hover {
+    background: #1ebe5c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(37,211,102,0.35);
+  }
+
+  .schedule-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 14px 16px;
+    background-color: var(--accent-soft);
+    border: 1px solid var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    text-align: left;
+    line-height: 1.4;
+  }
+
+  .schedule-notice svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    margin-top: 1px;
+  }
+
+  .warning-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 14px 16px;
+    background-color: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 3px solid #d97706;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #92400e;
+    text-align: left;
+    line-height: 1.4;
+  }
+
+  .warning-notice svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    stroke: #d97706;
+    stroke-width: 2;
+    fill: none;
+    margin-top: 1px;
+  }
+
+  .warning-notice.danger {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+    border-left-color: #dc2626;
+    color: #991b1b;
+  }
+
+  .warning-notice.danger svg {
+    stroke: #dc2626;
+  }
+
+  .footer {
+    padding: 28px 44px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .footer-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-info { text-align: left; }
+
+  .footer .name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+  }
+
+  .footer .role {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 1px;
+  }
+
+  .footer .contact {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .footer .validity {
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 768px) {
+    body { padding: 20px 8px; }
+    .inner { padding: 22px; }
+    .meta-strip { grid-template-columns: 1fr 1fr; }
+    .payment-split-grid { grid-template-columns: 1fr; }
+    .warranty-box { grid-template-columns: 1fr; }
+    .hiw-steps { grid-template-columns: 1fr; }
+    .step-title { font-size: 17px; }
+    .step-subtitle { padding-left: 0; }
+    .progress-step .label { font-size: 10px; }
+    .progress-step .circle { width: 34px; height: 34px; font-size: 12px; }
+    .progress-bar-wrap::before { left: 20px; right: 20px; }
+    .nav-buttons { flex-direction: column; }
+    .nav-buttons .btn { width: 100%; justify-content: center; }
+    .nav-buttons .btn-whatsapp { width: 100%; justify-content: center; }
+    .equip-locked-list { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 12px 6px; }
+    .inner { padding: 16px; }
+    .header { gap: 12px; }
+    .brand-logo { height: 80px; }
+    .meta-strip { grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+    .meta-item span { font-size: 14px; }
+    .single-option-card { padding: 18px; gap: 12px; }
+    .service-description { font-size: 12px; }
+    .step-title { font-size: 16px; }
+    .step-title .step-icon { width: 22px; height: 22px; }
+    .how-it-works { padding: 18px 16px; }
+    .hiw-title { font-size: 15px; }
+    .hiw-text { font-size: 12.5px; }
+    .hiw-icon { width: 38px; height: 38px; }
+    .hiw-icon svg { width: 18px; height: 18px; }
+    .asterisk-note { font-size: 12px; padding: 10px 12px; }
+    .responsibility-note { font-size: 12px; padding: 12px 14px; }
+    .connectivity-box { padding: 18px 16px; }
+    .connectivity-title { font-size: 14.5px; }
+    .connectivity-text { font-size: 12.5px; }
+    .connectivity-icon { width: 38px; height: 38px; }
+    .connectivity-icon svg { width: 18px; height: 18px; }
+    .footer { padding: 22px 16px 20px; flex-direction: column; text-align: center; gap: 12px; }
+    .footer-info { text-align: center; }
+    .footer-avatar { width: 60px; height: 60px; }
+    .progress-step .circle { width: 28px; height: 28px; font-size: 10px; }
+    .progress-step .label { font-size: 9px; }
+    .progress-bar-wrap::before { left: 14px; right: 14px; }
+    .total-highlight .total-value { font-size: 22px; }
+    .calc-box { padding: 16px; }
+    .calc-row { font-size: 12.5px; }
+    .calc-row.calc-total { font-size: 14px; }
+    .calc-row.calc-total .calc-value { font-size: 17px; }
+    .payment-split-card { padding: 18px; }
+    .payment-split-card .psc-value { font-size: 22px; }
+    .value-breakdown-row { font-size: 12px; padding: 9px 12px; }
+    .equip-box { padding: 18px 16px; }
+    .equip-item { flex-direction: column; align-items: stretch; }
+    .equip-link { justify-content: center; }
+    .equip-item-info { min-width: auto; }
+    .equip-locked-box { flex-direction: column; align-items: center; text-align: center; }
+    .equip-locked-title { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="inner">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand-logo-wrap">
+        <img class="brand-logo" src="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png" alt="Attive Tecnologia">
+        <div class="brand-text">
+          <div class="brand-subtitle">Engenharia &amp; Tecnologia</div>
+        </div>
+      </div>
+      <span class="badge">Proposta Comercial</span>
+    </div>
+
+    <!-- META -->
+    <div class="meta-strip">
+      <div class="meta-item">
+        <label>Proposta</label>
+        <span>ORC-2026-0031</span>
+      </div>
+      <div class="meta-item">
+        <label>A/C</label>
+        <span>Éwerton</span>
+      </div>
+      <div class="meta-item">
+        <label>Cliente</label>
+        <span>Desfruta Minimercados</span>
+      </div>
+      <div class="meta-item">
+        <label>Local</label>
+        <span>Campina Grande - PB</span>
+      </div>
+      <div class="meta-item">
+        <label>Emissão</label>
+        <span id="emissao">--/--/----</span>
+      </div>
+      <div class="meta-item">
+        <label>Válida até</label>
+        <span id="validade">--/--/----</span>
+      </div>
+      <div class="meta-item meta-address">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="meta-address-content">
+          <label>Local de instalação</label>
+          <span>Desfruta Minimercados, Campina Grande - PB</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROGRESSO -->
+    <div class="progress-bar-wrap">
+      <div class="progress-step active" id="ps1">
+        <div class="circle">1</div>
+        <div class="label">Resumo do serviço</div>
+      </div>
+      <div class="progress-step" id="ps2">
+        <div class="circle">2</div>
+        <div class="label">Forma de pagamento</div>
+      </div>
+      <div class="progress-step" id="ps3">
+        <div class="circle">3</div>
+        <div class="label">Confirmar</div>
+      </div>
+    </div>
+
+    <!-- ETAPA 1 -->
+    <div class="step-page active" id="step1">
+
+      <div class="step-title">
+        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2"/>
+          <path d="M7 11V7a5 5 0 0110 0v4"/>
+        </svg>
+        Sistema de Controle de Acesso
+      </div>
+      <div class="step-subtitle">Sistema completo de controle de acesso com <strong>reconhecimento facial</strong>, fechadura eletrônica e sensor de porta.</div>
+
+      <!-- ===== COMO FUNCIONA ===== -->
+      <div class="how-it-works">
+        <div class="hiw-header">
+          <div class="hiw-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          </div>
+          <div class="hiw-title">Como funciona esta proposta</div>
+        </div>
+        <div class="hiw-text">
+          A <strong>Attive Tecnologia</strong> fica responsável por toda a <strong>instalação e configuração</strong> do sistema de controle de acesso. Os <strong>equipamentos são adquiridos diretamente por você<span class="asterisk">*</span></strong>, nos links dos fornecedores que já pré-selecionamos, garantindo <strong>melhores preços, segurança e economia</strong>.
+        </div>
+        <div class="hiw-steps">
+          <div class="hiw-step">
+            <span class="hiw-num">1</span>
+            <div class="hiw-step-text">
+              <strong>Attive instala e configura</strong>
+              Cuidamos de toda a parte técnica, do cabeamento à configuração final.
+            </div>
+          </div>
+          <div class="hiw-step">
+            <span class="hiw-num">2</span>
+            <div class="hiw-step-text">
+              <strong>Você compra os equipamentos</strong>
+              Direto dos fornecedores, pelos links que já pré-selecionamos para você.
+            </div>
+          </div>
+        </div>
+
+        <!-- NOTA DO ASTERISCO -->
+        <div class="asterisk-note">
+          <span class="asterisk-mark">*</span>
+          <span>A <strong>Attive Engenharia e Tecnologia</strong> não possui responsabilidade sobre <strong>prazos de entrega</strong> e/ou <strong>garantia dos equipamentos</strong>, que são de responsabilidade exclusiva dos fornecedores.</span>
+        </div>
+      </div>
+
+      <div class="single-option-card">
+        <div>
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Escopo do serviço
+          </div>
+          <div class="service-description">
+            Instalação e configuração de <strong>sistema de controle de acesso</strong>, composto por:
+          </div>
+          <ul class="option-list" style="margin-top: 8px;">
+            <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>Leitor facial</strong> para identificação de usuários</span></li>
+            <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>Fechadura eletrônica</strong> para liberação de acesso</span></li>
+            <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>Sensor de porta aberta</strong> para monitoramento</span></li>
+            <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>Botão de liberação para saída</strong></span></li>
+            <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>Fonte ininterrupta + bateria</strong> para autonomia em falta de energia</span></li>
+            <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>Infraestrutura de alimentação</strong> elétrica dos dispositivos <em>(inclusa na instalação)</em></span></li>
+            <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>Instalação e configuração</strong> de todos os dispositivos</span></li>
+            <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Testes de funcionamento e comissionamento</span></li>
+            <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Organização e limpeza do local ao final do serviço</span></li>
+          </ul>
+        </div>
+
+        <!-- SEPARAÇÃO DE VALORES -->
+        <div>
+          <div class="section-title" style="margin-top: 4px;">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            Valores separados
+          </div>
+
+          <div class="value-breakdown">
+            <div class="value-breakdown-header">
+              <span>Descrição</span>
+              <span>Valor</span>
+            </div>
+            <div class="value-breakdown-row vb-mo">
+              <span class="vb-label">Mão de obra: instalação e configuração dos dispositivos</span>
+              <span class="vb-value">R$ 1.200,00</span>
+            </div>
+            <div class="value-breakdown-row vb-mat">
+              <span class="vb-label">Materiais e equipamentos (valor global estimado)</span>
+              <span class="vb-value">R$ 2.521,84</span>
+            </div>
+            <div class="value-breakdown-row vb-subtotal">
+              <span class="vb-label">Valor total do serviço</span>
+              <span class="vb-value">R$ 3.721,84</span>
+            </div>
+          </div>
+
+          <div class="legend-inline">
+            <span><span class="dot-mo"></span> MO = Mão de obra</span>
+            <span><span class="dot-mat"></span> MAT = Materiais e equipamentos (global)</span>
+          </div>
+        </div>
+
+        <ul class="option-list" style="margin-top: 4px;">
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Serviço executado conforme recomendações técnicas e normas vigentes</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Você recebe uma pré-seleção dos melhores preços, fornecedores e formas de pagamento, garantindo segurança e economia</span></li>
+        </ul>
+      </div>
+
+      <!-- ===== BOX DE CONECTIVIDADE ===== -->
+      <div class="connectivity-box">
+        <div class="connectivity-header">
+          <div class="connectivity-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          </div>
+          <div class="connectivity-title">Importante: estrutura de conectividade com a rede do clube</div>
+        </div>
+        <div class="connectivity-text">
+          O escopo desta proposta <strong>não inclui a estrutura de conectividade com a rede do clube</strong>. Essa avaliação só será possível <strong>no ato da instalação</strong>, quando a equipe técnica poderá verificar o ponto mais próximo existente e a viabilidade de conexão.
+        </div>
+        <div class="connectivity-highlight">
+          <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          <span>Caso seja necessário o <strong>lançamento de cabo UTP</strong> e mão de obra adicional para levar o ponto até o local de instalação, o valor desta proposta <strong>poderá ser alterado</strong>, e o serviço só será executado após aprovação do novo orçamento.</span>
+        </div>
+      </div>
+
+      <!-- ===== BOX BLOQUEADO ===== -->
+      <div class="equip-locked-box" id="equipBloqueado">
+        <div class="equip-locked-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <div class="equip-locked-content">
+          <div class="equip-locked-title">
+            Equipamentos recomendados e links para compra<span class="asterisk">*</span>
+            <span class="spec-tag">Liberado após o fechamento</span>
+          </div>
+          <div class="equip-locked-text">
+            Para que você tenha <strong>segurança e economia</strong>, a Attive Tecnologia já fez uma <strong>pré-seleção dos melhores preços, fornecedores e formas de pagamento</strong>. Assim, você não precisa pesquisar: é só escolher e comprar com tranquilidade, com a garantia de que está adquirindo o equipamento certo, pelo melhor valor.
+          </div>
+          <div class="equip-locked-text" style="margin-top:8px;">
+            Essa lista será <strong>liberada logo após o fechamento do negócio</strong>, junto com as orientações de compra. Os itens que constarão são:
+          </div>
+          <ul class="equip-locked-list">
+            <li>Leitor facial para controle de acesso</li>
+            <li>Fechadura eletrônica</li>
+            <li>Sensor de porta aberta</li>
+            <li>Botão de liberação para saída</li>
+            <li>Fonte ininterrupta + bateria</li>
+            <li>Orientações de compra e links diretos</li>
+          </ul>
+          <div class="responsibility-note" style="margin-top:14px;">
+            <span class="asterisk-mark">*</span> <strong>A Attive Engenharia e Tecnologia não tem responsabilidade por prazos de entrega e/ou garantia dos equipamentos.</strong> Esses itens são de responsabilidade exclusiva dos fornecedores no momento da compra.
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== BOX LIBERADO ===== -->
+      <div class="equip-box" id="equipLiberado" style="display:none;">
+        <div class="equip-box-header">
+          <div class="equip-box-icon">
+            <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          </div>
+          <div class="equip-box-title">
+            Equipamentos recomendados e links para compra<span class="asterisk">*</span>
+            <span class="spec-tag">Liberado</span>
+          </div>
+        </div>
+        <div class="equip-box-desc">
+          Abaixo está a <strong>pré-seleção dos melhores preços, fornecedores e formas de pagamento</strong> que a Attive Tecnologia preparou para você. É só clicar em <strong>"Comprar"</strong> e finalizar a compra no fornecedor escolhido, com <strong>segurança e economia</strong>.
+        </div>
+
+        <ul class="equip-list">
+          <li class="equip-item">
+            <div class="equip-item-info">
+              <span class="equip-num">1</span>
+              <span class="equip-name">
+                Controlador De Acesso Intelbras SS 3542 MF Facial Externo
+                <small>Leitor facial com reconhecimento facial, cartão e senha</small>
+                <span class="equip-price">Ref.: R$ 1.775,30</span>
+              </span>
+            </div>
+            <a class="equip-link" href="https://meli.la/1n6VrSH" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Comprar
+            </a>
+          </li>
+
+          <li class="equip-item">
+            <div class="equip-item-info">
+              <span class="equip-num">2</span>
+              <span class="equip-name">
+                Fechadura Magnetica Porta Deslizante Dz M150 Ipec Cor Branco 12v
+                <small>Fechadura eletromagnética para porta deslizante</small>
+                <span class="equip-price">Ref.: R$ 348,71</span>
+              </span>
+            </div>
+            <a class="equip-link" href="https://meli.la/2kQzArR" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Comprar
+            </a>
+          </li>
+
+          <li class="equip-item">
+            <div class="equip-item-info">
+              <span class="equip-num">3</span>
+              <span class="equip-name">
+                Sensor Magnetico Porta Aço Pesado Imp Policarbonato Stilus
+                <small>Sensor de abertura e fechamento de porta</small>
+                <span class="equip-price">Ref.: R$ 57,99</span>
+              </span>
+            </div>
+            <a class="equip-link" href="https://meli.la/1HSqbjQ" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Comprar
+            </a>
+          </li>
+
+          <li class="equip-item">
+            <div class="equip-item-info">
+              <span class="equip-num">4</span>
+              <span class="equip-name">
+                Botoeira Saída Abertura Porta CS Eletrônica Z30 Inox Metálico Eletromagnética
+                <small>Botão de liberação de saída em inox</small>
+                <span class="equip-price">Ref.: R$ 46,50</span>
+              </span>
+            </div>
+            <a class="equip-link" href="https://meli.la/2a69mxG" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Comprar
+            </a>
+          </li>
+
+          <li class="equip-item">
+            <div class="equip-item-info">
+              <span class="equip-num">5</span>
+              <span class="equip-name">
+                Fonte Alimentação Ininterrupta Fa 1220s G2 Intelbras
+                <small>Fonte com autonomia para falta de energia</small>
+                <span class="equip-price">Ref.: R$ 184,00</span>
+              </span>
+            </div>
+            <a class="equip-link" href="https://meli.la/2NvZcoJ" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Comprar
+            </a>
+          </li>
+
+          <li class="equip-item">
+            <div class="equip-item-info">
+              <span class="equip-num">6</span>
+              <span class="equip-name">
+                Bateria Selada Intelbras 12v 7a Xb 1270 P/ Alarme E Nobreak
+                <small>Bateria selada para autonomia da fonte</small>
+                <span class="equip-price">Ref.: R$ 109,34</span>
+              </span>
+            </div>
+            <a class="equip-link" href="https://meli.la/28iesAZ" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Comprar
+            </a>
+          </li>
+        </ul>
+
+        <div class="equip-total-box">
+          <span class="etb-label">Total de referência dos equipamentos</span>
+          <span class="etb-value">R$ 2.521,84</span>
+        </div>
+
+        <div class="equip-note">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <span><strong>Valores de referência:</strong> os preços acima podem variar conforme promoções e disponibilidade dos fornecedores. A compra é feita diretamente nos links, com as <strong>formas de pagamento oferecidas por cada loja</strong>. A Attive Tecnologia é responsável pela <strong>instalação e configuração</strong> dos dispositivos.</span>
+        </div>
+
+        <div class="responsibility-note">
+          <span class="asterisk-mark">*</span> <strong>A Attive Engenharia e Tecnologia não tem responsabilidade por prazos de entrega e/ou garantia dos equipamentos.</strong> Esses itens são de responsabilidade exclusiva dos fornecedores no momento da compra.
+        </div>
+      </div>
+
+      <!-- BOX DE GARANTIAS -->
+      <div class="section-title" style="margin-top: 8px;">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Garantias
+      </div>
+
+      <div class="warranty-box">
+        <div class="warranty-card warranty-service">
+          <div class="wc-title">
+            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+            Garantia do serviço
+          </div>
+          <div class="wc-value">90 dias</div>
+          <div class="wc-desc">Garantia oferecida pela <strong>Attive Tecnologia</strong> sobre a mão de obra de instalação e configuração.</div>
+        </div>
+
+        <div class="warranty-card warranty-equip">
+          <div class="wc-title">
+            <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            Garantia dos equipamentos<span class="asterisk" style="color:var(--orange);font-weight:700;">*</span>
+          </div>
+          <div class="wc-value">Conforme fornecedor</div>
+          <div class="wc-desc">A garantia dos equipamentos é <strong>de responsabilidade de cada fornecedor</strong>, conforme as condições da loja onde a compra for realizada.</div>
+        </div>
+      </div>
+
+      <div class="schedule-notice">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        <span><strong>Transparência total:</strong> escopo, valores e garantias definidos nesta proposta. A lista de equipamentos com links para compra é liberada após o fechamento do negócio.</span>
+      </div>
+
+      <div class="warning-notice">
+        <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        <span><strong>Não estão inclusos:</strong> obras civis, quebra e reparo de alvenaria, portas ou batentes, pontos de rede e internet, <strong>estrutura de conectividade com a rede do clube</strong> e quaisquer itens não descritos no escopo. Se necessários, serão tratados em orçamento separado.</span>
+      </div>
+
+      <div class="warning-notice danger">
+        <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        <span><strong>Sobre as garantias:</strong> <strong>90 dias</strong> sobre a mão de obra da instalação (Attive Tecnologia) e <strong>garantia dos equipamentos conforme o fornecedor</strong> de cada item. <strong>Não estão cobertos</strong> pela Attive danos causados por surtos elétricos, quedas, violação, mau uso, intervenção de terceiros ou fatores externos após a instalação.</span>
+      </div>
+
+      <div class="nav-buttons">
+        <span></span>
+        <button class="btn btn-primary" id="step1Next">
+          Avançar
+          <svg class="btn-icon" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ETAPA 2 -->
+    <div class="step-page" id="step2">
+      <div class="step-title">
+        <svg class="step-icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Forma de pagamento
+      </div>
+      <div class="step-subtitle">Mão de obra e equipamentos com pagamentos separados</div>
+
+      <div class="calc-box">
+        <div class="calc-title">
+          <svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          Cálculo do valor
+        </div>
+
+        <div class="calc-row">
+          <span class="calc-label">
+            <span class="badge-mo">MO</span>
+            Mão de obra (paga à Attive Tecnologia)
+          </span>
+          <span class="calc-value">R$ 1.200,00</span>
+        </div>
+
+        <div class="calc-row">
+          <span class="calc-label">
+            <span class="badge-mat">MAT</span>
+            Materiais e equipamentos (pagos direto ao fornecedor)
+          </span>
+          <span class="calc-value">R$ 2.521,84</span>
+        </div>
+
+        <div class="calc-row calc-total">
+          <span class="calc-label">Valor total do serviço</span>
+          <span class="calc-value">R$ 3.721,84</span>
+        </div>
+      </div>
+
+      <div class="payment-split-grid">
+        <!-- CARD MÃO DE OBRA -->
+        <div class="payment-split-card pay-mo">
+          <span class="psc-badge">Attive Tecnologia</span>
+          <div class="psc-header">
+            <div class="psc-icon">
+              <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <div class="psc-title">Mão de obra</div>
+          </div>
+          <div class="psc-desc">
+            Valor referente à <strong>instalação e configuração</strong> dos dispositivos, pago diretamente à Attive Tecnologia.
+          </div>
+          <div class="psc-value-box">
+            <div class="psc-value-label">Valor</div>
+            <div class="psc-value">R$ 1.200,00</div>
+          </div>
+          <div class="psc-note">
+            <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            <span><strong>Pagamento no fechamento do negócio</strong>, diretamente à Attive Tecnologia, para garantia do agendamento da equipe.</span>
+          </div>
+        </div>
+
+        <!-- CARD MATERIAIS/EQUIPAMENTOS -->
+        <div class="payment-split-card pay-mat">
+          <span class="psc-badge">Direto com fornecedor</span>
+          <div class="psc-header">
+            <div class="psc-icon">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            </div>
+            <div class="psc-title">Materiais e equipamentos<span class="asterisk">*</span></div>
+          </div>
+          <div class="psc-desc">
+            Valor global estimado dos equipamentos, <strong>comprados diretamente nos links dos fornecedores</strong> que a Attive pré-selecionou.
+          </div>
+          <div class="psc-value-box">
+            <div class="psc-value-label">Valor global estimado</div>
+            <div class="psc-value">R$ 2.521,84</div>
+          </div>
+          <div class="psc-note">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <span><strong>Pagamento direto ao fornecedor</strong>, com as formas oferecidas por cada loja, como à vista, parcelado, cartão ou boleto.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="schedule-notice">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <span><strong>Importante:</strong> o valor global dos equipamentos é uma <strong>estimativa de referência</strong>. O pagamento dos equipamentos é feito <strong>diretamente ao fornecedor</strong>, com as condições de cada loja. A Attive Tecnologia <strong>não intermedia</strong> esse valor.</span>
+      </div>
+
+      <!-- AVISO DE CONECTIVIDADE NA ETAPA 2 -->
+      <div class="connectivity-box" style="margin-top:16px;">
+        <div class="connectivity-header">
+          <div class="connectivity-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          </div>
+          <div class="connectivity-title">Lembrete: conectividade com a rede do clube</div>
+        </div>
+        <div class="connectivity-text">
+          A <strong>estrutura de conectividade com a rede do clube não está inclusa</strong> nesta proposta. Ela será avaliada <strong>no ato da instalação</strong>, quando será verificado o ponto mais próximo existente. Se houver necessidade de <strong>lançamento de cabo UTP</strong> e mão de obra adicional, o valor desta proposta <strong>poderá ser alterado</strong>.
+        </div>
+      </div>
+
+      <!-- NOTA DE RESPONSABILIDADE -->
+      <div class="responsibility-note">
+        <span class="asterisk-mark">*</span> <strong>A Attive Engenharia e Tecnologia não tem responsabilidade por prazos de entrega e/ou garantia dos equipamentos.</strong> Esses itens são de responsabilidade exclusiva dos fornecedores no momento da compra.
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goToStep(1)">
+          <svg class="btn-icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Voltar
+        </button>
+        <button class="btn btn-primary" id="step2Next">
+          Avançar
+          <svg class="btn-icon" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ETAPA 3 -->
+    <div class="step-page" id="step3">
+      <div class="step-title">
+        <svg class="step-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Confirmar proposta
+      </div>
+      <div class="step-subtitle">Revise os dados e confirme pelo WhatsApp</div>
+
+      <div class="summary-box" id="summaryBox">
+        <div class="summary-row">
+          <span class="label">Serviço</span>
+          <span class="value">Sistema de controle de acesso</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Dispositivos</span>
+          <span class="value">Facial, fechadura, sensor de porta, botão de saída e fonte ininterrupta</span>
+        </div>
+
+        <div class="summary-row summary-mo">
+          <span class="label">Mão de obra (paga à Attive)</span>
+          <span class="value">R$ 1.200,00</span>
+        </div>
+
+        <div class="summary-row summary-mat">
+          <span class="label">Materiais e equipamentos<span class="asterisk" style="color:var(--orange);font-weight:700;">*</span> (direto ao fornecedor)</span>
+          <span class="value">R$ 2.521,84</span>
+        </div>
+
+        <div class="summary-row">
+          <span class="label">Valor total do serviço</span>
+          <span class="value">R$ 3.721,84</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Pagamento da mão de obra</span>
+          <span class="value">No fechamento, à Attive Tecnologia</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Pagamento dos equipamentos<span class="asterisk" style="color:var(--orange);font-weight:700;">*</span></span>
+          <span class="value">Direto ao fornecedor, conforme a loja</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Garantia do serviço</span>
+          <span class="value">90 dias, Attive Tecnologia</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Garantia dos equipamentos<span class="asterisk" style="color:var(--orange);font-weight:700;">*</span></span>
+          <span class="value">Conforme fornecedor de cada item</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Equipamentos</span>
+          <span class="value">Lista com pré-seleção liberada após o fechamento</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Conectividade com a rede do clube</span>
+          <span class="value">Não inclusa, definida no ato da instalação</span>
+        </div>
+      </div>
+
+      <!-- AVISO DE CONECTIVIDADE NA ETAPA 3 (DESTAQUE) -->
+      <div class="connectivity-box" style="margin-bottom:20px;">
+        <div class="connectivity-header">
+          <div class="connectivity-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          </div>
+          <div class="connectivity-title">Ciência obrigatória: conectividade com a rede do clube</div>
+        </div>
+        <div class="connectivity-text">
+          Declaro estar ciente de que a <strong>estrutura de conectividade com a rede do clube não está inclusa</strong> nesta proposta. Essa avaliação só será possível <strong>no ato da instalação</strong>, quando a equipe técnica verificará o ponto mais próximo existente.
+        </div>
+        <div class="connectivity-highlight">
+          <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          <span>Caso seja necessário o <strong>lançamento de cabo UTP</strong> e mão de obra adicional para levar o ponto até o local de instalação, o valor desta proposta <strong>poderá ser alterado</strong>, e o serviço só será executado após aprovação do novo orçamento.</span>
+        </div>
+      </div>
+
+      <div class="schedule-notice">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Agendamento da execução realizado automaticamente em até 48h úteis após a confirmação do <strong>pagamento da mão de obra à Attive, no fechamento do negócio</strong>.</span>
+      </div>
+
+      <div class="responsibility-note">
+        <span class="asterisk-mark">*</span> <strong>A Attive Engenharia e Tecnologia não tem responsabilidade por prazos de entrega e/ou garantia dos equipamentos.</strong> Esses itens são de responsabilidade exclusiva dos fornecedores no momento da compra.
+      </div>
+
+      <div class="warning-notice">
+        <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        <span>Orçamento válido por 7 dias a partir da emissão. <strong>Garantia de 90 dias sobre a mão de obra</strong> (Attive Tecnologia) e <strong>garantia dos equipamentos conforme o fornecedor</strong> de cada item. <strong>Não inclui obras civis</strong>, pontos de rede e infraestrutura predial. A mão de obra é paga <strong>no fechamento do negócio, à Attive Tecnologia</strong>, e os equipamentos são pagos direto ao fornecedor, conforme a loja. A lista de equipamentos com pré-seleção é liberada após o fechamento do negócio.</span>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goToStep(2)">
+          <svg class="btn-icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Voltar
+        </button>
+        <a class="btn btn-whatsapp" id="whatsappFinal" href="#" target="_blank">
+          <svg viewBox="0 0 32 32" style="width:20px; height:20px; fill:#fff;"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.648 4.83 1.782 6.86L2 30l7.347-1.757A13.94 13.94 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5a11.44 11.44 0 01-5.847-1.6l-.418-.249-4.36 1.043 1.072-4.25-.272-.437A11.46 11.46 0 014.5 16C4.5 9.649 9.649 4.5 16 4.5S27.5 9.649 27.5 16 22.351 27.5 16 27.5zm6.29-8.61c-.345-.172-2.04-1.006-2.356-1.12-.315-.115-.545-.172-.774.172-.23.345-.888 1.12-1.09 1.35-.2.23-.4.258-.745.086-.345-.172-1.455-.537-2.771-1.71-1.024-.913-1.715-2.04-1.916-2.385-.2-.345-.021-.531.15-.703.155-.155.345-.402.517-.603.172-.2.23-.345.345-.575.115-.23.057-.431-.029-.603-.086-.172-.774-1.866-1.06-2.556-.28-.672-.563-.58-.774-.591-.2-.01-.43-.013-.66-.013s-.603.086-.919.431c-.315.345-1.204 1.177-1.204 2.87 0 1.694 1.233 3.33 1.405 3.56.172.23 2.427 3.706 5.88 5.198.822.355 1.463.566 1.963.725.825.263 1.576.226 2.169.137.661-.099 2.04-.833 2.327-1.637.287-.804.287-1.493.2-1.637-.086-.143-.315-.23-.66-.402z"/></svg>
+          Confirmar pelo WhatsApp
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <img class="footer-avatar" src="https://i.postimg.cc/TwjQxnJc/Whats-App-Image-2026-08-31-at-14-32-09.jpg" alt="Hélio Crispim">
+    <div class="footer-info">
+      <div class="name">Hélio Crispim</div>
+      <div class="role">Eng. Eletricista · CREA-PB 12290192025PB</div>
+      <div class="contact">(83) 99678-7788 &middot; attivesistemas@gmail.com</div>
+      <div class="contact">CNPJ: 48.979.364/0001-91</div>
+      <div class="validity" id="footerValidity">Proposta ORC-2026-0031 · válida por 7 dias a partir da emissão (--/--/----)</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== DATAS AUTOMÁTICAS =====
+  (function setDates() {
+    var hoje = new Date();
+    var dia = String(hoje.getDate()).padStart(2, '0');
+    var mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    var ano = hoje.getFullYear();
+    var dataStr = dia + '/' + mes + '/' + ano;
+
+    document.getElementById('emissao').textContent = dataStr;
+
+    var validade = new Date(hoje);
+    validade.setDate(hoje.getDate() + 7);
+    var diaVal = String(validade.getDate()).padStart(2, '0');
+    var mesVal = String(validade.getMonth() + 1).padStart(2, '0');
+    var anoVal = validade.getFullYear();
+    var dataValStr = diaVal + '/' + mesVal + '/' + anoVal;
+
+    document.getElementById('validade').textContent = dataValStr;
+    document.getElementById('footerValidity').textContent = 'Proposta ORC-2026-0031 · válida por 7 dias a partir da emissão (' + dataValStr + ')';
+  })();
+
+  // ===== LIBERAÇÃO DOS EQUIPAMENTOS POR CÓDIGO NA URL =====
+  (function liberarEquipamentos() {
+    var CODIGO_LIBERACAO = "orc20260031";
+    var params = new URLSearchParams(window.location.search);
+    var codigoRecebido = params.get('liberado');
+
+    if (codigoRecebido === CODIGO_LIBERACAO) {
+      var boxBloqueado = document.getElementById('equipBloqueado');
+      var boxLiberado = document.getElementById('equipLiberado');
+      if (boxBloqueado) boxBloqueado.style.display = 'none';
+      if (boxLiberado) boxLiberado.style.display = 'block';
+    }
+  })();
+
+  // ===== LÓGICA =====
+  var phone = "5583996787788";
+  var proposta = "ORC-2026-0031";
+  var contato = "Éwerton";
+  var cliente = "Desfruta Minimercados";
+
+  var VALOR_MAO_DE_OBRA = 1200.00;
+  var VALOR_MATERIAIS = 2521.84;
+  var VALOR_TOTAL = VALOR_MAO_DE_OBRA + VALOR_MATERIAIS;
+
+  function fmt(v) {
+    return v.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  function buildMessage() {
+    var msg = 'Olá, Hélio! Sou ' + contato + ' (' + cliente + ') e gostaria de confirmar:\n\n*Sistema de Controle de Acesso*\n';
+    msg += 'Valor da mão de obra: R$ ' + fmt(VALOR_MAO_DE_OBRA) + ' (pago à Attive no fechamento)\n';
+    msg += 'Valor global dos equipamentos: R$ ' + fmt(VALOR_MATERIAIS) + ' (pago direto ao fornecedor)\n';
+    msg += 'Valor total do serviço: R$ ' + fmt(VALOR_TOTAL) + '\n';
+    msg += '\nProposta: *' + proposta + '*\n\n';
+    msg += '*Estou ciente dos detalhes desta proposta:*\n';
+    msg += '✓ Sistema de controle de acesso com:\n';
+    msg += '   - Leitor facial\n';
+    msg += '   - Fechadura eletrônica\n';
+    msg += '   - Sensor de porta aberta\n';
+    msg += '   - Botão de liberação para saída\n';
+    msg += '   - Fonte ininterrupta + bateria\n';
+    msg += '   - Infraestrutura de alimentação (inclusa na instalação)\n';
+    msg += '   - Instalação e configuração dos dispositivos\n';
+    msg += '✓ *MÃO DE OBRA:* R$ ' + fmt(VALOR_MAO_DE_OBRA) + ', paga à Attive Tecnologia *no fechamento do negócio*, para garantia do agendamento\n';
+    msg += '✓ *EQUIPAMENTOS:* R$ ' + fmt(VALOR_MATERIAIS) + ', comprados diretamente nos links dos fornecedores, com as formas de pagamento de cada loja\n';
+    msg += '✓ Lista de equipamentos com pré-seleção dos melhores preços, fornecedores e formas de pagamento, liberada após o fechamento do negócio\n';
+    msg += '✓ Garantia do SERVIÇO: 90 dias com a Attive Tecnologia\n';
+    msg += '✓ Garantia dos EQUIPAMENTOS: conforme o fornecedor de cada item\n';
+    msg += '\n*CIÊNCIA OBRIGATÓRIA:*\n';
+    msg += '⚠️ A *estrutura de conectividade com a rede do clube NÃO está inclusa* nesta proposta. Essa avaliação só será possível no ato da instalação, quando a equipe técnica verificará o ponto mais próximo existente.\n';
+    msg += '⚠️ Caso seja necessário o *lançamento de cabo UTP* e mão de obra adicional para levar o ponto até o local de instalação, o *valor desta proposta poderá ser alterado*, e o serviço só será executado após aprovação do novo orçamento.\n';
+    msg += '\n*Importante:* a Attive Engenharia e Tecnologia não tem responsabilidade por prazos de entrega e/ou garantia dos equipamentos, que são de responsabilidade exclusiva dos fornecedores.\n';
+    msg += '\nAguardo o próximo passo!';
+    return msg;
+  }
+
+  function updateWhatsApp() {
+    var btn = document.getElementById('whatsappFinal');
+    var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(buildMessage());
+    btn.href = url;
+  }
+
+  function goToStep(step) {
+    document.querySelectorAll('.step-page').forEach(function(el) { el.classList.remove('active'); });
+    document.getElementById('step' + step).classList.add('active');
+    document.querySelectorAll('.progress-step').forEach(function(el, i) {
+      el.classList.remove('active', 'done');
+      if (i+1 < step) el.classList.add('done');
+      else if (i+1 === step) el.classList.add('active');
+    });
+    document.querySelector('.container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (step === 3) updateWhatsApp();
+  }
+
+  document.getElementById('step1Next').addEventListener('click', function() {
+    goToStep(2);
+  });
+
+  document.getElementById('step2Next').addEventListener('click', function() {
+    goToStep(3);
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    goToStep(1);
+    updateWhatsApp();
+  });
+</script>
+</body>
+</html>
