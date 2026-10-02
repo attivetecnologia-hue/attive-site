@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ordem de Serviço OS-2026-0034 | Attive Tecnologia</title>
+<meta name="description" content="Ordem de Serviço para ASL Distribuição. Instalação de equipamento para rastreamento veicular em comodato. Adesão e instalação R$ 150,00.">
+<meta name="robots" content="noindex, nofollow">
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1d'/%3E%3Cpath d='M50 20 L80 75 H20 Z' fill='none' stroke='%232563eb' stroke-width='7' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --page-bg: #090d16;
+    --container-bg: #ffffff;
+    --primary: #0a0f1d;
+    --accent: #2563eb;
+    --accent-2: #3b82f6;
+    --accent-light: #dbeafe;
+    --accent-soft: #eff6ff;
+    --border: #e2e8f0;
+    --secondary-bg: #f8fafc;
+    --muted: #64748b;
+    --success: #16a34a;
+    --success-dark: #166534;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--page-bg);
+    background-image: radial-gradient(circle at 20% 0%, rgba(37,99,235,0.18), transparent 45%),
+                       radial-gradient(circle at 100% 30%, rgba(59,130,246,0.12), transparent 40%);
+    color: var(--primary);
+    padding: 48px 16px;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 850px;
+    margin: 0 auto;
+    background-color: var(--container-bg);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+
+  .container::before {
+    content: "";
+    display: block;
+    height: 6px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+
+  .inner { padding: 44px; }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand-logo-wrap { display: flex; align-items: center; gap: 14px; }
+
+  .brand-logo { height: 96px; width: auto; display: block; }
+
+  .brand-logo-fallback {
+    display: none;
+    height: 96px;
+    padding: 0 18px;
+    background: var(--primary);
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 5px 11px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    background-color: var(--accent-light);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  /* META */
+  .meta-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+    margin-bottom: 28px;
+  }
+
+  .meta-item label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .meta-item span {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .meta-item.meta-address {
+    grid-column: 1 / -1;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .meta-item.meta-address svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .meta-item.meta-address .meta-address-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-item.meta-address label { margin-bottom: 0; }
+
+  .meta-item.meta-address span { font-size: 13px; line-height: 1.45; }
+
+  /* SEÇÕES */
+  .section {
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .section-sub {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  /* LISTA */
+  .service-list {
+    list-style: none;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .service-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    font-size: 13.5px;
+    color: #334155;
+    line-height: 1.45;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .service-list li:last-child { border-bottom: none; }
+
+  .service-list li .num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .service-list li strong {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* BOX DE EQUIPAMENTO EM COMODATO */
+  .equip-box {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--secondary-bg);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .equip-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .equip-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: #fff;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .equip-content { flex: 1; }
+
+  .equip-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .equip-title .tag {
+    display: inline-block;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 3px 9px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .equip-desc {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.55;
+  }
+
+  .equip-desc strong { color: var(--primary); }
+
+  /* TABELA DE VALORES */
+  .values-table {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .values-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    color: #334155;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .values-row:last-child { border-bottom: none; }
+
+  .values-row .vlabel {
+    flex: 1;
+    line-height: 1.4;
+  }
+
+  .values-row .vlabel strong {
+    color: var(--primary);
+    font-weight: 700;
+    display: block;
+  }
+
+  .values-row .vlabel small {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-weight: 500;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .values-row .vvalue {
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--primary);
+    font-size: 14px;
+  }
+
+  .values-row.total {
+    background: var(--accent-soft);
+    border-top: 1.5px solid var(--accent);
+  }
+
+  .values-row.total .vlabel {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .values-row.total .vvalue {
+    color: var(--accent);
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  /* FORMA DE PAGAMENTO */
+  .payment-box {
+    border: 1.5px solid var(--accent);
+    border-radius: 12px;
+    padding: 16px 18px;
+    background: var(--accent-soft);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .payment-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .payment-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: #fff;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .payment-content { flex: 1; }
+
+  .payment-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .payment-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.4;
+  }
+
+  /* OBSERVAÇÕES */
+  .notice-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--muted);
+    border-radius: 10px;
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.6;
+  }
+
+  .notice-box svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    stroke: var(--muted);
+    stroke-width: 2;
+    fill: none;
+    margin-top: 1px;
+  }
+
+  .notice-box strong { color: var(--primary); }
+
+  /* FOOTER */
+  .footer {
+    padding: 28px 44px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .footer-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-avatar-fallback {
+    display: none;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 26px;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-info { text-align: left; }
+
+  .footer .name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+  }
+
+  .footer .role {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 1px;
+  }
+
+  .footer .contact {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .footer .validity {
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-top: 8px;
+  }
+
+  /* BOTÃO WHATSAPP */
+  .cta-wrap {
+    margin-top: 28px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn-whatsapp {
+    background: #25D366;
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-whatsapp:hover {
+    background: #1ebe5c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(37,211,102,0.35);
+  }
+
+  @media (max-width: 768px) {
+    body { padding: 20px 8px; }
+    .inner { padding: 22px; }
+    .meta-strip { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 12px 6px; }
+    .inner { padding: 16px; }
+    .header { gap: 12px; }
+    .brand-logo { height: 80px; }
+    .brand-logo-fallback { height: 80px; font-size: 26px; }
+    .meta-strip { grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+    .meta-item span { font-size: 14px; }
+    .footer { padding: 22px 16px 20px; flex-direction: column; text-align: center; gap: 12px; }
+    .footer-info { text-align: center; }
+    .footer-avatar { width: 60px; height: 60px; }
+    .footer-avatar-fallback { width: 60px; height: 60px; font-size: 22px; }
+    .cta-wrap { justify-content: center; }
+    .btn-whatsapp { width: 100%; justify-content: center; }
+    .values-row .vvalue { font-size: 13px; }
+    .values-row.total .vvalue { font-size: 18px; }
+    .equip-box { flex-direction: column; align-items: center; text-align: center; }
+    .payment-box { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="inner">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand-logo-wrap">
+        <img class="brand-logo" 
+             src="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png" 
+             alt="Attive Tecnologia"
+             referrerpolicy="no-referrer"
+             crossorigin="anonymous"
+             loading="eager"
+             onerror="this.style.display='none'; document.getElementById('brandLogoFallback').style.display='flex';">
+        <div class="brand-logo-fallback" id="brandLogoFallback">attive</div>
+        <div class="brand-text">
+          <div class="brand-subtitle">Engenharia &amp; Tecnologia</div>
+        </div>
+      </div>
+      <span class="badge">Ordem de Serviço</span>
+    </div>
+
+    <!-- META -->
+    <div class="meta-strip">
+      <div class="meta-item">
+        <label>Ordem de Serviço</label>
+        <span>OS-2026-0034</span>
+      </div>
+      <div class="meta-item">
+        <label>A/C</label>
+        <span>Erikson Wagner</span>
+      </div>
+      <div class="meta-item">
+        <label>Cliente</label>
+        <span>ASL Distribuição</span>
+      </div>
+      <div class="meta-item">
+        <label>Tipo</label>
+        <span>Instalação de Rastreador</span>
+      </div>
+      <div class="meta-item">
+        <label>Emissão</label>
+        <span id="emissao">--/--/----</span>
+      </div>
+      <div class="meta-item">
+        <label>Status</label>
+        <span style="color: var(--success);">Executado</span>
+      </div>
+      <div class="meta-item meta-address">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="meta-address-content">
+          <label>Endereço</label>
+          <span>Avenida Deputado Raimundo Asfora, Velame, Campina Grande - PB</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESCOPO DO SERVIÇO -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        Serviços executados
+      </div>
+      <div class="section-sub">Instalação de equipamento para rastreamento veicular, com adesão e configuração inclusas.</div>
+      <ul class="service-list">
+        <li>
+          <span class="num">1</span>
+          <span><strong>Instalação do equipamento de rastreamento veicular</strong>, com fixação em local apropriado e conexão ao sistema elétrico do veículo.</span>
+        </li>
+        <li>
+          <span class="num">2</span>
+          <span><strong>Configuração e ativação</strong> do equipamento, com testes de comunicação e funcionamento.</span>
+        </li>
+        <li>
+          <span class="num">3</span>
+          <span><strong>Orientação de uso</strong> sobre o aplicativo e a plataforma de monitoramento.</span>
+        </li>
+        <li>
+          <span class="num">4</span>
+          <span><strong>Organização e limpeza do local</strong> ao final do serviço.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- EQUIPAMENTO EM COMODATO -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        Equipamento
+      </div>
+
+      <div class="equip-box">
+        <div class="equip-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0110 10"/><path d="M12 6a6 6 0 016 6"/><path d="M12 22a10 10 0 01-10-10"/><path d="M12 18a6 6 0 00-6-6"/></svg>
+        </div>
+        <div class="equip-content">
+          <div class="equip-title">
+            Rastreador veicular
+            <span class="tag">Em comodato</span>
+          </div>
+          <div class="equip-desc">
+            O equipamento de rastreamento é fornecido em <strong>regime de comodato</strong>, ou seja, cedido em uso ao cliente sem custo de aquisição. O equipamento permanece vinculado ao contrato de monitoramento e deve ser devolvido ao final da prestação de serviço, conforme condições do fornecedor.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VALORES -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        Valores
+      </div>
+
+      <div class="values-table">
+        <div class="values-row">
+          <span class="vlabel">
+            <strong>Adesão e instalação</strong>
+            <small>Instalação, configuração e ativação do equipamento</small>
+          </span>
+          <span class="vvalue">R$ 150,00</span>
+        </div>
+        <div class="values-row total">
+          <span class="vlabel">Valor total</span>
+          <span class="vvalue">R$ 150,00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORMA DE PAGAMENTO -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Forma de pagamento
+      </div>
+
+      <div class="payment-box">
+        <div class="payment-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <div class="payment-content">
+          <div class="payment-label">Pagamento via PIX</div>
+          <div class="payment-value">R$ 150,00 à vista, via PIX.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OBSERVAÇÕES -->
+    <div class="notice-box">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <span>
+        <strong>Observações:</strong> esta ordem de serviço cobre exclusivamente os itens descritos acima. O equipamento é cedido em regime de comodato e permanece vinculado ao contrato de monitoramento. Quaisquer serviços adicionais, peças ou materiais que se façam necessários serão informados previamente ao cliente e tratados em orçamento separado. Garantia de 90 dias sobre a mão de obra.
+      </span>
+    </div>
+
+    <!-- BOTÃO WHATSAPP -->
+    <div class="cta-wrap">
+      <a class="btn-whatsapp" id="whatsappFinal" href="#" target="_blank">
+        <svg viewBox="0 0 32 32" style="width:20px; height:20px; fill:#fff;"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.648 4.83 1.782 6.86L2 30l7.347-1.757A13.94 13.94 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5a11.44 11.44 0 01-5.847-1.6l-.418-.249-4.36 1.043 1.072-4.25-.272-.437A11.46 11.46 0 014.5 16C4.5 9.649 9.649 4.5 16 4.5S27.5 9.649 27.5 16 22.351 27.5 16 27.5zm6.29-8.61c-.345-.172-2.04-1.006-2.356-1.12-.315-.115-.545-.172-.774.172-.23.345-.888 1.12-1.09 1.35-.2.23-.4.258-.745.086-.345-.172-1.455-.537-2.771-1.71-1.024-.913-1.715-2.04-1.916-2.385-.2-.345-.021-.531.15-.703.155-.155.345-.402.517-.603.172-.2.23-.345.345-.575.115-.23.057-.431-.029-.603-.086-.172-.774-1.866-1.06-2.556-.28-.672-.563-.58-.774-.591-.2-.01-.43-.013-.66-.013s-.603.086-.919.431c-.315.345-1.204 1.177-1.204 2.87 0 1.694 1.233 3.33 1.405 3.56.172.23 2.427 3.706 5.88 5.198.822.355 1.463.566 1.963.725.825.263 1.576.226 2.169.137.661-.099 2.04-.833 2.327-1.637.287-.804.287-1.493.2-1.637-.086-.143-.315-.23-.66-.402z"/></svg>
+        Confirmar pelo WhatsApp
+      </a>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <img class="footer-avatar" 
+         src="https://i.postimg.cc/TwjQxnJc/Whats-App-Image-2026-08-31-at-14-32-09.jpg" 
+         alt="Hélio Crispim"
+         referrerpolicy="no-referrer"
+         crossorigin="anonymous"
+         loading="eager"
+         onerror="this.style.display='none'; document.getElementById('footerAvatarFallback').style.display='flex';">
+    <div class="footer-avatar-fallback" id="footerAvatarFallback">HC</div>
+    <div class="footer-info">
+      <div class="name">Hélio Crispim</div>
+      <div class="role">Eng. Eletricista · CREA-PB 12290192025PB</div>
+      <div class="contact">(83) 99678-7788 &middot; attivesistemas@gmail.com</div>
+      <div class="contact">CNPJ: 48.979.364/0001-91</div>
+      <div class="validity" id="footerValidity">Ordem de Serviço OS-2026-0034 · emitida em (--/--/----)</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== DATAS AUTOMÁTICAS =====
+  (function setDates() {
+    var hoje = new Date();
+    var dia = String(hoje.getDate()).padStart(2, '0');
+    var mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    var ano = hoje.getFullYear();
+    var dataStr = dia + '/' + mes + '/' + ano;
+
+    document.getElementById('emissao').textContent = dataStr;
+    document.getElementById('footerValidity').textContent = 'Ordem de Serviço OS-2026-0034 · emitida em ' + dataStr;
+  })();
+
+  // ===== WHATSAPP =====
+  var phone = "5583996787788";
+  var os = "OS-2026-0034";
+  var contato = "Erikson Wagner";
+  var cliente = "ASL Distribuição";
+
+  function buildMessage() {
+    var msg = 'Olá, Hélio! Sou ' + contato + ' (' + cliente + ') e gostaria de confirmar a Ordem de Serviço:\n\n';
+    msg += '*Ordem de Serviço:* ' + os + '\n';
+    msg += 'Status: *Executado*\n';
+    msg += 'Endereço: Avenida Deputado Raimundo Asfora, Velame, Campina Grande - PB\n\n';
+    msg += '*Serviços executados:*\n';
+    msg += '✓ Instalação do equipamento de rastreamento veicular\n';
+    msg += '✓ Configuração e ativação do equipamento\n';
+    msg += '✓ Orientação de uso do aplicativo e plataforma\n';
+    msg += '✓ Organização e limpeza do local\n\n';
+    msg += '*Equipamento:* Rastreador veicular em regime de comodato\n\n';
+    msg += '*Valores:*\n';
+    msg += 'Adesão e instalação: R$ 150,00\n';
+    msg += '*Total: R$ 150,00*\n\n';
+    msg += '*Forma de pagamento:* PIX à vista\n\n';
+    msg += '✓ Garantia de 90 dias sobre a mão de obra\n\n';
+    msg += 'Aguardo o próximo passo!';
+    return msg;
+  }
+
+  (function updateWhatsApp() {
+    var btn = document.getElementById('whatsappFinal');
+    var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(buildMessage());
+    btn.href = url;
+  })();
+</script>
+</body>
+</html>
