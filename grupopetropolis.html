@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório de Visita Técnica RVT-2026-0001 | Attive Tecnologia</title>
+<meta name="description" content="Relatório de visita técnica para identificação e correção de problemas em sistema de CFTV. Grupo Petrópolis, A/C Henrique (Projetar Serviços).">
+<meta name="robots" content="noindex, nofollow">
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1d'/%3E%3Cpath d='M50 20 L80 75 H20 Z' fill='none' stroke='%232563eb' stroke-width='7' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --page-bg: #090d16;
+    --container-bg: #ffffff;
+    --primary: #0a0f1d;
+    --accent: #2563eb;
+    --accent-2: #3b82f6;
+    --accent-light: #dbeafe;
+    --accent-soft: #eff6ff;
+    --border: #e2e8f0;
+    --secondary-bg: #f8fafc;
+    --muted: #64748b;
+    --success: #16a34a;
+    --success-dark: #166534;
+    --success-soft: #f0fdf4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--page-bg);
+    background-image: radial-gradient(circle at 20% 0%, rgba(37,99,235,0.18), transparent 45%),
+                       radial-gradient(circle at 100% 30%, rgba(59,130,246,0.12), transparent 40%);
+    color: var(--primary);
+    padding: 48px 16px;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 850px;
+    margin: 0 auto;
+    background-color: var(--container-bg);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+
+  .container::before {
+    content: "";
+    display: block;
+    height: 6px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+
+  .inner { padding: 44px; }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand-logo-wrap { display: flex; align-items: center; gap: 14px; }
+
+  .brand-logo { height: 96px; width: auto; display: block; }
+
+  .brand-logo-fallback {
+    display: none;
+    height: 96px;
+    padding: 0 18px;
+    background: var(--primary);
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 5px 11px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    background-color: var(--accent-light);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  /* META */
+  .meta-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+    margin-bottom: 28px;
+  }
+
+  .meta-item label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .meta-item span {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  /* SEÇÕES */
+  .section {
+    margin-bottom: 26px;
+  }
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .section-sub {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  /* CAIXA DE TEXTO */
+  .text-box {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    background: #ffffff;
+    font-size: 13.5px;
+    color: #334155;
+    line-height: 1.6;
+  }
+
+  .text-box p { margin-bottom: 10px; }
+  .text-box p:last-child { margin-bottom: 0; }
+  .text-box strong { color: var(--primary); }
+
+  /* LISTA */
+  .service-list {
+    list-style: none;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .service-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    font-size: 13.5px;
+    color: #334155;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .service-list li:last-child { border-bottom: none; }
+
+  .service-list li .num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .service-list li .num.ok {
+    background: var(--success);
+  }
+
+  .service-list li strong {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* TABELA DE ITENS */
+  .items-table {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .items-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 12px 18px;
+    background: var(--secondary-bg);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    border-bottom: 1.5px solid var(--border);
+  }
+
+  .items-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    color: #334155;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .items-row:last-child { border-bottom: none; }
+
+  .items-row .item-label { flex: 1; line-height: 1.4; }
+  .items-row .item-label small {
+    display: block;
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .items-row .item-status {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .items-row .item-status.ok {
+    background: var(--success-soft);
+    color: var(--success-dark);
+  }
+
+  .items-row .item-status.atencao {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .items-row .item-status.corrigido {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .items-row .item-status.critico {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
+
+  .items-row .item-status.pendente {
+    background: #ede9fe;
+    color: #6d28d9;
+  }
+
+  /* BOX DE DIAGNÓSTICO */
+  .diagnosis-box {
+    border: 1.5px solid #fde68a;
+    border-left: 4px solid #d97706;
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: #fffbeb;
+    margin-top: 8px;
+  }
+
+  .diagnosis-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .diagnosis-title svg {
+    width: 18px;
+    height: 18px;
+    stroke: #d97706;
+    stroke-width: 2;
+    fill: none;
+    flex-shrink: 0;
+  }
+
+  .diagnosis-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.5;
+  }
+
+  .diagnosis-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .diagnosis-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #d97706;
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  .diagnosis-list li strong { color: #92400e; }
+
+  /* BOX DE ANTES/DEPOIS */
+  .compare-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 8px;
+  }
+
+  .compare-item {
+    border-radius: 12px;
+    padding: 16px 18px;
+    border: 1.5px solid;
+  }
+
+  .compare-item.before {
+    background: #fef2f2;
+    border-color: #fecaca;
+  }
+
+  .compare-item.after {
+    background: #fffbeb;
+    border-color: #fde68a;
+  }
+
+  .compare-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+
+  .compare-item.before .compare-label { color: #991b1b; }
+  .compare-item.after .compare-label { color: #92400e; }
+
+  .compare-value {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .compare-item.before .compare-value { color: #b91c1c; }
+  .compare-item.after .compare-value { color: #d97706; }
+
+  .compare-desc {
+    font-size: 12px;
+    line-height: 1.45;
+    margin-top: 6px;
+  }
+
+  .compare-item.before .compare-desc { color: #7f1d1d; }
+  .compare-item.after .compare-desc { color: #78350f; }
+
+  /* BOX DE NÃO CONFORMIDADES */
+  .nonconformity-box {
+    border: 1.5px solid #fecaca;
+    border-left: 4px solid #dc2626;
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: #fef2f2;
+    margin-top: 8px;
+  }
+
+  .nonconformity-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #991b1b;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nonconformity-title svg {
+    width: 18px;
+    height: 18px;
+    stroke: #dc2626;
+    stroke-width: 2;
+    fill: none;
+    flex-shrink: 0;
+  }
+
+  .nonconformity-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+    color: #7f1d1d;
+    line-height: 1.5;
+  }
+
+  .nonconformity-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .nonconformity-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #dc2626;
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  .nonconformity-list li strong { color: #991b1b; }
+
+  /* BOX DE SOLUÇÕES */
+  .solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .solution-card {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .solution-card.recommended {
+    border-color: var(--accent);
+    box-shadow: 0 4px 14px rgba(37,99,235,0.12);
+  }
+
+  .solution-header {
+    padding: 14px 18px;
+    background: var(--secondary-bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .solution-card.recommended .solution-header {
+    background: var(--accent-soft);
+    border-bottom-color: var(--accent-light);
+  }
+
+  .solution-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+  }
+
+  .solution-card.recommended .solution-name { color: var(--accent); }
+
+  .solution-tag {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  .solution-tag.neutral {
+    background: var(--muted);
+  }
+
+  .solution-body {
+    padding: 14px 18px 16px;
+    flex: 1;
+  }
+
+  .solution-subtitle {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .solution-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 12.5px;
+    color: #334155;
+    line-height: 1.5;
+  }
+
+  .solution-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .solution-list li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  .solution-footnote {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+  }
+
+  .solution-footnote strong { color: var(--primary); }
+
+  /* ====== BLOCO DESTAQUE TABELA ====== */
+  .table-cta-box {
+    margin-top: 16px;
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    background: linear-gradient(160deg, #f0f6ff, #ffffff);
+    padding: 22px 24px;
+    animation: glow-blue 2.4s ease-out infinite;
+  }
+
+  @keyframes glow-blue {
+    0%   { box-shadow: 0 0 0 0 rgba(37,99,235,0.45), 0 8px 24px rgba(37,99,235,0.12); }
+    70%  { box-shadow: 0 0 0 16px rgba(37,99,235,0), 0 8px 24px rgba(37,99,235,0.12); }
+    100% { box-shadow: 0 0 0 0 rgba(37,99,235,0), 0 8px 24px rgba(37,99,235,0.12); }
+  }
+
+  .table-cta-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .table-cta-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .table-cta-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: #fff;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .table-cta-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.3;
+  }
+
+  .table-cta-subtitle {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
+
+  .table-cta-text {
+    font-size: 13.5px;
+    color: #334155;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .table-cta-text strong { color: var(--primary); }
+
+  .table-cta-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn-table {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13.5px;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .btn-table.primary {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-table.primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(37,99,235,0.35);
+  }
+
+  .btn-table.whats {
+    background: #25D366;
+    color: #fff;
+  }
+
+  .btn-table.whats:hover {
+    background: #1ebe5c;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(37,211,102,0.35);
+  }
+
+  .btn-table svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  /* REGISTROS FOTOGRÁFICOS */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .photo-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .photo-card {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .photo-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .photo-caption {
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.45;
+    background: var(--secondary-bg);
+    border-top: 1px solid var(--border);
+  }
+
+  .photo-caption strong { color: var(--primary); }
+
+  .photo-group-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 18px 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .photo-group-title:first-of-type { margin-top: 0; }
+
+  .photo-group-title svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    flex-shrink: 0;
+  }
+
+  /* BOX DE CONCLUSÃO */
+  .conclusion-box {
+    border: 1.5px solid var(--success);
+    border-radius: 12px;
+    padding: 18px 22px;
+    background: var(--success-soft);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .conclusion-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .conclusion-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: #fff;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .conclusion-content { flex: 1; }
+
+  .conclusion-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--success-dark);
+    margin-bottom: 4px;
+  }
+
+  .conclusion-desc {
+    font-size: 13px;
+    color: #14532d;
+    line-height: 1.55;
+  }
+
+  .conclusion-desc strong { color: var(--success-dark); }
+
+  /* BOX DE PENDÊNCIAS */
+  .pending-box {
+    border: 1.5px solid #ddd6fe;
+    border-left: 4px solid #7c3aed;
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: #f5f3ff;
+    margin-top: 8px;
+  }
+
+  .pending-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #5b21b6;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pending-title svg {
+    width: 18px;
+    height: 18px;
+    stroke: #7c3aed;
+    stroke-width: 2;
+    fill: none;
+    flex-shrink: 0;
+  }
+
+  .pending-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+    color: #4c1d95;
+    line-height: 1.5;
+  }
+
+  .pending-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .pending-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #7c3aed;
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  .pending-list li strong { color: #5b21b6; }
+
+  /* BOX DE VALOR DO ATENDIMENTO */
+  .value-box {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .value-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .value-table th {
+    background: var(--secondary-bg);
+    padding: 12px 18px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    text-align: left;
+    border-bottom: 1.5px solid var(--border);
+  }
+
+  .value-table th:last-child,
+  .value-table td:last-child {
+    text-align: right;
+  }
+
+  .value-table td {
+    padding: 13px 18px;
+    font-size: 13.5px;
+    color: #334155;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .value-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .value-table .total-row td {
+    background: var(--accent-soft);
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 15px;
+    border-top: 1.5px solid var(--border);
+  }
+
+  .value-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 10px;
+  }
+
+  .value-note strong { color: var(--primary); }
+
+  /* OBSERVAÇÕES */
+  .notice-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--muted);
+    border-radius: 10px;
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.6;
+    margin-top: 14px;
+  }
+
+  .notice-box svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    stroke: var(--muted);
+    stroke-width: 2;
+    fill: none;
+    margin-top: 1px;
+  }
+
+  .notice-box strong { color: var(--primary); }
+
+  /* FOOTER */
+  .footer {
+    padding: 28px 44px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .footer-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-avatar-fallback {
+    display: none;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 26px;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-info { text-align: left; }
+
+  .footer .name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+  }
+
+  .footer .role {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 1px;
+  }
+
+  .footer .contact {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .footer .validity {
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-top: 8px;
+  }
+
+  /* BOTÃO WHATSAPP FINAL */
+  .cta-wrap {
+    margin-top: 28px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn-whatsapp {
+    background: #25D366;
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-whatsapp:hover {
+    background: #1ebe5c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(37,211,102,0.35);
+  }
+
+  @media (max-width: 768px) {
+    body { padding: 20px 8px; }
+    .inner { padding: 22px; }
+    .meta-strip { grid-template-columns: 1fr 1fr; }
+    .photo-grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .solution-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 12px 6px; }
+    .inner { padding: 16px; }
+    .header { gap: 12px; }
+    .brand-logo { height: 80px; }
+    .brand-logo-fallback { height: 80px; font-size: 26px; }
+    .meta-strip { grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+    .meta-item span { font-size: 14px; }
+    .items-row { flex-direction: column; align-items: flex-start; }
+    .photo-grid { grid-template-columns: 1fr; }
+    .photo-grid-3 { grid-template-columns: 1fr; }
+    .compare-box { grid-template-columns: 1fr; }
+    .solution-grid { grid-template-columns: 1fr; }
+    .value-table td, .value-table th { padding: 10px 12px; }
+    .table-cta-actions { flex-direction: column; }
+    .btn-table { width: 100%; justify-content: center; }
+    .footer { padding: 22px 16px 20px; flex-direction: column; text-align: center; gap: 12px; }
+    .footer-info { text-align: center; }
+    .footer-avatar { width: 60px; height: 60px; }
+    .footer-avatar-fallback { width: 60px; height: 60px; font-size: 22px; }
+    .cta-wrap { justify-content: center; }
+    .btn-whatsapp { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="inner">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand-logo-wrap">
+        <img class="brand-logo" 
+             src="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png" 
+             alt="Attive Tecnologia"
+             referrerpolicy="no-referrer"
+             crossorigin="anonymous"
+             loading="eager"
+             onerror="this.style.display='none'; document.getElementById('brandLogoFallback').style.display='flex';">
+        <div class="brand-logo-fallback" id="brandLogoFallback">attive</div>
+        <div class="brand-text">
+          <div class="brand-subtitle">Engenharia &amp; Tecnologia</div>
+        </div>
+      </div>
+      <span class="badge">Relatório Técnico</span>
+    </div>
+
+    <!-- META -->
+    <div class="meta-strip">
+      <div class="meta-item">
+        <label>Relatório</label>
+        <span>RVT-2026-0001</span>
+      </div>
+      <div class="meta-item">
+        <label>A/C</label>
+        <span>Henrique</span>
+      </div>
+      <div class="meta-item">
+        <label>Cliente</label>
+        <span>Projetar Serviços</span>
+      </div>
+      <div class="meta-item">
+        <label>Local</label>
+        <span>Grupo Petrópolis</span>
+      </div>
+      <div class="meta-item">
+        <label>Data da visita</label>
+        <span id="dataVisita">--/--/----</span>
+      </div>
+      <div class="meta-item">
+        <label>Tipo</label>
+        <span>CFTV</span>
+      </div>
+      <div class="meta-item">
+        <label>Horário de chegada</label>
+        <span>14:36</span>
+      </div>
+      <div class="meta-item">
+        <label>Horário de saída</label>
+        <span>17:19</span>
+      </div>
+      <div class="meta-item">
+        <label>Tempo de atendimento</label>
+        <span>2h43min</span>
+      </div>
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        Objetivo da visita
+      </div>
+      <div class="text-box">
+        <p>Realizar visita técnica no sistema de <strong>CFTV (Circuito Fechado de Televisão)</strong> instalado no <strong>Grupo Petrópolis</strong>, com o objetivo de <strong>identificar a causa da inoperância das câmeras</strong>, executar os reparos emergenciais necessários para restabelecer o maior número possível de câmeras e <strong>levantar as não conformidades</strong> remanescentes que ainda impedem o pleno funcionamento do sistema.</p>
+      </div>
+    </div>
+
+    <!-- SITUAÇÃO ENCONTRADA / RESULTADO -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><path d="M3 12h18"/><path d="M3 6h18"/><path d="M3 18h18"/></svg>
+        Situação encontrada e resultado da visita
+      </div>
+      <div class="text-box">
+        <p>Ao chegar ao local, o sistema de CFTV apresentava <strong>23 câmeras inoperantes</strong>. Após a identificação e a correção do problema no cabo de força do powerbalun (que alimentava 16 câmeras), <strong>15 câmeras foram restabelecidas</strong>, permanecendo <strong>8 câmeras sem sinal</strong> — estas dependem do tratamento das não conformidades identificadas nas conexões/baluns no lado das câmeras.</p>
+      </div>
+
+      <div class="compare-box">
+        <div class="compare-item before">
+          <div class="compare-label">Antes da visita</div>
+          <div class="compare-value">23</div>
+          <div class="compare-desc">câmeras inoperantes por causa do problema no cabo de força do powerbalun.</div>
+        </div>
+        <div class="compare-item after">
+          <div class="compare-label">Após a visita</div>
+          <div class="compare-value">8</div>
+          <div class="compare-desc">câmeras ainda sem sinal, por não conformidades nas conexões/baluns (15 câmeras restabelecidas).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ATIVIDADES REALIZADAS -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        Atividades realizadas
+      </div>
+      <ul class="service-list">
+        <li>
+          <span class="num">1</span>
+          <span><strong>Inspeção geral do sistema</strong> de CFTV, com verificação do DVR/NVR, câmeras, cabos, fontes e conectores.</span>
+        </li>
+        <li>
+          <span class="num">2</span>
+          <span><strong>Identificação de 23 câmeras inoperantes</strong> no momento da chegada, conforme registros fotográficos em campo.</span>
+        </li>
+        <li>
+          <span class="num">3</span>
+          <span><strong>Diagnóstico da causa raiz</strong> da inoperância: problema no <strong>cabo de força do powerbalun</strong> que alimentava <strong>16 câmeras</strong>.</span>
+        </li>
+        <li>
+          <span class="num ok">4</span>
+          <span><strong>Troca do cabo de força do powerbalun</strong>, restabelecendo a alimentação das 16 câmeras.</span>
+        </li>
+        <li>
+          <span class="num ok">5</span>
+          <span><strong>Testes individuais no pé de cada câmera</strong>, constatando que as 8 câmeras restantes estão funcionais — o problema está nas conexões/baluns.</span>
+        </li>
+        <li>
+          <span class="num">6</span>
+          <span><strong>Identificação das conexões em não conformidade</strong> (baluns oxidados, conectores mal crimpados e sem prender a capa do cabo) como causa das 8 câmeras ainda sem sinal.</span>
+        </li>
+        <li>
+          <span class="num ok">7</span>
+          <span><strong>Testes finais</strong> do sistema após a substituição do cabo de força e <strong>organização e limpeza do local</strong>.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ITENS VERIFICADOS -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        Itens verificados
+      </div>
+      <div class="items-table">
+        <div class="items-header">
+          <span>Item</span>
+          <span>Status</span>
+        </div>
+        <div class="items-row">
+          <span class="item-label">
+            DVR / NVR
+            <small>Gravador de imagens</small>
+          </span>
+          <span class="item-status ok">Verificado</span>
+        </div>
+        <div class="items-row">
+          <span class="item-label">
+            Câmeras (teste individual)
+            <small>8 câmeras testadas — todas funcionais</small>
+          </span>
+          <span class="item-status ok">Verificado</span>
+        </div>
+        <div class="items-row">
+          <span class="item-label">
+            Cabo de força do powerbalun (16 câmeras)
+            <small>Apresentava problema — 23 câmeras inoperantes; cabo substituído, 15 câmeras restabelecidas</small>
+          </span>
+          <span class="item-status corrigido">Corrigido</span>
+        </div>
+        <div class="items-row">
+          <span class="item-label">
+            Conexões / baluns (lado das câmeras)
+            <small>Oxidados, sem proteção e conectores mal crimpados — causa das 8 câmeras ainda sem sinal</small>
+          </span>
+          <span class="item-status critico">Não conforme</span>
+        </div>
+        <div class="items-row">
+          <span class="item-label">
+            Integridade dos cabos
+            <small>Não testada nesta visita — pendente de verificação</small>
+          </span>
+          <span class="item-status pendente">Pendente</span>
+        </div>
+        <div class="items-row">
+          <span class="item-label">
+            Organização do rack
+            <small>Cabos esticados e equipamentos desorganizados</small>
+          </span>
+          <span class="item-status critico">Não conforme</span>
+        </div>
+        <div class="items-row">
+          <span class="item-label">
+            Protetores eletrônicos
+            <small>Protetor pendurado, com risco de desligamento dos equipamentos</small>
+          </span>
+          <span class="item-status critico">Não conforme</span>
+        </div>
+        <div class="items-row">
+          <span class="item-label">
+            Fontes de alimentação
+            <small>Fontes e distribuição de energia</small>
+          </span>
+          <span class="item-status ok">Verificado</span>
+        </div>
+        <div class="items-row">
+          <span class="item-label">
+            Gravação e armazenamento
+            <small>Sistema de gravação e HD</small>
+          </span>
+          <span class="item-status ok">Verificado</span>
+        </div>
+        <div class="items-row">
+          <span class="item-label">
+            Acesso remoto
+            <small>Aplicativo e monitoramento à distância</small>
+          </span>
+          <span class="item-status ok">Verificado</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROBLEMAS IDENTIFICADOS -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        Problemas identificados
+      </div>
+      <div class="text-box">
+        <p>No momento da chegada, o sistema apresentava <strong>23 câmeras inoperantes</strong>. Realizamos <strong>testes individuais no pé de cada câmera</strong> e constatamos que <strong>todas as câmeras testadas estão funcionais</strong> — o problema não está nas câmeras em si, mas na alimentação e nas conexões.</p>
+        <p>Foram identificados problemas na alimentação do sistema e nas conexões, conforme detalhado abaixo:</p>
+      </div>
+
+      <div class="diagnosis-box">
+        <div class="diagnosis-title">
+          <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          Diagnóstico técnico
+        </div>
+        <ul class="diagnosis-list">
+          <li><strong>Cabo de força do powerbalun</strong> (que alimentava 16 câmeras) <strong>com problema</strong> — cabo substituído nesta visita, restabelecendo 15 câmeras.</li>
+          <li><strong>Baluns oxidados</strong> no lado das câmeras, sem qualquer proteção ou isolação adequada.</li>
+          <li><strong>Conectores mal crimpados</strong> (sem prender a capa do cabo) e também oxidados.</li>
+          <li><strong>Alguns baluns apagados</strong>, completamente sem funcionamento.</li>
+          <li><strong>Movimentação dos cabos</strong> faz com que as câmeras percam sinal devido às conexões mal executadas.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SERVIÇOS EXECUTADOS -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Serviços executados nesta visita
+      </div>
+      <div class="text-box">
+        <p><strong>Executado:</strong></p>
+      </div>
+      <ul class="service-list" style="margin-top: 10px;">
+        <li>
+          <span class="num ok">1</span>
+          <span><strong>Inspeção geral do sistema</strong> e identificação das 23 câmeras inoperantes.</span>
+        </li>
+        <li>
+          <span class="num ok">2</span>
+          <span><strong>Diagnóstico do problema no cabo de força do powerbalun</strong> (16 câmeras).</span>
+        </li>
+        <li>
+          <span class="num ok">3</span>
+          <span><strong>Troca do cabo de força do powerbalun</strong>, restabelecendo 15 câmeras.</span>
+        </li>
+        <li>
+          <span class="num ok">4</span>
+          <span><strong>Teste individual das 8 câmeras restantes</strong>, confirmando que todas estão funcionais.</span>
+        </li>
+        <li>
+          <span class="num ok">5</span>
+          <span><strong>Identificação das conexões em não conformidade</strong> (baluns oxidados, conectores mal crimpados e sem prender a capa do cabo).</span>
+        </li>
+        <li>
+          <span class="num ok">6</span>
+          <span><strong>Testes finais</strong> do sistema após a substituição do cabo de força.</span>
+        </li>
+        <li>
+          <span class="num ok">7</span>
+          <span><strong>Organização e limpeza do local</strong> ao final dos trabalhos.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- NÃO CONFORMIDADES -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        Não conformidades identificadas
+      </div>
+
+      <!-- BALUNS / LADO DAS CÂMERAS -->
+      <div class="photo-group-title">
+        <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        No lado das câmeras (baluns e conexões)
+      </div>
+      <div class="text-box">
+        <p>Foram identificadas <strong>não conformidades nos baluns e conexões instalados no lado das câmeras</strong>, evidenciando oxidação, ausência de proteção/isolação e componentes apagados, o que contribui diretamente para a perda de sinal das 8 câmeras remanescentes.</p>
+      </div>
+      <div class="nonconformity-box">
+        <div class="nonconformity-title">
+          <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          Itens não conformes nos baluns (lado das câmeras)
+        </div>
+        <ul class="nonconformity-list">
+          <li><strong>Baluns oxidados</strong> e sem qualquer proteção ou isolação adequada.</li>
+          <li><strong>Baluns apagados</strong>, completamente sem funcionamento.</li>
+          <li><strong>Conectores mal crimpados</strong> (sem prender a capa do cabo), causando perda de sinal ao menor movimento.</li>
+          <li><strong>Instalação exposta</strong> às intempéries, favorecendo a oxidação e a degradação dos componentes.</li>
+        </ul>
+      </div>
+
+      <!-- RACK -->
+      <div class="photo-group-title">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        No rack
+      </div>
+      <div class="text-box">
+        <p>Durante a inspeção do rack de CFTV foram identificadas as seguintes <strong>não conformidades</strong>, que comprometem a confiabilidade e a estabilidade do sistema:</p>
+      </div>
+      <div class="nonconformity-box">
+        <div class="nonconformity-title">
+          <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          Itens não conformes no rack
+        </div>
+        <ul class="nonconformity-list">
+          <li><strong>Vários conectores crimpados sem prender a capa do cabo</strong> — qualquer movimento faz com que as câmeras percam sinal.</li>
+          <li><strong>Cabos esticados</strong>, necessitando de reorganização, assim como os equipamentos no interior do rack.</li>
+          <li><strong>Protetor eletrônico pendurado</strong>, podendo causar desligamento dos equipamentos.</li>
+        </ul>
+      </div>
+
+      <div class="notice-box">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <span>
+          <strong>Observação:</strong> as não conformidades acima <strong>não foram corrigidas nesta visita</strong> — foram apenas identificadas e registradas. Recomenda-se o tratamento em orçamento separado, incluindo a substituição/proteção dos baluns oxidados, a recrimpagem adequada dos conectores e a reorganização do rack.
+        </span>
+      </div>
+    </div>
+
+    <!-- SUGESTÕES DE SOLUÇÃO -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg>
+        Sugestões de solução
+      </div>
+      <div class="section-sub">Com base nas não conformidades identificadas, apresentamos abaixo duas opções de intervenção para restabelecer o pleno funcionamento do sistema. Ambas podem ser detalhadas e orçadas separadamente.</div>
+
+      <div class="solution-grid">
+        <!-- SOLUÇÃO 1 -->
+        <div class="solution-card">
+          <div class="solution-header">
+            <span class="solution-name">Solução 1 — Câmeras sem sinal</span>
+            <span class="solution-tag neutral">Foco</span>
+          </div>
+          <div class="solution-body">
+            <div class="solution-subtitle">Escopo da solução 1</div>
+            <ul class="solution-list">
+              <li>Teste dos cabos das <strong>8 câmeras sem sinal</strong>, com substituição se necessário.</li>
+              <li>Troca dos <strong>8 pares de baluns</strong>.</li>
+              <li>Colocação de <strong>caixas organizadoras devidamente isoladas</strong>.</li>
+              <li><strong>Crimpagem dos cabos</strong> dessas 8 câmeras nas <strong>duas extremidades</strong>.</li>
+              <li><strong>Limpeza</strong> dessas 8 câmeras.</li>
+            </ul>
+            <div class="solution-footnote">
+              <strong>Objetivo:</strong> restabelecer as 8 câmeras que permanecem sem sinal após a visita, tratando a causa raiz identificada (baluns oxidados e conexões mal crimpadas).
+            </div>
+          </div>
+        </div>
+
+        <!-- SOLUÇÃO 2 -->
+        <div class="solution-card recommended">
+          <div class="solution-header">
+            <span class="solution-name">Solução 2 — Sistema completo</span>
+            <span class="solution-tag">Recomendada</span>
+          </div>
+          <div class="solution-body">
+            <div class="solution-subtitle">Escopo da solução 2</div>
+            <ul class="solution-list">
+              <li><strong>Tudo o que está previsto na Solução 1.</strong></li>
+              <li><strong>Crimpagem nas duas extremidades de todas as câmeras.</strong></li>
+              <li><strong>Limpeza e ajustes de posicionamento das 32 câmeras</strong> do sistema.</li>
+            </ul>
+            <div class="solution-footnote">
+              <strong>Objetivo:</strong> padronizar e prevenir falhas em todo o sistema, garantindo confiabilidade, qualidade das imagens e reduzindo a necessidade de novas intervenções corretivas.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOCO CTA: TABELA DE VALORES -->
+      <div class="table-cta-box">
+        <div class="table-cta-header">
+          <div class="table-cta-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="6" y1="8" x2="18" y2="8"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="6" y1="16" x2="18" y2="16"/></svg>
+          </div>
+          <div>
+            <div class="table-cta-title">Para prosseguir com o atendimento</div>
+            <div class="table-cta-subtitle">Consulte a Tabela de Atendimento Técnico completa</div>
+          </div>
+        </div>
+        <div class="table-cta-text">
+          <strong>Todos os atendimentos são regidos pela nossa Tabela de Atendimento Técnico (TAB-TEC-2026-001).</strong> Para autorizar a execução da <strong>Solução 1</strong> ou da <strong>Solução 2</strong>, é indispensável que o cliente tenha acesso prévio à tabela completa de valores, condições e horários de atendimento. O valor deste relatório cobre exclusivamente a visita já realizada.
+        </div>
+        <div class="table-cta-actions">
+          <a class="btn-table primary" href="atendimentotecnicohelio.html" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Acessar Tabela de Atendimento Técnico
+          </a>
+          <a class="btn-table whats" id="whatsappTabela" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 32 32" fill="#fff"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.648 4.83 1.782 6.86L2 30l7.347-1.757A13.94 13.94 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5a11.44 11.44 0 01-5.847-1.6l-.418-.249-4.36 1.043 1.072-4.25-.272-.437A11.46 11.46 0 014.5 16C4.5 9.649 9.649 4.5 16 4.5S27.5 9.649 27.5 16 22.351 27.5 16 27.5zm6.29-8.61c-.345-.172-2.04-1.006-2.356-1.12-.315-.115-.545-.172-.774.172-.23.345-.888 1.12-1.09 1.35-.2.23-.4.258-.745.086-.345-.172-1.455-.537-2.771-1.71-1.024-.913-1.715-2.04-1.916-2.385-.2-.345-.021-.531.15-.703.155-.155.345-.402.517-.603.172-.2.23-.345.345-.575.115-.23.057-.431-.029-.603-.086-.172-.774-1.866-1.06-2.556-.28-.672-.563-.58-.774-.591-.2-.01-.43-.013-.66-.013s-.603.086-.919.431c-.315.345-1.204 1.177-1.204 2.87 0 1.694 1.233 3.33 1.405 3.56.172.23 2.427 3.706 5.88 5.198.822.355 1.463.566 1.963.725.825.263 1.576.226 2.169.137.661-.099 2.04-.833 2.327-1.637.287-.804.287-1.493.2-1.637-.086-.143-.315-.23-.66-.402z"/></svg>
+            Solicitar tabela pelo WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PENDÊNCIAS -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Pendências e recomendações
+      </div>
+      <div class="pending-box">
+        <div class="pending-title">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Itens pendentes de verificação / tratamento
+        </div>
+        <ul class="pending-list">
+          <li><strong>Integridade dos cabos</strong> — ainda não testada nesta visita; recomenda-se a realização do teste de integridade para descartar problemas nos cabos (previsto na Solução 1).</li>
+          <li><strong>Substituição/proteção dos baluns oxidados</strong> no lado das câmeras, com instalação de proteção adequada contra intempéries.</li>
+          <li><strong>Recrimpagem adequada dos conectores</strong> (prendendo a capa do cabo) no rack e no lado das câmeras.</li>
+          <li><strong>Reorganização do rack</strong>, com fixação dos cabos e equipamentos e correto posicionamento do protetor eletrônico.</li>
+          <li><strong>Verificações periódicas preventivas</strong> para evitar novas oxidações e perdas de sinal.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- REGISTROS FOTOGRÁFICOS -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Registros fotográficos
+      </div>
+
+      <!-- FOTOS DO SISTEMA -->
+      <div class="photo-group-title">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Sistema de CFTV — câmeras sem sinal
+      </div>
+      <div class="photo-grid">
+        <div class="photo-card">
+          <img src="https://i.postimg.cc/cL7LXJKt/sistema1.jpg" 
+               alt="Registro fotográfico 1 — sistema de CFTV com câmeras sem sinal"
+               referrerpolicy="no-referrer"
+               crossorigin="anonymous"
+               loading="lazy">
+          <div class="photo-caption">
+            <strong>Registro 1</strong><br>
+            Tela do sistema de CFTV exibindo câmeras sem sinal.
+          </div>
+        </div>
+        <div class="photo-card">
+          <img src="https://i.postimg.cc/cL7LXJK8/sistema2.jpg" 
+               alt="Registro fotográfico 2 — sistema de CFTV com câmeras sem sinal"
+               referrerpolicy="no-referrer"
+               crossorigin="anonymous"
+               loading="lazy">
+          <div class="photo-caption">
+            <strong>Registro 2</strong><br>
+            Tela do sistema de CFTV exibindo câmeras sem sinal.
+          </div>
+        </div>
+      </div>
+
+      <!-- FOTO DO RACK -->
+      <div class="photo-group-title">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Rack — não conformidades
+      </div>
+      <div class="photo-grid">
+        <div class="photo-card" style="grid-column: 1 / -1;">
+          <img src="https://i.postimg.cc/kgMWQLGc/rackpetropolis.jpg" 
+               alt="Registro fotográfico 3 — não conformidades no rack de CFTV"
+               referrerpolicy="no-referrer"
+               crossorigin="anonymous"
+               loading="lazy">
+          <div class="photo-caption">
+            <strong>Registro 3</strong><br>
+            Rack de CFTV evidenciando as não conformidades: conectores sem prender a capa do cabo, cabos esticados, equipamentos desorganizados e protetor eletrônico pendurado.
+          </div>
+        </div>
+      </div>
+
+      <!-- FOTOS DOS BALUNS / LADO DAS CÂMERAS -->
+      <div class="photo-group-title">
+        <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        Baluns no lado das câmeras — não conformidades
+      </div>
+      <div class="section-sub">Registros das não conformidades identificadas nos baluns instalados no lado das câmeras (oxidação, falta de proteção/isolação e componentes apagados).</div>
+      <div class="photo-grid-3">
+        <div class="photo-card">
+          <img src="https://i.postimg.cc/jdb1bqg3/camerassemsinal1.jpg" 
+               alt="Registro fotográfico 4 — balun oxidado no lado da câmera"
+               referrerpolicy="no-referrer"
+               crossorigin="anonymous"
+               loading="lazy">
+          <div class="photo-caption">
+            <strong>Registro 4</strong><br>
+            Balun no lado da câmera com oxidação e sem proteção.
+          </div>
+        </div>
+        <div class="photo-card">
+          <img src="https://i.postimg.cc/02s4s5WW/camerasemsinal2.jpg" 
+               alt="Registro fotográfico 5 — balun oxidado no lado da câmera"
+               referrerpolicy="no-referrer"
+               crossorigin="anonymous"
+               loading="lazy">
+          <div class="photo-caption">
+            <strong>Registro 5</strong><br>
+            Balun no lado da câmera com oxidação e sem proteção.
+          </div>
+        </div>
+        <div class="photo-card">
+          <img src="https://i.postimg.cc/J4LFL76p/camerasemsinal3.jpg" 
+               alt="Registro fotográfico 6 — balun oxidado no lado da câmera"
+               referrerpolicy="no-referrer"
+               crossorigin="anonymous"
+               loading="lazy">
+          <div class="photo-caption">
+            <strong>Registro 6</strong><br>
+            Balun no lado da câmera com oxidação e sem proteção.
+          </div>
+        </div>
+        <div class="photo-card">
+          <img src="https://i.postimg.cc/qBnFS6L5/camerasemsinal4.jpg" 
+               alt="Registro fotográfico 7 — balun oxidado no lado da câmera"
+               referrerpolicy="no-referrer"
+               crossorigin="anonymous"
+               loading="lazy">
+          <div class="photo-caption">
+            <strong>Registro 7</strong><br>
+            Balun no lado da câmera com oxidação e sem proteção.
+          </div>
+        </div>
+        <div class="photo-card">
+          <img src="https://i.postimg.cc/gcR7QLDg/camerasemsinal6.jpg" 
+               alt="Registro fotográfico 8 — balun oxidado no lado da câmera"
+               referrerpolicy="no-referrer"
+               crossorigin="anonymous"
+               loading="lazy">
+          <div class="photo-caption">
+            <strong>Registro 8</strong><br>
+            Balun no lado da câmera com oxidação e sem proteção.
+          </div>
+        </div>
+        <div class="photo-card">
+          <img src="https://i.postimg.cc/7P7RdJVR/camerasemsinal7.jpg" 
+               alt="Registro fotográfico 9 — balun oxidado no lado da câmera"
+               referrerpolicy="no-referrer"
+               crossorigin="anonymous"
+               loading="lazy">
+          <div class="photo-caption">
+            <strong>Registro 9</strong><br>
+            Balun no lado da câmera com oxidação e sem proteção.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VALOR DO ATENDIMENTO -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        Valor do atendimento
+      </div>
+      <div class="section-sub">Os atendimentos são regidos pelos valores da nossa <strong>Tabela de Atendimento Técnico (TAB-TEC-2026-001)</strong>, com valores progressivos conforme o tempo de permanência no local.</div>
+      <div class="value-box">
+        <table class="value-table">
+          <thead>
+            <tr>
+              <th>Faixa</th>
+              <th>Cálculo</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1ª hora</td>
+              <td>—</td>
+              <td>R$ 200,00</td>
+            </tr>
+            <tr>
+              <td>2ª hora</td>
+              <td>—</td>
+              <td>R$ 100,00</td>
+            </tr>
+            <tr>
+              <td>3ª hora (proporcional — 43 min)</td>
+              <td>R$ 95,00 × (43/60)</td>
+              <td>R$ 68,08</td>
+            </tr>
+            <tr class="total-row">
+              <td colspan="2">Total — 2h43min</td>
+              <td>R$ 368,08</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="value-note">
+        <strong>Base de cálculo:</strong> Tabela de Atendimento Técnico (TAB-TEC-2026-001) — 1ª hora R$ 200,00, 2ª hora R$ 100,00 e 3ª hora R$ 95,00. A 3ª hora é cobrada proporcionalmente aos minutos efetivamente trabalhados (43 min), aplicando-se a proporção 43/60 sobre o valor da hora. <strong>Deslocamento:</strong> incluso para a Região de Campina Grande-PB. <strong>A tabela completa de valores, condições e horários deve ser consultada pelo cliente antes de autorizar novos atendimentos.</strong>
+      </div>
+    </div>
+
+    <!-- CONCLUSÃO -->
+    <div class="section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Conclusão
+      </div>
+      <div class="conclusion-box">
+        <div class="conclusion-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="conclusion-content">
+          <div class="conclusion-title">Atendimento executado — pendências identificadas</div>
+          <div class="conclusion-desc">
+            Nesta visita, o sistema apresentava <strong>23 câmeras inoperantes</strong> ao chegar. Foi identificado o problema no <strong>cabo de força do powerbalun</strong> (que alimentava 16 câmeras) e realizada a <strong>substituição do cabo</strong>, restabelecendo <strong>15 câmeras</strong>. As <strong>8 câmeras restantes</strong> foram testadas individualmente e estão funcionais — o problema está nas <strong>conexões/baluns oxidados e conectores mal crimpados</strong> no lado das câmeras. Permanecem <strong>pendentes</strong>: o teste de integridade dos cabos (ainda não realizado), a substituição/proteção dos baluns oxidados, a recrimpagem adequada dos conectores e a reorganização do rack — itens que deverão ser tratados em <strong>orçamento separado</strong>, previamente informado ao cliente. Como sugestão, foram apresentadas duas opções de solução: <strong>Solução 1</strong> (foco nas 8 câmeras sem sinal) e <strong>Solução 2</strong> (sistema completo, recomendada). Para prosseguir, o cliente deve consultar previamente a <strong>Tabela de Atendimento Técnico (TAB-TEC-2026-001)</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OBSERVAÇÕES -->
+    <div class="notice-box">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <span>
+        <strong>Observações:</strong> este relatório cobre exclusivamente os serviços executados durante a visita técnica realizada (inspeção geral, diagnóstico, troca do cabo de força do powerbalun, testes individuais das 8 câmeras restantes e testes finais). As fotos dos componentes com problema estão anexadas na seção de registros fotográficos. O <strong>teste de integridade dos cabos ainda não foi realizado</strong> e as não conformidades identificadas <strong>não fazem parte do escopo desta visita</strong> e deverão ser tratadas em orçamento separado, previamente informado ao cliente. As <strong>sugestões de solução</strong> apresentadas (Solução 1 e Solução 2) são apenas proposições técnicas e não estão inclusas no valor deste atendimento. <strong>Todos os atendimentos são regidos pela Tabela de Atendimento Técnico (TAB-TEC-2026-001)</strong>, cujo acesso é indispensável antes de o cliente autorizar a execução das soluções propostas. Garantia de 90 dias sobre a mão de obra executada.
+      </span>
+    </div>
+
+    <!-- BOTÃO WHATSAPP -->
+    <div class="cta-wrap">
+      <a class="btn-whatsapp" id="whatsappFinal" href="#" target="_blank">
+        <svg viewBox="0 0 32 32" style="width:20px; height:20px; fill:#fff;"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.648 4.83 1.782 6.86L2 30l7.347-1.757A13.94 13.94 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5a11.44 11.44 0 01-5.847-1.6l-.418-.249-4.36 1.043 1.072-4.25-.272-.437A11.46 11.46 0 014.5 16C4.5 9.649 9.649 4.5 16 4.5S27.5 9.649 27.5 16 22.351 27.5 16 27.5zm6.29-8.61c-.345-.172-2.04-1.006-2.356-1.12-.315-.115-.545-.172-.774.172-.23.345-.888 1.12-1.09 1.35-.2.23-.4.258-.745.086-.345-.172-1.455-.537-2.771-1.71-1.024-.913-1.715-2.04-1.916-2.385-.2-.345-.021-.531.15-.703.155-.155.345-.402.517-.603.172-.2.23-.345.345-.575.115-.23.057-.431-.029-.603-.086-.172-.774-1.866-1.06-2.556-.28-.672-.563-.58-.774-.591-.2-.01-.43-.013-.66-.013s-.603.086-.919.431c-.315.345-1.204 1.177-1.204 2.87 0 1.694 1.233 3.33 1.405 3.56.172.23 2.427 3.706 5.88 5.198.822.355 1.463.566 1.963.725.825.263 1.576.226 2.169.137.661-.099 2.04-.833 2.327-1.637.287-.804.287-1.493.2-1.637-.086-.143-.315-.23-.66-.402z"/></svg>
+        Enviar relatório pelo WhatsApp
+      </a>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <img class="footer-avatar" 
+         src="https://i.postimg.cc/TwjQxnJc/Whats-App-Image-2026-08-31-at-14-32-09.jpg" 
+         alt="Hélio Crispim"
+         referrerpolicy="no-referrer"
+         crossorigin="anonymous"
+         loading="eager"
+         onerror="this.style.display='none'; document.getElementById('footerAvatarFallback').style.display='flex';">
+    <div class="footer-avatar-fallback" id="footerAvatarFallback">HC</div>
+    <div class="footer-info">
+      <div class="name">Hélio Crispim</div>
+      <div class="role">Eng. Eletricista · CREA-PB 12290192025PB</div>
+      <div class="contact">(83) 99678-7788 &middot; attivesistemas@gmail.com</div>
+      <div class="contact">CNPJ: 48.979.364/0001-91</div>
+      <div class="validity" id="footerValidity">Relatório RVT-2026-0001 · emitido em (--/--/----) · valores conforme TAB-TEC-2026-001</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== DATAS AUTOMÁTICAS (DIA FIXO = 02) =====
+  (function setDates() {
+    var hoje = new Date();
+    var dia = '02'; // dia fixo conforme informado
+    var mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    var ano = hoje.getFullYear();
+    var dataStr = dia + '/' + mes + '/' + ano;
+
+    document.getElementById('dataVisita').textContent = dataStr;
+    document.getElementById('footerValidity').textContent = 'Relatório RVT-2026-0001 · emitido em ' + dataStr + ' · valores conforme TAB-TEC-2026-001';
+  })();
+
+  // ===== WHATSAPP =====
+  var phone = "5583996787788";
+  var relatorio = "RVT-2026-0001";
+  var contato = "Henrique";
+  var cliente = "Projetar Serviços";
+  var local = "Grupo Petrópolis";
+
+  function buildMessage() {
+    var msg = 'Olá, Hélio! Sou ' + contato + ' (' + cliente + ') e segue o relatório da visita técnica:\n\n';
+    msg += '*Relatório:* ' + relatorio + '\n';
+    msg += 'Local: ' + local + '\n';
+    msg += 'Tipo: CFTV (Circuito Fechado de Televisão)\n';
+    msg += 'Data da visita: 02 | Chegada: 14:36 | Saída: 17:19 (2h43min)\n\n';
+    msg += '*Situação encontrada:*\n';
+    msg += '23 câmeras inoperantes no momento da chegada.\n\n';
+    msg += '*O que foi executado nesta visita:*\n';
+    msg += '✓ Inspeção geral do sistema e identificação das 23 câmeras inoperantes\n';
+    msg += '✓ Diagnóstico do problema no cabo de força do powerbalun (16 câmeras)\n';
+    msg += '✓ Troca do cabo de força do powerbalun — 15 câmeras restabelecidas\n';
+    msg += '✓ Teste individual das 8 câmeras restantes — todas funcionais\n';
+    msg += '✓ Identificação das conexões em não conformidade (baluns oxidados, conectores mal crimpados)\n';
+    msg += '✓ Testes finais do sistema\n';
+    msg += '✓ Organização e limpeza do local\n\n';
+    msg += '*Resultado:*\n';
+    msg += 'Antes: 23 câmeras inoperantes\n';
+    msg += 'Depois: 8 câmeras sem sinal (15 restabelecidas)\n\n';
+    msg += '*Não conformidades identificadas (não corrigidas nesta visita):*\n';
+    msg += '⚠ Baluns oxidados e sem proteção/isolação no lado das câmeras\n';
+    msg += '⚠ Baluns apagados, sem funcionamento\n';
+    msg += '⚠ Conectores mal crimpados (sem prender a capa do cabo) e oxidados\n';
+    msg += '⚠ Cabos esticados e equipamentos desorganizados no rack\n';
+    msg += '⚠ Protetor eletrônico pendurado, com risco de desligamento dos equipamentos\n\n';
+    msg += '*Sugestões de solução:*\n';
+    msg += '*Solução 1 (foco nas 8 câmeras sem sinal):*\n';
+    msg += '• Teste dos cabos das 8 câmeras sem sinal, troca se necessário\n';
+    msg += '• Troca dos 8 pares de baluns\n';
+    msg += '• Colocação de caixas organizadoras devidamente isoladas\n';
+    msg += '• Crimpagem dos cabos dessas 8 câmeras nas duas extremidades\n';
+    msg += '• Limpeza dessas 8 câmeras\n\n';
+    msg += '*Solução 2 (sistema completo — recomendada):*\n';
+    msg += '• Tudo da Solução 1\n';
+    msg += '• Crimpagem nas duas extremidades de todas as câmeras\n';
+    msg += '• Limpeza e ajustes de posicionamento das 32 câmeras\n\n';
+    msg += '*Valor do atendimento* (conforme TAB-TEC-2026-001):\n';
+    msg += '1ª hora: R$ 200,00\n';
+    msg += '2ª hora: R$ 100,00\n';
+    msg += '3ª hora proporcional (43 min): R$ 68,08\n';
+    msg += '*Total: R$ 368,08* (2h43min)\n';
+    msg += 'Deslocamento incluso para a Região de Campina Grande-PB.\n\n';
+    msg += '*IMPORTANTE — Para prosseguir com o atendimento:*\n';
+    msg += 'Todos os atendimentos são regidos pela nossa Tabela de Atendimento Técnico (TAB-TEC-2026-001). Antes de autorizar a Solução 1 ou Solução 2, é indispensável consultar a tabela completa de valores, condições e horários.\n';
+    msg += 'Solicite a tabela pelo WhatsApp ou acesse o documento enviado.\n\n';
+    msg += '*Conclusão:*\n';
+    msg += 'Atendimento executado com troca do cabo de força do powerbalun. As 8 câmeras ainda sem sinal dependem do tratamento das não conformidades nas conexões/baluns, que deverá ser feito em orçamento separado (Solução 1 ou Solução 2).\n\n';
+    msg += '✓ Garantia de 90 dias sobre a mão de obra executada\n\n';
+    msg += 'Aguardo o retorno!';
+    return msg;
+  }
+
+  function buildTabelaMessage() {
+    var msg = 'Olá, Hélio! Sou ' + contato + ' (' + cliente + ').\n\n';
+    msg += 'Recebi o relatório RVT-2026-0001 e gostaria de ter acesso à *Tabela de Atendimento Técnico (TAB-TEC-2026-001)* completa, com todos os valores, condições e horários de atendimento, para avaliar as Soluções 1 e 2 propostas.\n\n';
+    msg += 'Pode me enviar a tabela, por favor?';
+    return msg;
+  }
+
+  (function updateWhatsApp() {
+    var btn = document.getElementById('whatsappFinal');
+    var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(buildMessage());
+    btn.href = url;
+
+    var btnTabela = document.getElementById('whatsappTabela');
+    var urlTabela = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(buildTabelaMessage());
+    btnTabela.href = urlTabela;
+  })();
+</script>
+</body>
+</html>
