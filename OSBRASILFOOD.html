@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OS-2026-0091 | Attive Tecnologia</title>
+<meta name="description" content="Ordem de Serviço. Suporte técnico CFTV — câmeras sem sinal. Atendimento finalizado. Brasil Food. R$ 150,00 via PIX.">
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1d'/%3E%3Cpath d='M50 20 L80 75 H20 Z' fill='none' stroke='%232563eb' stroke-width='7' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+  :root {
+    --page-bg: #070b12;
+    --container-bg: #ffffff;
+    --primary: #0a0f1d;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-soft: #eff6ff;
+    --border: #e2e8f0;
+    --secondary-bg: #f8fafc;
+    --muted: #64748b;
+    --success: #16a34a;
+    --success-dark: #166534;
+    --success-soft: #f0fdf4;
+    --pix: #16a34a;
+    --pix-dark: #166534;
+    --pix-soft: #f0fdf4;
+    --info: #2563eb;
+    --info-dark: #1e40af;
+    --info-soft: #eff6ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--page-bg);
+    background-image: radial-gradient(circle at 20% 0%, rgba(37,99,235,0.18), transparent 45%),
+                       radial-gradient(circle at 100% 30%, rgba(22,163,74,0.10), transparent 40%);
+    color: var(--primary);
+    padding: 32px 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+    background-color: var(--container-bg);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+
+  .container::before {
+    content: "";
+    display: block;
+    height: 5px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--success));
+  }
+
+  .inner { padding: 26px 24px 28px; }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand-logo { height: 44px; width: auto; display: block; }
+
+  .brand-logo-fallback {
+    display: none;
+    height: 44px;
+    padding: 0 14px;
+    background: var(--primary);
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .badge-os {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 5px 11px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    background: var(--accent-soft);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  /* IDENTIFICAÇÃO */
+  .client-block {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: var(--secondary-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .client-block .cb-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .client-block .cb-icon svg {
+    width: 20px; height: 20px;
+    stroke: #fff;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .client-block .cb-body { flex: 1; min-width: 0; }
+
+  .client-block .cb-label {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .client-block .cb-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.3;
+  }
+
+  .client-block .cb-service {
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.4;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed var(--border);
+  }
+
+  .client-block .cb-service strong {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* SAUDAÇÃO */
+  .greeting {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: var(--info-soft);
+    border-left: 4px solid var(--info);
+    border-radius: 10px;
+    font-size: 12.5px;
+    color: var(--info-dark);
+    line-height: 1.5;
+  }
+
+  .greeting svg {
+    width: 18px; height: 18px;
+    stroke: var(--info);
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .greeting strong { color: var(--info); font-weight: 700; }
+
+  /* VALOR */
+  .value-block {
+    text-align: center;
+    padding: 24px 0 22px;
+    border-bottom: 1px solid var(--border);
+    margin-top: 4px;
+  }
+
+  .value-block .vb-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .value-block .vb-price {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--pix-dark);
+  }
+
+  .value-block .vb-note {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* PIX */
+  .pix-block {
+    margin-top: 20px;
+  }
+
+  .pix-block .pb-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--pix-dark);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pix-block .pb-label svg {
+    width: 14px; height: 14px;
+    stroke: currentColor;
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .pix-key {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--pix-dark);
+    word-break: break-all;
+    padding: 14px 16px;
+    background: var(--pix-soft);
+    border: 2px dashed var(--pix);
+    border-radius: 12px;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-family: inherit;
+    line-height: 1.35;
+  }
+
+  .pix-key:hover {
+    background: #fff;
+    border-style: solid;
+  }
+
+  .pix-copy-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 11.5px;
+    color: var(--pix-dark);
+    font-weight: 700;
+  }
+
+  .pix-copy-hint svg {
+    width: 14px; height: 14px;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* BOTÃO CONFIRMAR */
+  .btn-confirm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 22px;
+    padding: 18px 22px;
+    background: var(--success);
+    color: #fff;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 15.5px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    box-shadow: 0 8px 22px rgba(22,163,74,0.4);
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .btn-confirm:hover {
+    background: var(--success-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(22,163,74,0.5);
+  }
+
+  .btn-confirm:active { transform: translateY(0); }
+
+  .btn-confirm svg {
+    width: 20px; height: 20px;
+    stroke: none;
+    fill: #fff;
+    flex-shrink: 0;
+  }
+
+  .btn-confirm .bc-arrow {
+    width: 18px; height: 18px;
+    stroke: #fff;
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .confirm-hint {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .confirm-hint svg {
+    width: 13px; height: 13px;
+    stroke: var(--success);
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* BOTÃO PDF */
+  .btn-pdf {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px 22px;
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .btn-pdf:hover {
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+  }
+
+  .btn-pdf:active { transform: translateY(0); }
+
+  .btn-pdf svg {
+    width: 18px; height: 18px;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .btn-pdf:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 22px 24px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--secondary-bg);
+  }
+
+  .footer-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.2);
+  }
+
+  .footer-avatar-fallback {
+    display: none;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff; font-size: 20px; font-weight: 700;
+    align-items: center; justify-content: center;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-info { flex: 1; text-align: left; }
+
+  .footer .name {
+    font-size: 14.5px; font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .footer .role {
+    font-size: 11.5px; font-weight: 600;
+    color: var(--accent); margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  .footer .contact {
+    font-size: 11px; color: var(--muted); margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  /* RESPONSIVO */
+  @media (max-width: 420px) {
+    body { padding: 16px 10px; }
+    .inner { padding: 22px 18px 24px; }
+    .brand-logo { height: 38px; }
+    .brand-logo-fallback { height: 38px; font-size: 18px; padding: 0 12px; }
+    .value-block .vb-price { font-size: 38px; }
+    .pix-key { font-size: 13px; padding: 12px 14px; }
+    .btn-confirm { font-size: 14.5px; padding: 16px 18px; }
+    .btn-pdf { font-size: 13px; padding: 13px 18px; }
+    .footer { padding: 18px 18px 20px; gap: 12px; }
+    .footer-avatar, .footer-avatar-fallback { width: 50px; height: 50px; }
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="inner" id="osContent">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand-logo-wrap">
+        <img class="brand-logo" 
+             src="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png" 
+             alt="Attive Tecnologia"
+             referrerpolicy="no-referrer"
+             crossorigin="anonymous"
+             loading="eager"
+             onerror="this.style.display='none'; document.getElementById('brandLogoFallback').style.display='flex';">
+        <div class="brand-logo-fallback" id="brandLogoFallback">attive</div>
+      </div>
+      <span class="badge-os">OS-2026-0091</span>
+    </div>
+
+    <!-- IDENTIFICAÇÃO DO CLIENTE -->
+    <div class="client-block">
+      <div class="cb-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+      </div>
+      <div class="cb-body">
+        <div class="cb-label">Cliente</div>
+        <div class="cb-name">Brasil Food</div>
+        <div class="cb-service">
+          <strong>Serviço executado:</strong> Suporte técnico CFTV — câmeras sem sinal
+        </div>
+      </div>
+    </div>
+
+    <!-- SAUDAÇÃO -->
+    <div class="greeting">
+      <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <div>
+        <strong>Atendimento finalizado.</strong> O suporte técnico em CFTV foi concluído com sucesso. Para finalizar, basta efetuar o PIX abaixo.
+      </div>
+    </div>
+
+    <!-- VALOR -->
+    <div class="value-block">
+      <div class="vb-label">Valor do serviço</div>
+      <div class="vb-price">R$ 150,00</div>
+      <div class="vb-note">Suporte técnico CFTV — câmeras sem sinal</div>
+    </div>
+
+    <!-- PIX -->
+    <div class="pix-block">
+      <div class="pb-label">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h.01M16 8h.01M8 16h.01M16 16h.01"/></svg>
+        Chave PIX
+      </div>
+      <button class="pix-key" id="pixKey" onclick="copiarPix()">attivetecnologia@gmail.com</button>
+      <div class="pix-copy-hint" id="pixHint">
+        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Toque para copiar
+      </div>
+    </div>
+
+    <!-- BOTÃO CONFIRMAR -->
+    <button class="btn-confirm" onclick="confirmarWhatsApp()">
+      <svg viewBox="0 0 32 32"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.648 4.83 1.782 6.86L2 30l7.347-1.757A13.94 13.94 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5a11.44 11.44 0 01-5.847-1.6l-.418-.249-4.36 1.043 1.072-4.25-.272-.437A11.46 11.46 0 014.5 16C4.5 9.649 9.649 4.5 16 4.5S27.5 9.649 27.5 16 22.351 27.5 16 27.5zm6.29-8.61c-.345-.172-2.04-1.006-2.356-1.12-.315-.115-.545-.172-.774.172-.23.345-.888 1.12-1.09 1.35-.2.23-.4.258-.745.086-.345-.172-1.455-.537-2.771-1.71-1.024-.913-1.715-2.04-1.916-2.385-.2-.345-.021-.531.15-.703.155-.155.345-.402.517-.603.172-.2.23-.345.345-.575.115-.23.057-.431-.029-.603-.086-.172-.774-1.866-1.06-2.556-.28-.672-.563-.58-.774-.591-.2-.01-.43-.013-.66-.013s-.603.086-.919.431c-.315.345-1.204 1.177-1.204 2.87 0 1.694 1.233 3.33 1.405 3.56.172.23 2.427 3.706 5.88 5.198.822.355 1.463.566 1.963.725.825.263 1.576.226 2.169.137.661-.099 2.04-.833 2.327-1.637.287-.804.287-1.493.2-1.637-.086-.143-.315-.23-.66-.402z"/></svg>
+      Confirmar pagamento
+      <svg class="bc-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
+    <div class="confirm-hint">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      Mensagem já pronta — não precisa digitar
+    </div>
+
+    <!-- BOTÃO PDF -->
+    <button class="btn-pdf" id="btnPdf" onclick="gerarPDF()">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+      Baixar Ordem de Serviço em PDF
+    </button>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer" id="osFooter">
+    <img class="footer-avatar" 
+         src="https://i.postimg.cc/TwjQxnJc/Whats-App-Image-2026-08-31-at-14-32-09.jpg" 
+         alt="Hélio Crispim"
+         referrerpolicy="no-referrer"
+         crossorigin="anonymous"
+         loading="eager"
+         onerror="this.style.display='none'; document.getElementById('footerAvatarFallback').style.display='flex';">
+    <div class="footer-avatar-fallback" id="footerAvatarFallback">HC</div>
+    <div class="footer-info">
+      <div class="name">Hélio Crispim</div>
+      <div class="role">Eng. Eletricista · CREA-PB 12290192025PB</div>
+      <div class="contact">(83) 99678-7788 · attivesistemas@gmail.com</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var phone = "5583996787788";
+  var os = "OS-2026-0091";
+  var cliente = "Brasil Food";
+  var servico = "Suporte técnico CFTV — câmeras sem sinal";
+  var pixKey = "attivetecnologia@gmail.com";
+
+  function copiarPix() {
+    var hint = document.getElementById('pixHint');
+    function feedback() {
+      hint.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Chave copiada!';
+      setTimeout(function() {
+        hint.innerHTML = '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Toque para copiar';
+      }, 2500);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(pixKey).then(feedback).catch(function() { fallbackCopy(); feedback(); });
+    } else { fallbackCopy(); feedback(); }
+    function fallbackCopy() {
+      var el = document.createElement('textarea');
+      el.value = pixKey; el.style.position = 'fixed'; el.style.opacity = '0';
+      document.body.appendChild(el); el.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(el);
+    }
+  }
+
+  function confirmarWhatsApp() {
+    var msg = 'Olá, Hélio! Sou da ' + cliente + ' e efetuei o pagamento via PIX da OS:\n\n';
+    msg += '*Ordem de Serviço:* ' + os + '\n';
+    msg += 'Cliente: ' + cliente + '\n';
+    msg += 'Serviço: ' + servico + '\n';
+    msg += 'Status: *Atendimento finalizado*\n\n';
+    msg += '*Valor pago:* R$ 150,00\n';
+    msg += '*Forma de pagamento:* PIX — ' + pixKey + '\n\n';
+    msg += 'Segue o comprovante. Obrigado!';
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  function gerarPDF() {
+    var btn = document.getElementById('btnPdf');
+    var originalLabel = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg> Gerando PDF...';
+
+    try {
+      var { jsPDF } = window.jspdf;
+      var doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
+      var pageW = 210;
+      var margin = 18;
+      var contentW = pageW - margin * 2;
+      var y = 20;
+
+      var PRIMARY = [10, 15, 29];
+      var ACCENT = [37, 99, 235];
+      var MUTED = [100, 116, 139];
+      var PIX = [22, 163, 74];
+      var BORDER = [226, 232, 240];
+
+      // Cabeçalho
+      doc.setFillColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.rect(0, 0, pageW, 5, 'F');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('ATTIVE TECNOLOGIA', margin, y + 5);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Ordem de Serviço ' + os, margin, y + 11);
+
+      y += 20;
+
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.3);
+      doc.line(margin, y, pageW - margin, y);
+      y += 8;
+
+      // Cliente
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('CLIENTE', margin, y);
+      y += 5;
+
+      doc.setFontSize(11);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text(cliente, margin, y);
+      y += 6;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Serviço: ' + servico, margin, y);
+      y += 12;
+
+      // Valor
+      doc.setDrawColor(PIX[0], PIX[1], PIX[2]);
+      doc.setLineWidth(0.6);
+      doc.roundedRect(margin, y - 4, contentW, 24, 3, 3);
+      doc.setFillColor(240, 253, 244);
+      doc.roundedRect(margin, y - 4, contentW, 24, 3, 3, 'F');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(PIX[0], PIX[1], PIX[2]);
+      doc.text('VALOR DO SERVIÇO', margin + contentW / 2, y + 2, { align: 'center' });
+
+      doc.setFontSize(16);
+      doc.text('R$ 150,00', margin + contentW / 2, y + 11, { align: 'center' });
+      y += 30;
+
+      // PIX
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(PIX[0], PIX[1], PIX[2]);
+      doc.text('CHAVE PIX', margin, y);
+      y += 5;
+
+      doc.setDrawColor(PIX[0], PIX[1], PIX[2]);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(margin, y - 4, contentW, 12, 2, 2);
+      doc.setFillColor(240, 253, 244);
+      doc.roundedRect(margin, y - 4, contentW, 12, 2, 2, 'F');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(PIX[0], PIX[1], PIX[2]);
+      doc.text(pixKey, pageW / 2, y + 3, { align: 'center' });
+      y += 20;
+
+      // Rodapé
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.3);
+      doc.line(margin, y, pageW - margin, y);
+      y += 6;
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('Hélio Crispim', margin, y);
+      y += 4;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(ACCENT[0], ACCENT[1], ACCENT[2]);
+      doc.text('Eng. Eletricista · CREA-PB 12290192025PB', margin, y);
+      y += 4;
+
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('(83) 99678-7788 · attivesistemas@gmail.com', margin, y);
+      y += 6;
+
+      doc.setFontSize(7);
+      doc.setTextColor(148, 163, 184);
+      doc.text('Documento gerado em ' + new Date().toLocaleDateString('pt-BR'), margin, y);
+
+      doc.save('OS-' + os + '-Brasil-Food.pdf');
+
+      btn.disabled = false;
+      btn.innerHTML = originalLabel;
+    } catch (err) {
+      console.error('Erro ao gerar PDF:', err);
+      alert('Erro ao gerar o PDF. Tente novamente.');
+      btn.disabled = false;
+      btn.innerHTML = originalLabel;
+    }
+  }
+</script>
+</body>
+</html>
