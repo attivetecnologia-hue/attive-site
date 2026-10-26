@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orçamento ORC-2026-0155 | Attive Tecnologia</title>
+<meta name="description" content="Orçamento. Instalação e configuração de sistema de 4 câmeras — Cláudia. R$ 1.899,00 em até 6x ou PIX com 10% de desconto: R$ 1.709,10.">
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1d'/%3E%3Cpath d='M50 20 L80 75 H20 Z' fill='none' stroke='%232563eb' stroke-width='7' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --page-bg: #070b12;
+    --container-bg: #ffffff;
+    --primary: #0a0f1d;
+    --accent: #2563eb;
+    --accent-2: #3b82f6;
+    --accent-light: #dbeafe;
+    --accent-soft: #eff6ff;
+    --border: #e2e8f0;
+    --secondary-bg: #f8fafc;
+    --muted: #64748b;
+    --success: #16a34a;
+    --success-dark: #166534;
+    --success-soft: #f0fdf4;
+    --warn: #2563eb;
+    --warn-soft: #eff6ff;
+    --warn-border: #bfdbfe;
+    --pix: #16a34a;
+    --pix-dark: #166534;
+    --pix-soft: #f0fdf4;
+    --neutral: #94a3b8;
+    --neutral-soft: #f1f5f9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--page-bg);
+    background-image: radial-gradient(circle at 20% 0%, rgba(37,99,235,0.18), transparent 45%),
+                       radial-gradient(circle at 100% 30%, rgba(22,163,74,0.10), transparent 40%);
+    color: var(--primary);
+    padding: 40px 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    background-color: var(--container-bg);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+
+  .container::before {
+    content: "";
+    display: block;
+    height: 6px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--success));
+  }
+
+  .inner { padding: 36px 40px 40px; }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand-logo-wrap { display: flex; align-items: center; gap: 12px; }
+  .brand-logo { height: 66px; width: auto; display: block; }
+
+  .brand-logo-fallback {
+    display: none;
+    height: 66px;
+    padding: 0 16px;
+    background: var(--primary);
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .badges { display:flex; gap:8px; flex-wrap:wrap; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 6px 12px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .badge svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .badge.os { background: var(--accent-soft); color: var(--accent); }
+  .badge.done { background: var(--success-soft); color: var(--success-dark); border: 1px solid var(--success); }
+
+  /* FAIXA DE AVISO */
+  .notice-band {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 14px 18px;
+    background: var(--accent-soft);
+    border: 1.5px solid var(--warn-border);
+    border-left: 5px solid var(--accent);
+    border-radius: 12px;
+  }
+
+  .notice-band svg {
+    width: 22px; height: 22px;
+    stroke: var(--accent);
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .notice-band .nb-text { font-size: 12.5px; color: #1e3a8a; line-height: 1.45; }
+  .notice-band .nb-text strong { color: #1e40af; }
+
+  /* STEPPER */
+  .stepper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    margin: 26px 0 30px;
+  }
+
+  .stepper-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .stepper-step:hover { transform: scale(1.06); }
+
+  .stepper-step .circle {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--border);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+  }
+
+  .stepper-step .circle svg {
+    width: 26px;
+    height: 26px;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .stepper-step .label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    transition: color 0.25s;
+    text-align: center;
+    max-width: 92px;
+    line-height: 1.2;
+  }
+
+  .stepper-step.active .circle {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 0 8px rgba(37,99,235,0.15);
+    transform: scale(1.05);
+  }
+
+  .stepper-step.active .label { color: var(--accent); }
+
+  .stepper-step.done .circle {
+    background: var(--success);
+    border-color: var(--success);
+    color: #fff;
+  }
+
+  .stepper-step.done .label { color: var(--success-dark); }
+
+  .stepper-line {
+    height: 3px;
+    background: var(--border);
+    flex: 1;
+    margin: 0 -6px 26px;
+    border-radius: 2px;
+    transition: background 0.25s;
+  }
+
+  .stepper-line.done { background: var(--success); }
+
+  /* TELAS */
+  .screen { display: none; animation: fadeIn 0.35s ease-out; }
+  .screen.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* HEADLINE DA TELA */
+  .screen-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .screen-head .head-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--accent-soft);
+    border: 2px solid var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .screen-head .head-icon svg {
+    width: 28px;
+    height: 28px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .screen-head .head-text { flex: 1; }
+
+  .screen-head .head-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .screen-head .head-sub {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* META CARDS */
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .meta-card {
+    background: var(--secondary-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+
+  .meta-card .mc-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .meta-card .mc-value {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.3;
+  }
+
+  /* BLOCO DE ENDEREÇO */
+  .address-block {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--secondary-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+
+  .address-block .ab-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .address-block .ab-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: #fff;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .address-block .ab-body { flex: 1; }
+
+  .address-block .ab-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .address-block .ab-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.3;
+  }
+
+  .address-block .ab-line {
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.4;
+    margin-top: 1px;
+  }
+
+  /* TOTAL HERO — VALOR ÚNICO */
+  .total-hero {
+    border: 2.5px solid var(--accent);
+    border-radius: 16px;
+    padding: 26px;
+    background: linear-gradient(150deg, #eff6ff 0%, #ffffff 100%);
+    margin-bottom: 22px;
+    text-align: center;
+  }
+
+  .total-hero .th-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+  }
+
+  .total-hero .th-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: #fff;
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .total-hero .th-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .total-hero .th-value {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--primary);
+    line-height: 1.1;
+  }
+
+  .total-hero .th-sub {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  .total-hero .th-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 18px;
+    text-align: left;
+  }
+
+  .total-hero .th-option {
+    border-radius: 12px;
+    padding: 14px;
+    border: 2px solid var(--border);
+    background: #fff;
+  }
+
+  .total-hero .th-option.pix-opt {
+    border-color: var(--success);
+    background: var(--success-soft);
+  }
+
+  .total-hero .th-option.card-opt {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .total-hero .th-option .to-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .total-hero .th-option.pix-opt .to-label { color: var(--success-dark); }
+  .total-hero .th-option.card-opt .to-label { color: var(--accent); }
+
+  .total-hero .th-option .to-value {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .total-hero .th-option.pix-opt .to-value { color: var(--success-dark); }
+  .total-hero .th-option.card-opt .to-value { color: var(--accent); }
+
+  .total-hero .th-option .to-note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  /* ITENS VISUAIS */
+  .items-visual {
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 20px;
+  }
+
+  .item-visual {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .item-visual:last-child { border-bottom: none; }
+
+  .item-visual .iv-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .item-visual .iv-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .item-visual .iv-info { flex: 1; }
+
+  .item-visual .iv-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .item-visual .iv-qty {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .item-visual .iv-included {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--success-dark);
+    background: var(--success-soft);
+    border: 1px solid var(--success);
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  /* CARD DE FORMAS DE PAGAMENTO */
+  .pay-card {
+    border: 2.5px solid var(--success);
+    border-radius: 16px;
+    padding: 26px 24px;
+    background: linear-gradient(150deg, var(--success-soft) 0%, #ffffff 100%);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .pay-card .pay-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+  }
+
+  .pay-card .pay-icon svg {
+    width: 38px;
+    height: 38px;
+    stroke: #fff;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .pay-card .pay-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--success-dark);
+    margin-bottom: 6px;
+  }
+
+  .pay-card .pay-note {
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.45;
+    margin-top: 10px;
+  }
+
+  /* CAIXA DE OPÇÕES NA TELA 2 */
+  .pay-options {
+    display: grid;
+    gap: 14px;
+    margin-top: 18px;
+    text-align: left;
+  }
+
+  .pay-option-box {
+    border-radius: 14px;
+    padding: 18px;
+    border: 2px solid var(--border);
+  }
+
+  .pay-option-box.pix-box {
+    border-color: var(--success);
+    background: var(--success-soft);
+  }
+
+  .pay-option-box.card-box {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .pay-option-box .pob-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .pay-option-box .pob-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .pay-option-box.pix-box .pob-icon { background: var(--success); }
+  .pay-option-box.card-box .pob-icon { background: var(--accent); }
+
+  .pay-option-box .pob-icon svg {
+    width: 19px;
+    height: 19px;
+    stroke: #fff;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .pay-option-box .pob-title {
+    font-size: 13.5px;
+    font-weight: 700;
+  }
+
+  .pay-option-box.pix-box .pob-title { color: var(--success-dark); }
+  .pay-option-box.card-box .pob-title { color: var(--accent); }
+
+  .pay-option-box .pob-sub {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .pay-option-box .pob-price {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+
+  .pay-option-box.pix-box .pob-price { color: var(--success-dark); }
+  .pay-option-box.card-box .pob-price { color: var(--accent); }
+
+  .pay-option-box .pob-detail {
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.4;
+  }
+
+  /* CAIXA DE CÓPIA DA CHAVE PIX */
+  .pix-key {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--success-dark);
+    word-break: break-all;
+    padding: 12px 16px;
+    background: #fff;
+    border: 2px dashed var(--success);
+    border-radius: 12px;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .pix-key:hover { background: #fff; }
+
+  .pix-copy-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+    font-size: 11.5px;
+    color: var(--success-dark);
+    font-weight: 700;
+  }
+
+  .pix-copy-hint svg {
+    width: 15px; height: 15px;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .pix-copy-hint.copied { color: var(--success-dark); }
+
+  /* BOTÃO DE LINK DE CARTÃO */
+  .btn.card-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 12px;
+    padding: 15px 24px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14.5px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(37,99,235,0.35);
+  }
+
+  .btn.card-link:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(37,99,235,0.45);
+  }
+
+  .btn.card-link svg {
+    width: 20px; height: 20px;
+    stroke: #fff;
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* AVISOS */
+  .advance-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--accent-soft);
+    border: 1.5px solid var(--warn-border);
+    border-radius: 12px;
+    margin-bottom: 18px;
+    font-size: 12.5px;
+    color: #1e3a8a;
+    line-height: 1.45;
+  }
+
+  .advance-note svg {
+    width: 20px; height: 20px;
+    stroke: var(--accent);
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .advance-note strong { color: #1e40af; }
+
+  .contractor-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--secondary-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 18px;
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.45;
+  }
+
+  .contractor-note svg {
+    width: 20px; height: 20px;
+    stroke: var(--primary);
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .contractor-note strong { color: var(--primary); }
+
+  /* TELA 3 — RESUMO FINAL */
+  .final-grid { display: grid; gap: 12px; margin-bottom: 22px; }
+
+  .final-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+  }
+
+  .final-row .fr-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--secondary-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .final-row .fr-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--primary);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .final-row .fr-label {
+    flex: 1;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .final-row .fr-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    text-align: right;
+  }
+
+  .final-row.address .fr-value {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #475569;
+    line-height: 1.4;
+    max-width: 62%;
+  }
+
+  .final-row.total {
+    background: var(--success-soft);
+    border-color: var(--success);
+  }
+
+  .final-row.total .fr-icon { background: var(--success); }
+  .final-row.total .fr-icon svg { stroke: #fff; }
+  .final-row.total .fr-label { color: var(--success-dark); }
+  .final-row.total .fr-value { color: var(--success-dark); font-size: 14px; line-height: 1.4; }
+
+  .final-row.payment {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+
+  .final-row.payment .fr-icon { background: var(--accent); }
+  .final-row.payment .fr-icon svg { stroke: #fff; }
+  .final-row.payment .fr-label { color: var(--accent); }
+  .final-row.payment .fr-value { color: var(--accent); font-size: 13px; }
+
+  /* BOTÕES */
+  .actions {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .actions .spacer { flex: 1; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .btn svg { width: 20px; height: 20px; flex-shrink: 0; stroke: currentColor; stroke-width: 2.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  .btn.primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(37,99,235,0.35);
+  }
+
+  .btn.primary:hover:not(:disabled) {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(37,99,235,0.45);
+  }
+
+  .btn.ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 2px solid var(--border);
+    padding: 14px 22px;
+  }
+
+  .btn.ghost:hover {
+    background: var(--secondary-bg);
+    color: var(--primary);
+    border-color: #cbd5e1;
+  }
+
+  .btn.pix-btn {
+    background: var(--success);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(22,163,74,0.35);
+    padding: 16px 26px;
+    font-size: 15px;
+  }
+
+  .btn.pix-btn:hover {
+    background: var(--success-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(22,163,74,0.45);
+  }
+
+  .btn.whats {
+    background: var(--success);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(22,163,74,0.4);
+    padding: 18px 32px;
+    font-size: 16px;
+  }
+
+  .btn.whats:hover {
+    background: var(--success-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(22,163,74,0.5);
+  }
+
+  .btn.full { width: 100%; }
+  .btn.whats svg { stroke: none; fill: #fff; }
+
+  /* FOOTER */
+  .footer {
+    padding: 24px 40px 20px;
+    border-top: 1px solid var(--border);
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-avatar {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-avatar-fallback {
+    display: none;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff; font-size: 22px; font-weight: 700;
+    align-items: center; justify-content: center;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-info { text-align: left; flex: 1; }
+
+  .footer .name {
+    font-size: 14.5px; font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+  }
+
+  .footer .role {
+    font-size: 12px; font-weight: 600;
+    color: var(--accent); margin-top: 1px;
+  }
+
+  .footer .contact {
+    font-size: 11.5px; color: var(--muted); margin-top: 3px;
+  }
+
+  .footer .validity {
+    font-size: 11px; color: #94a3b8; margin-top: 5px;
+  }
+
+  /* RESPONSIVO */
+  @media (max-width: 768px) {
+    body { padding: 16px 8px; }
+    .inner { padding: 22px; }
+    .meta-grid { grid-template-columns: 1fr 1fr; }
+    .stepper-step .circle { width: 46px; height: 46px; }
+    .stepper-step .circle svg { width: 22px; height: 22px; }
+    .stepper-step .label { font-size: 10px; max-width: 78px; }
+    .total-hero .th-value { font-size: 34px; }
+    .total-hero .th-options { grid-template-columns: 1fr; }
+    .final-row.address .fr-value { max-width: 58%; }
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 10px 6px; }
+    .inner { padding: 18px 16px 24px; }
+    .brand-logo { height: 54px; }
+    .brand-logo-fallback { height: 54px; font-size: 22px; }
+    .meta-grid { grid-template-columns: 1fr; gap: 10px; }
+    .stepper { gap: 2px; }
+    .stepper-step .circle { width: 40px; height: 40px; }
+    .stepper-step .circle svg { width: 20px; height: 20px; }
+    .stepper-step .label { font-size: 9px; max-width: 68px; }
+    .stepper-line { margin-bottom: 22px; }
+    .total-hero .th-value { font-size: 30px; }
+    .pix-key { font-size: 13px; }
+    .final-row { flex-wrap: wrap; }
+    .final-row.address .fr-value { max-width: 100%; text-align: left; }
+    .footer { padding: 20px 16px; flex-direction: column; text-align: center; gap: 10px; }
+    .footer-info { text-align: center; }
+    .footer-avatar, .footer-avatar-fallback { width: 56px; height: 56px; }
+    .actions { flex-direction: column; }
+    .btn { width: 100%; }
+    .actions .spacer { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="inner">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand-logo-wrap">
+        <img class="brand-logo" 
+             src="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png" 
+             alt="Attive Tecnologia"
+             referrerpolicy="no-referrer"
+             crossorigin="anonymous"
+             loading="eager"
+             onerror="this.style.display='none'; document.getElementById('brandLogoFallback').style.display='flex';">
+        <div class="brand-logo-fallback" id="brandLogoFallback">attive</div>
+      </div>
+      <div class="badges">
+        <span class="badge os">ORC-2026-0155</span>
+        <span class="badge done">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          Aguardando Aprovação
+        </span>
+      </div>
+    </div>
+
+    <!-- FAIXA DE AVISO -->
+    <div class="notice-band">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div class="nb-text">
+        <strong>Orçamento para 4 câmeras.</strong> O cliente já possui as <strong>4 câmeras</strong> e o <strong>gravador de vídeo</strong>. Este orçamento cobre exclusivamente os serviços de instalação, configuração e treinamento.
+      </div>
+    </div>
+
+    <!-- STEPPER -->
+    <div class="stepper">
+      <div class="stepper-step active" id="step1" onclick="irPara(1)">
+        <div class="circle">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <div class="label">Resumo</div>
+      </div>
+      <div class="stepper-line" id="line1"></div>
+      <div class="stepper-step" id="step2" onclick="irPara(2)">
+        <div class="circle">
+          <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+        </div>
+        <div class="label">Formas de Pagamento</div>
+      </div>
+      <div class="stepper-line" id="line2"></div>
+      <div class="stepper-step" id="step3" onclick="irPara(3)">
+        <div class="circle">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="label">Confirmar</div>
+      </div>
+    </div>
+
+    <!-- TELA 1 — RESUMO -->
+    <div class="screen active" id="screen1">
+
+      <div class="screen-head">
+        <div class="head-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <div class="head-text">
+          <div class="head-title">Orçamento do serviço</div>
+          <div class="head-sub">Instalação e configuração de sistema de 4 câmeras — Cláudia</div>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-card">
+          <div class="mc-label">Cliente</div>
+          <div class="mc-value">Cláudia</div>
+        </div>
+        <div class="meta-card">
+          <div class="mc-label">Serviço</div>
+          <div class="mc-value">Sistema de 4 Câmeras</div>
+        </div>
+        <div class="meta-card">
+          <div class="mc-label">Data</div>
+          <div class="mc-value" id="dataEmissao">--/--/----</div>
+        </div>
+      </div>
+
+      <div class="address-block">
+        <div class="ab-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="ab-body">
+          <div class="ab-label">Local do serviço</div>
+          <div class="ab-name">Cláudia</div>
+          <div class="ab-line">Endereço a confirmar com a cliente</div>
+          <div class="ab-line">Campina Grande - PB</div>
+        </div>
+      </div>
+
+      <div class="items-visual">
+        <div class="item-visual">
+          <div class="iv-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/><path d="M4 15h16"/><path d="M9 4v16"/></svg>
+          </div>
+          <div class="iv-info">
+            <div class="iv-name">Lançamento de cabos</div>
+            <div class="iv-qty">Passagem e organização dos cabos de rede para as 4 câmeras</div>
+          </div>
+          <span class="iv-included">Incluso</span>
+        </div>
+        <div class="item-visual">
+          <div class="iv-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="iv-info">
+            <div class="iv-name">Conectorização</div>
+            <div class="iv-qty">Montagem e crimpagem dos conectores das 4 câmeras</div>
+          </div>
+          <span class="iv-included">Incluso</span>
+        </div>
+        <div class="item-visual">
+          <div class="iv-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+          </div>
+          <div class="iv-info">
+            <div class="iv-name">Instalação de caixas organizadoras</div>
+            <div class="iv-qty">Fixação das caixas para organização dos cabos</div>
+          </div>
+          <span class="iv-included">Incluso</span>
+        </div>
+        <div class="item-visual">
+          <div class="iv-icon">
+            <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </div>
+          <div class="iv-info">
+            <div class="iv-name">Fixação das 4 câmeras</div>
+            <div class="iv-qty">Instalação e ajuste de posicionamento das câmeras</div>
+          </div>
+          <span class="iv-included">Incluso</span>
+        </div>
+        <div class="item-visual">
+          <div class="iv-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="iv-info">
+            <div class="iv-name">Instalação e configuração do gravador</div>
+            <div class="iv-qty">Configuração do DVR/NVR para as 4 câmeras</div>
+          </div>
+          <span class="iv-included">Incluso</span>
+        </div>
+        <div class="item-visual">
+          <div class="iv-icon">
+            <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </div>
+          <div class="iv-info">
+            <div class="iv-name">Acesso remoto nos dispositivos móveis</div>
+            <div class="iv-qty">Configuração de acesso remoto em celulares/tablets</div>
+          </div>
+          <span class="iv-included">Incluso</span>
+        </div>
+        <div class="item-visual">
+          <div class="iv-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div class="iv-info">
+            <div class="iv-name">Treinamento para uso</div>
+            <div class="iv-qty">Orientação ao cliente sobre operação do sistema</div>
+          </div>
+          <span class="iv-included">Incluso</span>
+        </div>
+      </div>
+
+      <!-- VALOR ÚNICO -->
+      <div class="total-hero">
+        <div class="th-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <div class="th-label">Valor total do orçamento · 4 câmeras</div>
+        <div class="th-value">R$ 1.899,00</div>
+        <div class="th-sub">Serviço completo incluso · 10% de desconto no PIX</div>
+
+        <div class="th-options">
+          <div class="th-option pix-opt">
+            <div class="to-label">PIX à vista · 10% OFF</div>
+            <div class="to-value">R$ 1.709,10</div>
+            <div class="to-note">Economia de R$ 189,90</div>
+          </div>
+          <div class="th-option card-opt">
+            <div class="to-label">Cartão de Crédito</div>
+            <div class="to-value">6x R$ 316,50</div>
+            <div class="to-note">Total R$ 1.899,00 · sem juros</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <div class="spacer"></div>
+        <button class="btn primary" onclick="irPara(2)">
+          Escolher forma de pagamento
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- TELA 2 — FORMAS DE PAGAMENTO -->
+    <div class="screen" id="screen2">
+
+      <div class="screen-head">
+        <div class="head-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+        </div>
+        <div class="head-text">
+          <div class="head-title">Formas de Pagamento</div>
+          <div class="head-sub">PIX à vista com 10% OFF ou cartão em até 6x</div>
+        </div>
+      </div>
+
+      <div class="advance-note">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <div>
+          O pagamento poderá ser feito <strong>via PIX à vista com 10% de desconto</strong> (R$ 1.709,10) ou <strong>cartão de crédito em até 6x sem juros</strong> (total R$ 1.899,00).
+        </div>
+      </div>
+
+      <div class="contractor-note">
+        <svg viewBox="0 0 24 24"><path d="M20 7h-4V5a3 3 0 00-3-3h-2a3 3 0 00-3 3v2H4a2 2 0 00-2 2v11a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+        <div>
+          As <strong>4 câmeras</strong> e o <strong>gravador de vídeo</strong> são fornecidos pela cliente. Este orçamento cobre apenas os serviços de instalação, configuração e treinamento.
+        </div>
+      </div>
+
+      <div class="pay-card">
+        <div class="pay-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+        </div>
+        <div class="pay-label">Formas de Pagamento</div>
+        <div class="pay-note">Escolha uma das opções abaixo e confirme pelo WhatsApp.</div>
+
+        <div class="pay-options">
+
+          <!-- OPÇÃO PIX -->
+          <div class="pay-option-box pix-box">
+            <div class="pob-head">
+              <div class="pob-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h10"/><circle cx="18" cy="17" r="2"/></svg>
+              </div>
+              <div>
+                <div class="pob-title">PIX à vista</div>
+                <div class="pob-sub">10% de desconto</div>
+              </div>
+            </div>
+            <div class="pob-price">R$ 1.709,10</div>
+            <div class="pob-detail">De R$ 1.899,00 por <strong>R$ 1.709,10</strong> (economia de R$ 189,90).<br>Chave PIX (e-mail): <strong>attivetecnologia@gmail.com</strong></div>
+            <div class="pix-key" id="pixKey" onclick="copiarPix()">attivetecnologia@gmail.com</div>
+            <div class="pix-copy-hint" id="pixHint">
+              <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Toque na chave para copiar
+            </div>
+          </div>
+
+          <!-- OPÇÃO CARTÃO -->
+          <div class="pay-option-box card-box">
+            <div class="pob-head">
+              <div class="pob-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+              </div>
+              <div>
+                <div class="pob-title">Cartão de Crédito</div>
+                <div class="pob-sub">Parcele em até 6x sem juros</div>
+              </div>
+            </div>
+            <div class="pob-price">6x R$ 316,50</div>
+            <div class="pob-detail">Total de <strong>R$ 1.899,00</strong> em até 6x sem juros — pagamento via link seguro.</div>
+            <a class="btn card-link" id="btnLinkCartao" href="https://link.infinitepay.io/helio_crispim_dos/VC1DLTYtSQ-o5ae4bPkLZ-1899,00" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+              Pagar com cartão de crédito
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" onclick="irPara(1)">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Voltar
+        </button>
+        <div class="spacer"></div>
+        <button class="btn pix-btn" id="btnContinuar2" onclick="irPara(3)">
+          Já fiz o pagamento
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- TELA 3 — CONFIRMAR -->
+    <div class="screen" id="screen3">
+
+      <div class="screen-head">
+        <div class="head-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="head-text">
+          <div class="head-title">Tudo pronto!</div>
+          <div class="head-sub">Confirme o pagamento pelo WhatsApp</div>
+        </div>
+      </div>
+
+      <div class="final-grid">
+        <div class="final-row">
+          <div class="fr-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+          </div>
+          <span class="fr-label">Orçamento</span>
+          <span class="fr-value">ORC-2026-0155</span>
+        </div>
+        <div class="final-row">
+          <div class="fr-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <span class="fr-label">Cliente</span>
+          <span class="fr-value">Cláudia</span>
+        </div>
+        <div class="final-row address">
+          <div class="fr-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <span class="fr-label">Local</span>
+          <span class="fr-value">Endereço a confirmar com a cliente<br>Campina Grande - PB</span>
+        </div>
+        <div class="final-row">
+          <div class="fr-icon">
+            <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </div>
+          <span class="fr-label">Serviço</span>
+          <span class="fr-value">Instalação e configuração de sistema de 4 câmeras</span>
+        </div>
+        <div class="final-row">
+          <div class="fr-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <span class="fr-label">Status</span>
+          <span class="fr-value" style="color: var(--accent);">Aguardando confirmação do pagamento</span>
+        </div>
+        <div class="final-row total">
+          <div class="fr-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <span class="fr-label">Valores</span>
+          <span class="fr-value">PIX: R$ 1.709,10<br>Cartão 6x: R$ 1.899,00</span>
+        </div>
+        <div class="final-row payment">
+          <div class="fr-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+          </div>
+          <span class="fr-label">Pagamento</span>
+          <span class="fr-value">PIX (attivetecnologia@gmail.com) ou Cartão de Crédito</span>
+        </div>
+      </div>
+
+      <button class="btn whats full" id="btnWhats" onclick="confirmarWhatsApp()">
+        <svg viewBox="0 0 32 32"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.648 4.83 1.782 6.86L2 30l7.347-1.757A13.94 13.94 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5a11.44 11.44 0 01-5.847-1.6l-.418-.249-4.36 1.043 1.072-4.25-.272-.437A11.46 11.46 0 014.5 16C4.5 9.649 9.649 4.5 16 4.5S27.5 9.649 27.5 16 22.351 27.5 16 27.5zm6.29-8.61c-.345-.172-2.04-1.006-2.356-1.12-.315-.115-.545-.172-.774.172-.23.345-.888 1.12-1.09 1.35-.2.23-.4.258-.745.086-.345-.172-1.455-.537-2.771-1.71-1.024-.913-1.715-2.04-1.916-2.385-.2-.345-.021-.531.15-.703.155-.155.345-.402.517-.603.172-.2.23-.345.345-.575.115-.23.057-.431-.029-.603-.086-.172-.774-1.866-1.06-2.556-.28-.672-.563-.58-.774-.591-.2-.01-.43-.013-.66-.013s-.603.086-.919.431c-.315.345-1.204 1.177-1.204 2.87 0 1.694 1.233 3.33 1.405 3.56.172.23 2.427 3.706 5.88 5.198.822.355 1.463.566 1.963.725.825.263 1.576.226 2.169.137.661-.099 2.04-.833 2.327-1.637.287-.804.287-1.493.2-1.637-.086-.143-.315-.23-.66-.402z"/></svg>
+        Confirmar pelo WhatsApp
+      </button>
+
+      <div class="actions" style="margin-top: 14px;">
+        <button class="btn ghost full" onclick="irPara(2)">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Voltar
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <img class="footer-avatar" 
+         src="https://i.postimg.cc/TwjQxnJc/Whats-App-Image-2026-08-31-at-14-32-09.jpg" 
+         alt="Hélio Crispim"
+         referrerpolicy="no-referrer"
+         crossorigin="anonymous"
+         loading="eager"
+         onerror="this.style.display='none'; document.getElementById('footerAvatarFallback').style.display='flex';">
+    <div class="footer-avatar-fallback" id="footerAvatarFallback">HC</div>
+    <div class="footer-info">
+      <div class="name">Hélio Crispim</div>
+      <div class="role">Eng. Eletricista · CREA-PB 12290192025PB</div>
+      <div class="contact">(83) 99678-7788 &middot; attivesistemas@gmail.com</div>
+      <div class="validity" id="footerValidity">ORC-2026-0155 · valores sujeitos a confirmação</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== DATA =====
+  (function setDates() {
+    var hoje = new Date();
+    var dataStr = String(hoje.getDate()).padStart(2, '0') + '/' +
+                  String(hoje.getMonth() + 1).padStart(2, '0') + '/' +
+                  hoje.getFullYear();
+    document.getElementById('dataEmissao').textContent = dataStr;
+    document.getElementById('footerValidity').textContent =
+      'ORC-2026-0155 · ' + dataStr + ' · valores sujeitos a confirmação';
+  })();
+
+  // ===== CONFIG =====
+  var phone = "5583996787788";
+  var os = "ORC-2026-0155";
+  var contato = "Cláudia";
+  var cliente = "Cláudia";
+  var endereco = "Endereço a confirmar com a cliente, Campina Grande - PB";
+  var servico = "Instalação e configuração de sistema de 4 câmeras (4 câmeras e gravador fornecidos pela cliente)";
+  var pixKey = "attivetecnologia@gmail.com";
+
+  // ===== NAVEGAÇÃO =====
+  function irPara(n) {
+    document.querySelectorAll('.screen').forEach(function(s) {
+      s.classList.remove('active');
+    });
+    document.getElementById('screen' + n).classList.add('active');
+    atualizarStepper(n);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function atualizarStepper(n) {
+    var s1 = document.getElementById('step1');
+    var s2 = document.getElementById('step2');
+    var s3 = document.getElementById('step3');
+    var l1 = document.getElementById('line1');
+    var l2 = document.getElementById('line2');
+
+    [s1, s2, s3].forEach(function(s) { s.classList.remove('active', 'done'); });
+    l1.classList.remove('done');
+    l2.classList.remove('done');
+
+    if (n === 1) {
+      s1.classList.add('active');
+    } else if (n === 2) {
+      s1.classList.add('done');
+      l1.classList.add('done');
+      s2.classList.add('active');
+    } else if (n === 3) {
+      s1.classList.add('done');
+      l1.classList.add('done');
+      s2.classList.add('done');
+      l2.classList.add('done');
+      s3.classList.add('active');
+    }
+  }
+
+  // ===== COPIAR PIX =====
+  function copiarPix() {
+    var hint = document.getElementById('pixHint');
+
+    function feedback() {
+      hint.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Chave copiada!';
+      hint.classList.add('copied');
+      setTimeout(function() {
+        hint.innerHTML = '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Toque na chave para copiar';
+        hint.classList.remove('copied');
+      }, 2500);
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(pixKey).then(feedback).catch(function() {
+        fallbackCopy();
+        feedback();
+      });
+    } else {
+      fallbackCopy();
+      feedback();
+    }
+
+    function fallbackCopy() {
+      var el = document.createElement('textarea');
+      el.value = pixKey;
+      el.style.position = 'fixed';
+      el.style.opacity = '0';
+      document.body.appendChild(el);
+      el.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(el);
+    }
+  }
+
+  // ===== WHATSAPP =====
+  function confirmarWhatsApp() {
+    var msg = 'Olá, Hélio! Sou ' + contato + ' e gostaria de confirmar o *pagamento*:\n\n';
+    msg += '*Orçamento:* ' + os + '\n';
+    msg += 'Cliente: ' + cliente + '\n';
+    msg += 'Local: ' + endereco + '\n';
+    msg += 'Serviço: ' + servico + '\n\n';
+    msg += '*O que está incluso no valor único (4 câmeras):*\n';
+    msg += '• Lançamento de cabos\n';
+    msg += '• Conectorização\n';
+    msg += '• Instalação de caixas organizadoras\n';
+    msg += '• Fixação das 4 câmeras e ajuste de posicionamento\n';
+    msg += '• Instalação e configuração do gravador\n';
+    msg += '• Configuração de acesso remoto nos dispositivos móveis\n';
+    msg += '• Treinamento para uso\n\n';
+    msg += '*Valores:*\n';
+    msg += '• PIX à vista (10% OFF): *R$ 1.709,10*\n';
+    msg += '• Cartão de crédito em até 6x sem juros: *R$ 1.899,00* (6x de R$ 316,50)\n\n';
+    msg += '*Formas de pagamento:*\n';
+    msg += '• PIX — ' + pixKey + '\n';
+    msg += '• Cartão — link de pagamento seguro (até 6x sem juros)\n\n';
+    msg += 'Segue o comprovante do pagamento. Obrigado!';
+
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+  }
+</script>
+</body>
+</html>
