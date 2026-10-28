@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0f1d">
+<title>Ordem de Serviço OS-2026-0159 | Attive Tecnologia</title>
+<meta name="description" content="Ordem de Serviço — Lúcia Falcão. Revisão preventiva das câmeras e reconfiguração de celular. Visita técnica R$ 150,00. Pagamento via PIX com botão facilitado.">
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1d'/%3E%3Cpath d='M50 20 L80 75 H20 Z' fill='none' stroke='%232563eb' stroke-width='7' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --page-bg: #0a0f1d;
+    --container-bg: #ffffff;
+    --primary: #0a0f1d;
+    --accent: #1e40af;
+    --accent-light: #dbeafe;
+    --accent-soft: #eff6ff;
+    --border: #cbd5e1;
+    --secondary-bg: #f1f5f9;
+    --muted: #334155;
+    --success: #15803d;
+    --success-dark: #14532d;
+    --success-soft: #dcfce7;
+    --amber: #b45309;
+    --amber-soft: #fef3c7;
+    --amber-border: #fcd34d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+    /* Base maior para leitura confortável */
+    font-size: 18px;
+  }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--page-bg);
+    color: var(--primary);
+    padding: 16px 10px calc(16px + env(safe-area-inset-bottom));
+    line-height: 1.6;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 500;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    background-color: var(--container-bg);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+
+  .container::before {
+    content: "";
+    display: block;
+    height: 8px;
+    width: 100%;
+    background: linear-gradient(90deg, #1e40af, #16a34a);
+  }
+
+  .inner { padding: 28px 22px 32px; }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .brand-logo-wrap { display: flex; align-items: center; gap: 12px; }
+  .brand-logo { height: 56px; width: auto; display: block; }
+
+  .brand-logo-fallback {
+    display: none;
+    height: 56px;
+    padding: 0 16px;
+    background: var(--primary);
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 8px 14px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: var(--success-soft);
+    color: var(--success-dark);
+    border: 2px solid var(--success);
+  }
+
+  .badge svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* SAUDAÇÃO */
+  .greeting {
+    background: var(--accent-soft);
+    border: 2px solid var(--accent-light);
+    border-left: 6px solid var(--accent);
+    border-radius: 16px;
+    padding: 22px 22px;
+    margin-bottom: 26px;
+  }
+
+  .greeting .greet-hello {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+
+  .greeting .greet-text {
+    font-size: 17px;
+    color: #1e3a8a;
+    line-height: 1.55;
+    font-weight: 500;
+  }
+
+  /* SEÇÕES GRANDES */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  .section-title .st-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    border: 2px solid var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-title .st-icon svg {
+    width: 26px;
+    height: 26px;
+    stroke: var(--accent);
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* CARTÃO DE INFORMAÇÃO */
+  .info-card {
+    background: var(--secondary-bg);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-bottom: 26px;
+  }
+
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .info-row:first-child { padding-top: 0; }
+
+  .info-row .ir-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    min-width: 110px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .info-row .ir-value {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  /* SERVIÇOS EXECUTADOS */
+  .services-list {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 26px;
+  }
+
+  .service-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--success-soft);
+    border: 2px solid var(--success);
+    border-radius: 16px;
+    padding: 18px 20px;
+  }
+
+  .service-item .sv-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .service-item .sv-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: #fff;
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .service-item .sv-text {
+    flex: 1;
+    padding-top: 6px;
+  }
+
+  .service-item .sv-name {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--success-dark);
+    line-height: 1.35;
+  }
+
+  .service-item .sv-desc {
+    font-size: 15px;
+    color: #166534;
+    margin-top: 4px;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+
+  /* VALOR DA VISITA */
+  .value-card {
+    background: linear-gradient(150deg, #eff6ff 0%, #ffffff 100%);
+    border: 3px solid var(--accent);
+    border-radius: 20px;
+    padding: 28px 22px;
+    text-align: center;
+    margin-bottom: 26px;
+  }
+
+  .value-card .vc-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+
+  .value-card .vc-price {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .value-card .vc-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  /* ÁREA PIX — BOTÃO GIGANTE */
+  .pix-area {
+    background: var(--success-soft);
+    border: 3px solid var(--success);
+    border-radius: 20px;
+    padding: 26px 22px;
+    margin-bottom: 26px;
+  }
+
+  .pix-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--success-dark);
+    text-align: center;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .pix-sub {
+    font-size: 16px;
+    color: #166534;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 22px;
+    font-weight: 500;
+  }
+
+  .pix-key-display {
+    background: #ffffff;
+    border: 3px dashed var(--success);
+    border-radius: 14px;
+    padding: 20px 16px;
+    text-align: center;
+    margin-bottom: 22px;
+    word-break: break-all;
+  }
+
+  .pix-key-display .pkd-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  .pix-key-display .pkd-value {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--success-dark);
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+  }
+
+  /* BOTÃO GIGANTE DE COPIAR */
+  .btn-copy-pix {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+    padding: 26px 24px;
+    border-radius: 18px;
+    font-weight: 800;
+    font-size: 22px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #ffffff;
+    background: var(--success);
+    min-height: 88px;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 8px 24px rgba(21,128,61,0.4);
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .btn-copy-pix:hover { background: #166534; }
+  .btn-copy-pix:active { transform: scale(0.98); }
+
+  .btn-copy-pix svg {
+    width: 32px;
+    height: 32px;
+    stroke: #fff;
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .btn-copy-pix.copied {
+    background: var(--accent);
+    box-shadow: 0 8px 24px rgba(30,64,175,0.4);
+  }
+
+  .copy-feedback {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+    padding: 18px 20px;
+    background: var(--accent-soft);
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent);
+    text-align: center;
+    line-height: 1.4;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .copy-feedback.show { display: flex; }
+
+  .copy-feedback svg {
+    width: 24px; height: 24px;
+    stroke: currentColor;
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* INSTRUÇÕES DO PIX */
+  .pix-instructions {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 20px;
+    margin-top: 22px;
+  }
+
+  .pix-instructions .pi-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.3;
+  }
+
+  .pix-instructions .pi-title svg {
+    width: 24px; height: 24px;
+    stroke: var(--accent);
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .pix-instructions ol {
+    list-style: none;
+    counter-reset: passo;
+    display: grid;
+    gap: 14px;
+  }
+
+  .pix-instructions li {
+    counter-increment: passo;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    font-size: 17px;
+    color: var(--primary);
+    line-height: 1.5;
+    font-weight: 500;
+  }
+
+  .pix-instructions li::before {
+    content: counter(passo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 800;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+
+  /* BOTÃO ENVIAR COMPROVANTE */
+  .btn-whats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+    padding: 24px 24px;
+    border-radius: 18px;
+    font-weight: 800;
+    font-size: 20px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #ffffff;
+    background: var(--success);
+    min-height: 84px;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 8px 24px rgba(21,128,61,0.4);
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 26px;
+  }
+
+  .btn-whats:hover { background: #166534; }
+  .btn-whats:active { transform: scale(0.98); }
+
+  .btn-whats svg {
+    width: 34px;
+    height: 34px;
+    stroke: none;
+    fill: #fff;
+    flex-shrink: 0;
+  }
+
+  /* CONFIRMAÇÃO FINAL */
+  .final-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px 22px;
+    background: var(--amber-soft);
+    border: 2px solid var(--amber-border);
+    border-left: 6px solid var(--amber);
+    border-radius: 16px;
+    margin-top: 26px;
+    font-size: 16px;
+    color: #78350f;
+    line-height: 1.55;
+    font-weight: 500;
+  }
+
+  .final-note svg {
+    width: 26px; height: 26px;
+    stroke: var(--amber);
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .final-note strong { color: #92400e; font-weight: 800; }
+
+  /* FOOTER */
+  .footer {
+    padding: 24px 22px calc(24px + env(safe-area-inset-bottom));
+    border-top: 2px solid var(--border);
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-avatar-fallback {
+    display: none;
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff; font-size: 28px; font-weight: 800;
+    align-items: center; justify-content: center;
+    border: 3px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-info { text-align: center; flex: 1; min-width: 0; }
+
+  .footer .name {
+    font-size: 19px; font-weight: 800;
+    color: var(--primary);
+  }
+
+  .footer .role {
+    font-size: 15px; font-weight: 700;
+    color: var(--accent); margin-top: 4px;
+  }
+
+  .footer .contact {
+    font-size: 16px; color: var(--muted); margin-top: 10px;
+    line-height: 1.5;
+    font-weight: 600;
+    word-break: break-word;
+  }
+
+  .footer .validity {
+    font-size: 14px; color: #64748b; margin-top: 10px;
+  }
+
+  /* RESPONSIVO */
+  @media (min-width: 600px) {
+    html { font-size: 18px; }
+    body { padding: 32px 16px; }
+    .inner { padding: 36px 40px 40px; }
+    .brand-logo { height: 66px; }
+    .brand-logo-fallback { height: 66px; font-size: 26px; }
+    .greeting .greet-hello { font-size: 26px; }
+    .greeting .greet-text { font-size: 18px; }
+    .value-card .vc-price { font-size: 56px; }
+    .btn-copy-pix { font-size: 24px; padding: 28px 28px; min-height: 96px; }
+    .btn-whats { font-size: 22px; padding: 26px 28px; min-height: 92px; }
+    .pix-title { font-size: 24px; }
+    .footer {
+      flex-direction: row;
+      text-align: left;
+      gap: 20px;
+      padding: 28px 40px 24px;
+    }
+    .footer-info { text-align: left; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="inner">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand-logo-wrap">
+        <img class="brand-logo" 
+             src="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png" 
+             alt="Attive Tecnologia"
+             referrerpolicy="no-referrer"
+             crossorigin="anonymous"
+             loading="eager"
+             onerror="this.style.display='none'; document.getElementById('brandLogoFallback').style.display='flex';">
+        <div class="brand-logo-fallback" id="brandLogoFallback">attive</div>
+      </div>
+      <span class="badge">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Serviço Concluído
+      </span>
+    </div>
+
+    <!-- SAUDAÇÃO -->
+    <div class="greeting">
+      <div class="greet-hello">Olá, Dona Lúcia! 😊</div>
+      <div class="greet-text">
+        O serviço na sua casa foi concluído com sucesso.<br>
+        Abaixo estão as informações e o valor da visita técnica.
+      </div>
+    </div>
+
+    <!-- DADOS -->
+    <div class="section-title">
+      <div class="st-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      Seus dados
+    </div>
+
+    <div class="info-card">
+      <div class="info-row">
+        <div class="ir-label">Cliente</div>
+        <div class="ir-value">Lúcia Falcão</div>
+      </div>
+      <div class="info-row">
+        <div class="ir-label">Ordem</div>
+        <div class="ir-value">OS-2026-0159</div>
+      </div>
+      <div class="info-row">
+        <div class="ir-label">Local</div>
+        <div class="ir-value">Campina Grande - PB</div>
+      </div>
+    </div>
+
+    <!-- SERVIÇOS REALIZADOS -->
+    <div class="section-title">
+      <div class="st-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      </div>
+      O que foi feito
+    </div>
+
+    <div class="services-list">
+      <div class="service-item">
+        <div class="sv-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="sv-text">
+          <div class="sv-name">Revisão preventiva das câmeras</div>
+          <div class="sv-desc">Verificação e limpeza das câmeras para garantir o bom funcionamento.</div>
+        </div>
+      </div>
+
+      <div class="service-item">
+        <div class="sv-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="sv-text">
+          <div class="sv-name">Reconfiguração do celular</div>
+          <div class="sv-desc">Ajuste das configurações do aparelho para o bom uso no dia a dia.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VALOR -->
+    <div class="value-card">
+      <div class="vc-label">Valor da visita técnica</div>
+      <div class="vc-price">R$ 150,00</div>
+      <div class="vc-sub">Pagamento à vista via PIX</div>
+    </div>
+
+    <!-- ÁREA PIX — BOTÃO GIGANTE -->
+    <div class="pix-area">
+      <div class="pix-title">💚 Pague com PIX</div>
+      <div class="pix-sub">Toque no botão verde abaixo para copiar a chave PIX.</div>
+
+      <div class="pix-key-display">
+        <div class="pkd-label">Chave PIX</div>
+        <div class="pkd-value">attivetecnologia@gmail.com</div>
+      </div>
+
+      <button class="btn-copy-pix" id="btnCopyPix" onclick="copiarPix()">
+        <svg viewBox="0 0 24 24" id="btnCopyIcon">
+          <rect x="9" y="9" width="13" height="13" rx="2"/>
+          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+        </svg>
+        <span id="btnCopyText">COPIAR CHAVE PIX</span>
+      </button>
+
+      <div class="copy-feedback" id="copyFeedback">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Chave copiada! Agora abra o app do seu banco e cole.</span>
+      </div>
+
+      <!-- INSTRUÇÕES -->
+      <div class="pix-instructions">
+        <div class="pi-title">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          Como pagar com PIX
+        </div>
+        <ol>
+          <li>Toque no botão verde <strong>"COPIAR CHAVE PIX"</strong></li>
+          <li>Abra o aplicativo do seu banco</li>
+          <li>Escolha a opção <strong>PIX</strong></li>
+          <li>Cole a chave copiada</li>
+          <li>Digite o valor de <strong>R$ 150,00</strong></li>
+          <li>Confirme o pagamento</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- BOTÃO ENVIAR COMPROVANTE -->
+    <a class="btn-whats" 
+       href="https://wa.me/5583996787788?text=Ol%C3%A1%2C%20H%C3%A9lio!%20Sou%20L%C3%BAcia%20Falc%C3%A3o%20e%20acabei%20de%20fazer%20o%20PIX%20da%20Ordem%20de%20Servi%C3%A7o%20OS-2026-0159%20no%20valor%20de%20R%24%20150%2C00.%20Segue%20o%20comprovante." 
+       target="_blank" 
+       rel="noopener">
+      <svg viewBox="0 0 32 32"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.648 4.83 1.782 6.86L2 30l7.347-1.757A13.94 13.94 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5a11.44 11.44 0 01-5.847-1.6l-.418-.249-4.36 1.043 1.072-4.25-.272-.437A11.46 11.46 0 014.5 16C4.5 9.649 9.649 4.5 16 4.5S27.5 9.649 27.5 16 22.351 27.5 16 27.5zm6.29-8.61c-.345-.172-2.04-1.006-2.356-1.12-.315-.115-.545-.172-.774.172-.23.345-.888 1.12-1.09 1.35-.2.23-.4.258-.745.086-.345-.172-1.455-.537-2.771-1.71-1.024-.913-1.715-2.04-1.916-2.385-.2-.345-.021-.531.15-.703.155-.155.345-.402.517-.603.172-.2.23-.345.345-.575.115-.23.057-.431-.029-.603-.086-.172-.774-1.866-1.06-2.556-.28-.672-.563-.58-.774-.591-.2-.01-.43-.013-.66-.013s-.603.086-.919.431c-.315.345-1.204 1.177-1.204 2.87 0 1.694 1.233 3.33 1.405 3.56.172.23 2.427 3.706 5.88 5.198.822.355 1.463.566 1.963.725.825.263 1.576.226 2.169.137.661-.099 2.04-.833 2.327-1.637.287-.804.287-1.493.2-1.637-.086-.143-.315-.23-.66-.402z"/></svg>
+      ENVIAR COMPROVANTE
+    </a>
+
+    <!-- CONFIRMAÇÃO FINAL -->
+    <div class="final-note">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div>
+        Depois de fazer o PIX, toque em <strong>"ENVIAR COMPROVANTE"</strong> para avisar o Hélio. 
+        Ele vai confirmar o recebimento e finalizar o atendimento.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <img class="footer-avatar" 
+         src="https://i.postimg.cc/TwjQxnJc/Whats-App-Image-2026-08-31-at-14-32-09.jpg" 
+         alt="Hélio Crispim"
+         referrerpolicy="no-referrer"
+         crossorigin="anonymous"
+         loading="eager"
+         onerror="this.style.display='none'; document.getElementById('footerAvatarFallback').style.display='flex';">
+    <div class="footer-avatar-fallback" id="footerAvatarFallback">HC</div>
+    <div class="footer-info">
+      <div class="name">Hélio Crispim</div>
+      <div class="role">Eng. Eletricista · CREA-PB 12290192025PB</div>
+      <div class="contact">(83) 99678-7788<br>attivesistemas@gmail.com</div>
+      <div class="validity">OS-2026-0159 · Lúcia Falcão</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var pixKey = "attivetecnologia@gmail.com";
+
+  function copiarPix() {
+    var btn = document.getElementById('btnCopyPix');
+    var btnText = document.getElementById('btnCopyText');
+    var btnIcon = document.getElementById('btnCopyIcon');
+    var feedback = document.getElementById('copyFeedback');
+
+    function sucesso() {
+      // Muda o botão
+      btn.classList.add('copied');
+      btnText.textContent = '✓ CHAVE COPIADA!';
+      btnIcon.innerHTML = '<polyline points="20 6 9 17 4 12"/>';
+
+      // Mostra feedback
+      feedback.classList.add('show');
+
+      // Fala "chave copiada" (acessibilidade)
+      try {
+        if ('speechSynthesis' in window) {
+          var msg = new SpeechSynthesisUtterance('Chave PIX copiada. Agora abra o aplicativo do seu banco.');
+          msg.lang = 'pt-BR';
+          msg.rate = 0.95;
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(msg);
+        }
+      } catch (e) { /* silencioso */ }
+
+      // Vibra (se o dispositivo suportar)
+      try {
+        if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+      } catch (e) { /* silencioso */ }
+
+      // Volta ao normal após 5 segundos
+      setTimeout(function() {
+        btn.classList.remove('copied');
+        btnText.textContent = 'COPIAR CHAVE PIX';
+        btnIcon.innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>';
+      }, 5000);
+    }
+
+    function fallbackCopy() {
+      var el = document.createElement('textarea');
+      el.value = pixKey;
+      el.style.position = 'fixed';
+      el.style.opacity = '0';
+      document.body.appendChild(el);
+      el.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(el);
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(pixKey).then(sucesso).catch(function() {
+        fallbackCopy();
+        sucesso();
+      });
+    } else {
+      fallbackCopy();
+      sucesso();
+    }
+  }
+</script>
+</body>
+</html>
