@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OS-2026-0093 | Attive Tecnologia</title>
+<meta name="description" content="Ordem de Serviço. Clube Campestre. PIX R$ 774,00 (10% off) ou cartão em até 6x R$ 860,00.">
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1d'/%3E%3Cpath d='M50 20 L80 75 H20 Z' fill='none' stroke='%232563eb' stroke-width='7' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+  :root {
+    --page-bg: #070b12;
+    --container-bg: #ffffff;
+    --primary: #0a0f1d;
+    --accent: #2563eb;
+    --accent-soft: #eff6ff;
+    --border: #e2e8f0;
+    --secondary-bg: #f8fafc;
+    --muted: #64748b;
+    --success: #16a34a;
+    --success-dark: #166534;
+    --success-soft: #f0fdf4;
+    --pix: #16a34a;
+    --pix-dark: #166534;
+    --pix-soft: #f0fdf4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--page-bg);
+    background-image: radial-gradient(circle at 20% 0%, rgba(37,99,235,0.18), transparent 45%),
+                       radial-gradient(circle at 100% 30%, rgba(22,163,74,0.10), transparent 40%);
+    color: var(--primary);
+    padding: 32px 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+    background-color: var(--container-bg);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+
+  .container::before {
+    content: "";
+    display: block;
+    height: 5px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--success));
+  }
+
+  .inner { padding: 26px 24px 28px; }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand-logo { height: 44px; width: auto; display: block; }
+
+  .brand-logo-fallback {
+    display: none;
+    height: 44px;
+    padding: 0 14px;
+    background: var(--primary);
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .badge-os {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 5px 11px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    background: var(--accent-soft);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  /* CARD RESUMO */
+  .summary-card {
+    margin-top: 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .summary-card .sc-client {
+    padding: 14px 16px;
+    background: var(--secondary-bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .summary-card .sc-client .sc-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .summary-card .sc-client .sc-icon svg {
+    width: 17px; height: 17px;
+    stroke: #fff;
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .summary-card .sc-client .sc-text { flex: 1; min-width: 0; }
+
+  .summary-card .sc-client .sc-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .summary-card .sc-client .sc-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.2;
+  }
+
+  .summary-card .sc-services { padding: 4px 0; }
+
+  .summary-card .sc-service-row {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .summary-card .sc-service-row:last-child { border-bottom: none; }
+
+  .summary-card .sc-service-row .sr-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: var(--success-soft);
+    color: var(--success-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .summary-card .sc-service-row .sr-num svg {
+    width: 13px; height: 13px;
+    stroke: currentColor;
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .summary-card .sc-service-row .sr-text {
+    flex: 1;
+    font-size: 12.5px;
+    color: #334155;
+    font-weight: 600;
+    line-height: 1.4;
+    min-width: 0;
+  }
+
+  .summary-card .sc-service-row .sr-value {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+
+  .summary-card .sc-total {
+    padding: 16px;
+    background: var(--secondary-bg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .summary-card .sc-total .st-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .summary-card .sc-total .st-value {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+    line-height: 1;
+  }
+
+  /* DETALHAMENTO */
+  .details-block {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: var(--secondary-bg);
+    border-radius: 12px;
+  }
+
+  .details-block .db-title {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .details-block .db-title svg {
+    width: 12px; height: 12px;
+    stroke: currentColor;
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .details-block .db-group {
+    margin-bottom: 12px;
+  }
+
+  .details-block .db-group:last-child { margin-bottom: 0; }
+
+  .details-block .db-group-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+
+  .details-block .db-group-title .db-group-desc {
+    font-weight: 500;
+    color: var(--muted);
+    font-size: 10.5px;
+    display: block;
+    margin-top: 1px;
+    line-height: 1.4;
+  }
+
+  .details-block .db-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 0;
+    font-size: 11.5px;
+    color: #475569;
+  }
+
+  .details-block .db-line .db-amount {
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .details-block .db-line.subtotal {
+    border-top: 1px dashed var(--border);
+    margin-top: 4px;
+    padding-top: 6px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .details-block .db-line.subtotal .db-amount { font-weight: 700; }
+
+  /* PAGAMENTO */
+  .payment-section {
+    margin-top: 18px;
+  }
+
+  .payment-section .ps-title {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .payment-section .ps-title svg {
+    width: 12px; height: 12px;
+    stroke: currentColor;
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .payment-options {
+    display: grid;
+    gap: 10px;
+  }
+
+  .payment-box {
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+
+  .payment-box.pix-box {
+    background: var(--pix-soft);
+    border: 1.5px solid var(--pix);
+  }
+
+  .payment-box.card-box {
+    background: var(--accent-soft);
+    border: 1.5px solid var(--accent);
+  }
+
+  .payment-box .pb-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .payment-box .pb-head .pb-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .payment-box.pix-box .pb-icon { background: var(--pix); }
+  .payment-box.card-box .pb-icon { background: var(--accent); }
+
+  .payment-box .pb-icon svg {
+    width: 14px; height: 14px;
+    stroke: #fff;
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .payment-box .pb-head .pb-name {
+    flex: 1;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .payment-box.pix-box .pb-name { color: var(--pix-dark); }
+  .payment-box.card-box .pb-name { color: var(--accent); }
+
+  .payment-box .pb-head .pb-tag {
+    font-size: 8.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #fff;
+  }
+
+  .payment-box.pix-box .pb-tag { color: var(--pix-dark); }
+  .payment-box.card-box .pb-tag { color: var(--accent); }
+
+  .payment-box .pb-value {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .payment-box.pix-box .pb-value { color: var(--pix-dark); }
+  .payment-box.card-box .pb-value { color: var(--accent); }
+
+  .payment-box .pb-sub {
+    font-size: 11px;
+    color: #475569;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+
+  .payment-box .pb-sub strong { color: var(--primary); font-weight: 700; }
+
+  /* PIX KEY */
+  .pix-key {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--pix-dark);
+    word-break: break-all;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1.5px dashed var(--pix);
+    border-radius: 10px;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-family: inherit;
+    line-height: 1.35;
+  }
+
+  .pix-key:hover {
+    background: #fff;
+    border-style: solid;
+  }
+
+  .pix-copy-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 6px;
+    font-size: 10.5px;
+    color: var(--pix-dark);
+    font-weight: 700;
+  }
+
+  .pix-copy-hint svg {
+    width: 12px; height: 12px;
+    stroke: currentColor;
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* CARD LINK */
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 18px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+  }
+
+  .card-link:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(37,99,235,0.4);
+  }
+
+  .card-link svg {
+    width: 16px; height: 16px;
+    stroke: #fff;
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* BOTÃO CONFIRMAR */
+  .btn-confirm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 20px;
+    padding: 18px 22px;
+    background: var(--success);
+    color: #fff;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 15.5px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 8px 22px rgba(22,163,74,0.4);
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .btn-confirm:hover {
+    background: var(--success-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(22,163,74,0.5);
+  }
+
+  .btn-confirm:active { transform: translateY(0); }
+
+  .btn-confirm svg {
+    width: 20px; height: 20px;
+    stroke: none;
+    fill: #fff;
+    flex-shrink: 0;
+  }
+
+  .btn-confirm .bc-arrow {
+    width: 18px; height: 18px;
+    stroke: #fff;
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .confirm-hint {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .confirm-hint svg {
+    width: 13px; height: 13px;
+    stroke: var(--success);
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* BOTÃO PDF */
+  .btn-pdf {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px 22px;
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .btn-pdf:hover {
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+  }
+
+  .btn-pdf:active { transform: translateY(0); }
+
+  .btn-pdf svg {
+    width: 18px; height: 18px;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .btn-pdf:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 22px 24px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--secondary-bg);
+  }
+
+  .footer-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.2);
+  }
+
+  .footer-avatar-fallback {
+    display: none;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff; font-size: 20px; font-weight: 700;
+    align-items: center; justify-content: center;
+    border: 2.5px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-info { flex: 1; text-align: left; }
+
+  .footer .name {
+    font-size: 14.5px; font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .footer .role {
+    font-size: 11.5px; font-weight: 600;
+    color: var(--accent); margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  .footer .contact {
+    font-size: 11px; color: var(--muted); margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  /* RESPONSIVO */
+  @media (max-width: 420px) {
+    body { padding: 16px 10px; }
+    .inner { padding: 22px 18px 24px; }
+    .brand-logo { height: 38px; }
+    .brand-logo-fallback { height: 38px; font-size: 18px; padding: 0 12px; }
+    .summary-card .sc-total .st-value { font-size: 18px; }
+    .payment-box .pb-value { font-size: 24px; }
+    .pix-key { font-size: 12px; padding: 11px 12px; }
+    .btn-confirm { font-size: 14.5px; padding: 16px 18px; }
+    .btn-pdf { font-size: 13px; padding: 13px 18px; }
+    .footer { padding: 18px 18px 20px; gap: 12px; }
+    .footer-avatar, .footer-avatar-fallback { width: 50px; height: 50px; }
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="inner" id="osContent">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand-logo-wrap">
+        <img class="brand-logo" 
+             src="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png" 
+             alt="Attive Tecnologia"
+             referrerpolicy="no-referrer"
+             crossorigin="anonymous"
+             loading="eager"
+             onerror="this.style.display='none'; document.getElementById('brandLogoFallback').style.display='flex';">
+        <div class="brand-logo-fallback" id="brandLogoFallback">attive</div>
+      </div>
+      <span class="badge-os">OS-2026-0093</span>
+    </div>
+
+    <!-- CARD RESUMO -->
+    <div class="summary-card">
+      <div class="sc-client">
+        <div class="sc-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        </div>
+        <div class="sc-text">
+          <div class="sc-label">Cliente</div>
+          <div class="sc-name">Clube Campestre</div>
+        </div>
+      </div>
+
+      <div class="sc-services">
+        <div class="sc-service-row">
+          <div class="sr-num">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="sr-text">Catracas: revisão mecânica (3 un.) + relançamento de cabos de rede</div>
+          <div class="sr-value">R$ 350,00</div>
+        </div>
+        <div class="sc-service-row">
+          <div class="sr-num">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="sr-text">Fibra óptica: lançamento, conectorização e testes — estacionamento</div>
+          <div class="sr-value">R$ 510,00</div>
+        </div>
+      </div>
+
+      <div class="sc-total">
+        <div class="st-label">Valor dos serviços</div>
+        <div class="st-value">R$ 860,00</div>
+      </div>
+    </div>
+
+    <!-- DETALHAMENTO -->
+    <div class="details-block">
+      <div class="db-title">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        Detalhamento
+      </div>
+
+      <div class="db-group">
+        <div class="db-group-title">
+          1. Catracas + cabos de rede
+          <span class="db-group-desc">Liberação sem registro de face — ajustes mecânicos nas 3 catracas e relançamento dos cabos danificados.</span>
+        </div>
+        <div class="db-line">
+          <span>Serviço completo (mecânica + cabos)</span>
+          <span class="db-amount">R$ 350,00</span>
+        </div>
+      </div>
+
+      <div class="db-group">
+        <div class="db-group-title">
+          2. Fibra óptica — estacionamento
+          <span class="db-group-desc">Fibra rompida deixou 4 câmeras inoperantes. Executado lançamento, conectorização e testes.</span>
+        </div>
+        <div class="db-line">
+          <span>Mão de obra (lançamento, conectorização e testes)</span>
+          <span class="db-amount">R$ 350,00</span>
+        </div>
+        <div class="db-line">
+          <span>Fibra óptica (material)</span>
+          <span class="db-amount">R$ 130,00</span>
+        </div>
+        <div class="db-line">
+          <span>Conectores ópticos (2 un. × R$ 15,00)</span>
+          <span class="db-amount">R$ 30,00</span>
+        </div>
+        <div class="db-line subtotal">
+          <span>Subtotal</span>
+          <span class="db-amount">R$ 510,00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGAMENTO -->
+    <div class="payment-section">
+      <div class="ps-title">
+        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+        Formas de pagamento
+      </div>
+
+      <div class="payment-options">
+
+        <!-- PIX -->
+        <div class="payment-box pix-box">
+          <div class="pb-head">
+            <div class="pb-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h.01M16 8h.01M8 16h.01M16 16h.01"/></svg>
+            </div>
+            <div class="pb-name">PIX à vista</div>
+            <div class="pb-tag">10% OFF</div>
+          </div>
+          <div class="pb-value">R$ 774,00</div>
+          <div class="pb-sub">Desconto de <strong>R$ 86,00</strong> sobre o valor total</div>
+          <button class="pix-key" id="pixKey" onclick="copiarPix()">attivetecnologia@gmail.com</button>
+          <div class="pix-copy-hint" id="pixHint">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Toque para copiar
+          </div>
+        </div>
+
+        <!-- CARTÃO -->
+        <div class="payment-box card-box">
+          <div class="pb-head">
+            <div class="pb-icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+            </div>
+            <div class="pb-name">Cartão de crédito</div>
+            <div class="pb-tag">6x</div>
+          </div>
+          <div class="pb-value">R$ 860,00</div>
+          <div class="pb-sub">Em até <strong>6x</strong> — pagamento via link seguro InfinitePay</div>
+          <a class="card-link" href="https://link.infinitepay.io/helio_crispim_dos/VC1DLTYtSQ-Hkordl8zKm-860,00" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+            Pagar com cartão
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTÃO CONFIRMAR -->
+    <button class="btn-confirm" onclick="confirmarWhatsApp()">
+      <svg viewBox="0 0 32 32"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.648 4.83 1.782 6.86L2 30l7.347-1.757A13.94 13.94 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5a11.44 11.44 0 01-5.847-1.6l-.418-.249-4.36 1.043 1.072-4.25-.272-.437A11.46 11.46 0 014.5 16C4.5 9.649 9.649 4.5 16 4.5S27.5 9.649 27.5 16 22.351 27.5 16 27.5zm6.29-8.61c-.345-.172-2.04-1.006-2.356-1.12-.315-.115-.545-.172-.774.172-.23.345-.888 1.12-1.09 1.35-.2.23-.4.258-.745.086-.345-.172-1.455-.537-2.771-1.71-1.024-.913-1.715-2.04-1.916-2.385-.2-.345-.021-.531.15-.703.155-.155.345-.402.517-.603.172-.2.23-.345.345-.575.115-.23.057-.431-.029-.603-.086-.172-.774-1.866-1.06-2.556-.28-.672-.563-.58-.774-.591-.2-.01-.43-.013-.66-.013s-.603.086-.919.431c-.315.345-1.204 1.177-1.204 2.87 0 1.694 1.233 3.33 1.405 3.56.172.23 2.427 3.706 5.88 5.198.822.355 1.463.566 1.963.725.825.263 1.576.226 2.169.137.661-.099 2.04-.833 2.327-1.637.287-.804.287-1.493.2-1.637-.086-.143-.315-.23-.66-.402z"/></svg>
+      Confirmar pagamento
+      <svg class="bc-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
+    <div class="confirm-hint">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      Mensagem já pronta — não precisa digitar
+    </div>
+
+    <!-- BOTÃO PDF -->
+    <button class="btn-pdf" id="btnPdf" onclick="gerarPDF()">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+      Baixar Ordem de Serviço em PDF
+    </button>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer" id="osFooter">
+    <img class="footer-avatar" 
+         src="https://i.postimg.cc/TwjQxnJc/Whats-App-Image-2026-08-31-at-14-32-09.jpg" 
+         alt="Hélio Crispim"
+         referrerpolicy="no-referrer"
+         crossorigin="anonymous"
+         loading="eager"
+         onerror="this.style.display='none'; document.getElementById('footerAvatarFallback').style.display='flex';">
+    <div class="footer-avatar-fallback" id="footerAvatarFallback">HC</div>
+    <div class="footer-info">
+      <div class="name">Hélio Crispim</div>
+      <div class="role">Eng. Eletricista · CREA-PB 12290192025PB</div>
+      <div class="contact">(83) 99678-7788 · attivesistemas@gmail.com</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var phone = "5583996787788";
+  var os = "OS-2026-0093";
+  var cliente = "Clube Campestre";
+  var pixKey = "attivetecnologia@gmail.com";
+  var cardLink = "https://link.infinitepay.io/helio_crispim_dos/VC1DLTYtSQ-Hkordl8zKm-860,00";
+
+  function copiarPix() {
+    var hint = document.getElementById('pixHint');
+    function feedback() {
+      hint.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Chave copiada!';
+      setTimeout(function() {
+        hint.innerHTML = '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Toque para copiar';
+      }, 2500);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(pixKey).then(feedback).catch(function() { fallbackCopy(); feedback(); });
+    } else { fallbackCopy(); feedback(); }
+    function fallbackCopy() {
+      var el = document.createElement('textarea');
+      el.value = pixKey; el.style.position = 'fixed'; el.style.opacity = '0';
+      document.body.appendChild(el); el.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(el);
+    }
+  }
+
+  function confirmarWhatsApp() {
+    var msg = 'Olá, Hélio! Sou do ' + cliente + ' e efetuei o pagamento da OS:\n\n';
+    msg += '*Ordem de Serviço:* ' + os + '\n';
+    msg += 'Cliente: ' + cliente + '\n\n';
+    msg += '*Serviço 1 — Catracas + cabos: R$ 350,00*\n';
+    msg += 'Revisão mecânica nas 3 catracas + relançamento dos cabos de rede.\n\n';
+    msg += '*Serviço 2 — Fibra óptica: R$ 510,00*\n';
+    msg += '- Mão de obra (lançamento, conectorização e testes): R$ 350,00\n';
+    msg += '- Fibra óptica (material): R$ 130,00\n';
+    msg += '- Conectores ópticos (2 un.): R$ 30,00\n\n';
+    msg += '*Valor dos serviços:* R$ 860,00\n';
+    msg += '*Pagamento:*\n';
+    msg += '- PIX à vista (10% OFF): *R$ 774,00*\n';
+    msg += '- Cartão em até 6x: R$ 860,00\n\n';
+    msg += 'Segue o comprovante. Obrigado!';
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  function gerarPDF() {
+    var btn = document.getElementById('btnPdf');
+    var originalLabel = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg> Gerando PDF...';
+
+    try {
+      var { jsPDF } = window.jspdf;
+      var doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
+      var pageW = 210;
+      var margin = 18;
+      var contentW = pageW - margin * 2;
+      var y = 20;
+
+      var PRIMARY = [10, 15, 29];
+      var ACCENT = [37, 99, 235];
+      var MUTED = [100, 116, 139];
+      var PIX = [22, 163, 74];
+      var BORDER = [226, 232, 240];
+
+      doc.setFillColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.rect(0, 0, pageW, 5, 'F');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('ATTIVE TECNOLOGIA', margin, y + 5);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Ordem de Servico ' + os, margin, y + 11);
+
+      y += 20;
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.3);
+      doc.line(margin, y, pageW - margin, y);
+      y += 8;
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('CLIENTE', margin, y);
+      y += 5;
+      doc.setFontSize(11);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text(cliente, margin, y);
+      y += 12;
+
+      // Serviço 1
+      doc.setFillColor(248, 250, 252);
+      doc.roundedRect(margin, y - 4, contentW, 22, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('1. Catracas + cabos de rede', margin + 4, y + 2);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Revisao mecanica nas 3 catracas + relancamento dos cabos.', margin + 4, y + 8);
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.2);
+      doc.line(margin + 4, y + 12, pageW - margin - 4, y + 12);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('Servico completo', margin + 4, y + 16);
+      doc.text('R$ 350,00', pageW - margin - 4, y + 16, { align: 'right' });
+      y += 26;
+
+      // Serviço 2
+      doc.setFillColor(248, 250, 252);
+      doc.roundedRect(margin, y - 4, contentW, 42, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('2. Fibra optica - estacionamento', margin + 4, y + 2);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Mao de obra (lancamento, conectorizacao e testes): R$ 350,00', margin + 4, y + 9);
+      doc.text('Fibra optica (material): R$ 130,00', margin + 4, y + 14);
+      doc.text('Conectores opticos (2 un. x R$ 15,00): R$ 30,00', margin + 4, y + 19);
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.2);
+      doc.line(margin + 4, y + 24, pageW - margin - 4, y + 24);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('Subtotal', margin + 4, y + 30);
+      doc.text('R$ 510,00', pageW - margin - 4, y + 30, { align: 'right' });
+      y += 46;
+
+      // Valor dos serviços
+      doc.setFillColor(248, 250, 252);
+      doc.roundedRect(margin, y - 4, contentW, 14, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('Valor dos servicos', margin + 4, y + 2);
+      doc.text('R$ 860,00', pageW - margin - 4, y + 2, { align: 'right' });
+      y += 18;
+
+      // Pagamento
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('FORMAS DE PAGAMENTO', margin, y);
+      y += 6;
+
+      // PIX
+      doc.setFillColor(240, 253, 244);
+      doc.roundedRect(margin, y - 2, contentW, 24, 2, 2, 'F');
+      doc.setDrawColor(PIX[0], PIX[1], PIX[2]);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(margin, y - 2, contentW, 24, 2, 2);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PIX[0], PIX[1], PIX[2]);
+      doc.text('PIX a vista (10% OFF)', margin + 4, y + 4);
+      doc.setFontSize(12);
+      doc.text('R$ 774,00', pageW - margin - 4, y + 4, { align: 'right' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Chave: ' + pixKey, margin + 4, y + 10);
+      doc.text('Desconto de R$ 86,00 sobre o valor total', margin + 4, y + 15);
+      y += 28;
+
+      // Cartão
+      doc.setFillColor(239, 246, 255);
+      doc.roundedRect(margin, y - 2, contentW, 24, 2, 2, 'F');
+      doc.setDrawColor(ACCENT[0], ACCENT[1], ACCENT[2]);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(margin, y - 2, contentW, 24, 2, 2);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(ACCENT[0], ACCENT[1], ACCENT[2]);
+      doc.text('Cartao de credito (ate 6x)', margin + 4, y + 4);
+      doc.setFontSize(12);
+      doc.text('R$ 860,00', pageW - margin - 4, y + 4, { align: 'right' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Link InfinitePay para pagamento seguro', margin + 4, y + 10);
+      y += 30;
+
+      // Rodapé
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.3);
+      doc.line(margin, y, pageW - margin, y);
+      y += 6;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('Helio Crispim', margin, y);
+      y += 4;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(ACCENT[0], ACCENT[1], ACCENT[2]);
+      doc.text('Eng. Eletricista - CREA-PB 12290192025PB', margin, y);
+      y += 4;
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('(83) 99678-7788 - attivesistemas@gmail.com', margin, y);
+      y += 6;
+      doc.setFontSize(7);
+      doc.setTextColor(148, 163, 184);
+      doc.text('Documento gerado em ' + new Date().toLocaleDateString('pt-BR'), margin, y);
+
+      doc.save('OS-' + os + '-Clube-Campestre.pdf');
+      btn.disabled = false;
+      btn.innerHTML = originalLabel;
+    } catch (err) {
+      console.error('Erro ao gerar PDF:', err);
+      alert('Erro ao gerar o PDF. Tente novamente.');
+      btn.disabled = false;
+      btn.innerHTML = originalLabel;
+    }
+  }
+</script>
+</body>
+</html>
