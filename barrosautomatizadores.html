@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OS-2026-0098 | Attive Tecnologia</title>
+<meta name="description" content="Orçamento. Barros. Instalação de 4 automatizadores (venda de 3 — o cliente já possui 1). Total R$ 5.262,00. PIX R$ 4.472,70 (15% off) ou cartão 6x de R$ 877,00 sem juros. Garantia de 12 meses.">
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1d'/%3E%3Cpath d='M50 20 L80 75 H20 Z' fill='none' stroke='%232563eb' stroke-width='7' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+  :root {
+    --page-bg: #0f1216;
+    --container-bg: #ffffff;
+    --primary: #1a1f26;
+    --accent: #2563eb;
+    --accent-dark: #1d4ed8;
+    --accent-soft: #eff4ff;
+    --border: #e4e7ec;
+    --border-strong: #cfd4dc;
+    --secondary-bg: #f7f8fa;
+    --muted: #6b7280;
+    --text-soft: #4b5563;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--page-bg);
+    color: var(--primary);
+    padding: 32px 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+    background-color: var(--container-bg);
+    border-radius: 14px;
+    box-shadow: 0 16px 44px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+
+  .container::before {
+    content: "";
+    display: block;
+    height: 4px;
+    width: 100%;
+    background: var(--primary);
+  }
+
+  .inner { padding: 26px 24px 28px; }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand-logo { height: 44px; width: auto; display: block; }
+
+  .brand-logo-fallback {
+    display: none;
+    height: 44px;
+    padding: 0 14px;
+    background: var(--primary);
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .badge-os {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 5px 11px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-strong);
+    color: var(--text-soft);
+    white-space: nowrap;
+  }
+
+  /* CARD RESUMO */
+  .summary-card {
+    margin-top: 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .summary-card .sc-client {
+    padding: 14px 16px;
+    background: var(--secondary-bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .summary-card .sc-client .sc-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .summary-card .sc-client .sc-icon svg {
+    width: 16px; height: 16px;
+    stroke: #fff;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .summary-card .sc-client .sc-text { flex: 1; min-width: 0; }
+
+  .summary-card .sc-client .sc-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .summary-card .sc-client .sc-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.2;
+  }
+
+  .summary-card .sc-client .sc-address {
+    font-size: 10.5px;
+    color: var(--muted);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .summary-card .sc-services { padding: 4px 0; }
+
+  .summary-card .sc-service-row {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .summary-card .sc-service-row:last-child { border-bottom: none; }
+
+  .summary-card .sc-service-row .sr-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-strong);
+    color: var(--text-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .summary-card .sc-service-row .sr-num svg {
+    width: 12px; height: 12px;
+    stroke: currentColor;
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .summary-card .sc-service-row .sr-text {
+    flex: 1;
+    font-size: 12.5px;
+    color: var(--primary);
+    font-weight: 600;
+    line-height: 1.4;
+    min-width: 0;
+  }
+
+  .summary-card .sc-service-row .sr-text .sr-desc {
+    display: block;
+    font-weight: 500;
+    color: var(--muted);
+    font-size: 10.5px;
+    margin-top: 1px;
+    line-height: 1.4;
+  }
+
+  /* Linha de observação dentro do card */
+  .summary-card .sc-service-row .sr-text .sr-desc em {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--accent-dark);
+  }
+
+  .summary-card .sc-service-row .sr-value {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+
+  .summary-card .sc-total {
+    padding: 16px;
+    background: var(--secondary-bg);
+    border-top: 1px solid var(--border-strong);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .summary-card .sc-total .st-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .summary-card .sc-total .st-value {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+    line-height: 1;
+  }
+
+  /* AVISO CLIENTE JÁ POSSUI AUTOMATIZADOR */
+  .info-block {
+    margin-top: 12px;
+    padding: 11px 14px;
+    background: var(--accent-soft);
+    border: 1px solid #c7d7fe;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .info-block svg {
+    width: 15px; height: 15px;
+    stroke: var(--accent-dark);
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .info-block .ib-text {
+    font-size: 11.5px;
+    color: var(--accent-dark);
+    font-weight: 500;
+    line-height: 1.45;
+  }
+
+  .info-block .ib-text strong { font-weight: 700; }
+
+  /* DESTAQUE GARANTIA */
+  .warranty-block {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: var(--primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .warranty-block .wb-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    background: rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .warranty-block .wb-icon svg {
+    width: 21px; height: 21px;
+    stroke: #fff;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .warranty-block .wb-text { flex: 1; min-width: 0; }
+
+  .warranty-block .wb-title {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .warranty-block .wb-desc {
+    font-size: 11px;
+    color: #c3c9d2;
+    font-weight: 500;
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  /* OBSERVAÇÃO */
+  .note-block {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border-strong);
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .note-block svg {
+    width: 15px; height: 15px;
+    stroke: var(--muted);
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .note-block .nb-text {
+    font-size: 11.5px;
+    color: var(--text-soft);
+    font-weight: 500;
+    line-height: 1.45;
+  }
+
+  .note-block .nb-text strong { color: var(--primary); font-weight: 700; }
+
+  /* PAGAMENTO */
+  .payment-section {
+    margin-top: 20px;
+  }
+
+  .payment-section .ps-title {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .payment-section .ps-title svg {
+    width: 12px; height: 12px;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .payment-options { display: grid; gap: 12px; }
+
+  .payment-box {
+    border-radius: 12px;
+    padding: 18px 16px;
+    background: #fff;
+    border: 1px solid var(--border-strong);
+  }
+
+  .payment-box.is-featured {
+    border-color: var(--primary);
+    border-width: 1.5px;
+  }
+
+  .payment-box .pb-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .payment-box .pb-head .pb-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-strong);
+  }
+
+  .payment-box.is-featured .pb-head .pb-icon {
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+
+  .payment-box .pb-icon svg {
+    width: 15px; height: 15px;
+    stroke: var(--text-soft);
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .payment-box.is-featured .pb-icon svg { stroke: #fff; }
+
+  .payment-box .pb-head .pb-name {
+    flex: 1;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .payment-box .pb-head .pb-tag {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 8px;
+    border-radius: 5px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-strong);
+    color: var(--text-soft);
+  }
+
+  .payment-box.is-featured .pb-head .pb-tag {
+    background: var(--accent-soft);
+    border-color: #c7d7fe;
+    color: var(--accent-dark);
+  }
+
+  .payment-box .pb-value {
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 12px;
+    color: var(--primary);
+  }
+
+  /* DESTAQUE ECONOMIA/SEM JUROS */
+  .pb-highlight {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 14px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+  }
+
+  .pb-highlight svg {
+    width: 16px; height: 16px;
+    stroke: var(--muted);
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .pb-highlight .hl-strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.2;
+  }
+
+  .payment-box.is-featured .pb-highlight {
+    background: var(--accent-soft);
+    border-color: #c7d7fe;
+  }
+
+  .payment-box.is-featured .pb-highlight svg { stroke: var(--accent); }
+  .payment-box.is-featured .pb-highlight .hl-strong { color: var(--accent-dark); }
+
+  /* PIX KEY */
+  .pix-key {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--primary);
+    word-break: break-all;
+    padding: 13px 14px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+    font-family: inherit;
+    line-height: 1.35;
+  }
+
+  .pix-key:hover { border-color: var(--primary); background: #fff; }
+
+  .pix-copy-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 8px;
+    font-size: 11.5px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .pix-copy-hint svg {
+    width: 13px; height: 13px;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* CARD LINK */
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    padding: 14px 18px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+
+  .card-link:hover { background: #000; }
+
+  .card-link svg {
+    width: 17px; height: 17px;
+    stroke: #fff;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* BOTÃO CONFIRMAR */
+  .btn-confirm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 20px;
+    padding: 17px 22px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .btn-confirm:hover { background: var(--accent-dark); }
+
+  .btn-confirm svg {
+    width: 19px; height: 19px;
+    stroke: none;
+    fill: #fff;
+    flex-shrink: 0;
+  }
+
+  .btn-confirm .bc-arrow {
+    width: 17px; height: 17px;
+    stroke: #fff;
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .confirm-hint {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .confirm-hint svg {
+    width: 13px; height: 13px;
+    stroke: var(--muted);
+    stroke-width: 2.4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* BOTÃO PDF */
+  .btn-pdf {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px 22px;
+    background: #fff;
+    color: var(--text-soft);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .btn-pdf:hover { border-color: var(--primary); color: var(--primary); background: var(--secondary-bg); }
+
+  .btn-pdf svg {
+    width: 17px; height: 17px;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .btn-pdf:disabled { opacity: 0.6; cursor: wait; }
+
+  /* FOOTER */
+  .footer {
+    padding: 20px 24px 22px;
+    border-top: 1px solid var(--border);
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    background: var(--secondary-bg);
+  }
+
+  .footer-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border-strong);
+    flex-shrink: 0;
+  }
+
+  .footer-avatar-fallback {
+    display: none;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff; font-size: 18px; font-weight: 700;
+    align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .footer-info { flex: 1; text-align: left; }
+
+  .footer .name {
+    font-size: 14px; font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .footer .role {
+    font-size: 11px; font-weight: 500;
+    color: var(--muted); margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  .footer .contact {
+    font-size: 11px; color: var(--muted); margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 420px) {
+    body { padding: 16px 10px; }
+    .inner { padding: 22px 18px 24px; }
+    .brand-logo { height: 38px; }
+    .brand-logo-fallback { height: 38px; font-size: 18px; padding: 0 12px; }
+    .summary-card .sc-total .st-value { font-size: 18px; }
+    .payment-box { padding: 16px 14px; }
+    .payment-box .pb-value { font-size: 30px; }
+    .pb-highlight { font-size: 11.5px; padding: 9px 10px; }
+    .pb-highlight .hl-strong { font-size: 13px; }
+    .pix-key { font-size: 12.5px; padding: 12px 11px; }
+    .card-link { font-size: 13.5px; padding: 13px 16px; }
+    .btn-confirm { font-size: 14px; padding: 15px 18px; }
+    .btn-pdf { font-size: 13px; padding: 13px 18px; }
+    .footer { padding: 16px 18px 18px; gap: 11px; }
+    .footer-avatar, .footer-avatar-fallback { width: 48px; height: 48px; }
+    .note-block .nb-text { font-size: 11px; }
+    .info-block .ib-text { font-size: 11px; }
+    .warranty-block { padding: 12px 13px; gap: 10px; }
+    .warranty-block .wb-icon { width: 34px; height: 34px; }
+    .warranty-block .wb-icon svg { width: 19px; height: 19px; }
+    .warranty-block .wb-title { font-size: 13.5px; }
+    .warranty-block .wb-desc { font-size: 10.5px; }
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="inner" id="osContent">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand-logo-wrap">
+        <img class="brand-logo" 
+             src="https://i.postimg.cc/s24ZDmbD/marca-attive-TECNOLOGIA-preta.png" 
+             alt="Attive Tecnologia"
+             referrerpolicy="no-referrer"
+             crossorigin="anonymous"
+             loading="eager"
+             onerror="this.style.display='none'; document.getElementById('brandLogoFallback').style.display='flex';">
+        <div class="brand-logo-fallback" id="brandLogoFallback">attive</div>
+      </div>
+      <span class="badge-os">ORÇAMENTO 2026-0098</span>
+    </div>
+
+    <!-- CARD RESUMO -->
+    <div class="summary-card">
+      <div class="sc-client">
+        <div class="sc-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        </div>
+        <div class="sc-text">
+          <div class="sc-label">Cliente</div>
+          <div class="sc-name">Barros</div>
+          <div class="sc-address">Instalação de 4 automatizadores</div>
+        </div>
+      </div>
+
+      <div class="sc-services">
+        <div class="sc-service-row">
+          <div class="sr-num">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="sr-text">
+            3 automatizadores (venda)
+            <span class="sr-desc">3 × R$ 1.170,00 · Portão até 800 kg · abertura 3 m em até 4 s · PPA</span>
+            <span class="sr-desc"><em>O cliente já possui 1 automatizador</em> — instalação total de 4 unidades</span>
+          </div>
+          <div class="sr-value">R$ 3.510,00</div>
+        </div>
+        <div class="sc-service-row">
+          <div class="sr-num">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="sr-text">
+            12 cremalheiras reforçadas
+            <span class="sr-desc">12 × R$ 46,00</span>
+          </div>
+          <div class="sr-value">R$ 552,00</div>
+        </div>
+        <div class="sc-service-row">
+          <div class="sr-num">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="sr-text">
+            Instalação de 4 automatizadores
+            <span class="sr-desc">4 × R$ 300,00 — instalação completa</span>
+          </div>
+          <div class="sr-value">R$ 1.200,00</div>
+        </div>
+      </div>
+
+      <div class="sc-total">
+        <div class="st-label">Total</div>
+        <div class="st-value">R$ 5.262,00</div>
+      </div>
+    </div>
+
+    <!-- AVISO: CLIENTE JÁ POSSUI 1 AUTOMATIZADOR -->
+    <div class="info-block">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div class="ib-text">
+        <strong>O cliente já possui 1 automatizador.</strong> Por isso, são vendidos apenas 3 — mas a instalação cobre os 4 automatizadores (o já existente + os 3 novos).
+      </div>
+    </div>
+
+    <!-- DESTAQUE GARANTIA -->
+    <div class="warranty-block">
+      <div class="wb-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+      </div>
+      <div class="wb-text">
+        <div class="wb-title">Garantia de 12 meses</div>
+        <div class="wb-desc">Nos automatizadores e no serviço de instalação.</div>
+      </div>
+    </div>
+
+    <!-- OBSERVAÇÃO 1: CRECALHEIRAS -->
+    <div class="note-block">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div class="nb-text">
+        <strong>Cremalheiras:</strong> o orçamento inclui 12 cremalheiras reforçadas. Caso seja necessário um número maior, o valor excedente será acrescido ao orçamento (R$ 46,00 por cremalheira adicional).
+      </div>
+    </div>
+
+    <!-- OBSERVAÇÃO 2: PONTOS ELÉTRICOS -->
+    <div class="note-block">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div class="nb-text">
+        <strong>Pontos elétricos:</strong> a instalação requer a disponibilidade dos pontos elétricos nos locais de instalação dos automatizadores.
+      </div>
+    </div>
+
+    <!-- PAGAMENTO -->
+    <div class="payment-section">
+      <div class="ps-title">
+        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+        Como pagar
+      </div>
+
+      <div class="payment-options">
+
+        <!-- PIX (destacado) -->
+        <div class="payment-box is-featured">
+          <div class="pb-head">
+            <div class="pb-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h.01M16 8h.01M8 16h.01M16 16h.01"/></svg>
+            </div>
+            <div class="pb-name">PIX (à vista)</div>
+            <div class="pb-tag">15% OFF</div>
+          </div>
+          <div class="pb-value">R$ 4.472,70</div>
+
+          <div class="pb-highlight">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+            <span>Você economiza<span class="hl-strong">R$ 789,30</span></span>
+          </div>
+
+          <button class="pix-key" id="pixKey" onclick="copiarPix()">attivetecnologia@gmail.com</button>
+          <div class="pix-copy-hint" id="pixHint">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Toque para copiar
+          </div>
+        </div>
+
+        <!-- CARTÃO -->
+        <div class="payment-box">
+          <div class="pb-head">
+            <div class="pb-icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+            </div>
+            <div class="pb-name">Cartão de crédito</div>
+            <div class="pb-tag">6x</div>
+          </div>
+          <div class="pb-value">6x de R$ 877,00</div>
+
+          <div class="pb-highlight">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+            <span>Sem juros<span class="hl-strong">Total R$ 5.262,00</span></span>
+          </div>
+
+          <a class="card-link" href="https://link.infinitepay.io/helio_crispim_dos/VC1DLTYtSQ-klLg7KqEEw-5262,00" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+            Pagar com cartão
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTÃO CONFIRMAR -->
+    <button class="btn-confirm" onclick="confirmarWhatsApp()">
+      <svg viewBox="0 0 32 32"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.648 4.83 1.782 6.86L2 30l7.347-1.757A13.94 13.94 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5a11.44 11.44 0 01-5.847-1.6l-.418-.249-4.36 1.043 1.072-4.25-.272-.437A11.46 11.46 0 014.5 16C4.5 9.649 9.649 4.5 16 4.5S27.5 9.649 27.5 16 22.351 27.5 16 27.5zm6.29-8.61c-.345-.172-2.04-1.006-2.356-1.12-.315-.115-.545-.172-.774.172-.23.345-.888 1.12-1.09 1.35-.2.23-.4.258-.745.086-.345-.172-1.455-.537-2.771-1.71-1.024-.913-1.715-2.04-1.916-2.385-.2-.345-.021-.531.15-.703.155-.155.345-.402.517-.603.172-.2.23-.345.345-.575.115-.23.057-.431-.029-.603-.086-.172-.774-1.866-1.06-2.556-.28-.672-.563-.58-.774-.591-.2-.01-.43-.013-.66-.013s-.603.086-.919.431c-.315.345-1.204 1.177-1.204 2.87 0 1.694 1.233 3.33 1.405 3.56.172.23 2.427 3.706 5.88 5.198.822.355 1.463.566 1.963.725.825.263 1.576.226 2.169.137.661-.099 2.04-.833 2.327-1.637.287-.804.287-1.493.2-1.637-.086-.143-.315-.23-.66-.402z"/></svg>
+      Confirmar pagamento
+      <svg class="bc-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
+    <div class="confirm-hint">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      Mensagem já pronta — não precisa digitar
+    </div>
+
+    <!-- BOTÃO PDF -->
+    <button class="btn-pdf" id="btnPdf" onclick="gerarPDF()">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+      Baixar Orçamento em PDF
+    </button>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer" id="osFooter">
+    <img class="footer-avatar" 
+         src="https://i.postimg.cc/TwjQxnJc/Whats-App-Image-2026-08-31-at-14-32-09.jpg" 
+         alt="Hélio Crispim"
+         referrerpolicy="no-referrer"
+         crossorigin="anonymous"
+         loading="eager"
+         onerror="this.style.display='none'; document.getElementById('footerAvatarFallback').style.display='flex';">
+    <div class="footer-avatar-fallback" id="footerAvatarFallback">HC</div>
+    <div class="footer-info">
+      <div class="name">Hélio Crispim</div>
+      <div class="role">Eng. Eletricista · CREA-PB 12290192025PB</div>
+      <div class="contact">(83) 99678-7788 · attivesistemas@gmail.com</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var phone = "5583996787788";
+  var os = "ORÇAMENTO 2026-0098";
+  var cliente = "Barros";
+  var descricao = "Instalação de 4 automatizadores (venda de 3 — o cliente já possui 1) + cremalheiras";
+  var automatizadorDesc = "Automatizador para portão de até 800 kg, abertura de 3 m em até 4 segundos, fabricante PPA";
+  var automatizadorValorUnit = "R$ 1.170,00";
+  var clienteJaPossui = "O cliente já possui 1 automatizador. Por isso, são vendidos apenas 3 — mas a instalação cobre os 4 automatizadores (o já existente + os 3 novos).";
+  var obsCremalheiras = "O orçamento inclui 12 cremalheiras reforçadas. Caso seja necessário um número maior, o valor excedente será acrescido ao orçamento (R$ 46,00 por cremalheira adicional).";
+  var obsPontos = "A instalação requer a disponibilidade dos pontos elétricos nos locais de instalação dos automatizadores.";
+  var pixKey = "attivetecnologia@gmail.com";
+  var cardLink = "https://link.infinitepay.io/helio_crispim_dos/VC1DLTYtSQ-klLg7KqEEw-5262,00";
+
+  var total = 5262.00;
+  var venda = 3510.00;
+  var cremalheiras = 552.00;
+  var instalacao = 1200.00;
+  var desconto = 789.30;
+  var pixValue = 4472.70;
+
+  function copiarPix() {
+    var hint = document.getElementById('pixHint');
+    function feedback() {
+      hint.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Chave copiada!';
+      setTimeout(function() {
+        hint.innerHTML = '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Toque para copiar';
+      }, 2500);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(pixKey).then(feedback).catch(function() { fallbackCopy(); feedback(); });
+    } else { fallbackCopy(); feedback(); }
+    function fallbackCopy() {
+      var el = document.createElement('textarea');
+      el.value = pixKey; el.style.position = 'fixed'; el.style.opacity = '0';
+      document.body.appendChild(el); el.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(el);
+    }
+  }
+
+  function confirmarWhatsApp() {
+    var msg = 'Olá, Hélio! Sou o ' + cliente + ' e efetuei o pagamento do orçamento:\n\n';
+    msg += '*Orçamento:* ' + os + '\n';
+    msg += 'Cliente: ' + cliente + '\n\n';
+    msg += '*Venda:* R$ 3.510,00\n';
+    msg += '- 3 automatizadores × ' + automatizadorValorUnit + '\n';
+    msg += '- ' + automatizadorDesc + '\n';
+    msg += '- *O cliente já possui 1 automatizador* (venda de 3, instalação de 4)\n\n';
+    msg += '*Cremalheiras:* R$ 552,00\n';
+    msg += '- 12 cremalheiras reforçadas × R$ 46,00\n\n';
+    msg += '*Instalação:* R$ 1.200,00\n';
+    msg += '- 4 instalações × R$ 300,00\n\n';
+    msg += '*Garantia:* 12 meses (automatizadores e instalação)\n\n';
+    msg += '*Total:* R$ 5.262,00\n';
+    msg += '*Como paguei:*\n';
+    msg += '- PIX à vista (15% OFF): *R$ 4.472,70* — economia de R$ 789,30\n';
+    msg += '- Ou cartão em até 6x de R$ 877,00 (SEM JUROS, total R$ 5.262,00)\n\n';
+    msg += '*Obs.:* ' + obsCremalheiras + '\n\n';
+    msg += '*Obs.:* ' + obsPontos + '\n\n';
+    msg += 'Segue o comprovante. Obrigado!';
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  function gerarPDF() {
+    var btn = document.getElementById('btnPdf');
+    var originalLabel = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg> Gerando PDF...';
+
+    try {
+      var { jsPDF } = window.jspdf;
+      var doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
+      var pageW = 210;
+      var margin = 18;
+      var contentW = pageW - margin * 2;
+      var y = 20;
+
+      var PRIMARY = [26, 31, 38];
+      var ACCENT = [37, 99, 235];
+      var MUTED = [107, 114, 128];
+      var BORDER = [228, 231, 236];
+      var SOFT = [247, 248, 250];
+
+      doc.setFillColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.rect(0, 0, pageW, 4, 'F');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('ATTIVE TECNOLOGIA', margin, y + 5);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Orcamento ' + os, margin, y + 11);
+
+      y += 20;
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.3);
+      doc.line(margin, y, pageW - margin, y);
+      y += 8;
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('CLIENTE', margin, y);
+      y += 5;
+      doc.setFontSize(11);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text(cliente, margin, y);
+      y += 5;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text(descricao, margin, y);
+      y += 12;
+
+      // Aviso cliente já possui 1
+      doc.setFillColor(239, 244, 255);
+      doc.setDrawColor(199, 215, 254);
+      doc.setLineWidth(0.3);
+      doc.roundedRect(margin, y - 2, contentW, 14, 2, 2, 'F');
+      doc.roundedRect(margin, y - 2, contentW, 14, 2, 2);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(29, 78, 216);
+      doc.text('O CLIENTE JA POSSUI 1 AUTOMATIZADOR', margin + 4, y + 4);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.text('Venda de 3 unidades — instalacao cobre os 4 automatizadores.', margin + 4, y + 8.5);
+      y += 18;
+
+      // Venda
+      doc.setFillColor(SOFT[0], SOFT[1], SOFT[2]);
+      doc.roundedRect(margin, y - 4, contentW, 34, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('Venda de automatizadores', margin + 4, y + 2);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text(automatizadorDesc + '.', margin + 4, y + 8);
+      doc.text('3 unidades fornecidas (o cliente ja possui 1).', margin + 4, y + 12);
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.2);
+      doc.line(margin + 4, y + 16, pageW - margin - 4, y + 16);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('Valor unitario: ' + automatizadorValorUnit, margin + 4, y + 21);
+      doc.text('3 automatizadores x ' + automatizadorValorUnit + ' = R$ 3.510,00', margin + 4, y + 26);
+      doc.text('R$ 3.510,00', pageW - margin - 4, y + 21, { align: 'right' });
+      y += 38;
+
+      // Cremalheiras
+      doc.setFillColor(SOFT[0], SOFT[1], SOFT[2]);
+      doc.roundedRect(margin, y - 4, contentW, 24, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('Cremalheiras reforcadas', margin + 4, y + 2);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('12 cremalheiras reforcadas para os portoes.', margin + 4, y + 9);
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.2);
+      doc.line(margin + 4, y + 14, pageW - margin - 4, y + 14);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('12 cremalheiras x R$ 46,00', margin + 4, y + 19);
+      doc.text('R$ 552,00', pageW - margin - 4, y + 19, { align: 'right' });
+      y += 28;
+
+      // Instalação
+      doc.setFillColor(SOFT[0], SOFT[1], SOFT[2]);
+      doc.roundedRect(margin, y - 4, contentW, 32, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('Instalacao', margin + 4, y + 2);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Instalacao do automatizador, fixacao e alinhamento das cremalheiras,', margin + 4, y + 8);
+      doc.text('instalacao dos sensores e programacao.', margin + 4, y + 12);
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.2);
+      doc.line(margin + 4, y + 16, pageW - margin - 4, y + 16);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('4 instalacoes x R$ 300,00', margin + 4, y + 21);
+      doc.text('R$ 1.200,00', pageW - margin - 4, y + 21, { align: 'right' });
+      y += 36;
+
+      // Total
+      doc.setFillColor(SOFT[0], SOFT[1], SOFT[2]);
+      doc.roundedRect(margin, y - 4, contentW, 14, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('Total', margin + 4, y + 2);
+      doc.text('R$ 5.262,00', pageW - margin - 4, y + 2, { align: 'right' });
+      y += 18;
+
+      // Garantia (destaque escuro)
+      doc.setFillColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.roundedRect(margin, y - 2, contentW, 16, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(255, 255, 255);
+      doc.text('GARANTIA DE 12 MESES', margin + 4, y + 4);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(195, 201, 210);
+      doc.text('Garantia de 12 meses nos automatizadores e no servico de instalacao.', margin + 4, y + 9);
+      y += 20;
+
+      // Observações
+      doc.setFillColor(SOFT[0], SOFT[1], SOFT[2]);
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.3);
+      doc.roundedRect(margin, y - 2, contentW, 26, 2, 2);
+      doc.roundedRect(margin, y - 2, contentW, 26, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('OBSERVACOES', margin + 4, y + 4);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      var obs1 = doc.splitTextToSize('Cremalheiras: ' + obsCremalheiras, contentW - 8);
+      var obs2 = doc.splitTextToSize('Pontos eletricos: ' + obsPontos, contentW - 8);
+      doc.text(obs1, margin + 4, y + 9);
+      doc.text(obs2, margin + 4, y + 9 + obs1.length * 3.4);
+      y += 32;
+
+      // Pagamento
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('COMO PAGAR', margin, y);
+      y += 6;
+
+      // PIX (destaque)
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.setLineWidth(0.5);
+      doc.roundedRect(margin, y - 2, contentW, 32, 2, 2);
+      doc.roundedRect(margin, y - 2, contentW, 32, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('PIX a vista (15% OFF)', margin + 4, y + 4);
+      doc.setFontSize(18);
+      doc.text('R$ 4.472,70', pageW - margin - 4, y + 4, { align: 'right' });
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(ACCENT[0], ACCENT[1], ACCENT[2]);
+      doc.text('VOCE ECONOMIZA R$ 789,30', margin + 4, y + 12);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Chave: ' + pixKey, margin + 4, y + 19);
+      y += 36;
+
+      // Cartão
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(margin, y - 2, contentW, 32, 2, 2);
+      doc.roundedRect(margin, y - 2, contentW, 32, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('Cartao de credito (ate 6x)', margin + 4, y + 4);
+      doc.setFontSize(18);
+      doc.text('6x de R$ 877,00', pageW - margin - 4, y + 4, { align: 'right' });
+      doc.setFontSize(10);
+      doc.text('SEM JUROS - Total R$ 5.262,00', margin + 4, y + 12);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Link InfinitePay para pagamento seguro.', margin + 4, y + 19);
+      y += 38;
+
+      // Rodapé
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.setLineWidth(0.3);
+      doc.line(margin, y, pageW - margin, y);
+      y += 6;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(PRIMARY[0], PRIMARY[1], PRIMARY[2]);
+      doc.text('Helio Crispim', margin, y);
+      y += 4;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Eng. Eletricista - CREA-PB 12290192025PB', margin, y);
+      y += 4;
+      doc.text('(83) 99678-7788 - attivesistemas@gmail.com', margin, y);
+      y += 6;
+      doc.setFontSize(7);
+      doc.setTextColor(148, 163, 184);
+      doc.text('Orcamento gerado em ' + new Date().toLocaleDateString('pt-BR') + ' às ' + new Date().toLocaleTimeString('pt-BR'), margin, y);
+
+      doc.save('Orcamento-' + os.replace(' ', '-') + '-Barros.pdf');
+      btn.disabled = false;
+      btn.innerHTML = originalLabel;
+    } catch (err) {
+      console.error('Erro ao gerar PDF:', err);
+      alert('Erro ao gerar o PDF. Tente novamente.');
+      btn.disabled = false;
+      btn.innerHTML = originalLabel;
+    }
+  }
+</script>
+</body>
+</html>
